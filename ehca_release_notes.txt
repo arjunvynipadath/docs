@@ -1,0 +1,51 @@
+	     Open Fabrics Enterprise Distribution (OFED)
+		    ehca in OFED 1.1 Release Notes
+			  
+			   October 2006
+
+
+Overview
+--------
+ehca is the low level driver implementation for all IBM GX-based HCAs.
+
+ehca Available Parameters
+--------------------------
+In order to set ehca parameters, add the following line(s) to /etc/modprobe.conf:
+
+	options ib_ehca <parameter>=<value>
+
+whereby <parameter> is one of the following items:
+- debug_level     debug level (0: no debug traces (default), 1: with debug traces)
+- nr_ports        number of connected ports (default: 2)
+- port_act_time   time to wait for port activation (default: 30 sec)
+
+Known Issues
+------------
+
+1. The device driver normally uses both ports. For using just one port connect
+the ports as shown in Figure 1 and load the device driver by running
+`modprobe ib_ehca nr_ports=1`.
+
+ 	  --------- IB Card in p570
+	  |
+         \ /
+	+---+
+        | # |
+        | # |
+        | # |
+        | # |  <--- Port 2: NOT CONNECTED
+	| # |
+        |---|
+        | # |
+        | # |
+        | # |
+        | # |  <--- Port 1: CONNECTED TO THE INFINIBAND SWITCH
+        | # |
+        +---+
+
+*Figure 1:* Connections if only one port is used.
+
+NOTE: In OpenPower 720 and p550 port 1 is at the top, port 2 is at the bottom.
+
+2. Furthermore the port(s) needs to be connected to an active switch port while
+loading the ehca device driver.

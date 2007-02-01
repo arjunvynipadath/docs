@@ -1,0 +1,44 @@
+	     Open Fabrics Enterprise Distribution (OFED)
+              iSER initiator in OFED 1.1 Release Notes
+			  
+			   October 2006
+
+
+* Background
+
+	iSER allows iSCSI to be layered over RDMA transports (including InfiniBand 
+	and iWARP (RNIC)).
+
+	The OpenIB iSER initiator implementation is interoperable with open-iscsi 
+	(http://www.open-iscsi.org/). It provides an alternative transport to 
+	iscsi_tcp in the open iscsi framework. The iSER transport exposes a 
+	transport API to scsi_transport_iscsi, and a SCSI LLD API to the Linux 
+	SCSI mid-layer (scsi_mod).
+
+* supported platforms
+
+	SLES10 (RC1 and later)
+
+	the release has been tested against Voltaire iSCSI/iSER target running 
+	in Voltaire's IB/Fibre-Channel router 
+
+* known issues 
+
+	SCSI command aborts may cause some instabilities
+	
+* iSER links
+
+	WIKI pages
+
+	information on building/configuring/running the open iscsi initiator w. iSER
+	https://openib.org/tiki/tiki-index.php?page=iSER
+
+	IETF pages
+
+	iSCSI and iSER specifications come out of the IETF IP storage (IPS) work group 
+	http://www.ietf.org/html.charters/ips-charter.html.
+
+	"ABOUT" page
+
+	general and detailed information on iSCSI and iSER 
+	http://www.voltaire.com/iser.htm

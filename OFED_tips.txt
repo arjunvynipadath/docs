@@ -1,0 +1,238 @@
+		Open Fabrics Enterprise Distribution (OFED)
+		      Tips for Working with OFED 1.1
+
+		 	     October 2006
+
+===============================================================================
+Table of Contents
+===============================================================================
+1. OFED Utilities
+2. Debug HOWTOs
+3. Pinning (Locking) User Memory Pages
+
+
+===============================================================================
+1. OFED Utilities
+===============================================================================
+
+The OFED package includes utilities under <prefix>/bin, where <prefix> stands
+for the OFED installation path. To retrieve the this path, run the script 
+"/etc/infiniband/info" as explained in 2.2 below.
+
+Notes:
+------
+1. This document includes descriptions for a subset of the existing utilities.
+   To learn about other utilities, use their --help flag.
+
+2. The sources for all utilities are not part of the RPM installation. However,
+   all sources exist in the openib-1.1.tgz tarball.
+
+
+1.1 Device Information
+----------------------
+Device information can be obtained using several utilities:
+
+a. ibv_devinfo
+
+   ibv_devinfo prints the ca attributes.
+
+   usage:
+     ibv_devinfo
+
+     Options:
+       -d, --ib-dev=<dev>    use IB device <dev> (default: first device found)
+       -i, --ib-port=<port>  use port <port> of IB device (default: all ports)
+       -l, --list            print only the IB devices names
+       -v, --verbose         print all the attributes of the IB device(s)
+
+b. ibstat
+
+	usage:
+	ibstat [OPTIONS] <ca_name> [portnum]
+
+	Options:
+	-d	debug
+	-l	list all IB devices
+	-s	print short device summary
+	-p	print port GUIDs
+	-V	print ibstat version information and exit
+	-h	print usage
+
+	Examples:
+	ibstat -l 		# list all IB devices
+	ibstat mthca0 2 	# stat port 2 of mthca0
+
+c. Using sysfs file system
+	The driver supports the sysfs file system under: /sys/class/infiniband
+
+	Examples:
+
+	> ls /sys/class/infiniband/mthca0/
+	board_id device fw_ver hca_type hw_rev node_desc node_guid node_type
+	ports sys_image_guid
+
+	> cat /sys/class/infiniband/mthca0/board_id
+	MT_0200000001
+
+	> ls /sys/class/infiniband/mthca0/ports/1/
+	cap_mask counters gids lid lid_mask_count phys_state pkeys rate sm_lid
+	sm_sl state
+
+	> cat /sys/class/infiniband/mthca0/ports/1/state
+	4: ACTIVE
+
+1.2 Performance Tests
+---------------------
+	The following performance tests are provided with the OFED release:
+
+	1. Latency tests:
+	   - ib_read_lat: RDMA read
+	   - ib_write_lat: RDMA write
+	   - ib_send_lat: UD, UC and RC (default) send
+
+	2. Bandwidth tests:
+	   - ib_read_bw: RDMA read
+	   - ib_write_bw: RDMA write
+	   - ib_send_bw: UD, UC and RC (default) send
+
+	Usage:
+	Server: <test name> <options>
+	Client: <test name> <options> <server IP address>
+		<server IP address> is an Ethernet or IPoIB address.
+	--help	  lists the available <options>. The same options must be
+		  passed to both server and client.	
+	
+	Note: See PERF_TEST_README.txt for more information on the performance
+	      tests.
+	
+	Example: ib_send_bw
+	Usage:
+	ib_send_bw 			start a server and wait for connection
+	ib_send_bw <host>		connect to server at <host>
+
+	options:
+	-p, --port=<port> 		listen on/connect to port <port>
+						(default: 18515)
+	-d, --ib-dev=<dev> 		use IB device <dev>
+						(default: first device found)
+	-i, --ib-port=<port> 		use port <port> of IB device
+						(default: 1)
+	-c, --connection=<RC/UC/UD> 	connection type RC/UC/UD (default: RC)
+	-m, --mtu=<mtu> 		mtu size (default: 1024)
+	-s, --size=<size> 		size of message to exchange
+						(default: 65536)
+	-a, --all 			run sizes from 2 up to 2^23
+	-t, --tx-depth=<dep> 		size of tx queue (default: 300)
+	-n, --iters=<iters> 		number of exchanges
+						(at least 2, default: 1000)
+	-b, --bidirectional 		measure bidirectional bandwidth
+						(default: unidirectional)
+	-V, --version display version number
+
+1.3 Ping-pong Example Tests
+---------------------------
+	The ping-pong example tests provide basic connectivity tests. Each test
+	has a help message (-h).
+	- ibv_ud_pingpong
+	- ibv_rc_pingpong
+	- ibv_srq_pingpong
+	- ibv_uc_pingpong
+
+	Example: ibv_ud_pingpong --h
+	Usage:
+	ibv_ud_pingpong  	start a server and wait for connection
+	ibv_ud_pingpong <host>	connect to server at <host>
+
+	options:
+	-p, --port=<port> 	listen on/connect to port <port>
+					(default: 18515)
+	-d, --ib-dev=<dev> 	use IB device <dev>
+					(default: first device found)
+	-i, --ib-port=<port> 	use port <port> of IB device (default: 1)
+	-s, --size=<size> 	size of message to exchange (default: 2048)
+	-r, --rx-depth=<dep> 	number of receives to post at a time
+					(default: 500)
+	-n, --iters=<iters> 	number of exchanges (default: 1000)
+	-e, --events 		sleep on CQ events (default: poll)
+
+
+===============================================================================
+2. Debug HOWTOs
+===============================================================================
+
+2.1 OFED Components and version information
+-------------------------------------------
+The text file <prefix>/BUILD_ID provides data on all OFED components (whether 
+installed or not).
+
+For example:
+
+ > cat /usr/local/ofed/BUILD_ID
+   OFED-1.1-rc4
+
+   openib-1.1 (REV=9304)
+   # User space
+   https://openib.org/svn/gen2/branches/1.1/src/userspace
+   Git:
+   ref: refs/heads/ofed_1_1
+   commit d39c60f1406d29eb8e336529610574800a81d81e
+
+   # MPI
+   mpi_osu-0.9.7-mlx2.2.0.tgz
+   openmpi-1.1.1-1.src.rpm
+   mpitests-2.0-0.src.rpm
+
+2.2 Installed OFED Components
+-------------------------------
+The script /etc/infiniband/info provides data on the specific OFED installation
+on this machine.
+
+For example:
+
+ > /etc/infiniband/info
+   prefix=/usr/local/ofed
+   Kernel=2.6.9-22.ELsmp
+
+   MODULES:  CONFIG_INFINIBAND=m CONFIG_INFINIBAND_USER_MAD=m
+   CONFIG_INFINIBAND_USER_ACCESS=m CONFIG_INFINIBAND_ADDR_TRANS=y
+   CONFIG_INFINIBAND_MTHCA=m CONFIG_IPATH_CORE=m CONFIG_INFINIBAND_IPATH=m
+   CONFIG_INFINIBAND_IPOIB=m
+
+   User level:  --kernel-version 2.6.9-22.ELsmp --kernel-sources
+   /lib/modules/2.6.9-22.ELsmp/build --with-libibcm --with-libibverbs
+   --with-libipathverbs --with-libmthca --with-mstflint --with-perftest
+
+2.3 Building/Installing IB Modules with debug information
+---------------------------------------------------------
+To compile/build/install the IB modules so that they will contain debug
+information, set OPENIB_KERNEL_EXTRA_CFLAGS="-g" in your environment
+before running OFED install.sh/build.sh .
+
+
+===============================================================================
+3. Pinning (Locking) User Memory Pages
+===============================================================================
+
+Memory locking is managed by the kernel on a per user basis. Regular users (as
+opposed to root) have a limited number of pages which they may pin, where
+the limit is pre-set by the administrator. Registering memory for IB verbs
+requires pinning memory, thus an application cannot register more memory than
+it is allowed to pin.
+
+The user can change the system per-process memory lock limit by adding
+the following two lines to file /etc/security/limits.conf:
+
+  *  soft  memlock  <number>
+  *  hard  memlock  <number>
+
+  where <number> denotes the number of KBytes that may be locked by a
+  user process.
+
+The above change to /etc/security/limits.conf will allow any user process in the
+system to lock up to <number> KBytes of memory.
+
+On some systems, it may be possible to use "unlimited" for the size to disable
+these limits entirely.
+	      
+Note: The file /etc/security/limits.conf contains further documentation.
+

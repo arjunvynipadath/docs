@@ -1,0 +1,160 @@
+		Open Fabrics Enterprise Distribution (OFED)
+        		  How To Build OFED 1.1
+
+		 	     October 2006
+
+
+==============================================================================
+Table of contents
+==============================================================================
+1.  Overview
+2.  Usage
+3.  Requirements
+
+==============================================================================
+1. Overview
+==============================================================================
+The script "build_ofed.sh" is used to build the OFED package based on the
+OpenFabrics project and InfiniBand git tree. The package is built under the
+current working directory.
+
+The OFED package includes InfiniBand kernel modules, userspace libraries, 
+diagnostic tools, performance benchmarks, firmware burning tools, Open MPI and
+OSU MPI.
+
+See OFED_release_notes.txt for more details. 
+
+==============================================================================
+2. Usage
+==============================================================================
+
+The build script for the OFED package can be downloaded from: 
+  https://openib.org/svn/gen2/branches/1.1/ofed/build 
+
+Name: build_ofed.sh
+
+
+Usage: build_ofed.sh --ver|-v <OFED version>  --git|-g <path to git tree>
+                     [--svnrev|-r <SVN revision to use for userspace>]
+                     [--tmpdir <tmpdir to use as a work area>]
+                     [--without-makedist]
+                     [--userspace|-u <path to userspace directory>]
+                     [--ofed-scripts <path to ofed scripts directory>]
+                     [--ofed-docs <path to ofed docs directory>]
+                     [--mpidir|-m <path to mpi directory>]
+                     [--extrasdir|-e <path to extras directory>]
+
+        Required:
+          --ver           Determines the name of the OFED version that is built
+          --git           Path to a local GIT tree (directory). The tree must
+                          have previously been created by one of the methods
+                          provided in the "Requirements" section below.
+
+        Optional:
+          --svnrev        The svn revision for extraction of the userspace
+                          component (default:  most recent)
+
+          --tmpdir        Directory to use as a work area (default: /tmp )
+
+          --without-makedist  Do not execute "make dist" for the userspace
+                          component (default: do "make dist")
+
+          --userspace     If you have already checked out the userspace
+                          component, you may use this option to request
+                          that the userspace component be taken from the
+                          given directory. Otherwise, the userspace_URL
+                          (see below) will be used.
+
+          --ofed_scripts  If you have already checked out the scripts
+                          component, you may use this option to request that
+                          the scripts component be taken from the given
+                          directory. Otherwise, the ofed_scripts_URL (see
+                          below) will be used.
+
+          --ofed_docs     If you have already checked out the docs component,
+                          you may use this option to request that the docs
+                          component be taken from the given directory.
+                          Otherwise, the ofed_docs_URL (see below) will be
+                          used.
+
+          --mpidir        If you have already checked out the mpi component,
+                          you may use this option to request that the mpi
+                          component be taken from the given directory.
+                          Otherwise, the mpi_URL (see below) will be used.
+
+          --extrasdir     If you have already checked out the extras
+                          component, you may use this option to request that
+                          the extras component be taken from the given
+                          directory. Otherwise, the extras_URL (see below)
+                          will be used.
+
+
+Sources are extracted by default from the following locations:
+            userspace_URL:
+                https://openib.org/svn/gen2/branches/1.1/src/userspace
+            openib_scripts_URL:
+                https://openib.org/svn/gen2/branches/1.1/ofed/openib/scripts
+            ofed_scripts_URL: 
+                https://openib.org/svn/gen2/branches/1.1/ofed/scripts
+            ofed_docs_URL: 
+                https://openib.org/svn/gen2/branches/1.1/ofed/docs
+            mpi_URL: 
+                https://openib.org/svn/gen2/branches/1.1/ofed/mpi
+            extras_URL: 
+                https://openib.org/svn/gen2/branches/1.1/ofed/extras
+
+Example:
+
+    ./build_ofed.sh --ver 1.1-rc6 --git /local/git/ofed_1_1/
+
+    This command will create a package (i.e., subtree) called OFED-1.1-rc6
+    in the current working direcory. The git tree "/local/git/ofed_1_1/"
+    in this example is a local InfiniBand git tree which was created using
+    one of the methods in the "Requirements" section below.
+
+==============================================================================
+3. Requirements
+==============================================================================
+
+1. Git:
+    Can be downloaded from:
+        http://www.kernel.org/pub/software/scm/git/git-1.4.2.tar.gz
+
+2. Subversion:
+    Can be downloaded from:
+        http://subversion.tigris.org
+
+3. InfiniBand Git tree:
+   There are two ways to get the infiniband git tree:
+   - The faster way:
+      mkdir gitdir
+      cd gitdir
+      git clone --bare \
+          git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux-2.6.git \
+          .git
+      git fetch git://www.mellanox.co.il/~git/infiniband ofed_1_1 \
+                ofed_addons cma_branch ehca_branch mst_sdp
+
+   - The slower way:
+      mkdir gitdir
+      cd gitdir
+      git clone -s --bare git://www.mellanox.co.il/~git/infiniband .git
+      git checkout ofed_1_1 `git-ls-tree -r --name-only ofed_1_1 \
+                   include/rdma include/scsi/srp.h drivers/infiniband \
+                   Documentation/infiniband ofed_scripts kernel_patches`
+      echo 'ref: refs/heads/ofed_1_1' > .git/HEAD
+
+4. Autotools:
+
+      libtool-1.5.20 or higher
+      autoconf-2.59 or higher
+      automake-1.9.6 or higher
+      m4-1.4.4 or higher
+
+      The above tools can be downloaded from the following URLs:
+           
+         libtool - "http://ftp.gnu.org/gnu/libtool/libtool-1.5.20.tar.gz"
+         autoconf - "http://ftp.gnu.org/gnu/autoconf/autoconf-2.59.tar.gz"
+         automake - "http://ftp.gnu.org/gnu/automake/automake-1.9.6.tar.gz"
+         m4 - "http://ftp.gnu.org/gnu/m4/m4-1.4.4.tar.gz"
+

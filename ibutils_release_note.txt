@@ -1,0 +1,109 @@
+	     Open Fabrics Enterprise Distribution (OFED)
+                  IBUTILS in OFED 1.1 Release Notes
+
+			   October 2006
+
+
+===============================================================================
+Table of Contents
+===============================================================================
+1. Overview
+2. Requirements
+3. Reports
+4. Known Issues
+
+
+===============================================================================
+1. Overview
+===============================================================================
+
+The IBUTILS package provides means for debugging the connectivity and
+status of InfiniBand (IB) devices in a fabric.  
+
+The package tools are intended to provide the following services:   
+* Discover the InfiniBand fabric connectivity
+* Determine whether or not a Subnet Manager (SM) is running
+* Identify links which drop packets and/or incur errors by sending MAD
+  packets multiple times, across all the links, reporting port monitor counters
+* Identify fabric level mismatches or inconsistencies such as:
+  - Duplicate port GUIDs - Two or more different ports with the same GUID
+  - Duplicate node GUIDs - Two or more different nodes with the same node GUID
+  - Duplicate LIDs - Two or more devices that have the same assigned LID
+  - Zero valued LIDs - A device with LID=0 indicates that the SM did not
+    assign a LID to this device.
+  - Zero valued system GUIDs - A device with system GUID=0 indicates that
+    the vendor did not assign it a GUID.
+  - An InfiniBand link is in the INIT state, which prevents data transfer
+  - Unexpected link width (when using the -lw flag)
+  - Unexpected link speed (when using the -ls flag)
+
+The IBUTILS package includes the following stand-alone tools: 
+
+  o   ibdiagnet
+	Discovers the network, providing a listing of the following:
+        - All the nodes, ports and links in the fabric 
+        - Link Forwarding Tables (LFT) dump file 
+        - Multicast Forwarding Tables (MFT) dump file 
+        - Fabric Subnet Managers (SMs) information file and a list of all
+          the masked GUIDs found
+
+  o   ibdiagpath
+	- Traces a path between two nodes specified by LIDs or a directed path
+	  between the source and destination nodes.
+        - Provides information regarding the nodes and ports traversed.
+        - Utilizes device-specific health queries for the different devices
+          along the path between the source and destination nodes. 
+
+Note: There are man pages for both tools.
+
+
+===============================================================================
+2. Requirements
+===============================================================================
+   1. ibis must be installed.
+
+   2. The path environment variable must include the path to ibis. To define the
+      path to ibis use one of the following commands (depending on your shell):
+	export PATH=<path to ibis>:$PATH
+      or
+        setenv PATH <path to ibis>:$PATH  
+
+     (the default path to ibis is: /usr/local/ofed/bin/)
+
+===============================================================================
+3. Reports
+===============================================================================
+The default directory for all generated report files is /tmp .
+
+Both utilities collect summary information regarding all the fabric SM's
+during the run, and then output that information at end of the run in file
+/tmp/ibdiagnet.sm.
+
+Each report message includes: 
+   - Device Type
+   - Device portGUID
+   - The direct path to the device 
+   - If a topology file is provided to be matched with the discovered fabric,
+     the node name is also provided in the report message. Otherwise, host
+     names are included only in HCA-related report messages.  
+
+===============================================================================
+4. Known Issues
+===============================================================================
+   ibdiagpath issues:
+   - If no subnet manager is initialized in the subnet, FDB tables may be
+     incorrectly set. Consequently, PortCounter MADs cannot be sent. 
+
+   - A link along a LID-routed path in INIT state causes ibdiagpath performance
+     queries to fail. The performance queries fail since they cannot proceed via
+     non-ACTIVE links. 
+
+   - ibdiagpath cannot validate the provided topology file against the existing 
+     fabric topology. If the topology file includes a device/link that does not
+     exist, or the device/link information is incorrect, then ibdiagpath may 
+     -- in name-based routing -- extract a non-existing path based on the 
+     incorrect topology file.
+
+   - If the hostname provided for the -s flag is not the actual local hostname, 
+     then all the extracted names from the topology file will be incorrect. 
+     However, all the other information provided will be correct.

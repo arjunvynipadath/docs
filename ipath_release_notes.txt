@@ -1,0 +1,61 @@
+	     Open Fabrics Enterprise Distribution (OFED)
+		    ipath in OFED 1.1 Release Notes
+			  
+			   October 2006
+
+
+Overview
+--------
+ipath is the low level driver implementation for all QLogic HCAs.
+
+
+1. MSI (Message Signalled Interrupt) support required with QLogic HCAs
+----------------------------------------------------------------------
+The QLogic adapter require MSI (Message Signalled Interrupts) to be
+enabled in the kernel. In addition, the kernels provided with some Linux
+distributions must be rebuilt after installation of a kernel patch to
+fix the pci_msi_quirk bug introduced in the 2.6.12 kernel.
+
+1.1. If the InfiniPath driver is being compiled on a machine without
+CONFIG_PCI_MSI=y configured, a warning similar to this will appear in
+dmesg at boot:
+
+[root@sqa-00 ~]# dmesg | grep ipath
+ipath_core 0000:01:00.0: infinipath0: pci_enable_msi failed: -1, interrupts may not work
+ipath_core 0000:01:00.0: infinipath0: irq is 0, BIOS error?  Interrupts won't work
+
+OpenFabrics on a QLogic adapter will not work correctly unless the kernel
+is configured with CONFIG_PCI_MSI=y.
+
+1.2. Systems with QLogic adapters and which contain the AMD8131 PCI
+bridge may require installation of the pci_msi_quirk kernel patch. If
+the following messages are displayed on the console during boot, or are
+in /var/log/messages, you will need to install the patch.
+
+PCI: MSI quirk detected. pci_msi_quirk set.
+path_core 0000:03:00.0: pci_enable_msi failed: -22, interrupts
+may not work
+
+NOTE: This problem has been fixed in the 2.6.17 kernel.org kernel.
+
+To install pci_msi_quirk patch and configure MSI for use with QLogic adapter
+----------------------------------------------------------------------------
+To remedy both of these problems simultaneously, build the
+kernel RPMs yourself with stock kernel SRPMs available from your
+distribution source, and install the kernel patches provided at
+http://www.pathscale.com/infinipath_support/downloads-1.3.html.
+
+See http://www.pathscale.com/docs/infinipath/1.3/msi_patch_notes.txt
+for details.
+
+Once these instructions are completed, rebuild the OFED kernel 
+modules with the OFED installer.
+
+2. Note: 
+--------
+When running Fedora Core 4 with the QLogic adapters, it is recommended
+to use the 2.6.16 kernel.
+
+3. Known Issues:
+----------------
+The ipath driver only supports the x86_64 architecture in this release.

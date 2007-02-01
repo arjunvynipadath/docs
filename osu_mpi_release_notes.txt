@@ -1,0 +1,77 @@
+             Open Fabrics Enterprise Distribution (OFED)
+ OSU MPI MVAPICH-0.9.7, Rev 0.9.7-mlx2.2.0 in OFED 1.1 Release Notes
+
+                          October 2006
+
+
+Overview
+--------
+These are the release notes for OSU MPI MVAPICH-0.9.7, Rev 0.9.7-mlx2.2.0
+This is OFED's edition of the OSU MPI MVAPICH-0.9.7 release. OSU MPI is an MPI
+channel implementation over InfiniBand from Ohio State University (OSU)
+(http://nowlab.cse.ohio-state.edu/projects/mpi-iba/).
+
+Software Dependencies
+---------------------
+OSU MPI depends on the installation of the OFED Distribution stack with OpenSM
+running. The MPI module also requires an established network interface (either
+InfiniBand IPoIB or Ethernet).
+
+New Features
+------------
+The mlx2.2.0 module is based on the MVAPICH-0.9.7 (MPI-1 over OpenIB/Gen2) module at
+openib.org gen2.  This version for OFED has the following additional features:
+- Message coalescing
+- SRQ flow optimization
+
+Bug Fixes
+---------
+- Affinity support is now enabled by default
+- Multiple fixes in rsh/ssh launcher
+- LD_LIBRARY_PATH fix (MLNX #37387)
+- TotalView scalability fix
+- FastPath is enabled on start for small clusters
+- Fix for correct f90 support (openib bugzilla 191)
+- Fix for comment support in mpirun_rsh (openib bugzilla 143)
+
+Known Issues
+------------
+- A process running MPI cannot fork after MPI_Init. Using fork might cause a
+  segmentation fault.
+- Using mpirun with ssh has a signal collection problem. Killing the run
+  (using CTRL-C) might leave some of the processes running on some of the
+  nodes. This can also happen if one of the processes exits with an error.
+  Note: This problem does not exist with rsh.
+- The MPD job launcher feature of OSU MPI module has not been tested by Mellanox
+  Technologies.  See http://nowlab.cse.ohio-state.edu/projects/mpi-iba/ for more
+  details.
+- For users of Mellanox Technologies firmware fw-23108 or fw-25208 only:
+  OSU MPI might fail in its default configuration if your HCA is burnt with an
+  fw-23108 version that is earlier than 3.4.000, or with an fw-25208 version
+  4.7.400 or earlier.
+  Workaround:
+  Option 1 - Update the firmware
+  Option 2 - In mvapich.conf, set VIADEV_SRQ_ENABLE=0
+- MVAPICH does not run on RHEL4 U3 ppc64
+- MVAPICH may fail to run on some SLES 10 machines due to problems in resolving
+  the host name.
+  Workaround: Edit /etc/hosts and comment-out/remove the line that maps 
+  IP address 127.0.0.2 to the system's fully qualified hostname.
+
+Main Verification Flows
+-----------------------
+In order to verify the correctness of OSU MPI, the following tests and
+parameters were run.
+
+Test 				Description
+===================================================================
+Intel's 			test suite 1400 Intel tests
+BW/LT 				OSU's test for bandwidth latency
+IMB 		        	Intel's MPI Benchmark test
+mpitest 			b_eff test
+Presta 				Presta multicast test
+Linpack 			Linpack benchmark
+NAS2.3 				NAS NPB2.3 tests
+SuperLU 			SuperLU benchmark (NERSC edition)
+NAMD 				NAMD application
+CAM 				CAM application

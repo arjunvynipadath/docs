@@ -1,0 +1,187 @@
+	     Open Fabrics Enterprise Distribution (OFED)
+		    SDP in OFED 1.1 Release Notes
+
+			  October 2006
+
+
+
+===============================================================================
+Table of Contents
+===============================================================================
+1. Overview
+2. Bug Fixes
+3. Known Issues
+4. Verification Applications/Flows/Tests
+
+===============================================================================
+1. Overview
+===============================================================================
+SDP in OFED is at beta level for OFED 1.1. 
+
+
+===============================================================================
+2. Bug Fixes
+===============================================================================
+* SDP now disables timewait on close if the socket has been disconnected
+
+* SDP now reports EPIPE if a packet gets queued after disconnect
+
+* Improved urgent data latency
+
+* Fixed data corruption upon changing the TCP_NODELAY socket option
+
+* Fixed a crash that occurs when a child is disconnected while its parent is
+  being destroyed.
+
+* SDP now recovers from RTU packet loss.
+
+
+===============================================================================
+3. Known Issues
+===============================================================================
+- Each SDP socket currently consumes up to 2 MBytes of memory. If this value
+  is high for your installation, it is possible to trade off performance
+  for lower memory utilization per socket by reducing the value of the
+  "rcvbuf_scale" module parameter (default: 16).
+
+  Note: the minimum legal value for this parameter is 1.
+  At this parameter value, each socket will consume approximately 128 KBytes.
+
+- Small message size performance is low when messages are sent by client
+  at a rate lower than the rate at which they are consumed by server,
+  and when TCP_CORK is not set. This is observed, for example, with iperf
+  benchmark. As a workaround, set the TCP_CORK socket option
+  to ensure data is sent in at least 32K byte chunks.
+
+- Performance is low on 32-bit kernels, as SDP utilizes high memory
+  to ease memory pressure. Moving to a 64-bit kernel solves this
+  problem even if the application remains a 32-bit one.
+
+- By default, SDP utilizes a 2 Kbyte MTU size.  This may cause PCI-X cards
+  using Mellanox Technologies "Infinihost" HCAs to experience low bandwidth.
+  Workaround:  reset the MTU size to 1K in this situation, using either of
+  the two methods below:
+
+  1. Activate the "tavor quirk" workaround in opensm:
+     a. Create an opensm options cache file (/var/cache/osm/opensm.opts):
+          > opensm --cache-options -o
+     b. Add the following line to /var/cache/osm/opensm.opts:
+          enable_quirks TRUE
+     c. Rerun opensm using your usual command line options to activate
+        the opensm quirk option.
+
+  2. Activate the "tavor quirk" workaround in cma:
+       set the tavor_quirk module parameter of the rdma_cm module to value 1
+       (default: 0).
+
+
+===============================================================================
+4. Verification Applications/Flows/Tests
+===============================================================================
+- ssh/sshd
+- wget/netscape/firefox/apache                  
+- netpipe               
+- netperf             
+- LTP socket tests
+- iperf-2.0.2         
+- ttcp
+- Threaded and forking echo client server examples
+- Various Java client server applications (SUN:jre, BEA:jrockit/WebLogic, GNU:gij/gcj)
+- Many UNIX utilities to verify that pre-load did not harm the applications
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	     Open Fabrics Enterprise Distribution (OFED)
+	      libsdp v. 9382 in OFED 1.1 Release Notes
+
+			  October 2006
+
+
+===============================================================================
+Table of Contents
+===============================================================================
+1. Overview
+2. New Features
+3. Bug Fixes
+4. Known Issues
+5. Verification Applications/Flows/Tests
+
+===============================================================================
+1. Overview
+===============================================================================
+This document describes the contents of the libsdp OFED 1.1 release. 
+libsdp is a LD_PRELOAD-able library that can be used to migrate existing
+applications to use InfiniBand Sockets Direct Protocol (SDP) instead of
+TCP sockets, transparently and without recompilations. To setup libsdp
+please follow the instructions below. The libsdp version for this release 
+is 1.1.
+
+
+===============================================================================
+2. New Features
+===============================================================================
+* New verbosity level "7" used for reporting connect/accept calls
+  and the address family used. This results in a reasonably short
+  log file that shows which connections used SDP and which ones used TCP.
+
+
+===============================================================================
+3 Bug Fixes
+===============================================================================
+The following list of bugs were fixed. Note that other less critical
+or visible bugs were also fixed.
+
+* Some applications provide IPv6 address in partial struct (missing the newer
+  scope_id field). The fix avoids libsdp memory corruption in this case.
+
+* Fixed address conversion bug in loopback address and also on all IPv4->IPv6 
+  (missed the extra 0xffff to the IPv6).
+
+* listen - had a missing flow for handling implicit bind. This caused the
+  "use both" case to provide two different/unrelated ports for the SDP and
+  TCP ports. Eventually, this caused the SDP port to be unusable (since the
+  client was only obtaining the TCP port number). Fixed by adding a flow similar
+  to the one used by bind with ANY_PORT.
+
+* Several bugs in using getsockname()/getpeername() which prevented the correct
+  address length from being returned when SDP-provided IPv4 addresses had to be
+  converted back to IPv6.
+
+* Fixed memory corruption caused by using struct sockaddr to store IPv6 address. 
+  sockaddr_storage is used instead.
+
+* Accept now handles a null output address pointer.
+
+* errno was corrupted by call to is_invalid_addr, reporting false errno to
+  applications.
+
+* Fixed socket leak in the flow for bind(ANY_PORT)
+
+* libsdp now avoids log errors on connect() using async mode returning -1 when
+  errno == EINPROGRESS
+
+===============================================================================
+4. Known Issues
+===============================================================================
+* libsdp cannot provide its socket switch functionality for executables
+  statically linked with libc.
+
+* When using server to listen on both SDP and TCP, the number of sockets is 
+  doubled.
+
+* A rare race still exists when performing bind/listen on ANY_PORT. The race
+  is between applications and has been greatly minimized. A test to reproduce it
+  has not been found yet. The race is between libsdp running the sequence
+  close(fd1) and bind(fd2, port), and another application/thread explicitly
+  trying to bind(fd3, port) to the same port.
+
+  To resolve this race a change in SDP/CMA behavior is required (provide 
+  different port number in successive calls to bind (ANY_PORT) and SDP support
+  for "unbind").
+
+
+===============================================================================
+5. Verification Applications/Flows/Tests
+===============================================================================
+See the corresponding section in the SDP release notes above.
+
