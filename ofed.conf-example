@@ -1,25 +1,40 @@
 STACK_PREFIX=/usr/local/ofed
 BUILD_ROOT=/var/tmp/OFED
+
 kernel_ib=y
 kernel_ib_devel=y
+
+ib_verbs=y
+ib_mthca=y
+ib_ipoib=y
+cxgb3=y
+ib_ipath=y
+ib_sdp=y
+ib_srp=y
+ib_iser=y
+vnic=y
+rds=y
+
+ib_bonding=y
+
 libibverbs=y
 libibverbs_devel=y
 libibverbs_utils=y
 libibcm=y
 libibcm_devel=y
 libmthca=y
-libehca=y
 libmthca_devel=y
 perftest=y
 mstflint=y
 libipathverbs=y
 libipathverbs_devel=y
-oiscsi_iser=y
-ofed_docs=y
-ofed_scripts=y
+libcxgb3=y
+libcxgb3_devel=y
 libsdp=y
+sdpnetstat=y
 srptools=y
 ipoibtools=y
+qlvnictools=y
 tvflash=y
 libibcommon=y
 libibcommon_devel=y
@@ -40,18 +55,25 @@ librdmacm_devel=y
 librdmacm_utils=y
 dapl=y
 dapl_devel=y
-mpi_osu=y
+ibutils=y
+
+mvapich=y
+mvapich2=y
 openmpi=y
 mpitests=y
-ibutils=y
-ib_verbs=y
-ib_mthca=y
-ib_ehca=y
-ib_ipoib=y
-ib_ipath=y
-ib_sdp=y
-ib_srp=y
-ib_iser=y
-MPI_COMPILER_mpi_osu=" gcc intel pathscale"
-MPI_COMPILER_openmpi=" gcc intel pathscale"
-# OPENIB_PARAMS="--with-memtrack --without-modprobe --with-madeye-mod --without-ipoibconf"
+
+ofed_docs=y
+ofed_scripts=y
+
+MPI_COMPILER_mvapich=" gcc"
+MPI_COMPILER_mvapich2=" gcc"
+MVAPICH2_IMPL="ib"
+MPI_COMPILER_openmpi=" gcc"
+MVAPICH2_CONF_impl="ofa"
+MVAPICH2_CONF_romio="1"
+MVAPICH2_CONF_shared_libs="1"
+MVAPICH2_CONF_multithread="1"
+MVAPICH2_CONF_ckpt="0"
+MVAPICH2_CONF_done="1"
+
+OFA_KERNEL_PARAMS="--with-madeye --without-modprobe --with-memtrack"
