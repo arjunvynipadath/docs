@@ -62,6 +62,12 @@ o  OSU MPI requires:    Fortran Compiler(default: gcc-g77)
 o  ibutils:  		tcl-8.4, tcl-devel-8.4
 o  tvflash: 		pciutils-devel
 
+*** Important Note for open-iscsi users:
+    Installing iSER as part of OFED installation will also install open-iscsi.
+    Before installing OFED, please uninstall any open-iscsi version that may
+    be installed on your machine. Installing OFED with iSER support while
+    another open-iscsi version is already installed will cause the installation
+    process to fail.
 
 2. OFED Package Contents
 ========================
@@ -81,6 +87,7 @@ The OFED Distribution package generates RPMs for installing the following:
 	- OSU MPI stack supporting the InfiniBand interface
 	- Open MPI stack supporting the InfiniBand interface
 	- MPI benchmark tests (OSU BW/LAT, Intel MPI Benchmark, Presta)
+  o   open-iscsi: open-iscsi initiator with iSER support
   o   Sources of all software modules (under conditions mentioned in the 
       modules' LICENSE files) 
   o   Documentation

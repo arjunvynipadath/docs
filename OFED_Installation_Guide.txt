@@ -63,6 +63,7 @@ The OFED Distribution package generates RPMs for installing the following:
         - OSU MPI stack supporting the InfiniBand interface
         - Open MPI stack supporting the InfiniBand interface
         - MPI benchmark tests (OSU BW/LAT, Intel MPI Benchmark, Presta)
+  o   open-iscsi: open-iscsi initiator with iSER support
   o   Sources of all software modules (under conditions mentioned in the 
       modules' LICENSE files)
   o   Documentation
@@ -100,6 +101,13 @@ o  tvflash              pciutils-devel
 
    The installer will warn you if you attempt to compile any of the
    above packages and do not have the prerequisites installed.
+
+*** Important Note for open-iscsi users:
+    Installing iSER as part of OFED installation will also install open-iscsi.
+    Before installing OFED, please uninstall any open-iscsi version that may
+    be installed on your machine. Installing OFED with iSER support while
+    another open-iscsi version is already installed will cause the installation
+    process to fail.
 
 ==============================================================================
 4. How to download and extract the OFED	Distribution
@@ -159,8 +167,10 @@ Install Process Results:
 ------------------------
 
 o The OFED package is installed under <prefix> directory.
-o Kernel modules are copied to:
+o InfiniBand kernel modules are copied to:
   /lib/modules/`uname -r`/kernel/drivers/infiniband/
+o open-iscsi kernel modules are copied to:
+  /lib/modules/`uname -r`/kernel/drivers/scsi/
 o The package kernel include files are placed under <prefix>/src/openib.
   These includes should be used when building kernel modules which use
   the Infiniband stack. (Note that these includes, if needed, have
@@ -188,6 +198,17 @@ o If IPoIB configuration files were included, ifcfg-ib<n> files will be
   installed at:
   - RedHat: /etc/sysconfig/network-scripts/ 
   - SuSE: /etc/sysconfig/network/
+o If iSER was included, open-iscsi userspace files will be also installed: 
+  - Configuration files will be installed at /etc/iscsi
+  - Startup script will be installed at:
+    - RedHat: /etc/init.d/iscsi
+    - SuSE: /etc/init.d/open-iscsi
+  - Other tools (iscsiadm, iscsid, iscsi_discovery, iscsi-iname, iscsistart) 
+    will be installed at /sbin.
+  - Documentation will be installed at:
+    - RedHat: /usr/share/doc/iscsi-initiator-utils-<version number>
+    - SuSE: /usr/share/doc/packages/open-iscsi
+  - man pages will be installed at /usr/share/man/man8.
   
 
 ==============================================================================
@@ -353,3 +374,11 @@ Document list:
 For more information, please visit the OpenFabrics web site:
 
    http://www.openfabrics.org/
+
+open-iscsi documentation is located at:
+- RedHat: /usr/share/doc/iscsi-initiator-utils-<version number>
+- SuSE: /usr/share/doc/packages/open-iscsi
+
+For more information, please visit the open-iscsi web site:
+
+   http://www.open-iscsi.org/
