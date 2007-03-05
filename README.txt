@@ -60,7 +60,6 @@ o  SLES 10.0            kernel-source, sysfsutils, sysfsutils-devel, rpm
 Specific Component Requirements:
 o  OSU MPI requires:    Fortran Compiler(default: gcc-g77) 
 o  ibutils:  		tcl-8.4, tcl-devel-8.4
-o  oiscsi-iser-support: open-iscsi, db-devel
 o  tvflash: 		pciutils-devel
 
 
