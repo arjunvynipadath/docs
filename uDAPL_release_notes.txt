@@ -1,13 +1,13 @@
 
 		   Release Notes for 
-		Gamma 3.2 and OFED 1.1 DAPL Release
-		    October 2006
+		Gamma 3.2 and OFED 1.2 DAPL Release
+		    April 2007
 
 
-        DAPL GAMMA 3.2/OFED 1.1 RELEASE NOTES
+        DAPL GAMMA 3.2/OFED 1.2 RELEASE NOTES
 
 	This release of the DAPL reference implementation 
-        is timed to coincide with OFED release 1.1 of the 
+        is timed to coincide with OFED release 1.2 of the 
         Open Fabrics (www.openfabrics.org) software stack.
        
         NEW SINCE Gamma 3.1 and OFED 1.0
@@ -39,9 +39,9 @@
 	  retry values. 
         + Fix to disallow any event after a disconnect event.
 
-	* OFED 1.1 uDAPL source build instructions:
+	* OFED 1.2 uDAPL source build instructions:
 
-	cd /usr/local/ofed/src/openib-1.1/src/userspace/dapl
+	cd /usr/local/ofed/src/openib-1.2/src/userspace/dapl
 
 	# NON_DEBUG build configuration
 
@@ -149,7 +149,7 @@
 	DAP BETA 2.06 RELEASE NOTES
 
 	We are not planning any further releases of the Beta series,
-	which are based  on the 1.1 version of the spec. There may be
+	which are based  on the 1.2 version of the spec. There may be
 	further releases for bug fixes, but we anticipate the DAPL
 	community to move to the new 1.2 version of the spec and the
 	changes mandated in the reference implementation.

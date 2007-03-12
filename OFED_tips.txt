@@ -1,7 +1,7 @@
 		Open Fabrics Enterprise Distribution (OFED)
-		      Tips for Working with OFED 1.1
+		      Tips for Working with OFED 1.2
 
-		 	     October 2006
+		 	     April 2007
 
 ===============================================================================
 Table of Contents
@@ -25,7 +25,7 @@ Notes:
    To learn about other utilities, use their --help flag.
 
 2. The sources for all utilities are not part of the RPM installation. However,
-   all sources exist in the openib-1.1.tgz tarball.
+   all sources exist in the openib-1.2.tgz tarball.
 
 
 1.1 Device Information
@@ -168,13 +168,13 @@ installed or not).
 For example:
 
  > cat /usr/local/ofed/BUILD_ID
-   OFED-1.1-rc4
+   OFED-1.2-rc4
 
-   openib-1.1 (REV=9304)
+   openib-1.2 (REV=9304)
    # User space
-   https://openib.org/svn/gen2/branches/1.1/src/userspace
+   https://openib.org/svn/gen2/branches/1.2/src/userspace
    Git:
-   ref: refs/heads/ofed_1_1
+   ref: refs/heads/ofed_1.2
    commit d39c60f1406d29eb8e336529610574800a81d81e
 
    # MPI

@@ -1,10 +1,10 @@
 	     Open Fabrics Enterprise Distribution (OFED)
-             Diagnostic Tools in OFED 1.1 Release Notes
+             Diagnostic Tools in OFED 1.2 Release Notes
 			  
-			   October 2006
+			   April 2007
 
 
-Repo: https://openib.org/svn/gen2/branches/1.1/src/userspace/management/diags
+Repo: https://openib.org/svn/gen2/branches/1.2/src/userspace/management/diags
 Version: 9535
 
 

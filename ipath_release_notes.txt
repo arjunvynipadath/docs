@@ -1,7 +1,7 @@
 	     Open Fabrics Enterprise Distribution (OFED)
-		    ipath in OFED 1.1 Release Notes
+		    ipath in OFED 1.2 Release Notes
 			  
-			   October 2006
+			   April 2007
 
 
 Overview

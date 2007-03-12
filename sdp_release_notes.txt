@@ -1,7 +1,7 @@
 	     Open Fabrics Enterprise Distribution (OFED)
-		    SDP in OFED 1.1 Release Notes
+		    SDP in OFED 1.2 Release Notes
 
-			  October 2006
+			  April 2007
 
 
 
@@ -16,7 +16,7 @@ Table of Contents
 ===============================================================================
 1. Overview
 ===============================================================================
-SDP in OFED is at beta level for OFED 1.1. 
+SDP in OFED is at beta level for OFED 1.2. 
 
 
 ===============================================================================
@@ -92,9 +92,9 @@ SDP in OFED is at beta level for OFED 1.1.
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	     Open Fabrics Enterprise Distribution (OFED)
-	      libsdp v. 9382 in OFED 1.1 Release Notes
+	      libsdp v. 9382 in OFED 1.2 Release Notes
 
-			  October 2006
+			  April 2007
 
 
 ===============================================================================
@@ -109,12 +109,12 @@ Table of Contents
 ===============================================================================
 1. Overview
 ===============================================================================
-This document describes the contents of the libsdp OFED 1.1 release. 
+This document describes the contents of the libsdp OFED 1.2 release. 
 libsdp is a LD_PRELOAD-able library that can be used to migrate existing
 applications to use InfiniBand Sockets Direct Protocol (SDP) instead of
 TCP sockets, transparently and without recompilations. To setup libsdp
 please follow the instructions below. The libsdp version for this release 
-is 1.1.
+is 1.2.
 
 
 ===============================================================================

@@ -1,7 +1,7 @@
 		Open Fabrics Enterprise Distribution (OFED)
-			MPI in OFED 1.1 README
+			MPI in OFED 1.2 README
 
-			    October 2006
+			    April 2007
 
 
 ===============================================================================
@@ -19,7 +19,7 @@ Two MPI stacks are included in this release of OFED:
 
 - Ohio State University (OSU) MVAPICH 0.9.7 (Modified by Mellanox
   Technologies)
-- Open MPI 1.1.1-1
+- Open MPI 1.2.1-1
 
 Setup, compilation and run information of OSU MVAPICH and Open MPI is
 provided below in sections 2 and 3 respectively.

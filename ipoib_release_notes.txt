@@ -1,7 +1,7 @@
 	     Open Fabrics Enterprise Distribution (OFED)
-		    IPoIB in OFED 1.1 Release Notes
+		    IPoIB in OFED 1.2 Release Notes
 			  
-			   October 2006
+			   April 2007
 
 
 ===============================================================================
@@ -105,7 +105,7 @@ DHCP Notes
    The client's port number must be the chosen server's port number plus one.
 
 2. For IPoIB to use DHCP, it is required to patch ISC's DHCP. The patch file can
-   be found under OFED-1.1/docs/dhcp after extracting the distribution file
+   be found under OFED-1.2/docs/dhcp after extracting the distribution file
    (after installation it can also be found under <prefix>/docs/dhcp). The patch
    should be applied for the server and for each client. Tests were run on
    version 3.0.4 of the DHCP package.

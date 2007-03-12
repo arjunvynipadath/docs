@@ -1,14 +1,14 @@
                         OpenSM Release Notes 2.0.5
                        ============================
 
-Version: OpenFabrics Enterprise Distribution (OFED) 1.1
-Repo:    https://openib.org/svn/gen2/branches/1.1/src/userspace/management/osm
+Version: OpenFabrics Enterprise Distribution (OFED) 1.2
+Repo:    https://openib.org/svn/gen2/branches/1.2/src/userspace/management/osm
 Version: 9535 (openib-2.0.5)
-Date:    October 2006
+Date:    April 2007
 
 1 Overview
 ----------
-This document describes the contents of the OpenSM OFED 1.1 release. 
+This document describes the contents of the OpenSM OFED 1.2 release. 
 OpenSM is an InfiniBand compliant Subnet Manager and Administration,
 and runs on top of OpenIB. The OpenSM version for this release 
 is openib-2.0.5
@@ -100,7 +100,7 @@ This document includes the following sections:
 
 1.4 Software Dependencies
 
-OpenSM depends on the installation of either OFED 1.1, OFED 1.0,
+OpenSM depends on the installation of either OFED 1.2, OFED 1.0,
 OpenIB gen2 (e.g. IBG2 distribution), OpenIB gen1 (e.g. IBGD
 distribution), or Mellanox VAPI stacks. The qualified driver versions
 are provided in Table 2, "Qualified IB Stacks".

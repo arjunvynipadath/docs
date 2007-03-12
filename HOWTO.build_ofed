@@ -1,7 +1,7 @@
 		Open Fabrics Enterprise Distribution (OFED)
-        		  How To Build OFED 1.1
+        		  How To Build OFED 1.2
 
-		 	     October 2006
+		 	     April 2007
 
 
 ==============================================================================
@@ -29,7 +29,7 @@ See OFED_release_notes.txt for more details.
 ==============================================================================
 
 The build script for the OFED package can be downloaded from: 
-  https://openib.org/svn/gen2/branches/1.1/ofed/build 
+  https://openib.org/svn/gen2/branches/1.2/ofed/build 
 
 Name: build_ofed.sh
 
@@ -91,23 +91,23 @@ Usage: build_ofed.sh --ver|-v <OFED version>  --git|-g <path to git tree>
 
 Sources are extracted by default from the following locations:
             userspace_URL:
-                https://openib.org/svn/gen2/branches/1.1/src/userspace
+                https://openib.org/svn/gen2/branches/1.2/src/userspace
             openib_scripts_URL:
-                https://openib.org/svn/gen2/branches/1.1/ofed/openib/scripts
+                https://openib.org/svn/gen2/branches/1.2/ofed/openib/scripts
             ofed_scripts_URL: 
-                https://openib.org/svn/gen2/branches/1.1/ofed/scripts
+                https://openib.org/svn/gen2/branches/1.2/ofed/scripts
             ofed_docs_URL: 
-                https://openib.org/svn/gen2/branches/1.1/ofed/docs
+                https://openib.org/svn/gen2/branches/1.2/ofed/docs
             mpi_URL: 
-                https://openib.org/svn/gen2/branches/1.1/ofed/mpi
+                https://openib.org/svn/gen2/branches/1.2/ofed/mpi
             extras_URL: 
-                https://openib.org/svn/gen2/branches/1.1/ofed/extras
+                https://openib.org/svn/gen2/branches/1.2/ofed/extras
 
 Example:
 
-    ./build_ofed.sh --ver 1.1-rc6 --git /local/git/ofed_1_1/
+    ./build_ofed.sh --ver 1.2-rc6 --git /local/git/ofed_1_1/
 
-    This command will create a package (i.e., subtree) called OFED-1.1-rc6
+    This command will create a package (i.e., subtree) called OFED-1.2-rc6
     in the current working direcory. The git tree "/local/git/ofed_1_1/"
     in this example is a local InfiniBand git tree which was created using
     one of the methods in the "Requirements" section below.

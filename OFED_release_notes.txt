@@ -1,15 +1,15 @@
 	    Open Fabrics Enterprise Distribution (OFED)
-			    Version 1.1
+			    Version 1.2
 			   Release Notes
 
-			   October 2006
+			   April 2007
 
 
 ===============================================================================
 Table of Contents
 ===============================================================================
 1. Overview, which includes:
-	- OFED Distribution Rev 1.1 Contents
+	- OFED Distribution Rev 1.2 Contents
 	- Supported Platforms and Operating Systems
 	- Supported HCA Adapter Cards and Firmware Versions
 	- Tested Switch Platforms
@@ -24,7 +24,7 @@ Table of Contents
 1. Overview
 ===============================================================================
 These are the release notes of Open Fabrics Enterprise Distribution (OFED)
-release 1.1. The OFED software package is composed of several software modules,
+release 1.2. The OFED software package is composed of several software modules,
 and is intended for use on a computer cluster constructed as an InfiniBand
 network.
 
@@ -32,7 +32,7 @@ Note: If you plan to upgrade the OFED package on your cluster, please upgrade
 all of its nodes to this new version.
 
 
-1.1 OFED 1.1 Contents
+1.1 OFED 1.2 Contents
 ---------------------
 The OFED package contains the following components:
   o   OpenFabrics core and ULPs:
@@ -81,7 +81,7 @@ This release supports HCAs by Mellanox Technologies, Qlogic and IBM.
 	- InfiniHost (fw-23108 Rev 3.5.000)
 	- InfiniHost III Ex (MemFree: fw-25218 Rev 5.1.400 
 	                     with memory: fw-25208 Rev 4.7.600)
-	- InfiniHost III Lx (fw-25204 Rev 1.1.000)
+	- InfiniHost III Lx (fw-25204 Rev 1.2.000)
 	The SDR and DDR modes of the InfiniHost III family are supported.
 
 	For official firmware versions please see:
@@ -108,7 +108,7 @@ companies:
 
 1.5 Third Party Packages
 ------------------------
-The following third party packages have been tested with OFED 1.1:
+The following third party packages have been tested with OFED 1.2:
 1. Intel MPI, Version 2.0.1 - refresh, and Version 3.0
 
 1.6 OFED Sources:
@@ -191,7 +191,7 @@ for each package in the docs directory.
           the Infiniband stack. (Note that these includes, if needed, have
           been "backported" to your kernel).
         o The package raw (unbackported) source files are placed under
-          <prefix>/src/openib-1.1.
+          <prefix>/src/openib-1.2.
 
 ===============================================================================
 3. Fixed Bugs
@@ -209,7 +209,7 @@ Bugs fixed in each package are reported in the packages release notes.
 4. Known Issues
 ===============================================================================
 The following is a list of major limitations and known issues of the various
-components of the OFED 1.1 release.
+components of the OFED 1.2 release.
 
 1. Memory registration by user is limited according to the administrator
    setting. See "Pinning (Locking) User Memory Pages" in OFED_tips.txt for

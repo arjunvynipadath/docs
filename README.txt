@@ -1,11 +1,11 @@
 	    Open Fabrics Enterprise Distribution (OFED)
-                            Version 1.1
+                            Version 1.2
 			      README
 			  
-			  October 2006
+			  April 2007
 
 
-This is the OpenFabrics Enterprise Distribution (OFED) version 1.1 software
+This is the OpenFabrics Enterprise Distribution (OFED) version 1.2 software
 package supporting InfiniBand fabrics. It is composed of several software
 modules intended for use on a computer cluster constructed as an InfiniBand 
 network.
@@ -26,7 +26,7 @@ This document includes the following sections:
 
 
 OpenFabrics Home Page:  http://www.openfabrics.org
-The OFED rev 1.1 software download available in www.openib.org/downloads.html
+The OFED rev 1.2 software download available in www.openib.org/downloads.html
 
 Please email bugs and error reports to your InfiniBand vendor, or use bugzilla
 http://openib.org/bugzilla/
@@ -133,7 +133,7 @@ is /usr/local/ofed.
 The RPMs will be placed under ./RPMS directory.
 
 For further details, see "Building OFED RPMs" and "Advanced Usage of OFED" in
-OFED_Installation_Guide.txt under OFED-1.1/docs. 
+OFED_Installation_Guide.txt under OFED-1.2/docs. 
 
 
 5. Installing OFED Software
@@ -142,11 +142,11 @@ OFED_Installation_Guide.txt under OFED-1.1/docs.
 The default installation directory is:   /usr/local/ofed
 
 Install Quick Guide:
-1) Download and extract: tar xzvf OFED-1.1.tgz file.
-2) Change into directory: cd OFED-1.1
+1) Download and extract: tar xzvf OFED-1.2.tgz file.
+2) Change into directory: cd OFED-1.2
 3) Run as root: ./install.sh
 4) Follow the directions to install required components. For details, please see
-   OFED_Installation_Guide.txt under OFED-1.1/docs.
+   OFED_Installation_Guide.txt under OFED-1.2/docs.
 
 
 Note: The install script removes previously installed IB packages and 
@@ -213,7 +213,7 @@ There are two MPI stacks included in this release of OFED:
 
 - Ohio State University's MVAPICH 0.9.7 (specifically updated and
   modified by Mellanox Technologies and Cisco or this release of OFED)
-- Open MPI 1.1.1
+- Open MPI 1.2.1
 
 OFED also includes 4 basic tests that can be run against each MPI
 stack: bandwidth (bw), latency (lt), Intel MPI Benchmark and Presta. The tests
@@ -226,7 +226,7 @@ the tests.
 8. Related Documentation
 ========================
 1) Release Notes for OFED Distribution components are to be found under 
-   OFED-1.1/docs and, after the package installation, under <prefix>/docs. 
+   OFED-1.2/docs and, after the package installation, under <prefix>/docs. 
 2) For a detailed installation guide, see OFED_Installation_Guide.txt.
 3) MPI_README.txt under <prefix>/docs.
 4) OFED_tips.txt under <prefix>/docs
