@@ -52,18 +52,22 @@ The OFED Distribution package generates RPMs for installing the following:
 
   o   OpenFabrics core and ULPs:
         - HCA drivers (mthca, ipath, ehca)
+	- iWARP driver (cxgb3)
         - core
         - Upper Layer Protocols: IPoIB, SDP, SRP Initiator, iSER Initiator 
-	  and uDAPL
+	  RDS, VNIC and uDAPL
   o   OpenFabrics utilities:
         - OpenSM: InfiniBand Subnet Manager
         - Diagnostic tools
         - Performance tests
   o   MPI:
-        - OSU MPI stack supporting the InfiniBand interface
-        - Open MPI stack supporting the InfiniBand interface
+        - OSU MVAPICH stack supporting the InfiniBand and iWARP interface
+        - Open MPI stack supporting the InfiniBand and iWARP interface
+        - OSU MVAPICH2 stack supporting the InfiniBand and iWARP interface
         - MPI benchmark tests (OSU BW/LAT, Intel MPI Benchmark, Presta)
-  o   open-iscsi: open-iscsi initiator with iSER support
+  o   Extra packages:
+  	- open-iscsi: open-iscsi initiator with iSER support
+  	- ib-bonding: Bonding driver for IPoIB interface
   o   Sources of all software modules (under conditions mentioned in the 
       modules' LICENSE files)
   o   Documentation
@@ -72,7 +76,7 @@ The OFED Distribution package generates RPMs for installing the following:
 3. HW and SW Requirements
 ==============================================================================
 
-1) Server platform with InfiniBand HCA (see OFED Distribution
+1) Server platform with InfiniBand HCA or iWARP NIC (see OFED Distribution
    Release Notes for details)
 
 2) Linux OS (see OFED Distribution Release Notes for details)
@@ -96,7 +100,7 @@ o  SLES 10.0            kernel-source, sysfsutils, sysfsutils-devel, rpm
 
 Specific Component Requirements:
 o  OSU MPI              a Fortran Compiler (such as gcc-g77)
-o  ibutils              tcl-8.4, tcl-devel-8.4
+o  ibutils              tcl-8.4, tcl-devel-8.4, tk
 o  tvflash              pciutils-devel
 
    The installer will warn you if you attempt to compile any of the
@@ -171,12 +175,15 @@ o InfiniBand kernel modules are copied to:
   /lib/modules/`uname -r`/kernel/drivers/infiniband/
 o open-iscsi kernel modules are copied to:
   /lib/modules/`uname -r`/kernel/drivers/scsi/
-o The package kernel include files are placed under <prefix>/src/openib.
+o /lib/modules/2.6.18-1.2747.el5/updates/kernel/drivers/net/cxgb3/cxgb3.ko
+/lib/modules/2.6.18-1.2747.el5/updates/kernel/net/rds/rds.ko
+o The package kernel include files are placed under <prefix>/src/openib.- TBD
+explan ofa-kernel
   These includes should be used when building kernel modules which use
-  the Infiniband stack. (Note that these includes, if needed, have
+  the Openfabrics stack. (Note that these includes, if needed, have
   been "backported" to your kernel).
 o The package raw (unbackported) source files are placed under
-  <prefix>/src/openib-1.2.
+  <prefix>/src/ofa_kernel-1.2
 o The script "openibd" is installed under /etc/init.d/. This script can 
   be used to load and unload the software stack.
 o The directory /etc/infiniband is created with the files "info" and
@@ -184,6 +191,7 @@ o The directory /etc/infiniband is created with the files "info" and
   installation information. The "openib.conf" file contains the list of
   modules that will be loaded when the "openibd" script is used.
 o The file "90-ib.rules" is installed to /etc/udev/rules.d/
+o man pages are installed under <prefix>/man
 o If libibverbs-utils is installed, then ofed.sh and ofed.csh are
   installed under /etc/profile.d/. These automatically update the PATH
   environment variable with <prefix>/bin.  In addition, ofed.conf is
@@ -209,7 +217,6 @@ o If iSER was included, open-iscsi userspace files will be also installed:
     - RedHat: /usr/share/doc/iscsi-initiator-utils-<version number>
     - SuSE: /usr/share/doc/packages/open-iscsi
   - man pages will be installed at /usr/share/man/man8.
-  
 
 ==============================================================================
 6. Building OFED RPMs
@@ -345,6 +352,7 @@ found in the /etc/infiniband/openib.conf file.  Other configuration
 files include:
 - SDP configuration file:    <prefix>/etc/libsdp.conf 
 - OpenSM configuration file: /etc/opensm.conf
+- DAPL configuration file:   /etc/dat.conf
 
 See packages Release Notes for more details.
 
