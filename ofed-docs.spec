@@ -45,20 +45,19 @@ OpenFabrics documentation
 %setup -q -n %{name}-%{version}
 
 %install
-mkdir -p $RPM_BUILD_ROOT%{_prefix}
-cp -a * $RPM_BUILD_ROOT%{_prefix}
+mkdir -p $RPM_BUILD_ROOT%{_defaultdocdir}/%{name}-%{version}
+cp -a * $RPM_BUILD_ROOT%{_defaultdocdir}/%{name}-%{version}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root)
-%{_prefix}/docs
-%{_prefix}/README.txt
-%{_prefix}/LICENSE
-%{_prefix}/BUILD_ID
+%{_defaultdocdir}/%{name}-%{version}
 
 %changelog
+* Sun Mar 25 2007 Vladimir Sokolovsky <vlad@mellanox.co.il>
+- Changed prefix
 * Thu Jul 27 2006 Vladimir Sokolovsky <vlad@mellanox.co.il>
 - Changed version to 1.1
 * Tue Jun  6 2006 Vladimir Sokolovsky <vlad@mellanox.co.il>
