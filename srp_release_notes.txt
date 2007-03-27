@@ -192,7 +192,7 @@ In addition to the ibsrpdm functionality described above, srp_daemon can also:
 
 a. srp_daemon commands equivalent to ibsrpdm:
 
-    "srp_daemon -a -o"    is equivalent to "srp_daemon -a -o"
+    "srp_daemon -a -o"    is equivalent to "ibsrpdm"
     "srp_daemon -c -a -o" is equivalent to "ibsrpdm -c"
 
 b. srp_daemon extensions to ibsrpdm
@@ -318,20 +318,24 @@ original state (before the path failed).
 High Availability Prerequisites
 -------------------------------
 
-Installation: (Execute once)
-- Verify that multipath is installed. If not, it is possible to download it
-  from  http://christophe.varoqui.free.fr/multipath-tools/multipath-tools-0.4.7.tar.bz2
-  and then compile and install it.
+Installation for RHEL4: (Execute once)
+   - Verify that the standard device-mapper-multipath rpm is installed. If not, install it from the RHEL distribution.
 
-- Update udev: (Execute once - for manual activation of High Availability only)
+Installation for SLES10: (Execute once)
+   - Verify that multipath is installed. If not, it is possible to download it
+     from  http://christophe.varoqui.free.fr/multipath-tools/multipath-tools-0.4.7.tar.bz2
+     and then compile and install it.
 
-- Add a file to /etc/udev/rules.d/  (you can call it 91-srp.rules)
-  This file should have one line:
-    ACTION=="add", KERNEL=="sd*[!0-9]", RUN+="/sbin/multipath %M:%m"
+   - Update udev: (Execute once - for manual activation of High Availability only)
+   
+   - Add a file to /etc/udev/rules.d/  (you can call it 91-srp.rules)
+     This file should have one line:
+       ACTION=="add", KERNEL=="sd*[!0-9]", RUN+="/sbin/multipath %M:%m"
 
-Note that when SRPHA_ENABLE is set to "yes" (see below in Automatic activation
-of High Availability subsection), this file is created upon each boot of
-the driver and deleted when the driver is unloaded.
+   Note that when SRPHA_ENABLE is set to "yes" (see below in Automatic activation
+   of High Availability subsection), this file is created upon each boot of
+   the driver and deleted when the driver is unloaded.
+
 
 Manual Activation of High Availability
 --------------------------------------
@@ -444,10 +448,6 @@ should make sure this will not occur. One solution may be to stop "haldaemon"
 - If SRP High Availability is enabled, disconnections while OFED is booting, or
   simultaneous disconnections and connections during normal operation, may lead
   to what seems as a deadlock between multipath instances.
-
-- High Availability uses multipath which needs at least udev version 050. The
-  RHEL4 distribution uses udev 039, therefore, High Availability does not work
-  on the standard Red Hat distribution.
 
 - Stopping the driver while SRP High Availability is enabled kills all
   multipath processes. Consider appropriate actions in case multipath is used
