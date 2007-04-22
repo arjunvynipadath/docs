@@ -1,9 +1,9 @@
-                        OpenSM Release Notes 2.0.5
-                       ============================
+                        OpenSM Release Notes 3.0.10
+                       =============================
 
 Version: OpenFabrics Enterprise Distribution (OFED) 1.2
-Repo:    https://openib.org/svn/gen2/branches/1.2/src/userspace/management/osm
-Version: 9535 (openib-2.0.5)
+Repo:    git://git.openfabrics.org/~ofed_1_2/management.git (release)
+         git://git.openfabrics.org/~halr/management.git (development)
 Date:    April 2007
 
 1 Overview
@@ -11,7 +11,7 @@ Date:    April 2007
 This document describes the contents of the OpenSM OFED 1.2 release. 
 OpenSM is an InfiniBand compliant Subnet Manager and Administration,
 and runs on top of OpenIB. The OpenSM version for this release 
-is openib-2.0.5
+is openib-3.0.9
 
 This document includes the following sections:
 1 This Overview section (describing new features and software
@@ -24,84 +24,72 @@ This document includes the following sections:
 
 1.1 Major New Features
 
-* Partition manager: 
-  The partition manager provides a means to setup multiple partitions 
-  by providing a partition policy file. For details please read the
-  doc/partition-config.txt or the opensm man page.
+* Routing improvements
+  Two additional routing algorithms have been added in addition to
+  performance improvements to the existing routing algorithms. The
+  two new routing algorithms are FAT tree and LASH. LASH is
+  experimental. See the opensm man page for additional details.
 
-* Basic QoS Manager: 
-  Provides a uniform configuration of the entire fabric with values defined 
-  in the OpenSM options file. The options support different settings for 
-  CAs, Switches, and Routers. Note that this is disabled by default and
-  using -Q enables QoS fabric setup. 
+* SA Optional Record support now "virtually" complete
+  Includes SA InformInfo improvements and InformInfoRecord support in
+  addition to support for the remaining SA optional records 
+  (MulticastForwardingTableRecord, SwitchInfoRecord). Also, SMInfoRecord 
+  support was improved to include all SMs found.
 
-* Loading pre-routes from a file:
-  A new routing module enables loading pre-routes from a file. 
-  To use this option you should use the command line options:
-  "-R file --U <your routing file>" or 
-  "--routing_engine file --ucast_file <your routing file>"
-  For more information refer to the file doc/modular-routing.txt
-  or the opensm man page.
+* SA database dump/restore
+  OpenSM now includes the ability to dump and restore the SA database.
+  This allows for all SA registrations (multicast, services, and events)
+  to be saved and restored later.
 
-* SA MultiPathRecord support:
-  The SA can now handle requests for multiple PathRecords in one query.
-  This includes methods SA GetMulti/GetMultiResp and dual sided RMPP.
+  In verbose mode, OpenSM will dump SA DB (existing multicast groups,
+  services and InformInfo) into dump file which named "opensm-sa.dump"
+  and located under standard OpenSM dump directory (/var/log by default).
 
-* PPC64 is now QAed and supported
+  If option -S is specified and SA DB dump file name is provided, OpenSM
+  will try to restore SA database from this file. And if restore is
+  successful, OpenSM won't ask for client reregistration at subnet bring-up.
 
-* Support LMC > 0 for Switch Enhanced Port 0:
-  Allows enhanced switch port 0 (ESP0) to have a non zero
-  LMC. Use the configured subnet wide LMC for this. Modifications were
-  necessary to the LID assignment and routing to support this. 
-  Also, added an option to the configuration to use LMC configured for
-  subnet for enhanced switch port 0 or set it to 0 even if a non zero
-  LMC is configured for the subnet. The default is currently the
-  latter option. The new configuration option is: lmc_esp0
+* Modular routing for multicast
+  In conjunction was SA database dump/restore, there is the ability to
+  dump and load switch lid matrices (min hops tables) which are used
+  for multicast route calculation.
+
+* IB router enablement
+  OpenSM now supports router ports properly (in terms of PortInfo handling).
+  There is also some experiment support for IB routers which is enabled via
+  the ROUTER_EXP compile flag. This support includes SA PathRecord and 
+  MCMemberRecord support for off subnet GIDs.
+
+* Socket support added to console
+  OpenSM console now supports remote in addition to local access.
+  Remote access is currently via telnet.
 
 1.2 Minor New Features:
 
-* IPoIB broadcast group configuration:
-  It is now possible to control the IPoIB broadcast group parameters
-  (MTU, rate, SL) through the partitions configuration file.
+* Change output format of DR path from hex to decimal port numbers
 
-* Limiting OpenSM log file size:
-  By providing the command line option: "-L <size in MB>" or
-  "--log_limit <size in MB>" the user can limit the generated log 
-  file size. When specified, the log file will be truncated upon reaching
-  this limit.
+* Log rotation
+  The OpenSM log can now be rotated while OpenSM is running (without
+  stopping and restarting OpenSM). This is accomplished via SIGUSR1.
 
-* Favor 1K MTU for Tavor (MT23108) HCA
-  In cases where a PathRecord or MultiPathRecord is queried and the
-  requestor does not specify the MTU or does specify it in a way
-  that allows for MTU to be 1K and one of the path ends in a Tavor,
-  limit the MTU to 1K max.
+* Support scope for IPoIB multicast groups in partition config
 
-* Man pages:
-  Added opensm.8 and osmtest.8
+* Dump filename changed from subnet.lst to osm-subnet.lst
+  Default temp directory for non Windows platforms was previously changed
+  from /tmp to /var/log.
 
-* Leaf VL stall count control:
-  A new parameter (leaf_vl_stall_count) for controlling the number of
-  sequential packets dropped on a switch port driving a HCA/TCA/Router
-  that cause the port to enter the VLStalled state was added to the
-  options file.
-
-* SM Polling/Handover defaults changed
-  The default SMInfo polling retries was decreased from 18 to 4
-  which reduces the default handover time from 3 min to 40 seconds.
+* Add option for force SDR link speed
+  Add option to opensm.opts to force link speed. Currently, only forcing
+  to SDR link speed is supported.
 
 1.3 Library API Changes
 
-* cl_mem* APIs deprecated in complib:
-  These functions are now considered as deprecated and should be
-  replaced by direct calls to malloc, free, memset, etc.
-
-* osm_log_init_v2 API added in libopensm:
-  Supports providing the new option for log file truncation.
+  None
 
 1.4 Software Dependencies
 
-OpenSM depends on the installation of either OFED 1.2, OFED 1.0,
-OpenIB gen2 (e.g. IBG2 distribution), OpenIB gen1 (e.g. IBGD
+OpenSM depends on the installation of either OFED 1.2, OFED 1.1,
+OFED 1.0, OpenIB gen2 (e.g. IBG2 distribution), OpenIB gen1 (e.g. IBGD
 distribution), or Mellanox VAPI stacks. The qualified driver versions
 are provided in Table 2, "Qualified IB Stacks".
 
@@ -119,7 +107,7 @@ are listed in Table 3.
 
 * No SM to SM SMDB synchronization: 
   Puts the burden of re-registering services, multicast groups, and
-  inform-info on the client application (or IB access layer core). 
+  inform-info on the client application (or IB access layer core).
 
 * No "port down" event handling:
   Changing the switch port through which OpenSM connects to the IB
@@ -134,8 +122,9 @@ are listed in Table 3.
   get the corresponding change event it might mistakenly report this case
   as a "duplicated GUID" case and abort. It is advisable to double-check
   the syslog after each such change in connectivity and restart
-  OpenSM if it has exited.
-  
+  OpenSM if it has exited. The same error ("duplicated GUID") will 
+  also appear with a loopback plug.
+
 3 Unsupported IB Compliance Statements
 --------------------------------------
 The following section lists all the IB compliance statements which
@@ -205,90 +194,139 @@ information regarding each compliance statement.
 The following is a list of bugs that were fixed. Note that other less critical
 or visible bugs were also fixed.
 
-* "Broken" fabric (duplicated port GUIDs) handling improved
-  Replace assert with a real check to handle invalid physical port
-  in osm_node_info_rcv.c which could occur on a broken fabric
+* osm_port_info_rcv.c: In __osm_pi_rcv_process_endport,
+  isSMdisabled also indicates that an SM is present so poll SMInfo 
 
-* SA client synchronous request failed but status returned was IB_SUCCESS
-  even if there was no response.
-  There was a missing setting of the status in the synchronous case.
- 
-* Memory leak fixes:
-  1. In libvendor/osm_vendor_ibumad.c:osm_vendor_get_all_port_attr
-  2. In libvendor/osm_vendor_ibumad_sa.c:__osmv_sa_mad_rcv_cb
-  3. On receiving SMInfo SA request from a node that does not share a 
-	  partition, the response mad was allocated but never free'd 
-	  as it was never sent.
+* osm_sm_state_mgr.c: In __osm_sm_state_mgr_send_master_sm_info_req, 
+  handle master GUID port not found properly
 
-* Set(InformInfo) OpenSM Deadlock:
-  When receiving a request with unknown LID
+* osm_sa_multipath_record.c: In __osm_mpr_rcv_get_path_parms, return 
+  IB_NOT_FOUND rather than IB_ERROR when can't route to LID from switch
 
-* PathRecord to inconsistent multicast destination:
-  Fix the return error when multicast destination is not consistently
-  indicated.
+* osm_sa_path_record.c: In __osm_pr_rcv_get_path_parms, return IB_NOT_FOUND
+  rather than IB_ERROR when can't route to LID from switch
 
-* Remove double calculation of reversible path 
-  In osm_sa_path_record.c:__osm_pr_rcv_get_lid_pair_path a PathRecord 
-  query used to double check if the path is reversible
+* osm_vendor_ibumad.c:  In osm_vendor_set_sm, set issmfd to
+  -1 on open error
 
-* Some PathRecord log messages use "net order":
-  Fix GUID net to host conversion in some osm_log messages
+* osm_vendor_ibumad: Termination crash fix
+  When OpenSM is terminated umad_receiver thread still running even after
+  the structures are destroyed and freed, this causes to random (but easily
+  reproducible) crashes. The reason is that osm_vendor_delete() does not
+  care about thread termination. This patch adds the receiver thread
+  cancellation (by using pthread_cancel() and pthread_join()) and cares to
+  keep have all mutexes unlocked upon termination. There is also minor
+  termination code consolidation - osm_vendor_port_close() function.
 
-* DR/LID routed SMPs direction bit handling:
-  osm_resp.c:osm_resp_make_resp_smp, set direction bit only if direct
-  routed class. This bug caused two issues:
-  1. Get/Set responses always had direction bit set. 
-  2. Trap represses never had direction bit set.
-  The direction bit needs setting in direct routed responses and it
-  doesn't exist in LID routed responses. 
-  osm_sm_mad_ctrl.c: did not detect the "direction bit" correctly.
+* osm_port_profile.h: Fix reinsertion issue in osm_port_prof_set_ignored_port
 
-* OpenSM crash due to transaction lookup (interop with Cisco stack)
-  When a wire TID that maps to internal TID of zero (after applying
-  mask) was received the lookup of the transaction was successful.
-  The stale transaction pointed to "free'd" memory.
+* osm_matrix.h: Fix segfault with up/down and root nodes file
 
-* Better handling for Path/MultiPath requests for raw traffic
+* osm_sa_path_record.c: In osm_pr_rcv_process, fix endian of hop_limit
 
-* Wrong ProducerType provided in Notice Reports:
-  When formating an SM generated report, the ProducerType was using
-  CL_NTOH32 which can not be used to format a 24bit network order number.
+* osm_vendor_ibumad.c: Close umad port in osm_vendor_delete
 
-* OpenSM break on PPC64 
-  complib: Fixed memory corruption in cl_pool.c:cl_qcpool_init. This
-  affected big endian 64-bit architectures only. 
+* osm_sa_(multipath path)_record.c: Fix MultiPathRecord/PathRecord issues
+  with using MTU/rate/PktLife explicitly ignoring selectors
 
-* Illegal Set(InformInfo) was wrongly successful in updating the SMDB
-  osm_sa_informinfo.c: In osm_infr_rcv_process_set_method, if sending
-  error, don't call osm_infr_rcv_process_set_method 
+  OpenSM just uses the resulting path MTU/rate/pkt-life and fail the
+  query even though the selector might be allowing for selecting an
+  appropriate value.
 
-* RMPP queries of InformInfoRecord fail
-  ib_types.h: Pad ib_inform_info_record_t to be modulo 8 in size so
-  that attribute offset is calculated properly 
+  After this fix, the following results are obtained for a case of
+  path allowing maximal 2K MTU.
 
-* Returning "invalid request" rather than "unsupported method/attribute"
-  In these cases, a noncompliant response was being provided.
+In standard mode:
+------------------------------------------------------------
+MTU greater than ... 256     (0x01) ->  equal to ....... 2K
+MTU less than ...... 256     (0x41) ->  NO PATHS
+MTU equal to ....... 256     (0x81) ->  equal to ....... 256
+MTU largest possible 256     (0xc1) ->  equal to ....... 2K
+MTU greater than ... 512     (0x02) ->  equal to ....... 2K
+MTU less than ...... 512     (0x42) ->  equal to ....... 256
+MTU equal to ....... 512     (0x82) ->  equal to ....... 512
+MTU largest possible 512     (0xc2) ->  equal to ....... 2K
+MTU greater than ... 1K      (0x03) ->  equal to ....... 2K
+MTU less than ...... 1K      (0x43) ->  equal to ....... 512
+MTU equal to ....... 1K      (0x83) ->  equal to ....... 1K
+MTU largest possible 1K      (0xc3) ->  equal to ....... 2K
+MTU greater than ... 2K      (0x04) ->  NO PATHS
+MTU less than ...... 2K      (0x44) ->  equal to ....... 1K
+MTU equal to ....... 2K      (0x84) ->  equal to ....... 2K
+MTU largest possible 2K      (0xc4) ->  equal to ....... 2K
+MTU greater than ... 4K      (0x05) ->  NO PATHS
+MTU less than ...... 4K      (0x45) ->  equal to ....... 2K
+MTU equal to ....... 4K      (0x85) ->  NO PATHS
+MTU largest possible 4K      (0xc5) ->  equal to ....... 2K
+============================================================
 
-* Noncompliant response for SubnAdmGet(PortInfoRecord) with no match
-  osm_pir_rcv_process, now returns "SA no records error" for SubnAdmGet
-  with 0 records found
+With enable_quirks (when one of the ends is a Tavor device):
+------------------------------------------------------------
+MTU greater than ... 256     (0x01) ->  equal to ....... 1K
+MTU less than ...... 256     (0x41) ->  NO PATHS
+MTU equal to ....... 256     (0x81) ->  equal to ....... 256
+MTU largest possible 256     (0xc1) ->  equal to ....... 2K
+MTU greater than ... 512     (0x02) ->  equal to ....... 1K
+MTU less than ...... 512     (0x42) ->  equal to ....... 256
+MTU equal to ....... 512     (0x82) ->  equal to ....... 512
+MTU largest possible 512     (0xc2) ->  equal to ....... 2K
+MTU greater than ... 1K      (0x03) ->  NO PATHS
+MTU less than ...... 1K      (0x43) ->  equal to ....... 512
+MTU equal to ....... 1K      (0x83) ->  equal to ....... 1K
+MTU largest possible 1K      (0xc3) ->  equal to ....... 2K
+MTU greater than ... 2K      (0x04) ->  NO PATHS
+MTU less than ...... 2K      (0x44) ->  equal to ....... 1K
+MTU equal to ....... 2K      (0x84) ->  equal to ....... 2K
+MTU largest possible 2K      (0xc4) ->  equal to ....... 2K
+MTU greater than ... 4K      (0x05) ->  NO PATHS
+MTU less than ...... 4K      (0x45) ->  equal to ....... 1K
+MTU equal to ....... 4K      (0x85) ->  NO PATHS
+MTU largest possible 4K      (0xc5) ->  equal to ....... 2K
+============================================================
 
-* Noncompliant non base LID returned by some queries:
-  The following attributes used to return the request LID rather than
-  its base LID in responses: PKeyTableRecord, GUIDInfoRecord,
-  SLtoVLMappingTableRecord, VLArbitrationTableRecord, LinkRecord
+* osm_pkey_rcv.c: rwlock double release fix
+  When the port is removed from subnet, but previously requested pkey
+  table block is received after this - the lock will be released twice.
+  This leads to deadlocks later when other MAD processor will try to
+  acquire the same lock.
 
-* Noncompliant SubnAdmGet and SubnAdmGetTable:
-  Mixing of error codes in case of no records or multiple records
-  fixed for the attributes: 
-  LinearForwardingTableRecord, GUIDInfoRecord,
-  VLArbitrationTableRecord, LinkRecord, PathRecord
+* osm_sa_informinfo.c: Fix InformInfoRecord searches
 
-* segfault in InformInfo flows
-  Under stress concurrent Set/Delete/Get flows. Fixed by adding
-  missing lock.
+* Better SA MCMemberRecord leave locking
+  Hold locked multicast group leave request (MCMember Record) processing.
+  This prevents kind of race with multicast group join request where
+  those requests can be reordered during processing.
 
-* SA queries containing LID out if range did not return ERR_REQ_INVALID
+* osm_sa_informinfo.c: Conformance changes for subscribe component
+
+* osm_sa_path_record.c: Handle LID 0 as error
+
+* Fix comparing InformInfo records
+  1. The received InformInfo struct was modified before dumping it.
+  2. The function that compares InformInfo structures was just
+     comparing the whole memory allocated for it, including reserved
+     fields. Fixed to compare more selectively.
+
+  As for QPN, from the IB spec, table 119 InformInfo:
+  QPN : Ignored except when subscribe=0 (an unsubscribe
+  request). Queue pair to which Report()s were sent as
+  a result of a corresponding subscription. If no
+  subscription for this Report() with this QPN exists,
+  the request to unsubscribe performs no action and
+  produces GetResp() with status indicating an invalid
+  field value.
+
+* osm_trap_rcv.c: Reduce repeated trap messages so log doesn't fill
+  so quickly
+
+* osm_helper.c: Fix stack smashing detected problem in osm_dump_service_record
+
+* Fix permission on db files directory
+  When creating directory for db files (guid2lid) storing create it with
+  reasonable permissions (current 777 decimal = octal 01411) and don't do
+  it world writable.
+
+* Fix node_desc.description as string usages
 
 5 Main Verification Flows
 -------------------------
@@ -456,6 +494,7 @@ Table 2 - Qualified IB Stacks
 
 Stack                                    | Version
 -----------------------------------------|--------------------------
+OFED                                     |   1.2
 OFED                                     |   1.1
 OFED                                     |   1.0
 OpenIB Gen2 (IBG2 distribution)          |   1.0
@@ -470,8 +509,8 @@ Device  |   FW versions
 --------|-----------------------------------------------------------
 MT43132 |   InfiniScale - fw-43132  5.2.0 (and later)
 MT47396 |   InfiniScale III - fw-47396 0.5.0 (and later)
-MT23108 |   InfiniHost - fw-23108   3.3.2
-MT25204 |   InfiniHost III Lx - fw-25204  1.0.1
+MT23108 |   InfiniHost - fw-23108   3.3.2 (and later)
+MT25204 |   InfiniHost III Lx - fw-25204  1.0.1i (and later)
 MT25208 |   InfiniHost III Ex (InfiniHost Mode) - fw-25208  4.6.2 (and later)
 MT25208 |   InfiniHost III Ex (MemFree Mode) - fw-25218  5.0.1 (and later)
 
@@ -484,3 +523,4 @@ iPath   | QLE6140 (PathScale InfiniPath PE-880)
 
 Note: OpenSM does not run on an IBM Galaxy (eHCA) as it does not expose 
 QP0 and QP1. However, it does support it as a device on the subnet.
+
