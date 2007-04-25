@@ -1,0 +1,74 @@
+========================================================================
+
+             Open Fabrics Enterprise Distribution (OFED)
+              MVAPICH2-0.9.8 in OFED 1.2 Release Notes
+
+                          April 2007
+
+
+Overview
+--------
+
+These are the release notes for MVAPICH2-0.9.8.  This is OFED's edition of
+the MVAPICH2-0.9.8 release. MVAPICH2 is an MPI2 implementation over
+InfiniBand from Ohio State University (OSU)
+(http://nowlab.cse.ohio-state.edu/projects/mpi-iba/).
+
+Software Dependencies
+---------------------
+
+MVAPICH2 depends on the installation of the OFED Distribution stack with
+OpenSM running. The MPI module also requires an established network
+interface (either InfiniBand, IPoIB, or Ethernet). BLCR support is needed
+if built with fault tolerance support.
+
+New Features
+------------
+
+MVAPICH2 (MPI-2 over InfiniBand) is an MPI-2 implementation based on
+MPICH2. MVAPICH2 0.9.8 is available as a single integrated package (with
+MPICH2 1.0.3). This version of MVAPICH2-0.9.8 for OFED has the following
+additional features:
+
+- RDMA CM-based connection management support for OFA Gen2 interface
+- Support for OFA iWARP: This is for the emerging 10GigE adapters
+  supporting OFA iWARP interface
+- Fault tolerance support
+    * Checkpoint-restart support for application transparent systems-level
+      fault tolerance. BLCR-based support using native OFA Gen2 interface
+    * Flexible interface to work with different files systems. Tested with
+      ext3 (local disk), NFS and PVFS2
+- Efficient Buffer Organization for Memory Scalability of Intra-node
+  Communication
+- Shared memory optimizations for collective communication operations
+
+Main Verification Flows
+-----------------------
+In order to verify the correctness of MVAPICH2-0.9.8, the following tests
+and parameters were run.
+
+Test                            Description
+====================================================================
+Intel                           Intel's MPI functionality test suite
+OSU Benchmarks                  OSU's performance tests
+IMB                             Intel's MPI Benchmark test
+mpich2                          Test suite distributed with MPICH2
+mpitest                         b_eff test
+Linpack                         Linpack benchmark
+NAS                             NAS Parallel Benchmarks (NPB3.2)
+NAMD                            NAMD application
+
+User Guide and Mailing List
+---------------------------
+
+For more information regarding installing/using MVAPICH2-0.9.8, please
+visit the online user guide at:
+http://nowlab.cse.ohio-state.edu/projects/mpi-iba/download-mvapich2/mvapich2_user_guide.html
+
+There is a public mailing list mvapich-discuss@cse.ohio-state.edu for
+mvapich users or developers to
+- Ask for help and support from each other and get prompt response
+- Contribute patches and enhancements
+
+
+========================================================================
