@@ -92,7 +92,7 @@ The OFED Distribution package generates RPMs for installing the following:
 OS Distribution         Required Packages
 ---------------         ----------------------------------
 General:
-o  Common to all        gcc, glib, glib-devel, glibc, glibc-devel,
+o  Common to all        gcc, glib, glib-devel, glibc, glibc-devel, zlib-devel
                         automake, autoconf, libtool.
 o  RedHat               kernel-devel, sysfsutils, sysfsutils-devel, rpm-build
 o  SLES 9.0             kernel-source, udev, rpm
