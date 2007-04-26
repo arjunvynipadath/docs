@@ -12,6 +12,7 @@ Table of Contents
 3. Known Issues
 4. DHCP Support of IPoIB
 5. High Availability (HA) Service
+6. The ib-bonding driver
 
 ===============================================================================
 1. Overview
@@ -148,4 +149,39 @@ The HA service may also be activated manually, via the following command:
                         ARP REPLY
     --with-multicast    support applications that are using multicast
     -v                  verbose output
+
+===============================================================================
+6. The ib-bonding driver
+===============================================================================
+The ib-bonding driver is a High Availability solution for IPoIB interfaces. 
+It is based on the Linux Ethernet Bonding Driver and was adopted to work with
+IPoIB.  ib-bonding package contains a bonding driver and a utility called 
+ib-bond to manage and control the driver operation. 
+The ib-bonding driver comes with the ib-bonding package (run rpm -qi ib-bonding
+to get the package information).
+
+Using the ib-bonding driver
+---------------------------
+The ib-bonding driver can be loaded manually or automatically
+
+1. Manual operaion:
+Use the utility ib-bond to stop/query/stop the driver. To get help about this
+utility, read the documentaion that comes with the ib-bonding package.
+
+2. Automatic operation:
+Edit file '/etc/infiniband/openib.conf' as follows:
+		# Enable the bonding driver on startup.
+		IPOIBBOND_ENABLE=yes
+		# # Set bond interface names
+		IPOIB_BONDS=bond0,bond1
+		# Set specific bond params; address and slaves
+		bond0_IP=10.10.10.1
+		bond0_SLAVES=ib0,ib1
+		bond1_IP=20.10.10.1
+		bond1_SLAVES=ib2,ib3,ib4
+
+Notes:
+* The ib-bonding driver doesn't load when the HA service is configured to load.
+* If bondX name is defined but one of bondX_SLAVES or bondX_IP is missing, then that
+  specific bond will not be created.
 
