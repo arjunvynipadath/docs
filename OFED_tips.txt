@@ -9,6 +9,7 @@ Table of Contents
 1. OFED Utilities
 2. Debug HOWTOs
 3. Pinning (Locking) User Memory Pages
+4. External module compilation over OFED-1.2
 
 
 ===============================================================================
@@ -162,25 +163,84 @@ c. Using sysfs file system
 
 2.1 OFED Components and version information
 -------------------------------------------
-The text file <prefix>/BUILD_ID provides data on all OFED components (whether 
-installed or not).
+The text file BUILD_ID provides data on all OFED components (whether 
+installed or not). 
+This file is a part of the ofed-docs RPM and installed under 
+/usr/share/doc/ofed-docs-1.2 on RedHat and under 
+/usr/share/doc/packages/ofed-docs-1.2 on SuSE
 
+The same imformation can be obtained by executing 'ofed_info' command.
 For example:
 
- > cat /usr/local/ofed/BUILD_ID
-   OFED-1.2-rc4
+> ofed_info
+OFED-1.2-20070429-0610
 
-   openib-1.2 (REV=9304)
-   # User space
-   https://openib.org/svn/gen2/branches/1.2/src/userspace
-   Git:
-   ref: refs/heads/ofed_1.2
-   commit d39c60f1406d29eb8e336529610574800a81d81e
+ofa_kernel-1.2:
+Git:
+git://git.openfabrics.org/~vlad/ofed_1_2/.git
+commit f5829ec5964166081a0004753e9995b5641c168d
 
-   # MPI
-   mpi_osu-0.9.7-mlx2.2.0.tgz
-   openmpi-1.1.1-1.src.rpm
-   mpitests-2.0-0.src.rpm
+ofa_user-1.2:
+libibverbs:
+git://git.openfabrics.org/ofed_1_2/libibverbs.git ofed_1_2
+commit 300810860e4c318b6db71331f62838fda39c7dad
+libmthca:
+git://git.openfabrics.org/ofed_1_2/libmthca.git ofed_1_2
+commit 1539526f180e5b13fbf937e306025ea860b5d5fd
+libehca:
+git://git.openfabrics.org/ofed_1_2/libehca.git ofed_1_2
+commit d4b3dd6c078a85a8e67a480161d1d9138ae66029
+libipathverbs:
+git://git.openfabrics.org/ofed_1_2/libipathverbs.git ofed_1_2
+commit 15f62c3f045295dd2a941ae8d4e0e36035aad5cf
+tvflash:
+git://git.openfabrics.org/ofed_1_2/tvflash.git ofed_1_2
+commit 5049e070afeebedf7916bb04a3363e9af38be6df
+libibcm:
+git://git.openfabrics.org/ofed_1_2/libibcm.git ofed_1_2
+commit 8154d4d57f69789be6d26fdc8f10b552c83a87ec
+libsdp:
+git://git.openfabrics.org/ofed_1_2/libsdp.git ofed_1_2
+commit 77c35bd3258aa2f20878f478b5a467a7fa6f84f4
+mstflint:
+git://git.openfabrics.org/ofed_1_2/mstflint.git ofed_1_2
+commit 896f66fc85825e9cfe24d0583dc69287abc3e535
+perftest:
+git://git.openfabrics.org/ofed_1_2/perftest.git ofed_1_2
+commit 16cf32e9ff226bc92d58844af53b7440cb1c65dd
+srptools:
+git://git.openfabrics.org/ofed_1_2/srptools.git ofed_1_2
+commit 7c84a3ea92eb4e1062b9fce6e0c9d0f9287b879c
+ipoibtools:
+git://git.openfabrics.org/ofed_1_2/ipoibtools.git ofed_1_2
+commit e29da6049cb725b175423fddc80181980ebfa0b4
+librdmacm:
+git://git.openfabrics.org/ofed_1_2/librdmacm.git ofed_1_2
+commit 9450ee3953c5765d276f1310bdd045d0d3b62082
+dapl:
+git://git.openfabrics.org/ofed_1_2/dapl.git ofed_1_2
+commit 04da88bb70ee33b249a4cf2f5a92122eeec83e3c
+imgen:
+git://git.openfabrics.org/ofed_1_2/imgen.git ofed_1_2
+commit 2b5da49987426a3942fa23fe5bc693e16e370643
+management:
+git://git.openfabrics.org/ofed_1_2/management.git ofed_1_2
+commit 9d44348a0c26c9a1c62585f10c1b7bdc3102a4ea
+libcxgb3:
+git://git.openfabrics.org/ofed_1_2/libcxgb3.git ofed_1_2
+commit e889105a95381ae41c0c83716ad8097ed25c8aae
+qlvnictools:
+git://git.openfabrics.org/ofed_1_2/qlvnictools.git ofed_1_2
+commit 1639f124eee359db87467e1fa124aff39737621c
+sdpnetstat:
+git://git.openfabrics.org/ofed_1_2/sdpnetstat.git ofed_1_2
+commit 3329358b7ded50a2b51b436eebb5c9aeeb5e4e5e
+
+# MPI
+mvapich-0.9.9-1207.src.rpm
+mvapich2-0.9.8-11.src.rpm
+openmpi-1.2.1-1.src.rpm
+mpitests-2.0-705.src.rpm
 
 2.2 Installed OFED Components
 -------------------------------
@@ -190,7 +250,7 @@ on this machine.
 For example:
 
  > /etc/infiniband/info
-   prefix=/usr/local/ofed
+   prefix=/usr
    Kernel=2.6.9-22.ELsmp
 
    MODULES:  CONFIG_INFINIBAND=m CONFIG_INFINIBAND_USER_MAD=m
@@ -236,3 +296,18 @@ these limits entirely.
 	      
 Note: The file /etc/security/limits.conf contains further documentation.
 
+===============================================================================
+4. External module compilation over OFED-1.2
+===============================================================================
+
+In order to build kernel modules depending on OFED's modules take 
+Modules.symvers file from <prefix>/src/openib/Module.symvers (part of 
+kernel-ib-devel RPM) and copy this to modules subdir and then compile
+your module.
+
+If <prefix>/src/openib/Module.symvers does not exist or empty use 
+create_Module.symvers.sh (a part of the ofed-docs RPM) script to create 
+Module.symvers file.
+
+See "Module versioning & Module.symvers" in the modules.txt from kernel
+documentation (e.g. linux-2.6.20/Documentation/kbuild/modules.txt).
