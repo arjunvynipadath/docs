@@ -172,9 +172,9 @@ Install Process Results:
 
 o The OFED package is installed under <prefix> directory.
 o InfiniBand kernel modules are copied to:
-  /lib/modules/`uname -r`/kernel/drivers/infiniband/
+  /lib/modules/`uname -r`/updates/kernel/drivers/infiniband/
 o open-iscsi kernel modules are copied to:
-  /lib/modules/`uname -r`/kernel/drivers/scsi/
+  /lib/modules/`uname -r`/updates/kernel/drivers/scsi/
 o /lib/modules/2.6.18-1.2747.el5/updates/kernel/drivers/net/cxgb3/cxgb3.ko
 /lib/modules/2.6.18-1.2747.el5/updates/kernel/net/rds/rds.ko
 o The package kernel include files are placed under <prefix>/src/openib.- TBD
@@ -191,7 +191,7 @@ o The directory /etc/infiniband is created with the files "info" and
   installation information. The "openib.conf" file contains the list of
   modules that will be loaded when the "openibd" script is used.
 o The file "90-ib.rules" is installed to /etc/udev/rules.d/
-o man pages are installed under <prefix>/man
+o man pages are installed under /usr/share/man
 o If libibverbs-utils is installed, then ofed.sh and ofed.csh are
   installed under /etc/profile.d/. These automatically update the PATH
   environment variable with <prefix>/bin.  In addition, ofed.conf is
@@ -350,7 +350,7 @@ the installation by modifying the relevant configuration files.  The
 list of the modules that will be loaded automatically upon boot can be
 found in the /etc/infiniband/openib.conf file.  Other configuration
 files include:
-- SDP configuration file:    <prefix>/etc/libsdp.conf 
+- SDP configuration file:    /etc/libsdp.conf 
 - OpenSM configuration file: /etc/opensm.conf
 - DAPL configuration file:   /etc/dat.conf
 
@@ -367,7 +367,8 @@ Note: After the installer completes, information about the OFED
 
 OFED documentation is located in the ofed-docs RPM.  After
 installation the documents are located under the directory:
-<prefix>/docs (the default prefix is /usr/local/ofed).
+/usr/share/doc/ofed-docs-1.2 for RedHat
+/usr/share/doc/packages/ofed-docs-1.2 for SuSE
 
 Document list:
 
