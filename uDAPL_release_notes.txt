@@ -1,7 +1,7 @@
 
 		   Release Notes for 
 		Gamma 3.2 and OFED 1.2 DAPL Release
-		    April 2007
+		    May 2007
 
 
         DAPL GAMMA 3.2/OFED 1.2 RELEASE NOTES

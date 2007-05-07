@@ -2,7 +2,7 @@
                             Version 1.2
 			      README
 			  
-			  April 2007
+			  May 2007
 
 
 This is the OpenFabrics Enterprise Distribution (OFED) version 1.2 software

@@ -1,7 +1,7 @@
 	     Open Fabrics Enterprise Distribution (OFED)
 		    ehca in OFED 1.2 Release Notes
-			  
-			   April 2007
+
+			   May 2007
 
 
 Overview
@@ -18,6 +18,19 @@ whereby <parameter> is one of the following items:
 - debug_level     debug level (0: no debug traces (default), 1: with debug traces)
 - nr_ports        number of connected ports (default: 2)
 - port_act_time   time to wait for port activation (default: 30 sec)
+- scaling_code    enable scaling code (default: 1), 0: disable scaling code
+
+New Features
+------------
+- Scaling code can now be turned on (default) or off at module load time.
+  Enabling scaling code helps to distribute processing completions across CPUs.
+
+Fixed Bugs
+----------
+- Mismatched sync/locking between completion handler and destroy cq
+- Reworked irq handler to avoid/reduce missed irq events
+- Removed do_mmap() and obsolete prototypes
+- Serialized calls to register_mr() (Bugzilla #574)
 
 Known Issues
 ------------
@@ -49,3 +62,6 @@ NOTE: In OpenPower 720 and p550 port 1 is at the top, port 2 is at the bottom.
 
 2. Furthermore the port(s) needs to be connected to an active switch port while
 loading the ehca device driver.
+
+
+

@@ -1,7 +1,7 @@
 	     Open Fabrics Enterprise Distribution (OFED)
 		    mthca in OFED 1.2 Release Notes
 			  
-			   April 2007
+			   May 2007
 
 
 ===============================================================================
