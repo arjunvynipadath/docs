@@ -51,7 +51,7 @@ General Notes:
 The OFED Distribution package generates RPMs for installing the following:
 
   o   OpenFabrics core and ULPs:
-        - HCA drivers (mthca, ipath, ehca)
+        - HCA drivers (mthca, mlx4, ipath, ehca)
 	- iWARP driver (cxgb3)
         - core
         - Upper Layer Protocols: IPoIB, SDP, SRP Initiator, iSER Initiator 

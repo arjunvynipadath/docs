@@ -36,7 +36,7 @@ all of its nodes to this new version.
 ---------------------
 The OFED package contains the following components:
   o   OpenFabrics core and ULPs:
-        - HCA drivers (mthca, ipath, ehca)
+        - HCA drivers (mthca, mlx4, ipath, ehca)
         - core
         - Upper Layer Protocols: IPoIB, SDP, SRP Initiator, iSER Host and uDAPL
   o   OpenFabrics utilities:

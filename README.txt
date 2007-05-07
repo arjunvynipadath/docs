@@ -75,7 +75,7 @@ o  tvflash: 		pciutils-devel
 The OFED Distribution package generates RPMs for installing the following:
   
   o   OpenFabrics core and ULPs:
-	- HCA drivers (mthca, ipath, ehca)
+	- HCA drivers (mthca, mlx4, ipath, ehca)
 	- core 
 	- Upper Layer Protocols: IPoIB, SDP, SRP Initiator, iSER Initiator, 
 	  and uDAPL
