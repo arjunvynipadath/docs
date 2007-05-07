@@ -1,4 +1,4 @@
-STACK_PREFIX=/usr/local/ofed
+STACK_PREFIX=/usr
 BUILD_ROOT=/var/tmp/OFED
 
 kernel_ib=y
@@ -80,4 +80,4 @@ MVAPICH2_CONF_multithread="1"
 MVAPICH2_CONF_ckpt="0"
 MVAPICH2_CONF_done="1"
 
-OFA_KERNEL_PARAMS="--with-madeye --without-modprobe --with-memtrack"
+#OFA_KERNEL_PARAMS="--with-madeye --without-modprobe --with-memtrack"
