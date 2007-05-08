@@ -31,6 +31,10 @@ network.
 Note: If you plan to upgrade the OFED package on your cluster, please upgrade
 all of its nodes to this new version.
 
+Important note: At the current stage of mlx4 driver, this packages should be 
+                used for basic functionality testing only and not for extensive
+		regression testing.
+
 
 1.1 OFED 1.2 Contents
 ---------------------
@@ -52,26 +56,18 @@ The OFED package contains the following components:
   o   Documentation
 
 Notes:
-1. SDP is in beta quality.
-2. ehca driver is in technology preview state.
-3. All other OFED components are of production quality.
-4. See release notes for each package in the docs directory.
-5. Any Topspin copyright belongs to Cisco Systems, Inc.
+1. mlx4 driver is in alpha quality: Only OpenSM, MPI and IPoIB can be used. 
+2. See release notes for each package in the docs directory.
+3. Any Topspin copyright belongs to Cisco Systems, Inc.
 
 1.2 Supported Platforms and Operating Systems
 ---------------------------------------------
   o   CPU architectures:
 	- x86_64
-	- x86
-	- ia64
-	- ppc64
 	
   o   Linux Operating Systems:
-	- RedHat EL4 up3: 2.6.9-34.ELsmp
-	- RedHat EL4 up4: 2.6.9-42.ELsmp
-	- SLES9 SP3: 2.6.5-7.244-smp
+	- RedHat EL5: 2.6.18-8.el5
 	- SLES10: 2.6.16.21-0.8-smp
-	- kernel.org: 2.6.17.x and 2.6.18.x
 	
 1.3 HCAs Supported
 ------------------
@@ -83,6 +79,7 @@ This release supports HCAs by Mellanox Technologies, Qlogic and IBM.
 	                     with memory: fw-25208 Rev 4.7.600)
 	- InfiniHost III Lx (fw-25204 Rev 1.2.000)
 	The SDR and DDR modes of the InfiniHost III family are supported.
+	- ConnectX IB (fw-25408 Rev 2.0.150)
 
 	For official firmware versions please see:
 	http://www.mellanox.com/support/firmware_table.php
@@ -114,11 +111,6 @@ The following third party packages have been tested with OFED 1.2:
 1.6 OFED Sources:
 -----------------
 Source repositories: 
-Kernel: git://www.mellanox.co.il/~git/infiniband ofed_1_1
-User:   https://openib.org/svn/gen2/branches/1.1/src/userspace
-
-The kernel sources are based on Linux 2.6.18-rc6 mainline kernel. Its patches
-are included in the OFED sources directory.
 For details see HOWTO.build_ofed.
 
 
