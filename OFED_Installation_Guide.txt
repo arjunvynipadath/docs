@@ -94,9 +94,12 @@ OS Distribution         Required Packages
 General:
 o  Common to all        gcc, glib, glib-devel, glibc, glibc-devel, zlib-devel
                         automake, autoconf, libtool.
-o  RedHat               kernel-devel, sysfsutils, sysfsutils-devel, rpm-build
+o  RedHat, Fedora       kernel-devel, rpm-build
 o  SLES 9.0             kernel-source, udev, rpm
-o  SLES 10.0            kernel-source, sysfsutils, sysfsutils-devel, rpm
+o  SLES 10.0            kernel-source, rpm
+
+Note:   To build 32-bit libraries on x86_64 and ppc64 glibc-devel 32bit
+        should be installed
 
 Specific Component Requirements:
 o  OSU MPI              a Fortran Compiler (such as gcc-g77)
