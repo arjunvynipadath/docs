@@ -25,9 +25,9 @@ Table of contents
 ==============================================================================
 
 This is the OpenFabrics Enterprise Distribution (OFED) version 1.2
-software package supporting InfiniBand fabrics. It is composed of
-several software modules intended for use on a computer cluster
-constructed as an InfiniBand subnet.
+software package supporting InfiniBand and iWARP fabrics. It is composed
+of several software modules intended for use on a computer cluster
+constructed as an InfiniBand subnet or iWARP network.
 
 This document describes how to install the various modules and test them in
 a Linux environment.
@@ -76,7 +76,7 @@ The OFED Distribution package generates RPMs for installing the following:
 3. HW and SW Requirements
 ==============================================================================
 
-1) Server platform with InfiniBand HCA or iWARP NIC (see OFED Distribution
+1) Server platform with InfiniBand HCA or iWARP RNIC (see OFED Distribution
    Release Notes for details)
 
 2) Linux OS (see OFED Distribution Release Notes for details)
