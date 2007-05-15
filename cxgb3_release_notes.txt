@@ -1,8 +1,10 @@
-
+            Open Fabrics Enterprise Distribution (OFED)
                 CHELSIO T3 RNIC RELEASE NOTES
+			May 2007
+
+
 
 Author: Steve Wise
-Last Updated: April, 2007
 
 The iw_cxgb3 and cxgb3 modules provide iWARP and NIC support for the
 Chelsio S310, S320, and R310 adapters.  Make sure you choose the 'cxgb3'
