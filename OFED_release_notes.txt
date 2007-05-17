@@ -1,8 +1,7 @@
 	    Open Fabrics Enterprise Distribution (OFED)
-			    Version 1.2
+			    Version 1.2.c-4
 			   Release Notes
-
-			   May 2007
+			      May 2007
 
 
 ===============================================================================
@@ -31,10 +30,12 @@ network.
 Note: If you plan to upgrade the OFED package on your cluster, please upgrade
 all of its nodes to this new version.
 
-Important note: At the current stage of mlx4 driver, this packages should be 
-                used for basic functionality testing only and not for extensive
-		regression testing.
+Important notes: i
 
+1. At the current stage of mlx4 driver, this packages should be used for basic 
+   functionality testing only and not for extensive regression testing.
+2. Changes from 1.2.c-2 are described in attached document and not in the docs
+   directory.
 
 1.1 OFED 1.2 Contents
 ---------------------
