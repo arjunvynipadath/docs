@@ -1,0 +1,53 @@
+	     Open Fabrics Enterprise Distribution (OFED)
+		    mlx4 in OFED 1.2.c.4 Release Notes
+			  
+			   May 2007
+
+
+===============================================================================
+Table of Contents
+===============================================================================
+1. Overview
+2. Known Issues
+
+===============================================================================
+1. Overview
+===============================================================================
+mlx4 is the low level driver implementation for ConnectX HCA from Mellanox
+Technologies. Because these adapters can also be used as Ethernet NICs and Fibre Channel
+HBAs, the driver is split into two modules:
+    
+mlx4_core: Handles low-level things like device initialization and
+        processing firmware commands.  Also controls resource allocation
+        so that the InfiniBand, Ethernet and FC functions can share a
+        device without stepping on each other.
+    
+mlx4_ib: Handles InfiniBand-specific things; plugs into the InfiniBand midlayer.
+
+mlx4 Available Parameters
+--------------------------
+In order to set mlx4 parameters, add the following line to /etc/modpobe.conf:
+
+	options mlx4_core parameter=<value>
+
+mlx4_core parameters:
+  - msi_x          attempt to use MSI-X if nonzero supported by FW)
+  - debug_level    Enable debug tracing if > 0 
+
+===============================================================================
+2. Known Issues
+===============================================================================
+1. mlx4 driver is under development thus stress or long tests may fail (e.g. MPI 
+   long runs may be halted)
+2. SRQ is not supported. One must use VIADEV_USE_SRQ=0 when lunching an MPI job 
+   otherwise the MPI job will hang.
+    Examples:  
+	mpirun -np $NP -rsh -hostfile $HOSTFILE VIADEV_USE_SRQ=0 $TEST_BIN_PATH
+	or
+	Add the line VIADEV_USE_SRQ=0 to mvapich.conf file
+3. IPoIB is working in UD mode only; openibd.conf was changed to set the default to UD
+4. The only ULPs that tested are: OpenSM, IPoIB and MPI (MVAPICH and Open MPI)
+5. Query QP is not supported
+6. Fork is not supported
+7. RDMA READ performance is poor due to a wrong calculation of RDMA reads configuration
+8. Resize CQ is not supported
