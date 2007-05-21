@@ -38,7 +38,8 @@ The OFED package contains the following components:
   o   OpenFabrics core and ULPs:
         - IB HCA and RNIC drivers (mthca, ipath, ehca, cxgb3)
         - core
-        - Upper Layer Protocols: IPoIB, SDP, SRP Initiator, iSER Host and uDAPL
+        - Upper Layer Protocols: IPoIB, SDP, SRP Initiator, iSER Host, uDAPL
+	  and VNIC.
   o   OpenFabrics utilities:
         - OpenSM (OSM): InfiniBand Subnet Manager
         - Diagnostic tools
@@ -52,12 +53,12 @@ The OFED package contains the following components:
   o   Documentation
 
 Notes:
-1. SDP is in beta quality.
-2. ehca driver is in technology preview state.
+1. cxgb3 driver is in technology preview state.
+2. The Virtual NIC (VNIC) driver is presented as a technology preview on OFED 1.2.
 3. All other OFED components are of production quality.
 4. See release notes for each package in the docs directory.
 5. Any Topspin copyright belongs to Cisco Systems, Inc.
-6. cxgb3 driver is in technology preview state.
+
 
 1.2 Supported Platforms and Operating Systems
 ---------------------------------------------
@@ -70,19 +71,21 @@ Notes:
   o   Linux Operating Systems:
 	- RedHat EL4 up3: 2.6.9-34.ELsmp
 	- RedHat EL4 up4: 2.6.9-42.ELsmp
+	- RedHat EL4 up5: 2.6.9-42.ELsmp
+	- RedHat EL5: 2.6.9-42.ELsmp
 	- SLES9 SP3: 2.6.5-7.244-smp
 	- SLES10: 2.6.16.21-0.8-smp
-	- kernel.org: 2.6.17.x and 2.6.18.x
+	- kernel.org: 2.6.19.x and 2.6.20.x
 	
 1.3 HCAs and RNICs Supported
-------------------
+----------------------------
 This release supports IB HCAs by Mellanox Technologies, Qlogic and IBM as
 well as iWARP RNICs by Chelsio Communications.
 
   o   Mellanox Technologies HCAs:
 	- InfiniHost (fw-23108 Rev 3.5.000)
-	- InfiniHost III Ex (MemFree: fw-25218 Rev 5.1.400 
-	                     with memory: fw-25208 Rev 4.7.600)
+	- InfiniHost III Ex (MemFree: fw-25218 Rev 5.2.000 
+	                     with memory: fw-25208 Rev 4.8.200)
 	- InfiniHost III Lx (fw-25204 Rev 1.2.000)
 	The SDR and DDR modes of the InfiniHost III family are supported.
 
@@ -108,7 +111,7 @@ This release was tested with switches and gateways provided by the following
 companies:
 	- Cisco
 	- Voltaire
-	- SilverStorm
+	- Qlogic
 	- Flextronics
 
 1.5 Third Party Packages
@@ -122,7 +125,7 @@ Source repositories:
 Kernel: git://www.mellanox.co.il/~git/infiniband ofed_1_1
 User:   https://openib.org/svn/gen2/branches/1.1/src/userspace
 
-The kernel sources are based on Linux 2.6.18-rc6 mainline kernel. Its patches
+The kernel sources are based on Linux 2.6.20 mainline kernel. Its patches
 are included in the OFED sources directory.
 For details see HOWTO.build_ofed.
 
@@ -202,8 +205,6 @@ for each package in the docs directory.
 3. Fixed Bugs
 ===============================================================================
 1. OFED installation now supports installing lib32 on 64-bit systems.
-2. Registration of huge page memory buffers is now supported.
-3. Diagnostic tools do not require an opensm executable to be installed anymore.
 4. Hotplug removal does not hang the system when the device is used by
    the uverbs interface.
 4. MVAPICH does work on ppc64.
@@ -225,14 +226,9 @@ components of the OFED 1.2 release.
    The former can be achieved by calling wait(childpid) the later can be
    achieved by application specific means.  Posix system() call is
    supported.
-3. On RedHat EL4 up2 and Fedora Core 4 the driver may not load properly if
-   SELINUX is enforced.
-   Workaround: Change the value of the parameter SELINUX in
-   /etc/sysconfig/selinux from "enforcing" to "permissive" or "disabled".
 4. libibcm is not thread safe: if several threads use libibcm, the function
    ib_cm_get_device will give the same device to all of the threads, which
    can cause thread X to get events that were sent to thread Y.
-5. ehca driver is supported only on kernel 2.6.18.
 6. ipath driver is supported only on 64 bit platforms.
 
 Note: See the release notes of each component for additional issues.
