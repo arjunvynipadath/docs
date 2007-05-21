@@ -1,3 +1,12 @@
+This is a technology preview release of the QLogic VNIC driver on OFED 1.2.
+This driver is currently supported on Intel x86 32 and 64 bit machines with
+Mellanox HCAs. Supported OS are RHEL 4 Update 3, RHEL 4 Update 4, SLES 10
+and the vanilla 2.6.19 kernel.
+
+The VNIC driver in conjunction with the QLogic Virtual Ethernet I/O gateway
+(VEx) provides Ethernet interfaces on a host with IB HCA(s) without the need
+for any physical Ethernet NIC.
+
 This file describes the use of the VNIC ULP service on an OFED stack
 and covers the following points:
 
@@ -96,16 +105,29 @@ C) Starting the VNIC driver and the VNIC interfaces
 
 Once you have created a configuration file, you can start the VNIC driver
 and create the VNIC interfaces specified in the configuration file with:
+#/etc/init.d/openibd start
 
-#/sbin/service ql_vnic start
 
-You can stop the VNIC driver and bring down the VNIC interfaces with
+The VNIC driver is started by default as a part of openibd service.
+(If openibd is configured to start on boot VNIC driver will also start on boot)
+If you do not want to start the VNIC driver as a part of openibd service, set
+VNIC_LOAD=no in /etc/infiniband/openib.conf
 
-#/sbin/service ql_vnic stop
+You can stop the VNIC driver and openibd services with
+#/etc/init.d/openibd stop
 
-To restart the VNIC driver, you can use
+You can restart the VNIC driver and openibd service using
+#/etc/init.d/openibd restart
 
-#/sbin/service ql_vnic restart
+After starting openibd service you can independently control the VNIC driver using ql_vnic service
+To stop the VNIC driver you  can use
+#/etc/init.d/ql_vnic stop
+
+If you make changes to the VNIC configuration file and want the changes to be
+reflected, you can restart the VNIC service independently, using
+#/etc/init.d/ql_vnic restart
+
+Note that it is required to start openibd service before using ql_vnic service
 
 D) Assigning IP addresses etc for the VNIC interfaces
 
