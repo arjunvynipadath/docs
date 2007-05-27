@@ -26,8 +26,21 @@ SDP in OFED is at GA level for OFED 1.2.
 * add proc fs support. 
 
 * OFED is shipped with patched version of netstat (sdpnetstat).
+  SDP info is printed by default.  To view only SDP sockets use the "-S" flag.
+  Info given from sdpnetstat (for each SDP socket):
+        Recv-Q
+        Send-Q
+        Local Address
+        Foreign Address
+        User
+        Inode
+        PID/Program name
 
 * Allow user, via module parameter, to bound SDP's memory use
+
+* Implement slow start on recv buffers. The socket is created with small buffers
+  and when needed the socket requests the other side so resize it's buffers to
+  allow for more data.
 
 ===============================================================================
 3. Bug Fixes
@@ -96,6 +109,10 @@ SDP in OFED is at GA level for OFED 1.2.
 - Connection rate in lower than TCP.  This may cause clients to get connection
   refused when server is under connection stress.
 
+- Due to limited dma pool on PPC, sdp cannot sustain more than about 1000 sockets
+  with default parameters.  Limiting max_large_sockets and rcvbuf_scale allows
+  more sockets to be opened but at a performance cost.
+
 
 ===============================================================================
 5. Supported Socket Options
@@ -145,7 +162,7 @@ IPPROTO_IP:
 	IP_MTU
 	IP_ROUTER_ALERT		NA
 IPPROTO_ICMPV6:
-	ICMP6_FILTER
+	ICMP6_FILTER		NA
 IPPROTO_IPV6:
 	IPV6_ADDRFORM		NA
 	IPV6_CHECKSUM		NA
@@ -169,7 +186,7 @@ IPPROTO_TCP:
 	TCP_KEEPCNT
 	TCP_KEEPIDLE
 	TCP_KEEPINTVL
-	TCP_LINGER2		V
+	TCP_LINGER2
 	TCP_QUICKACK
 	TCP_SYNCNT
 	TCP_WINDOW_CLAMP
@@ -257,11 +274,14 @@ or visible bugs were also fixed.
 * in "both" mode, only close the SDP socket in case the TCP connection 
   succeeds (bugzilla 576)
 
+* getsockname returns invalid address for sockets bind to ipv4 address
+  encapsulated in ipv6 (bugzilla 613)
+
 ===============================================================================
 4. Known Issues
 ===============================================================================
-* When using server to listen on both SDP and TCP, the number of sockets is 
-  doubled.
+* When using server to listen on both SDP and TCP, the number of sockets and
+  file descriptors is doubled.
 
 * A rare race still exists when performing bind/listen on ANY_PORT. The race
   is between applications and has been greatly minimized. A test to reproduce it

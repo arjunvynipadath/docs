@@ -15,7 +15,7 @@ Table of Contents
 	- Tested Switch Platforms
 	- Third party Test Packages
 	- OFED sources
-2. Main Changes from OFED 1.0
+2. Main Changes from OFED 1.1
 3. Fixed Bugs
 4. Known Issues
 
@@ -23,10 +23,10 @@ Table of Contents
 ===============================================================================
 1. Overview
 ===============================================================================
-These are the release notes of Open Fabrics Enterprise Distribution (OFED)
+These are the release notes of OpenFabrics Enterprise Distribution (OFED)
 release 1.2. The OFED software package is composed of several software modules,
 and is intended for use on a computer cluster constructed as an InfiniBand
-network.
+subnet or iWARP network.
 
 Note: If you plan to upgrade the OFED package on your cluster, please upgrade
 all of its nodes to this new version.
@@ -36,18 +36,23 @@ all of its nodes to this new version.
 ---------------------
 The OFED package contains the following components:
   o   OpenFabrics core and ULPs:
-        - IB HCA and RNIC drivers (mthca, ipath, ehca, cxgb3)
+        - IB HCA drivers (mthca, ipath, ehca)
+	- iWARP RNIC driver (cxgb3)
         - core
-        - Upper Layer Protocols: IPoIB, SDP, SRP Initiator, iSER Host, uDAPL
-	  and VNIC.
+        - Upper Layer Protocols: IPoIB, SDP, SRP Initiator, iSER Host, RDS, 
+	  uDAPL and VNIC.
   o   OpenFabrics utilities:
         - OpenSM (OSM): InfiniBand Subnet Manager
         - Diagnostic tools
         - Performance tests
   o   MPI:
-        - OSU MPI stack supporting the InfiniBand interface
-        - Open MPI stack supporting the InfiniBand interface
+        - OSU MPI stack supporting the InfiniBand and iWARP interface
+        - Open MPI stack supporting the InfiniBand and iWARP interface
+	- OSU MVAPICH2 stack supporting the InfiniBand and iWARP interface
         - MPI benchmark tests (OSU benchmarks, Intel MPI benchmarks, Presta)
+  o   Extra packages:
+        - open-iscsi: open-iscsi initiator with iSER support
+	- ib-bonding: Bonding driver for IPoIB interface
   o   Sources of all software modules (under conditions mentioned in the modules'
       LICENSE files)
   o   Documentation
@@ -117,13 +122,15 @@ companies:
 1.5 Third Party Packages
 ------------------------
 The following third party packages have been tested with OFED 1.2:
-1. Intel MPI, Version 2.0.1 - refresh, and Version 3.0
+1. Intel MPI, Version 3.0 - Package ID: l_mpi_p_3.0.043
+2. HP MPIi, Version 2.2.5
 
 1.6 OFED Sources:
 -----------------
 Source repositories: 
-Kernel: git://www.mellanox.co.il/~git/infiniband ofed_1_1
-User:   https://openib.org/svn/gen2/branches/1.1/src/userspace
+http://www.openfabrics.org/git/
+Kernel sources: ~vlad/ofed_1_2/.git
+User level Sourcesi are located in all git trees starting with: ofed_1_2/ 
 
 The kernel sources are based on Linux 2.6.20 mainline kernel. Its patches
 are included in the OFED sources directory.
@@ -131,32 +138,19 @@ For details see HOWTO.build_ofed.
 
 
 ===============================================================================
-2. Main Changes from OFED 1.0
+2. Main Changes from OFED 1.1
 ===============================================================================
 Note: For details regarding the various changes,  please see the release notes
 for each package in the docs directory.
 
     2.1 General changes:
-	o Kernel code based on 2.6.18
-	o HCA fatal - kernel flow support
-	o High Availability in IPoIB and SRP
-	o RDS was removed for the OFED package
-	o IBM low level driver (ehca) was added
+	o Kernel code based on 2.6.20
 
     2.1 IPoIB:
-    	o High Availability support using a user-level daemon (beta quality)
 
     2.2 SDP:
-  	o Beta quality (higher stability)
-  	o Improved latency
-  	o Implemented the Naggle algorithm
-  	o Supports sending/receiving out of band data 
-  	o Interoperability with previous SDP implementation
 
     2.3 SRP:
-   	o GA quality
-   	o DM (Device Mapper) - for high availability (beta quality).
-   	o New srp_daemon was added
 
     2.4 iSER:
 	o Testing more platforms (e.g., ppc64 and ia64)
@@ -166,48 +160,30 @@ for each package in the docs directory.
 
     2.6 MPI: 
 	a. OSU MVAPICH:
-      		o Version was changed to 0.9.7-mlx2.2.0
-	      	o Message coalescing
+      		o Version was changed to 0.9.9
 	b. Open MPI:
 		o Version was updated to v1.1.1
                 o Bug fixes and general enhancements over v1.1
 		o See http://www.open-mpi.org/svn/new.php for details
-	c. MPI tests:
-		o Updated the tests to latest versions from LLNL, Intel, OSU
+	c. OSU MVAPICH2:
+		o MVAPICH2 version 0.98 was added to the OFED package.
 
     2.7 OSM:
- 	o Partition Manager (Pkey)
- 	o Pre-computed routing load from file 
- 	o Primitive QoS - as technology preview 
 
     2.8 Management: 
-	o Added Madeye utility
-	o Added saquery tool
-	o Enhanced ibnetdiscover tool with grouping function
-	o New ibutils package: 
-	   	o Port error counter check 
-	   	o Port performance counters dump 
-	   	o Link width and Link speed check by flag
 
     2.9 Install:
-        o Create both 32-bit and 64-bit user-level libraries on x86_64 and
-          ppc64 platforms
-	o OSM RPM was separated into several RPMs to enable installing
-	  diagnostic tools without the opensm executable.
-        o The package kernel include files are placed under <prefix>/src/openib.
-          These includes should be used when building kernel modules which use
-          the Infiniband stack. (Note that these includes, if needed, have
-          been "backported" to your kernel).
-        o The package raw (unbackported) source files are placed under
-          <prefix>/src/openib-1.2.
 
 ===============================================================================
 3. Fixed Bugs
 ===============================================================================
 1. OFED installation now supports installing lib32 on 64-bit systems.
-4. Hotplug removal does not hang the system when the device is used by
+2. Hotplug removal does not hang the system when the device is used by
    the uverbs interface.
-4. MVAPICH does work on ppc64.
+3. MVAPICH does work on ppc64.
+4. libibcm is not thread safe: if several threads use libibcm, the function
+   ib_cm_get_device will give the same device to all of the threads, which
+   can cause thread X to get events that were sent to thread Y.
 
 Bugs fixed in each package are reported in the packages release notes.
 
@@ -226,9 +202,7 @@ components of the OFED 1.2 release.
    The former can be achieved by calling wait(childpid) the later can be
    achieved by application specific means.  Posix system() call is
    supported.
-4. libibcm is not thread safe: if several threads use libibcm, the function
-   ib_cm_get_device will give the same device to all of the threads, which
-   can cause thread X to get events that were sent to thread Y.
-6. ipath driver is supported only on 64 bit platforms.
+3. ipath driver is supported only on 64 bit platforms.
+4. There are issues using Intel MPI with Qlogic card driver that cause failures 
 
 Note: See the release notes of each component for additional issues.
