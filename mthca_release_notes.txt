@@ -8,9 +8,8 @@
 Table of Contents
 ===============================================================================
 1. Overview
-2. New Features
-3. Fixed Bugs
-4. Known Issues
+2. Fixed Bugs
+3. Known Issues
 
 ===============================================================================
 1. Overview
@@ -35,23 +34,26 @@ mthca parameters:
 
 
 ===============================================================================
-2. New Features
+2. Fixed Bugs
 ===============================================================================
+1.  Allocating many MRs (which uses many memory pages) causes kernel Oops. (490)
+2.  Improve scheduling of kernel QPs in mthca. (542)
+3.  Wrong mthca errors (e.g. CQ entry for unknown QP bd0406). (394)
+4.  Kernel panic on boot when using Hide-DDR FW. (544)
+5.  Off-by-one in FMR handling on MemFree can cause memory corruption. (424)
+6.  InfiniHost III Lx: Data corruption when working with FMR (Influence on the
+    ULPs: iSER, SRP and Lustre).
+7.  Fix RESET to ERROR transition
+8.  Set cleaned CQEs back to HW ownership when cleaning CQ
+9.  Fix posting >255 receive WRs for InfiniHost
+10. Fix error path in mthca_alloc_memfree()
+11. Allow the QP state transition RESET->RESET
+12. Fix access to MTT and MPT tables on non-cache-coherent CPUs
 
 
-===============================================================================
-3. Fixed Bugs
-===============================================================================
-1. Allocating many MRs (which uses many memory pages) causes kernel Oops. (490)
-2. Improve scheduling of kernel QPs in mthca. (542)
-3. Wrong mthca errors (e.g. CQ entry for unknown QP bd0406). (394)
-4. Kernel panic on boot when using Hide-DDR FW. (544)
-5. Off-by-one in FMR handling on MemFree can cause memory corruption. (424)
-6. InfiniHost III Lx: Data corruption when working with FMR (Influence on the
-   ULPs: iSER, SRP and Lustre).
 
 ===============================================================================
-4. Known Issues
+3. Known Issues
 ===============================================================================
 1. UAR size other than 8MB prevents mthca driver loading. The default UAR
    size is 8MB. If it is changed, the following error message will be logged to
