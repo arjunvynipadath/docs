@@ -123,14 +123,14 @@ companies:
 ------------------------
 The following third party packages have been tested with OFED 1.2:
 1. Intel MPI, Version 3.0 - Package ID: l_mpi_p_3.0.043
-2. HP MPIi, Version 2.2.5
+2. HP MPI, Version 2.2.5
 
 1.6 OFED Sources:
 -----------------
 Source repositories: 
 http://www.openfabrics.org/git/
 Kernel sources: ~vlad/ofed_1_2/.git
-User level Sourcesi are located in all git trees starting with: ofed_1_2/ 
+User level Sources are located in all git trees starting with: ofed_1_2/ 
 
 The kernel sources are based on Linux 2.6.20 mainline kernel. Its patches
 are included in the OFED sources directory.
@@ -145,34 +145,83 @@ for each package in the docs directory.
 
     2.1 General changes:
 	o Kernel code based on 2.6.20
+	o New kernel modules: SA Cache, RDS, VNIC, bonding
+	o High availability of SRP and IPoIB in GA level
+	o Added iWARP support (with Chelsio driver)
+	o MAN pages for libraries (libibverbs and librdmacm)
 
     2.1 IPoIB:
+        o IPoIB Connected Mode
+	o High availability support using the bonding module.
 
     2.2 SDP:
+	o netstat is now available
+        o Improved message BW:
+          - 10X for small messages 
+          - 5X for medium messages
+        o Scalability:
+          - Added a memory consumption limit
 
     2.3 SRP:
+        o High availability is now supported for all systems.
 
     2.4 iSER:
 	o Testing more platforms (e.g., ppc64 and ia64)
+	o Updated packages for ISCSI kernel & user components bundled with OFED.
 
     2.5 uDAPL
      	o Scalability features needed for Intel MPI 
 
+    2.6 Libraries
+        a. libibverbs 1.1:
+	   o Fork support (requires apps change) 
+	   o Better low-level driver handling, including multiple drivers linked 
+	     in statically
+	   o Documentation: man pages
+        b. librdmacm (uCMA) 1.0:
+	   o Multicast joining from user space
+	   o UD support
+	   o Documentation: man pages
+
+    2.7 OSM:
+        o Routing improvements
+        o Performance improvement to min hop and up/down of over an order of magnitude
+        o New fat-tree and LASH algorithms
+        o SA optional record support "virtually" complete
+        o IB router enablement
+        o SA database dump/restore
+
+    2.8 Management: 
+        o Many diagnostic improvements since OFED 1.1 (see detailed RN)
+        o ibdiagui: A GUI for ibdiagnet
+
+    2.9 Install:
+        o Default prefix directory is now /usr
+
     2.6 MPI: 
 	a. OSU MVAPICH:
-      		o Version was changed to 0.9.9
+      		o Version was updated to 0.9.9
 	b. Open MPI:
-		o Version was updated to v1.1.1
-                o Bug fixes and general enhancements over v1.1
+		o Version was updated to 1.2.1
 		o See http://www.open-mpi.org/svn/new.php for details
 	c. OSU MVAPICH2:
 		o MVAPICH2 version 0.98 was added to the OFED package.
+	d. Common MPI setup sourcing:
+	   Simple menu-driven interface to choose which MPI implementation to set as
+	   the default on a per-user and/or system-wide basis
 
-    2.7 OSM:
+    2.7 iWARP Support
+        o Chelsio NIC supported
+        o Verbs and CMA APIs are the same as Infiniband
+        o ULPs that are supported:
+          - MPI (mvapich2 tested)
+          - uDAPL
+        o Basic Testing:
+          - uDAPL
+          - mvapich2
+          - NFS-RDMA
+        o Status: Beta
 
-    2.8 Management: 
-
-    2.9 Install:
 
 ===============================================================================
 3. Fixed Bugs
@@ -181,9 +230,7 @@ for each package in the docs directory.
 2. Hotplug removal does not hang the system when the device is used by
    the uverbs interface.
 3. MVAPICH does work on ppc64.
-4. libibcm is not thread safe: if several threads use libibcm, the function
-   ib_cm_get_device will give the same device to all of the threads, which
-   can cause thread X to get events that were sent to thread Y.
+4. libibcm is now thread safe.
 
 Bugs fixed in each package are reported in the packages release notes.
 
