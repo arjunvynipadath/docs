@@ -53,14 +53,18 @@ OS Distribution		Required Packages
 General:
 o  Common to all        gcc, glib, glib-devel, glibc, glibc-devel,
                         automake, autoconf, libtool.
-o  RedHat               kernel-devel, sysfsutils, sysfsutils-devel, rpm-build
+o  RedHat, Fedora       kernel-devel, rpm-build
 o  SLES 9.0             kernel-source, udev, rpm
-o  SLES 10.0            kernel-source, sysfsutils, sysfsutils-devel, rpm
+o  SLES 10.0            kernel-source, rpm
+
+Note:   To build 32-bit libraries on x86_64 and ppc64 glibc-devel 32bit
+        should be installed
 
 Specific Component Requirements:
 o  OSU MPI requires:    Fortran Compiler(default: gcc-g77) 
-o  ibutils:  		tcl-8.4, tcl-devel-8.4
+o  ibutils:  		tcl-8.4, tcl-devel-8.4, tk
 o  tvflash: 		pciutils-devel
+o  mvapich2:            libsysfs, libsysfs-devel
 
 *** Important Note for open-iscsi users:
     Installing iSER as part of OFED installation will also install open-iscsi.
@@ -129,7 +133,7 @@ The build process will temporarily use the following default directory:
 temporary directory if desired.
 
 build.sh will also prompt the user for the installation directory. By default it
-is /usr/local/ofed.
+is /usr
 The RPMs will be placed under ./RPMS directory.
 
 For further details, see "Building OFED RPMs" and "Advanced Usage of OFED" in
@@ -139,7 +143,7 @@ OFED_Installation_Guide.txt under OFED-1.2/docs.
 5. Installing OFED Software
 ============================
 
-The default installation directory is:   /usr/local/ofed
+The default installation directory is:   /usr
 
 Install Quick Guide:
 1) Download and extract: tar xzvf OFED-1.2.tgz file.
@@ -199,7 +203,7 @@ Note: The install script removes previously installed IB packages and
     env LD_PRELOAD='stack_prefix'/lib/libsdp.so 
     LIBSDP_CONFIG_FILE='stack_prefix'/etc/libsdp.conf <application name> 
     (or LD_PRELOAD='stack_prefix'/lib64/libsdp.so on 64 bit machines)
-    The default 'stack_prefix' is /usr/local/ofed.
+    The default 'stack_prefix' is /usr
 
 
 7. MPI (Message Passing Interface)
@@ -211,7 +215,7 @@ simultaneously -- they will not conflict with each other.
 
 There are two MPI stacks included in this release of OFED:
 
-- Ohio State University's MVAPICH 0.9.7 (specifically updated and
+- Ohio State University's MVAPICH 0.9.9 (specifically updated and
   modified by Mellanox Technologies and Cisco or this release of OFED)
 - Open MPI 1.2.1
 
@@ -226,12 +230,11 @@ the tests.
 8. Related Documentation
 ========================
 1) Release Notes for OFED Distribution components are to be found under 
-   OFED-1.2/docs and, after the package installation, under <prefix>/docs. 
+   OFED-1.2/docs and, after the package installation, under 
+   /usr/share/doc/ofed-docs-1.2 for RedHat
+   /usr/share/doc/packages/ofed-docs-1.2 for SuSE.
 2) For a detailed installation guide, see OFED_Installation_Guide.txt.
-3) MPI_README.txt under <prefix>/docs.
-4) OFED_tips.txt under <prefix>/docs
-5) PERF_TEST_README.txt under <prefix>/docs
-5) For more information, please visit the OFED web-page http://www.openfabrics.org
+3) For more information, please visit the OFED web-page http://www.openfabrics.org
 
 
 For more information contact your InfiniBand vendor. 

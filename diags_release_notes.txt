@@ -4,23 +4,23 @@
 			   May 2007
 
 
-Repo: https://openib.org/svn/gen2/branches/1.2/src/userspace/management/diags
-Version: 9535
+Repo:    git://git.openfabrics.org/~ofed_1_2/management.git (release)
+         git://git.openfabrics.org/~halr/management.git (development)
 
 
 General
 -------
-Model of operation: All utilities use direct MAD access to perform their
+Model of operation: All diag utilities use direct MAD access to perform their
 operations. Operations that require QP0 mads only may use direct routed
-mads, and therefore may work even in unconfigured subnets. Almost all
+mads, and therefore can work even in unconfigured subnets. Almost all
 utilities can operate without accessing the SM, unless GUID to lid translation
 is required. The only exception to this is saquery which requires the SM.
 
 
 Dependencies
 ------------
-Most utilities depend on libibmad and libibumad.
-All utilities depend on the ib_umad kernel module.
+Most diag utilities depend on libibmad and libibumad.
+All diag utilities depend on the ib_umad kernel module.
 
 
 Multiple port/Multiple CA support
@@ -79,12 +79,11 @@ All utilities use the POSIX style notation, meaning that all options (flags)
 must precede all arguments (parameters).
 
 
-Bugs Fixed
-----------
-man pages are now supplied.
-
-
 Utilities descriptions
 ----------------------
 See man pages
+
+
+Bugs Fixed
+----------
 

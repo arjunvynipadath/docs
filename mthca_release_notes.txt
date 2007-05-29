@@ -8,14 +8,14 @@
 Table of Contents
 ===============================================================================
 1. Overview
-2. New Features
-3. Fixed Bugs
-4. Known Issues
+2. Fixed Bugs
+3. Known Issues
 
 ===============================================================================
 1. Overview
 ===============================================================================
-mthca is the low level driver implementation for all Mellanox Technologies HCAs.
+mthca is the low level driver implementation for Mellanox Technologies HCAs: 
+InfiniHost, InfiniHost III Ex and InfiniHost III Lx.
 
 mthca Available Parameters
 --------------------------
@@ -34,34 +34,26 @@ mthca parameters:
 
 
 ===============================================================================
-2. New Features
+2. Fixed Bugs
 ===============================================================================
-1. Catastrophic event reset: catastrophic event handling has been expanded
-   to include resetting the device. After generating the IB_EVENT_DEVICE_FATAL
-   async event, mthca now resets the device (assuming that the
-   catas_reset_disable module parameter described above is zero).
+1.  Allocating many MRs (which uses many memory pages) causes kernel Oops. (490)
+2.  Improve scheduling of kernel QPs in mthca. (542)
+3.  Wrong mthca errors (e.g. CQ entry for unknown QP bd0406). (394)
+4.  Kernel panic on boot when using Hide-DDR FW. (544)
+5.  Off-by-one in FMR handling on MemFree can cause memory corruption. (424)
+6.  InfiniHost III Lx: Data corruption when working with FMR (Influence on the
+    ULPs: iSER, SRP and Lustre).
+7.  Fix RESET to ERROR transition
+8.  Set cleaned CQEs back to HW ownership when cleaning CQ
+9.  Fix posting >255 receive WRs for InfiniHost
+10. Fix error path in mthca_alloc_memfree()
+11. Allow the QP state transition RESET->RESET
+12. Fix access to MTT and MPT tables on non-cache-coherent CPUs
 
-   Note that the reset entails removing then adding the device. For the device
-   to complete the reset, all user-level applications using device resources
-   directly via the user verbs layer must release those resources. Thus, such
-   applications should register to receive async events, should detect the
-   IBV_EVENT_DEVICE_FATAL event, and should release all resources for that
-   device upon receiving such an event.
 
-
-===============================================================================
-3. Fixed Bugs
-===============================================================================
-1. mthca no longer misses restoring the following PCI-X/PCI Express
-   registers after reset:
-     o  PCI-X device: PCI-X command register
-     o  PCI-X bridge: upstream and downstream split transaction registers
-     o  PCI Express: PCI Express device control and link control registers
-2. Fence bit is now supported properly.
-3. Fixed modify_qp, modify_srq and resize_cq methods to be fully reentrant.
 
 ===============================================================================
-4. Known Issues
+3. Known Issues
 ===============================================================================
 1. UAR size other than 8MB prevents mthca driver loading. The default UAR
    size is 8MB. If it is changed, the following error message will be logged to

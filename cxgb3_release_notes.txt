@@ -1,0 +1,129 @@
+            Open Fabrics Enterprise Distribution (OFED)
+                CHELSIO T3 RNIC RELEASE NOTES
+			May 2007
+
+
+
+Author: Steve Wise
+
+The iw_cxgb3 and cxgb3 modules provide iWARP and NIC support for the
+Chelsio S310, S320, and R310 adapters.  Make sure you choose the 'cxgb3'
+options when generating your ofed-1.2 rpms.
+
+This release is a technology preview.
+
+============================================
+Loadable Module options:
+============================================
+
+The following options can be used when loading the iw_cxgb3 module to
+tune the iWARP driver:
+
+cong_flavor     - set the congestion congtrol algorithm.  Default is 1.
+                  0 == Reno
+                  1 == Tahoe
+                  2 == NewReno
+                  3 == HighSpeed
+
+snd_win         - set the TCP send window in bytes. Default is 32KB.
+
+rcv_win         - set the TCP receive window in bytes. Default is 256KB.
+
+crc_enabled     - set whether MPA CRC should be negotiated.  Default is 1.
+
+markers_enabled - set whether to request receiving MPA markers.  Default is
+                  0; do not request to receive markers.
+
+                  NOTE: The Chelsio RNIC fully supports markers, but
+                  the current OFA RDMA-CM doesn't provide an API for
+                  requesting either markers or crc to be negotiated.  Thus
+                  this functionality is provided via module parameters.
+
+mpa_rev         - set the MPA revision to be used.  Default is 1, which is 
+                  spec compliant.  Set to 0 to connect with the Ammasso 1100 
+                  rnic.
+
+ep_timeout_secs - set the number of seconds for timing out MPA start up
+                  negotiation and normal close.  Default is 10.
+
+The following options can be used when loading the cxgb3 module to
+tune the NIC driver:
+
+msi             - whether to use MSI or MSI-X.  Default is 2.
+                  0 = only pin
+                  1 = only MSI or pin
+                  2 = use MSI/X, MSI, or pin, based on system
+
+============================================
+Updating Firmware:
+============================================
+
+Contact chelsio to obtain the latest firmware and cxgbtool source. 
+
+To build cxgbtool:
+
+# cd <path-to-cxgbtool>
+# make && make install
+
+Then load the cxgb3 driver:
+
+# modprobe cxgb3
+
+Now note the ethernet interface name for the T3 device.  This can be
+done by typing 'ifconfig -a' and noting the interface name for the
+interface with a HW address that begins with "00:07:43".  Then load the
+new firmware:
+
+# cxgbtool ethxx loadfw <firmware_file>
+# reboot
+
+============================================
+Testing connectivity with ping and rping:
+============================================
+
+Configure the ethernet interfaces for your cxgb3 device.   After you
+modprobe iw_cxgb3 you will see one or two ethernet interfaces for the
+T3 device.  Configure them with an appropriate ip address, netmask, etc.
+You can use the Linux ping command to test basic connectivity via the
+T3 interface.
+
+To test RDMA, use the rping command that is included in the librdmacm-utils 
+rpm:
+
+On the server machine:
+
+# rping -s -a 0.0.0.0 -p 9999
+
+On the client machine:
+
+# rping -c -VvC10 -a server_ip_addr -p 9999
+
+You should see ping data like this on the client:
+
+ping data: rdma-ping-0: ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqr
+ping data: rdma-ping-1: BCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrs
+ping data: rdma-ping-2: CDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrst
+ping data: rdma-ping-3: DEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstu
+ping data: rdma-ping-4: EFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuv
+ping data: rdma-ping-5: FGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvw
+ping data: rdma-ping-6: GHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwx
+ping data: rdma-ping-7: HIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxy
+ping data: rdma-ping-8: IJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz
+ping data: rdma-ping-9: JKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyzA
+client DISCONNECT EVENT...
+#
+
+============================================
+Addition Notes and Issues
+============================================
+
+1) To run uDAPL over the chelsio device, you must export this environment
+variable:
+
+        export DAPL_MAX_INLINE=64
+
+2) If you have a multi-homed host and the physical ethernet networks are
+bridged, then you need to configure arp to only send replies on the 
+interface with the target ip address:
+
+        sysctl -w net.ipv4.conf.all.arp_ignore=2

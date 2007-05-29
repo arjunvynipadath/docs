@@ -25,9 +25,9 @@ Table of contents
 ==============================================================================
 
 This is the OpenFabrics Enterprise Distribution (OFED) version 1.2
-software package supporting InfiniBand fabrics. It is composed of
-several software modules intended for use on a computer cluster
-constructed as an InfiniBand subnet.
+software package supporting InfiniBand and iWARP fabrics. It is composed
+of several software modules intended for use on a computer cluster
+constructed as an InfiniBand subnet or iWARP network.
 
 This document describes how to install the various modules and test them in
 a Linux environment.
@@ -76,7 +76,7 @@ The OFED Distribution package generates RPMs for installing the following:
 3. HW and SW Requirements
 ==============================================================================
 
-1) Server platform with InfiniBand HCA or iWARP NIC (see OFED Distribution
+1) Server platform with InfiniBand HCA or iWARP RNIC (see OFED Distribution
    Release Notes for details)
 
 2) Linux OS (see OFED Distribution Release Notes for details)
@@ -94,9 +94,12 @@ OS Distribution         Required Packages
 General:
 o  Common to all        gcc, glib, glib-devel, glibc, glibc-devel, zlib-devel
                         automake, autoconf, libtool.
-o  RedHat               kernel-devel, sysfsutils, sysfsutils-devel, rpm-build
+o  RedHat, Fedora       kernel-devel, rpm-build
 o  SLES 9.0             kernel-source, udev, rpm
-o  SLES 10.0            kernel-source, sysfsutils, sysfsutils-devel, rpm
+o  SLES 10.0            kernel-source, rpm
+
+Note:   To build 32-bit libraries on x86_64 and ppc64 glibc-devel 32bit
+        should be installed
 
 Specific Component Requirements:
 o  OSU MPI              a Fortran Compiler (such as gcc-g77)
@@ -170,15 +173,18 @@ o  tvflash              pciutils-devel
 Install Process Results:
 ------------------------
 
-o The OFED package is installed under <prefix> directory.
-o InfiniBand kernel modules are copied to:
-  /lib/modules/`uname -r`/updates/kernel/drivers/infiniband/
-o open-iscsi kernel modules are copied to:
-  /lib/modules/`uname -r`/updates/kernel/drivers/scsi/
-o /lib/modules/2.6.18-1.2747.el5/updates/kernel/drivers/net/cxgb3/cxgb3.ko
-/lib/modules/2.6.18-1.2747.el5/updates/kernel/net/rds/rds.ko
-o The package kernel include files are placed under <prefix>/src/openib.- TBD
-explan ofa-kernel
+o The OFED package is installed under <prefix> directory. Default prefix is
+  /usr
+o The kernel modules are installed under:
+  - Infiniband subsystem:
+    /lib/modules/`uname -r`/updates/kernel/drivers/infiniband/
+  - open-iscsi:
+    /lib/modules/`uname -r`/updates/kernel/drivers/scsi/
+  - Chelsio driver:
+  /lib/modules/`uname -r`/updates/kernel/drivers/net/cxgb3/cxgb3.ko
+  - RDS:
+    /lib/modules/`uname -r`/updates/kernel/net/rds/rds.ko
+o The package kernel include files are placed under <prefix>/src/openib.
   These includes should be used when building kernel modules which use
   the Openfabrics stack. (Note that these includes, if needed, have
   been "backported" to your kernel).
@@ -216,7 +222,7 @@ o If iSER was included, open-iscsi userspace files will be also installed:
   - Documentation will be installed at:
     - RedHat: /usr/share/doc/iscsi-initiator-utils-<version number>
     - SuSE: /usr/share/doc/packages/open-iscsi
-  - man pages will be installed at /usr/share/man/man8.
+o man pages will be installed at /usr/share/man/.
 
 ==============================================================================
 6. Building OFED RPMs
@@ -265,12 +271,6 @@ Note: Depending on your hardware, the build procedure may take 30-45
       homogeneous clusters is to extract the tarball on a network
       file system (such as NFS), do the build on NFS, and then run
       installer on each node with the RPMs that were previously built.
-
-*** Important Note for Open MPI users ONLY: The Open MPI software
-    requires that the InfiniBand drivers be installed before it is
-    built.  Hence, Open MPI will only be built if you select the
-    "install" option.  Open MPI will *not* be built if you only select
-    the "build" option.
 
 ==============================================================================
 7. IP-over-IB (IPoIB) Configuration
@@ -337,8 +337,8 @@ ONBOOT_ib0=1
 
 There are two ways to uninstall OFED:
 1) Via the installation menu.
-2) Using the script uninstall.sh. The script resides under OFED-X.X.X/
-   and under the installation <prefix> directory.
+2) Using the script ofed_uninstall.sh. The script is part of ofed-scripts
+   package.
 
 
 ==============================================================================

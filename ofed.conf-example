@@ -1,4 +1,4 @@
-STACK_PREFIX=/usr/
+STACK_PREFIX=/usr
 BUILD_ROOT=/var/tmp/OFED
 
 kernel_ib=y

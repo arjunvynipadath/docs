@@ -9,35 +9,62 @@
 Table of Contents
 ===============================================================================
 1. Overview
-2. Bug Fixes
-3. Known Issues
-4. Verification Applications/Flows/Tests
+2. New Features
+3. Bug Fixes
+4. Known Issues
+5. Supported Socket Options
+6. Verification Applications/Flows/Tests
 
 ===============================================================================
 1. Overview
 ===============================================================================
-SDP in OFED is at beta level for OFED 1.2. 
-
-
-===============================================================================
-2. Bug Fixes
-===============================================================================
-* SDP now disables timewait on close if the socket has been disconnected
-
-* SDP now reports EPIPE if a packet gets queued after disconnect
-
-* Improved urgent data latency
-
-* Fixed data corruption upon changing the TCP_NODELAY socket option
-
-* Fixed a crash that occurs when a child is disconnected while its parent is
-  being destroyed.
-
-* SDP now recovers from RTU packet loss.
-
+SDP in OFED is at GA level for OFED 1.2. 
 
 ===============================================================================
-3. Known Issues
+2. new features
+===============================================================================
+* add proc fs support. 
+
+* OFED is shipped with patched version of netstat (sdpnetstat).
+  SDP info is printed by default.  To view only SDP sockets use the "-S" flag.
+  Info given from sdpnetstat (for each SDP socket):
+        Recv-Q
+        Send-Q
+        Local Address
+        Foreign Address
+        User
+        Inode
+        PID/Program name
+
+* Allow user, via module parameter, to bound SDP's memory use
+
+* Implement slow start on recv buffers. The socket is created with small buffers
+  and when needed the socket requests the other side so resize it's buffers to
+  allow for more data.
+
+===============================================================================
+3. Bug Fixes
+===============================================================================
+* merge small skbs on receive side into larger ones (bugzilla 276)
+
+* fix DMA leak, and DMA direction (556)
+
+* improve BW
+
+* kernel oops when device is removed (bugzilla 579)
+
+* compliant with CA4-119 (bugzilla 596)
+
+* cm disconnect should wake up any sleeping processes (bugzzila num. 492)
+
+* fix interop bugs in login messages
+
+* handle shutdown recv on listening socket
+
+* modify buffer use calculation to eliminate credit starvation
+
+===============================================================================
+4. Known Issues
 ===============================================================================
 - Each SDP socket currently consumes up to 2 MBytes of memory. If this value
   is high for your installation, it is possible to trade off performance
@@ -46,6 +73,11 @@ SDP in OFED is at beta level for OFED 1.2.
 
   Note: the minimum legal value for this parameter is 1.
   At this parameter value, each socket will consume approximately 128 KBytes.
+
+  Note: memory usage of recv buffers can be limited via the "top_mem_usage"
+  module parameter. Setting the parameter (default: 0) will cause socket
+  memory usage for recv buffers to be the maximum allowed under the system
+  wide limit.
 
 - Small message size performance is low when messages are sent by client
   at a rate lower than the rate at which they are consumed by server,
@@ -74,11 +106,96 @@ SDP in OFED is at beta level for OFED 1.2.
        set the tavor_quirk module parameter of the rdma_cm module to value 1
        (default: 0).
 
+- Connection rate in lower than TCP.  This may cause clients to get connection
+  refused when server is under connection stress.
+
+- Due to limited dma pool on PPC, sdp cannot sustain more than about 1000 sockets
+  with default parameters.  Limiting max_large_sockets and rcvbuf_scale allows
+  more sockets to be opened but at a performance cost.
+
 
 ===============================================================================
-4. Verification Applications/Flows/Tests
+5. Supported Socket Options
 ===============================================================================
-- ssh/sshd
+	Option	   	   Supported
+
+SOL_SOCKET:
+	SO_BROADCAST		NA
+	SO_DEBUG
+	SO_DONTROUTE		NA
+	SU_ERROR		V
+	SO_KEEPALIVE
+	SO_LINGER		V
+	SO_OOBINLINE		V
+	SO_RCVBUF		V
+	SO_SENDBUF		V
+	SO_RECVLOWAT		V
+	SO_SNDLOWAT		V
+	SO_RCVTIMEO		V
+	SO_SNDTIMEO		V
+	SO_REUSEADDR		V
+	SO_REUSEPORT		V
+	SO_TYPE
+	SO_USELOOPBACK
+	SO_BSDCOMPAT
+	SO_PASSCRED
+	SO_PEERCRED
+	SO_BINDTODEVICE
+	SO_ACCEPTCONN
+	SO_PRIORITY
+	SO_TIMESTAMP
+IPPROTO_IP:
+	IP_HDRINCL
+	IP_OPTIONS
+	IP_RECVDSTADDR
+	IP_RECVIF
+	IP_TOSi			NA
+	IP_TTL			NA
+	IP_PKTINFO		NA
+	IP_RECVTOS		NA
+	IP_RECVTTL		NA
+	IP_RECVOPTS
+	IP_RETOPTS
+	IP_HDRINCL
+	IP_RECVERR
+	IP_MTU_DISCOVER
+	IP_MTU
+	IP_ROUTER_ALERT		NA
+IPPROTO_ICMPV6:
+	ICMP6_FILTER		NA
+IPPROTO_IPV6:
+	IPV6_ADDRFORM		NA
+	IPV6_CHECKSUM		NA
+	IPV6_DSTOPTS		NA
+	IPV6_HOPLIMIT		NA
+	IPV6_HOPOPTS		NA
+	IPV6_NEXTHOP		NA
+	IPV6_PKTINFO		NA
+	IPV6_PKTOPTIONS		NA
+	IPV6_RTHDR		NA
+	IPV6_UNICAST_HOPS	NA
+IPPROTO_TCP:
+	TCP_KEEPALIVE
+	TCP_MAXRT
+	TCP_MAXSEG
+	TCP_NODELAY		V
+	TCP_STDURG
+	TCP_CORK		V
+	TCP_DEFER_ACCEPT
+	TCP_INFO
+	TCP_KEEPCNT
+	TCP_KEEPIDLE
+	TCP_KEEPINTVL
+	TCP_LINGER2
+	TCP_QUICKACK
+	TCP_SYNCNT
+	TCP_WINDOW_CLAMP
+
+
+===============================================================================
+6. Verification Applications/Flows/Tests
+===============================================================================
+- ssh/sshd/scp
 - wget/netscape/firefox/apache                  
 - netpipe               
 - netperf             
@@ -88,6 +205,10 @@ SDP in OFED is at beta level for OFED 1.2.
 - Threaded and forking echo client server examples
 - Various Java client server applications (SUN:jre, BEA:jrockit/WebLogic, GNU:gij/gcj)
 - Many UNIX utilities to verify that pre-load did not harm the applications
+- shutdown/close/accept
+- lowat/timeo
+- oob
+- select/pselect/poll
 
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -120,10 +241,11 @@ is 1.2.
 ===============================================================================
 2. New Features
 ===============================================================================
-* New verbosity level "7" used for reporting connect/accept calls
-  and the address family used. This results in a reasonably short
-  log file that shows which connections used SDP and which ones used TCP.
+* change default rules to "both" for server and client
 
+* Add support for two new APIs: pselect and poll
+
+* If no match is made, default to "both"
 
 ===============================================================================
 3 Bug Fixes
@@ -131,43 +253,35 @@ is 1.2.
 The following list of bugs were fixed. Note that other less critical
 or visible bugs were also fixed.
 
-* Some applications provide IPv6 address in partial struct (missing the newer
-  scope_id field). The fix avoids libsdp memory corruption in this case.
+* Handle the case where another lib is init before libsdp but calls API 
+  cloned by libsdp (bugzilla 304)
 
-* Fixed address conversion bug in loopback address and also on all IPv4->IPv6 
-  (missed the extra 0xffff to the IPv6).
+* libsdp.conf is not being overwritten (bugzilla 303)
 
-* listen - had a missing flow for handling implicit bind. This caused the
-  "use both" case to provide two different/unrelated ports for the SDP and
-  TCP ports. Eventually, this caused the SDP port to be unusable (since the
-  client was only obtaining the TCP port number). Fixed by adding a flow similar
-  to the one used by bind with ANY_PORT.
+* fix security issue of log file:
+  1. root file is under /var/log - so users can not play with it
+  2. if the file maps into a link it is not used (stderr instead)
+  3. file name extended with effective user ID
 
-* Several bugs in using getsockname()/getpeername() which prevented the correct
-  address length from being returned when SDP-provided IPv4 addresses had to be
-  converted back to IPv6.
+* install failed if the target sysconfig directory did not exist
 
-* Fixed memory corruption caused by using struct sockaddr to store IPv6 address. 
-  sockaddr_storage is used instead.
+* accept when the FD is marked NONBLOCK
 
-* Accept now handles a null output address pointer.
+* failing to handle async connect in both mode, default to SDP only
 
-* errno was corrupted by call to is_invalid_addr, reporting false errno to
-  applications.
+* document libsdp.conf log levels 3 and 4 (bugzilla 559)
 
-* Fixed socket leak in the flow for bind(ANY_PORT)
+* in "both" mode, only close the SDP socket in case the TCP connection 
+  succeeds (bugzilla 576)
 
-* libsdp now avoids log errors on connect() using async mode returning -1 when
-  errno == EINPROGRESS
+* getsockname returns invalid address for sockets bind to ipv4 address
+  encapsulated in ipv6 (bugzilla 613)
 
 ===============================================================================
 4. Known Issues
 ===============================================================================
-* libsdp cannot provide its socket switch functionality for executables
-  statically linked with libc.
-
-* When using server to listen on both SDP and TCP, the number of sockets is 
-  doubled.
+* When using server to listen on both SDP and TCP, the number of sockets and
+  file descriptors is doubled.
 
 * A rare race still exists when performing bind/listen on ANY_PORT. The race
   is between applications and has been greatly minimized. A test to reproduce it
@@ -179,9 +293,18 @@ or visible bugs were also fixed.
   different port number in successive calls to bind (ANY_PORT) and SDP support
   for "unbind").
 
+* libsdp does not support non-blocking connect in "both" mode.  In such case,
+  libsdp defaults to SDP and a warning is printed to the log file.
+
+* Applications statically linked with libc will not allow dynamic pre-loading
+  to port these applications to use SDP one needs to replace specific socket
+  calls (within the application) with AF_INET_SDP and recompile.
 
 ===============================================================================
 5. Verification Applications/Flows/Tests
 ===============================================================================
 See the corresponding section in the SDP release notes above.
+
+- libsdp rule matching
+- bind mechanism
 
