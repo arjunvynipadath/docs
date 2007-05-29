@@ -25,32 +25,62 @@ to the relevant IETF working group's RFCs (http://www.ietf.org).
 ===============================================================================
 2. New Features
 ===============================================================================
-IPoIB supports increasing the verbosity of debug messages through a module
-parameter. The parameter value can be controlled at load time or runtime.
-At load time this can be done by inserting the following line in
-/etc/modprobe.conf:
-  options ib_ipoib debug_level=<integer number>
 
-At runtime the value can be controlled by writing the following to sysfs:
-  echo <integer number> > /sys/module/ib_ipoib/parameters/debug_level
+IPoIB now supports connected mode (RFC 4755). IPOIB CM is enabled by default
+on hardware that supports SRQ optional feature (mthca, ipath).
+Max MTU for connected mode is increased to 65520.
+By default, MTU will be configured to this maximum value.
 
-The value can also be inspected by running:
-  cat /sys/module/ib_ipoib/parameters/debug_level
+1. IPoIB will accept incoming connected mode connections
+   unless disabled at compile time
+2. IPoIB will use connected mode for all outgoing traffic
+   to unicast destinations that support connected mode,
+   if and only if connected mode is enabled at run time.
+3. For destinations that do not support connected mode, IPoIB
+   will fall back on datagram mode
+4. For multicast traffic, IPoIB always uses datagram mode
 
-Note that on some older kernels (like the one supplied with Redhat AS 4.0),
-the path for inspecting the debug level is different and is as follows:
-  /sys/module/ib_ipoib/debug_level 
+Usage and configuration:
+
+1. To check current mode used for outgoing connections:
+   cat /sys/class/net/ib0/mode
+2. To disable IPoIB CM at compile time:
+   cd OFED-1.2
+export OFA_KERNEL_PARAMS="--without-ipoib-cm"
+   ./install.sh
+3. To change run time configuration for IPoIB:
+   edit /etc/infiniband/openib.conf, change the following parameters:
+   # Enable IPoIB Connected Mode
+   SET_IPOIB_CM=yes
+   # Set IPoIB MTU
+   IPOIB_MTU=65520
+
+4. You can also change mode and MTU for a specific interface manually:
+   To enable connected mode for interface ib0:
+   echo connected > /sys/class/net/ib0/mode
+   To increase MTU:
+   ifconfig ib0 mtu 65520
 
 ===============================================================================
 3. Known Issues
 ===============================================================================
 1. If a host has multiple interfaces, each belonging to a different IP subnet,
    yet they use the same InfiniBand switch, the host may build an incorrect ARP
-   table. This may lead to problems which seem like violations of the IP rule
-   requiring different broadcast domains -- a rule not observed in this
-   implementation of IPoIB.
+   table. Generally speaking, you must not have two IP (=L3) subnets sharing the
+   same L2 (specifically broadcast) domain. In infiniband (IPoIB) it means have
+   two IP subnets over the same Partition and in Ethernet is means have two IP
+   subnets over the same VLAN.
 
-2. On Fedora Core 4, SuSE 10 and SLES 10:
+   As a work-around, configure ARP to only send replies on the
+   interface with the target IP address. Either globally:
+
+   sysctl -w net.ipv4.conf.all.arp_ignore=2
+
+   or for specific interfaces:
+
+   for i in /proc/sys/net/ipv4/conf/ib*/arp_filter; do echo 1 > $i; done
+
+2. On SuSE 10 and SLES 10:
    a.   There are IPoIB alias lines in modprobe.conf which prevent stopping/
         unloading the stack (i.e., '/etc/init.d/openibd stop' will fail). 
 	These alias lines cause the drivers to be loaded again by udev scripts.
@@ -64,20 +94,41 @@ the path for inspecting the debug level is different and is as follows:
         Workaround: Invoke ifup/ifdown using both the interface name and the
 		configuration script name (example: ifup ib1 ib1).
 
-3. On RedHat EL 4 up2 the driver may not load properly if SELINUX is enforced.
-
-   Workaround: Change the value of the parameter SELINUX in
-   /etc/sysconfig/selinux from "enforcing" to "permissive" or "disabled".
+3. After a hotplug event, IPoIB interface falls back on datagram mode,
+   MTU is reduced to 2K.
+   Workarounds:
+   - Set up IPoIB HA service as documented below
+   - Re-enable connected mode and increase the mtu manually:
+     echo connected > /sys/class/net/ib0/mode
+     ifconfig ib0 mtu 65520
 
 4. Since the IPoIB configuration files (ifcfg-ib<n>) are installed at the
    standard networking scripts location (RedHat:/etc/sysconfig/network-scripts/
    and SuSE: /etc/sysconfig/network/), the option IPOIB_LOAD=no in openib.conf
    does not prevent the loading of IPoIB on boot.
 
-5. On RedHat EL 4 up4, ipoib multicast group membership does not work
-   due to missing code in the kernel which was available in u3 and removed
-   in u4.
+5. On RedHat EL 4 up4, IPOIB implementation is not spec compliant:
+   - ipoib multicast does not work
+   - ipoib can not inter-operate between RHEL4U4 and other hosts
+   This is due to missing code in the kernel which was available in u3 and u5 and removed
+   in u4. As a work around, upgrade to RHEL4U5.
 
+6. IPoIB connected mode, if enabled, uses large MTU for connected mode messages
+   and small MTU for datagram (in particular, multicast) messages, and relies on
+   path mtu discovery to adjust MTU appropriately. Packets sent in the window
+   before MTU discovery automatically reduces the MTU for a specific destination
+   will be dropped, producing the following message in system log:
+   "packet len <actual length> (> <max allowed length>) too long to send, dropping"
+
+   To warn about this, a message is produced in system log each time
+   MTU is set to a value higher than 2K.
+
+7. In connected mode, TCP latency for short messages is larger by approx. 1usec
+   (~5%) than in datagram mode. As a work-around, use datagram mode.
+
+8. Single-socket TCP bandwidth for kernels < 2.6.18 is lower than with
+   newer kernels. We recommend kernels from 2.6.18 and up for
+   best IPoIB performance.
 
 ===============================================================================
 4. DHCP Support of IPoIB
@@ -90,12 +141,12 @@ Note: To use DHCP the user must apply a special patch (see "DHCP Notes" below).
 DHCP Supported Operating Systems
 --------------------------------
 1. SLES 10
-2. SuSE 10
-3. Any kernel from 2.6.14 (tested with kernel 2.6.16.18)
+2. RHEL 5
+3. All kernels from 2.6.14 and up
 
 DHCP Unsupported Operating Systems
 ----------------------------------
-No RedHat EL distributions are supported.
+RedHat EL 4 distributions are supported.
 
 
 DHCP Notes
@@ -164,9 +215,9 @@ Using the ib-bonding driver
 ---------------------------
 The ib-bonding driver can be loaded manually or automatically
 
-1. Manual operaion:
+1. Manual operation:
 Use the utility ib-bond to stop/query/stop the driver. To get help about this
-utility, read the documentaion that comes with the ib-bonding package.
+utility, read the documentation that comes with the ib-bonding package.
 
 2. Automatic operation:
 Edit file '/etc/infiniband/openib.conf' as follows:
