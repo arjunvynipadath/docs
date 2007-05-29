@@ -1,0 +1,151 @@
+Mellanox Technologies, Inc. - www.mellanox.com
+***********************************************
+
+mstflint: A BURNING FIRMWARE APPLICATION
+----------------------------------------
+
+1) Overview
+    This package contains a burning tool, and diagnostic tools, for Mellanox
+    manufactured HCA cards.  It also provides access to the relevant source
+    code. Please see the file LICENSE for licensing details.
+
+    ----------------------------------------------------------------------------
+    NOTE:
+    This burning tool should be used only with Mellanox-manufactured
+    HCA cards. Using it with cards manufactured by other vendors may be harmful
+    to the cards (due to different configurations).
+    Using diagnostic tools is usually safe for all HCAs.
+    ----------------------------------------------------------------------------
+    
+2) Package Contents
+    a) mstflint source code.
+    b) mflash lib.
+       This lib provides flash access through Mellanox HCAs.
+    c) mtcr linux utility.
+       This utility enables the mflash lib to access the HCA
+       hardware registers.
+    d) mstregdump utility
+       This utility dumps hardware registers from Mellanox hardware,
+       for later analysis by Mellanox
+    e) mstvpd
+       This utility dumps on-card VPD
+
+3) Installation
+    a) Build the the mstflint utility.
+        Example: 
+        make
+
+    b) Compilation should end with no error messages.
+        For example:
+	>make
+	g++ -O2 -g -Wall -I. -fno-exceptions -c flint.cpp -o mstflint.o
+	cc  -O2 -g -Wall -I. -fno-exceptions mstflint.o -o mstflint "/usr/lib/gcc/i486-linux-gnu/4.0.3/../../../../lib/libz.a" "/usr/lib/gcc/i486-linux-gnu/4.0.3/libstdc++.a"
+	cc -O2 -g -Wall -I. mread.c -o mstmread
+	cc -O2 -g -Wall -I. mwrite.c -o mstmwrite
+	cc -O2 -g -Wall -I. mstdump.c -o mstregdump
+	cc -O2 -g -Wall -I. vpd.c -o mstvpd
+
+    c) Executables named mstflint, mstregdump, mstvpd will be generated in the current
+       directory
+       This is the mstflint utility that can be used to burn and examine
+       the HCA on-board flash, mstregdump and mstvpd diagnostic utilities.
+       You may copy these executables to an arbitrary location.
+
+4) Requirements:
+    a) Typically, you will need root privileges for hardware access
+
+    b) For flash update, you will need the binary firmware-image file
+       supplied by your HCA card vendor.
+
+	If you purchased your card from Mellanox, please use the Mellanox
+	secured site with your customer login account to download the firmware
+	binaries, or contact your local field application engineer.
+
+       Or
+
+	If you purchased your card from a vendor other than Mellanox, get a
+	specific board file from your HCA card vendor and generate the binary
+	image.
+
+    c) If the mthca driver for the device is not loaded.
+       You must know the device location on the PCI bus.
+       For example, to find an InfiniHost HCA car manufactured by Mellanox use:
+
+       /sbin/lspci -d 15b3:5a44
+       02:00.0 InfiniBand: Mellanox Technology: Unknown device 5a44 (rev a1)
+
+	In this example, 02:00.0 identifies the device in the form bus:dev.fn
+	
+5) Usage (mstflint):
+	Read mstflint usage. Enter: "./mstflint -h" for short help, or
+	"./mstflint -hh" for detailed help message.
+
+	Use mstflint to burn a device according to the burning instructions. 
+	You will need to specify the device in the form mthcaX if the driver
+	has loaded successfully, or bus:dev.fn as explained in section 4c) 
+	above, or in the alternative form /proc/bus/pci/bus/dev.fn .
+
+	If the driver is loaded, unload and re-load it, or reset the device in
+        some other way, so that the new firmware is re-read from flash.
+
+       Examples:
+       1) mstflint -d mthca0 v
+       		This is the recommended method, but it only works
+		if the mthca driver for the device is loaded.
+
+		Note: it is always safe to try this access method first -
+		if the driver is not loaded, mstflint will fail with an error
+		message and you'll be able to retry with another method.
+
+		To verify that the driver for the device mthca0 is loaded, you 
+		can check whether /sys/class/infiniband/mthca0/device exists.
+
+       2) mstflint -d 02:00.0 v
+		This is functionally equivalent to access method 1, but less 
+		convenient. This access method works with or without the driver
+		loaded.
+
+       3) mstflint -d /proc/bus/pci/02/00.0 v
+		This method is less safe: verify that driver is not running,
+		and that no other software accesses the device before using it.
+
+6) Usage (mstregdump):
+        Internal register dump is produced on standard output.
+        Store it in file for analysis in Mellanox.
+
+	Example:
+	*) mstregdump mthca0 > dumpfile
+
+7) Usage (mstvpd):
+        VPD dump is produced on standard output.
+	A list of keywords to dump can be supplied after the -- flag
+	to apply an output filter:
+
+	Examples:
+	1) mstvpd mthca0
+	ID: Lion cub DDR
+	PN: MHGA28-1T
+	EC: A3
+	SN: MT0551X00740
+	V0: PCIe x8
+	V1: N/A
+	YA: R               R
+	RW:
+
+	2) mstvpd mthca0 -- PN ID
+	PN: MHGA28-1T
+	ID: Lion cub DDR
+
+8) Problem Reporting:
+	Please collect the following information when reporting issues:
+
+	uname -a
+	cat /etc/issue
+	cat /proc/bus/pci/devices
+	lspci
+        mstflint -d 02:00.0 v
+        mstflint -d 02:00.0 q
+        mstvpd 02:00.0
+
+
+
