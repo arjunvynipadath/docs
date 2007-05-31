@@ -1,11 +1,11 @@
              Open Fabrics Enterprise Distribution (OFED)
-     Open MPI in OFED 1.2 Copyrights, License, and Release Notes
+     Open MPI in OFED 1.1 Copyrights, License, and Release Notes
 			  
                           May 2007
 
+
 Open MPI Copyrights
 -------------------
-
 Most files in this release are marked with the copyrights of the
 organizations who have edited them.  The copyrights below generally
 reflect members of the Open MPI core team who have contributed code to
@@ -22,19 +22,13 @@ Copyright (c) 2004-2006 High Performance Computing Center Stuttgart,
                         University of Stuttgart.  All rights reserved.
 Copyright (c) 2004-2006 The Regents of the University of California.
                         All rights reserved.
-Copyright (c) 2006-2007 Los Alamos National Security, LLC.  All rights
-                        reserved. 
 Copyright (c) 2006-2007 Cisco Systems, Inc.  All rights reserved.
-Copyright (c) 2006-2007 Voltaire, Inc. All rights reserved.
-Copyright (c) 2006      Sandia National Laboratories. All rights reserved.
-Copyright (c) 2006-2007 Sun Microsystems, Inc.  All rights reserved.
-                        Use is subject to license terms.
-Copyright (c) 2006-2007 The University of Houston. All rights reserved.
-Copyright (c) 2006      Myricom, Inc.  All rights reserved.
+Copyright (c) 2006      Voltaire, Inc. All rights reserved.
+Copyright (c) 2006      Sun Microsystems, Inc.  All rights reserved.
+Copyright (c) 2007      Myricom, Inc.  All rights reserved.
 
 Open MPI License
 ----------------
-
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
 met:
@@ -102,13 +96,27 @@ Much, much more information is also available in the Open MPI FAQ:
 OFED-Specific Release Notes
 ---------------------------
 
-- GNU Libtool interacts poorly with the Pathscale compiler suite,
-  resulting in C++ MPI bindings that are non-functional.  All other
-  MPI language bindings seem to work ok.  The Libtool software
-  maintainers have been notified.
+SLES 10 with non-gcc compiler support:
 
-General Release Notes
----------------------
+Open MPI can be built from source to support environments not
+supported by the default OFED installer.  The source code for Open MPI
+can be extracted from the SRPM shipped with OFED or downloaded from
+the main Open MPI web site: http://www.open-mpi.org/.
+
+To compile with Open MPI from source with OFED support, fully install
+the rest of OFED and then configure Open MPI with the
+"--with-openib=/usr" command line option.  See the rest of the
+documentation below for other configure command line options and
+installation instructions.
+
+Intel compiler support:
+
+Some versions of the Intel 9.1 C++ compiler suite series produce
+incorrect code when used with the Open MPI C++ bindings.  Symptoms of
+this problem include crashing applications (e.g., segmentation
+violations) and Open MPI producing errors about incorrect parameters.
+
+===========================================================================
 
 The following abbreviated list of release notes applies to this code
 base as of this writing (1 March 2007):
@@ -199,13 +207,14 @@ base as of this writing (1 March 2007):
   Tests with later versions show that this has been fixed (e.g.,
   v6.0-5).
 
-- The Portland Group compilers require the "-Msignextend" compiler
-  flag to extend the sign bit when converting from a shorter to longer
-  integer.  This is is different than other compilers (such as GNU).
-  When compiling Open MPI with the Portland compiler suite, the
-  following flags should be passed to Open MPI's configure script:
+- The Portland Group compilers prior to version 7.0 require the
+  "-Msignextend" compiler flag to extend the sign bit when converting
+  from a shorter to longer integer.  This is is different than other
+  compilers (such as GNU).  When compiling Open MPI with the Portland
+  compiler suite, the following flags should be passed to Open MPI's
+  configure script:
 
-  shell$ ./configure CFLAGS=-Msignextend CXXFLAGS=-signextent \
+  shell$ ./configure CFLAGS=-Msignextend CXXFLAGS=-Msignextend \
 	--with-wrapper-cflags=-Msignextend \
 	--with-wrapper-cxxflags=-Msignextend ...
 
