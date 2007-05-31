@@ -1,0 +1,36 @@
+	  Open Fabrics Enterprise Distribution (OFED)
+             RDS in OFED 1.2 Release Notes
+			  
+			   May 2007
+
+
+===============================================================================
+Table of Contents
+===============================================================================
+1. Overview
+2. Supported Platforms
+3. Known Issues
+
+===============================================================================
+1. Overview
+===============================================================================
+RDS socket API.  It provides reliable, in-order datagram delivery between 
+sockets over a variety of transports.
+For details see RDS.README.txt.
+Also available at: http://oss.oracle.com/projects/rds/dist/documentation/rds.7.txt
+
+===============================================================================
+2. supported platforms
+===============================================================================
+
+        RHEL4.0 Update 3,4,5
+        RHEL5.0
+        SLES 10
+
+===============================================================================
+3. Known Issues
+===============================================================================
+1. RDS HA fails
+	
+	
+
