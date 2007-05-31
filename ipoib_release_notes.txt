@@ -64,21 +64,28 @@ export OFA_KERNEL_PARAMS="--without-ipoib-cm"
 ===============================================================================
 3. Known Issues
 ===============================================================================
-1. If a host has multiple interfaces, each belonging to a different IP subnet,
-   yet they use the same InfiniBand switch, the host may build an incorrect ARP
-   table. Generally speaking, you must not have two IP (=L3) subnets sharing the
-   same L2 (specifically broadcast) domain. In infiniband (IPoIB) it means have
-   two IP subnets over the same Partition and in Ethernet is means have two IP
-   subnets over the same VLAN.
+1. A host that has multiple interfaces, each belonging to a different IP subnet,
+   yet they use the same InfiniBand Partition and are connected to the same IB
+   Switch, violates the IP rule requiring different broadcast domains and hence
+   may build an incorrect ARP table.
 
-   As a work-around, configure ARP to only send replies on the
-   interface with the target IP address. Either globally:
+   Thus the correct setting of multi-homed IPoIB host would be to use a different
+   PKEY for each IP subnet. When a host has multiple interfaces on the same IP
+   subnet, to avoid the case of a peer building an incorrect ARP entry (neighbor),
+   set the net.ipv4.conf.X.arp_ignore value to 1 or 2, where X stands for the IPoIB
+   (non child) interfaces (eg ib0, ib1, etc), this would cause the network stack to
+   send ARP replies only on the interface with the IP address specified in the ARP
+   request:
 
-   sysctl -w net.ipv4.conf.all.arp_ignore=2
+   sysctl -w net.ipv4.conf.ib0.arp_ignore=1
+   sysctl -w net.ipv4.conf.ib1.arp_ignore=1
 
-   or for specific interfaces:
+   or globally,
 
-   for i in /proc/sys/net/ipv4/conf/ib*/arp_filter; do echo 1 > $i; done
+   sysctl -w net.ipv4.conf.all.arp_ignore=1
+
+   To learn more on the arp_ignore param, see Documentation/networking/ip-sysctl.txt
+   Note that distributions have the means to make kernel params persistent.
 
 2. On SuSE 10 and SLES 10:
    a.   There are IPoIB alias lines in modprobe.conf which prevent stopping/
