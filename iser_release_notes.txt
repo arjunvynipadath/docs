@@ -6,32 +6,33 @@
 
 * Background
 
-	iSER allows iSCSI to be layered over RDMA transports (including InfiniBand 
-	and iWARP (RNIC)).
+	iSER allows iSCSI to be layered over RDMA transports (including
+	InfiniBand and iWARP (RNIC)).
 
-	The OpenFabrics iSER initiator implementation is interoperable with open-iscsi 
-	(http://www.open-iscsi.org/). It provides an alternative transport to 
-	iscsi_tcp in the open-iscsi framework. The iSER transport exposes a 
-	transport API to scsi_transport_iscsi, and a SCSI LLD API to the Linux 
-	SCSI mid-layer (scsi_mod). Currently, the OpenFabrics iSER initiator can be
-	layered over InfiniBand (no iWARP support yet).
+	The OpenFabrics iSER initiator implementation is interoperable with
+	open-iscsi (http://www.open-iscsi.org/). It provides an alternative
+	transport to iscsi_tcp in the open-iscsi framework. The iSER transport
+	exposes a transport API to scsi_transport_iscsi, and a SCSI LLD API to
+	the Linux SCSI mid-layer (scsi_mod). Currently, the OpenFabrics iSER
+	initiator can be layered over InfiniBand (no iWARP support yet).
 
-* supported platforms
+* Supported platforms
 
 	SLES 10
 	SLES 10 sp1
 	RHEL 5
 
-	The release has been tested against Voltaire iSCSI over iSER target running
-	in Voltaire's IB/Fibre-Channel router. It was also tested against
-	FalconStor's iSCSI over iSER target (IPStor).
+	The release has been tested against Voltaire iSCSI over iSER target
+	running in Voltaire's IB/Fibre-Channel router. It was also tested
+	against FalconStor's iSCSI over iSER target (IPStor).
 
 * Installation/upgrade of open-iscsi
-	If iSER is selected to be installed with OFED, open-iscsi will be also 
-	installed (or upgraded if another version of open-iscsi is already installed).
-	Installing/upgrading open-iscsi is required for iSER to work properly.
+	If iSER is selected to be installed with OFED, open-iscsi will be also
+	installed (or upgraded if another version of open-iscsi is already
+	installed).  Installing/upgrading open-iscsi is required for iSER to
+	work properly.
 
-* known issues 
+* Known issues 
 
 	SCSI command aborts may cause some instabilities
 	
@@ -39,13 +40,13 @@
 
 	WIKI pages
 
-	information on building/configuring/running the open iscsi initiator w. iSER
-	https://wiki.openfabrics.org/tiki-index.php?page=iSER
+	information on building/configuring/running the open iscsi initiator w.
+	iSER https://wiki.openfabrics.org/tiki-index.php?page=iSER
 
 	IETF pages
 
-	iSCSI and iSER specifications come out of the IETF IP storage (IPS) work group 
-	http://www.ietf.org/html.charters/ips-charter.html.
+	iSCSI and iSER specifications come out of the IETF IP storage (IPS) work
+	group http://www.ietf.org/html.charters/ips-charter.html.
 
 	"ABOUT" page
 
