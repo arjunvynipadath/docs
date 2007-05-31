@@ -26,6 +26,11 @@
 	in Voltaire's IB/Fibre-Channel router. It was also tested against
 	FalconStor's iSCSI over iSER target (IPStor).
 
+* Installation/upgrade of open-iscsi
+	If iSER is selected to be installed with OFED, open-iscsi will be also 
+	installed (or upgraded if another version of open-iscsi is already installed).
+	Installing/upgrading open-iscsi is required for iSER to work properly.
+
 * known issues 
 
 	SCSI command aborts may cause some instabilities
