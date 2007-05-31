@@ -1,5 +1,5 @@
 	     Open Fabrics Enterprise Distribution (OFED)
-		    mlx4 in OFED 1.2.c.4 Release Notes
+		    mlx4 in OFED 1.2.c.5 Release Notes
 			  
 			   May 2007
 
@@ -8,14 +8,16 @@
 Table of Contents
 ===============================================================================
 1. Overview
-2. Known Issues
+2. Tested ULPs
+3. Fixed Bugs 
+4. Known Issues
 
 ===============================================================================
 1. Overview
 ===============================================================================
 mlx4 is the low level driver implementation for ConnectX HCA from Mellanox
-Technologies. Because these adapters can also be used as Ethernet NICs and Fibre Channel
-HBAs, the driver is split into two modules:
+Technologies. Because these adapters can also be used as Ethernet NICs and Fibre 
+Channel HBAs, the driver is split into two modules:
     
 mlx4_core: Handles low-level things like device initialization and
         processing firmware commands.  Also controls resource allocation
@@ -34,20 +36,40 @@ mlx4_core parameters:
   - msi_x          attempt to use MSI-X if nonzero supported by FW)
   - debug_level    Enable debug tracing if > 0 
 
+
 ===============================================================================
-2. Known Issues
+2. Tested ULPs
 ===============================================================================
-1. mlx4 driver is under development thus stress or long tests may fail (e.g. MPI 
-   long runs may be halted)
-2. SRQ is not supported. One must use VIADEV_USE_SRQ=0 when lunching an MPI job 
+o The only ULPs that are thoroughly tested are: OpenSM and MPI (MVAPICH and Open
+  MPI)a and IPoIB UD.
+o SDP was partially tested.
+
+===============================================================================
+3. Fixed Bugs 
+===============================================================================
+1. Fixed the issue that caused long MPI runs to halt. The solution requires
+   latest FW release above 2.0.156.
+2. x86 systems are now supported (could have kernel hangs before)
+3. RDMA READ performance is good after fixing the wrong calculation of RDMA 
+   reads configuration.
+4. Fix the calculation of max_inline_data and max_send_sge returned to the
+   user. Without this fix, the size of the SQ WQEs may increase every
+   time create QP is called using values returned from a previous call
+5. IPoIB ifconfig down/up caused kernel oops.
+
+
+===============================================================================
+3. Known Issues
+===============================================================================
+1. SRQ is not supported. One must use VIADEV_USE_SRQ=0 when lunching an MPI job 
    otherwise the MPI job will hang.
     Examples:  
 	mpirun -np $NP -rsh -hostfile $HOSTFILE VIADEV_USE_SRQ=0 $TEST_BIN_PATH
 	or
 	Add the line VIADEV_USE_SRQ=0 to mvapich.conf file
-3. IPoIB is working in UD mode only; openibd.conf was changed to set the default to UD
-4. The only ULPs that tested are: OpenSM, IPoIB and MPI (MVAPICH and Open MPI)
-5. Query QP is not supported
-6. Fork is not supported
-7. RDMA READ performance is poor due to a wrong calculation of RDMA reads configuration
-8. Resize CQ is not supported
+2. IPoIB is working in UD mode only; openibd.conf was changed to set the 
+   default to UD.
+3. Query QP is not supported
+4. Fork is not supported
+5. Resize CQ is not supported
+6. FMRs are not supported

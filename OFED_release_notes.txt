@@ -1,5 +1,5 @@
 	    Open Fabrics Enterprise Distribution (OFED)
-			    Version 1.2.c-4
+			    Version 1.2.c-5
 			   Release Notes
 			      May 2007
 
@@ -8,7 +8,7 @@
 Table of Contents
 ===============================================================================
 1. Overview, which includes:
-	- OFED Distribution Rev 1.2 Contents
+	- OFED Distribution Rev 1.2.c Contents
 	- Supported Platforms and Operating Systems
 	- Supported HCA and RNIC Adapter Cards and Firmware Versions
 	- Tested Switch Platforms
@@ -31,12 +31,13 @@ Note: If you plan to upgrade the OFED package on your cluster, please upgrade
 all of its nodes to this new version.
 
 Important notes:
+1. This package is based on OFED 1.2 with addition of mlx4 driver to support 
+   Mellanox HCA ConnectX IB. Due to mlx4 addition there are changes made also 
+   to the core and mthca driver driver 
+2. Only Mellanox HCAs were tested with this package. 
 
-1. At the current stage of mlx4 driver, this packages should be used for basic 
-   functionality testing only and not for extensive regression testing.
-
-1.1 OFED 1.2 Contents
----------------------
+1.1 OFED 1.2.c Contents
+-----------------------
 The OFED package contains the following components:
   o   OpenFabrics core and ULPs:
         - IB HCA drivers (mthca, mlx4, ipath, ehca)
@@ -61,7 +62,7 @@ The OFED package contains the following components:
   o   Documentation
 
 Notes:
-1. mlx4 driver is in alpha quality: Only OpenSM, MPI and IPoIB can be used. 
+1. mlx4 driver is in alpha quality: Only OpenSM, MPI, IPoIB and SDP can be used. 
 2. cxgb3 driver is in technology preview state.
 3. The Virtual NIC (VNIC) driver is presented as a technology preview on OFED 1.2.
 4. All other OFED components are of production quality.
@@ -94,7 +95,7 @@ well as iWARP RNICs by Chelsio Communications.
 	                     with memory: fw-25208 Rev 4.8.200)
 	- InfiniHost III Lx (fw-25204 Rev 1.2.000)
 	The SDR and DDR modes of the InfiniHost III family are supported.
-	- ConnectX IB (fw-25408 Rev 2.0.156)
+	- ConnectX IB (fw-25408 Rev 2.0.157)
 
 	For official firmware versions please see:
 	http://www.mellanox.com/support/firmware_table.php
