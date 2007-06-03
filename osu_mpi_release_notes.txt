@@ -1,14 +1,15 @@
              Open Fabrics Enterprise Distribution (OFED)
- OSU MPI MVAPICH-0.9.7, Rev 0.9.7-mlx2.2.0 in OFED 1.2 Release Notes
+          OSU MPI MVAPICH-0.9.9, in OFED 1.2 Release Notes
 
                           May 2007
 
 
 Overview
 --------
-These are the release notes for OSU MPI MVAPICH-0.9.7, Rev 0.9.7-mlx2.2.0
-This is OFED's edition of the OSU MPI MVAPICH-0.9.7 release. OSU MPI is an MPI
-channel implementation over InfiniBand from Ohio State University (OSU)
+These are the release notes for OSU MPI MVAPICH-0.9.9.
+OSU MPI is an MPI channel implementation over InfiniBand 
+from Ohio State University (OSU).
+
 (http://nowlab.cse.ohio-state.edu/projects/mpi-iba/).
 
 Software Dependencies
@@ -17,22 +18,25 @@ OSU MPI depends on the installation of the OFED Distribution stack with OpenSM
 running. The MPI module also requires an established network interface (either
 InfiniBand IPoIB or Ethernet).
 
-New Features
+New Features ( compared to mvapich 0.9.7-mlnx2.2.0 )
 ------------
-The mlx2.2.0 module is based on the MVAPICH-0.9.7 (MPI-1 over OpenIB/Gen2) module at
-openib.org gen2.  This version for OFED has the following additional features:
-- Message coalescing
-- SRQ flow optimization
+This version for OFED has the following additional features:
+- Improved message coalescing:
+  * Reduction of per QP send queues for reduction in memory requirement
+  * Increases the small message messaging rate significantly
+- Multi-core optimizations:
+  * Optimized scalable shared memory design 
+  * Optimized, high-performance shared memory aware collective operations
+  * Multi-port support for enabling user processes to bind to different IB ports
+    for balanced communication performance
+- On-demand connection management using native IB UD support
+- Multi-path support for hot-spot avoidance in large scale clusters
+- Memory Hook Support provided by integration with ptmalloc2 library
 
 Bug Fixes
 ---------
-- Affinity support is now enabled by default
-- Multiple fixes in rsh/ssh launcher
-- LD_LIBRARY_PATH fix (MLNX #37387)
-- TotalView scalability fix
-- FastPath is enabled on start for small clusters
-- Fix for correct f90 support (openib bugzilla 191)
-- Fix for comment support in mpirun_rsh (openib bugzilla 143)
+- Error report fixes.
+- PKEY support fix.
 
 Known Issues
 ------------
@@ -52,7 +56,6 @@ Known Issues
   Workaround:
   Option 1 - Update the firmware
   Option 2 - In mvapich.conf, set VIADEV_SRQ_ENABLE=0
-- MVAPICH does not run on RHEL4 U3 ppc64
 - MVAPICH may fail to run on some SLES 10 machines due to problems in resolving
   the host name.
   Workaround: Edit /etc/hosts and comment-out/remove the line that maps 
