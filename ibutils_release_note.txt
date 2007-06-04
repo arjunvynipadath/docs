@@ -1,5 +1,5 @@
 	     Open Fabrics Enterprise Distribution (OFED)
-                  IBUTILS in OFED 1.2 Release Notes
+               IBUTILS in OFED 1.2 Release Notes
 
 			   May 2007
 
@@ -17,10 +17,33 @@ Table of Contents
 1. Overview
 ===============================================================================
 
-The IBUTILS package provides means for debugging the connectivity and
-status of InfiniBand (IB) devices in a fabric.  
+The IBUTILS package provides tools that encapsulate the best known diagnostic 
+procedures for InfiniBand fabrics. Target users of these utilities are network
+managers not expert in the details of the InfiniBand specification.
 
-The package tools are intended to provide the following services:   
+The following tools are provided:
+o ibdiagnet - performs a diagnostic check of the entire network.
+  Should be used on any suspicion of fabric misbehavior.
+  The default invocation can be enhanced to perform more advanced checks and
+  produce more reports. The following is a partial set of checks it performs:
+   - Check for a single master SM
+   - Check all routes between hosts are set correctly (include also multicast
+     groups)
+	- Check for fabric links health
+
+o ibdiagpath - traces a path between two nodes specified by LIDs or a directed 
+  path. This utility should be used when connectivity between specific two 
+  hosts is broken.
+
+o ibdiagui - a graphic user interface on top of ibdiagnet 
+  Mostly suitable for medium size fabrics (<100 nodes) and for users who needs 
+  to explore an unknown network. The main features it provides is an 
+  automatically generated connectivity graph, an object properties browser and 
+  hyperlinking of ibdiagnet log to these widgets.
+
+Note: man pages are provided for each tools.
+
+The package tools performs the following diagnostic procedures:
 * Discover the InfiniBand fabric connectivity
 * Determine whether or not a Subnet Manager (SM) is running
 * Identify links which drop packets and/or incur errors by sending MAD
@@ -36,39 +59,24 @@ The package tools are intended to provide the following services:
   - An InfiniBand link is in the INIT state, which prevents data transfer
   - Unexpected link width (when using the -lw flag)
   - Unexpected link speed (when using the -ls flag)
-
-The IBUTILS package includes the following stand-alone tools: 
-
-  o   ibdiagnet
-	Discovers the network, providing a listing of the following:
-        - All the nodes, ports and links in the fabric 
-        - Link Forwarding Tables (LFT) dump file 
-        - Multicast Forwarding Tables (MFT) dump file 
-        - Fabric Subnet Managers (SMs) information file and a list of all
-          the masked GUIDs found
-
-  o   ibdiagpath
-	- Traces a path between two nodes specified by LIDs or a directed path
-	  between the source and destination nodes.
-        - Provides information regarding the nodes and ports traversed.
-        - Utilizes device-specific health queries for the different devices
-          along the path between the source and destination nodes. 
-
-Note: There are man pages for both tools.
-
+  - Check for partitions and SL2VL settings preventing communication between 
+	 specific nodes (ibdiagpath)
 
 ===============================================================================
 2. Requirements
 ===============================================================================
-   1. ibis must be installed.
 
-   2. The path environment variable must include the path to ibis. To define the
-      path to ibis use one of the following commands (depending on your shell):
-	export PATH=<path to ibis>:$PATH
-      or
-        setenv PATH <path to ibis>:$PATH  
+Software dependency:
 
-     (the default path to ibis is: /usr/local/ofed/bin/)
+1. ibis and ibdm must be installed (are included in same 
+
+2. ibdiagui also depends on installation of the following packages:
+	* Tk8.4 is standard on all Linux distributions, but if not please 
+	  download and install from:
+	  http://www.tcl.tk/software/tcltk/
+	* Graphviz - an automatic graph layout utility. Should be downloaded 
+	  and installed from:
+	  http://www.graphviz.org/
 
 ===============================================================================
 3. Reports
@@ -107,3 +115,7 @@ Each report message includes:
    - If the hostname provided for the -s flag is not the actual local hostname, 
      then all the extracted names from the topology file will be incorrect. 
      However, all the other information provided will be correct.
+
+   - Executing "ibis exit" in order to terminate ibis, while running over RHEL5 
+     i686, causes ibis to exit uncleanly.
+
