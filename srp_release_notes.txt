@@ -2,7 +2,7 @@
              Open Fabrics Enterprise Distribution (OFED)
 		    SRP in OFED 1.2 Release Notes
 			  
-			   June 2007
+			    June 2007
 
 
 ==============================================================================
@@ -10,17 +10,18 @@ Table of contents
 ==============================================================================
 
  1.  Overview
- 2.  Software Dependencies
- 3.  Major Features
- 4.  Loading SRP Initiator
- 5.  Manually Establishing an SRP Connection
- 6.  SRP Tools - ibsrpdm and srp_daemon
- 7.  Automatic Discovery and Connecting to Targets
- 8.  Multiple Connections from Initiator IB Port to the Target
- 9.  High Availability
- 10. Shutting Down SRP
- 11. Known Issues
- 12. Vendor Specific Notes
+ 2.  Changes and Bug Fixes
+ 3.  Software Dependencies
+ 4.  Major Features
+ 5.  Loading SRP Initiator
+ 6.  Manually Establishing an SRP Connection
+ 7.  SRP Tools - ibsrpdm and srp_daemon
+ 8.  Automatic Discovery and Connecting to Targets
+ 9.  Multiple Connections from Initiator IB Port to the Target
+ 10. High Availability
+ 11. Shutting Down SRP
+ 12. Known Issues
+ 13. Vendor Specific Notes
 
 
 ==============================================================================
@@ -33,27 +34,26 @@ target port using RDMA communication service.
 
 
 ==============================================================================
-1. Changes and Bug Fixes
+2. Changes and Bug Fixes
 ==============================================================================
 * Support HA in Red Hat
-* Add a default rules file (/etc/srp_daemon.conf) and it is possible to supply
-  attributes of the connection in the rules file (max_cmd_per_lun, max_sect).
-* Handle a rare race condition.
+* Use a rules file for filtering targets and adding attributes values
+  (max_cmd_per_lun, max_sect).
 * Decrease log size in ./var/log/messages 
-* correct line in error messages in rule files
-* fix a potential memory corruption
 * support CM dgid redirection
-* Fix some memory leaks found
+* Handle a rare race condition.
+* Fix Bugs: fix some memory leaks and potential out of buffer writes,
+  correct line in error messages in rule files 
 
 ==============================================================================
-2. Software Dependencies
+3. Software Dependencies
 ==============================================================================
 
 The SRP Initiator depends on the installation of the OFED Distribution stack
 with OpenSM running.
 
 ==============================================================================
-3. Major Features
+4. Major Features
 ==============================================================================
 
 This SRP Initiator is based on source taken from openib.org gen2 implementing
@@ -68,7 +68,7 @@ The SRP Initiator supports:
 - Basic functionality, task management and limited error handling
 
 ==============================================================================
-4. Loading SRP Initiator
+5. Loading SRP Initiator
 ==============================================================================
 
 To load the SRP module, either execute the "modprobe ib_srp" command after the
@@ -82,11 +82,11 @@ NOTE:  When loading the ib_srp module, it is possible to set the module
 
 
 ==============================================================================
-5. Manually Establishing an SRP Connection
+6. Manually Establishing an SRP Connection
 ==============================================================================
 
 The following steps describe how to manually load an SRP connection between
-the Initiator and an SRP Target. Section 7 explains how to do this
+the Initiator and an SRP Target. Section 8 explains how to do this
 automatically.
 
 - Make sure that the ib_srp module is loaded, the SRP Initiator is reachable
@@ -107,7 +107,7 @@ automatically.
       > max_sect (short for max_sectors) - sets the request size of a command
       > io_class  -  Default: 0x100 as in rev 16A of the specification
 		     Note: In rev 10 the default was 0xff00
-      > initiator_ext - Please refer to Section 8 (Multiple Connections...)
+      > initiator_ext - Please refer to Section 9 (Multiple Connections...)
    d. See SRP Tools below for instructions on how the parameters in the
       echo command above may be obtained.
 
@@ -115,15 +115,15 @@ automatically.
   may use either of the following two methods:
   a. Execute "fdisk -l". This command lists all devices; the new devices are 
      included in this listing.
-  b. Execute "dmesg" or look at /var/log/messages to find messages with the 
-     names of the new devices.
+  b. Execute "dmesg" or look at /var/log/messages to find messages with the names
+     of the new devices.
 
 
 ==============================================================================
-6. SRP Tools - ibsrpdm and srp_daemon
+7. SRP Tools - ibsrpdm and srp_daemon
 ==============================================================================
 
-To assist in performing the steps in Section 5, the OFED 1.2 distribution
+To assist in performing the steps in Section 6, the OFED 1.2 distribution
 provides two utilities which:
 - Detect targets on the fabric reachable by the Initiator (for step 1)
 - Output target attributes in a format suitable for use in the above
@@ -181,7 +181,7 @@ ibsrpdm usage
         id_ext=200400A0B81146A1,ioc_guid=0002c90200402bd4,
         dgid=fe800000000000000002c90200402bd5,pkey=ffff,service_id=200400a0b81146a1
 
-   b. To establish a connection with an SRP Target (Section 5) using the output
+   b. To establish a connection with an SRP Target (Section 6) using the output
       from the "libsrpdm -c" example above, execute the following command:
 
          echo -n id_ext=200400A0B81146A1,ioc_guid=0002c90200402bd4,
@@ -196,7 +196,7 @@ srp_daemon
 The srp_daemon utility is based on ibsrpdm and extends its functionality.
 In addition to the ibsrpdm functionality described above, srp_daemon can also:
 - Establish an SRP connection by itself (without the need to issue the "echo"
-  command described in Section 5)
+  command described in Section 6)
 - Continue running in background, detecting new targets and establishing SRP
   connections with them (daemon mode)
 - Discover reachable SRP targets given an infiniband HCA name and port, rather
@@ -228,7 +228,7 @@ b. srp_daemon extensions to ibsrpdm
      to omit -a.
 
    - It is recommended to use the -n option. This option adds the initiator_ext
-     to the connecting string. (See Section 8 for more details).
+     to the connecting string. (See Section 9 for more details).
 
    - One can set a configuration file for srp_daemon. The default
      configuration file is /etc/srp_daemon.conf but it is possible to supply
@@ -241,7 +241,7 @@ b. srp_daemon extensions to ibsrpdm
      detection and connection capability -- see the next section.
 
 ==============================================================================
-7. Automatic Discovery and Connecting to Targets
+8. Automatic Discovery and Connecting to Targets
 ==============================================================================
 
 - Make sure that the ib_srp module is loaded, the SRP Initiator can reach an
@@ -277,7 +277,7 @@ b. srp_daemon extensions to ibsrpdm
   Availability section).
 
 ==============================================================================
-8. Multiple Connections from Initiator IB Port to the Target
+9. Multiple Connections from Initiator IB Port to the Target
 ==============================================================================
 
 Some system configurations may need multiple SRP connections from
@@ -307,7 +307,7 @@ values according to this convention. For example:
      the user, or automatically at startup by setting SRPHA_ENABLE to yes).
 
 ==============================================================================
-9. High Availability (HA)
+10. High Availability (HA)
 ==============================================================================
 
 High Availability Overview
@@ -346,24 +346,23 @@ High Availability Prerequisites
 -------------------------------
 
 Installation for RHEL4: (Execute once)
-   - Verify that the standard device-mapper-multipath rpm is installed. If not,
-     install it from the RHEL distribution.
+   - Verify that the standard device-mapper-multipath rpm is installed. If not, install it from the RHEL distribution.
 
 Installation for SLES10: (Execute once)
- - Verify that multipath is installed. If not, install it from the
-   installation. It is also possible to download it from  
-   http://christophe.varoqui.free.fr/multipath-tools/multipath-tools-0.4.7.tar.bz2
-   and then compile and install it.
+   - Verify that multipath is installed. If not, install it from the
+     installation. It is also possible to download it
+     from  http://christophe.varoqui.free.fr/multipath-tools/multipath-tools-0.4.7.tar.bz2
+     and then compile and install it.
 
- - Update udev: (Execute once - for manual activation of High Availability only)
+   - Update udev: (Execute once - for manual activation of High Availability only)
    
- - Add a file to /etc/udev/rules.d/  (you can call it 91-srp.rules)
-   This file should have one line:
-   ACTION=="add", KERNEL=="sd*[!0-9]", RUN+="/sbin/multipath %M:%m"
+   - Add a file to /etc/udev/rules.d/  (you can call it 91-srp.rules)
+     This file should have one line:
+       ACTION=="add", KERNEL=="sd*[!0-9]", RUN+="/sbin/multipath %M:%m"
 
-   Note that when SRPHA_ENABLE is set to "yes" (see below in Automatic 
-   activation of High Availability subsection), this file is created upon each 
-   boot of the driver and deleted when the driver is unloaded.
+   Note that when SRPHA_ENABLE is set to "yes" (see below in Automatic activation
+   of High Availability subsection), this file is created upon each boot of
+   the driver and deleted when the driver is unloaded.
 
 
 Manual Activation of High Availability
@@ -402,7 +401,7 @@ Automatic Activation of High Availability
 
 
 ==============================================================================
-10. Shutting Down SRP
+11. Shutting Down SRP
 ==============================================================================
 
 SRP can be shutdown by using "rmmod ib_srp", or by stopping the OFED driver
@@ -446,7 +445,7 @@ should make sure this will not occur. One solution may be to stop "haldaemon"
 
 
 ==============================================================================
-11. Known Issues
+12. Known Issues
 ==============================================================================
 
 - The SCSI device is sent offline when a link goes down for several seconds, 
@@ -487,7 +486,7 @@ should make sure this will not occur. One solution may be to stop "haldaemon"
   a single initiator IB port to two different IB ports on the same Target HCA,
   and you wish to have an SRP connection on the one path coexist with an SRP
   connection on the second path, you must set a different initiator_ext value
-  on each path. See Section 8, "Multiple Connections from Initiator IB Port
+  on each path. See Section 9, "Multiple Connections from Initiator IB Port
   to the Target" for details.
 
 - The srp_daemon tool reads by default the configuration file 
@@ -496,7 +495,7 @@ should make sure this will not occur. One solution may be to stop "haldaemon"
   that srp_daemon ignores a target, please check /etc/srp_daemon.conf file.
 
 ==============================================================================
-12. Vendor Specific Notes
+13. Vendor Specific Notes
 ==============================================================================
 
 Hosts connected to Qlogic SRP Targets must perform one of the following
