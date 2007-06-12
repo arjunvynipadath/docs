@@ -1,6 +1,6 @@
             Open Fabrics Enterprise Distribution (OFED)
                 CHELSIO T3 RNIC RELEASE NOTES
-			May 2007
+			June 2007
 
 
 

@@ -1,5 +1,5 @@
 			MPI Selector 1.0 release notes
-				May 2007
+				June 2007
 			==============================
 
 OFED contains a simple mechanism for system administrators and end

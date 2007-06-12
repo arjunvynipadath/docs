@@ -3,7 +3,7 @@
              Open Fabrics Enterprise Distribution (OFED)
               MVAPICH2-0.9.8 in OFED 1.2 Release Notes
 
-                          May 2007
+                          June 2007
 
 
 Overview
