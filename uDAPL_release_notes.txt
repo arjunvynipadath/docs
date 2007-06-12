@@ -1,21 +1,57 @@
 
 		   Release Notes for 
-		Gamma 3.2 and OFED 1.2 DAPL Release
-		    May 2007
+	Gamma 3.3 and OFED 1.2 DAPL Release
+		    June 2007
 
 
-        DAPL GAMMA 3.2/OFED 1.2 RELEASE NOTES
+        DAPL GAMMA 3.3/OFED 1.2 RELEASE NOTES
 
 	This release of the DAPL reference implementation 
         is timed to coincide with OFED release 1.2 of the 
         Open Fabrics (www.openfabrics.org) software stack.
-       
+
+        NEW SINCE Gamma 3.2 and OFED 1.1
+
+        * New Features
+
+          1. Added dtest and dapltest to the openfabrics build and utils rpm. 
+             Includes manpages.
+          2. Added following enviroment variables to configure connection management
+             timers (default settings) for larger clusters:
+
+             DAPL_CM_ARP_TIMEOUT_MS      4000
+             DAPL_CM_ARP_RETRY_COUNT       15
+             DAPL_CM_ROUTE_TIMEOUT_MS    4000
+             DAPL_CM_ROUTE_RETRY_COUNT     15
+            
+        * Bug Fixes
+
+          + Added support for new ib verbs client register event. No extra 
+            processing required at the uDAPL level.
+          + Fix some issues supporting create qp without recv cq handle or 
+            recv qp resources. IB verbs assume a recv_cq handle and uDAPL 
+            dapl_ep_create assumes there is always recv_sge resources specified.
+          + Fix some timeout and long disconnect delay issues discovered during 
+            scale-out testing. Added support to retry rdma_cm address and route 
+            resolution with configuration options. Provide a disconnect call
+            when receiving the disconnect request to guarantee a disconnect reply 
+            and event on the remote side. The rdma_disconnect was not being called 
+            from dat_ep_disconnect() as a result of the state changing
+            to DISCONNECTED in the event callback.
+          + Changes to support exchanging and validation of the device 
+            responder_resources and the initiator_depth during conn establishment
+          + Fix some build issues with dapltest on 32 bit arch, and on ia64 SUSE arch
+          + Add support for multiple IB devices to dat.conf to support IPoIB HA failover
+          + Fix atomic operation build problem with ia64 and RHEL5.
+          + Add support to return local and remote port information with dat_ep_query
+          + Cleanup RPM specfile for the dapl package, move to 1.2-1 release.
+
         NEW SINCE Gamma 3.1 and OFED 1.0
  
         * BUG FIXES
 
-	+ Update obsolete CLK_TCK to CLOCKS_PER_SEC
-	+ Fill out some unitialized fields in the ia_attr structure returned by
+	  + Update obsolete CLK_TCK to CLOCKS_PER_SEC
+ 	  + Fill out some unitialized fields in the ia_attr structure returned by
 	  dat_ia_query().
         + Update dtest to support multiple segments on rdma write and change
 	  makefile to use OpenIB-cma by default.
@@ -39,9 +75,9 @@
 	  retry values. 
         + Fix to disallow any event after a disconnect event.
 
-	* OFED 1.2 uDAPL source build instructions:
+	* OFED 1.1 uDAPL source build instructions:
 
-	cd /usr/local/ofed/src/openib-1.2/src/userspace/dapl
+	cd /usr/local/ofed/src/openib-1.1/src/userspace/dapl
 
 	# NON_DEBUG build configuration
 
@@ -97,7 +133,7 @@
         
         This release also adds a new licensing option. In 
         addition to the Common Public License and BSD License,
-	the code can now be licensed under the terms of the GNU 
+	  the code can now be licensed under the terms of the GNU 
         General Public License (GPL) version 2.
 
         NEW SINCE Gamma 3.0
@@ -149,7 +185,7 @@
 	DAP BETA 2.06 RELEASE NOTES
 
 	We are not planning any further releases of the Beta series,
-	which are based  on the 1.2 version of the spec. There may be
+	which are based  on the 1.1 version of the spec. There may be
 	further releases for bug fixes, but we anticipate the DAPL
 	community to move to the new 1.2 version of the spec and the
 	changes mandated in the reference implementation.
@@ -775,8 +811,6 @@
 	    argument 'context' is not NULL.
 
 
-
-
 	OBTAIN THE CODE
 
 	To obtain the tree for your local machine you can check it
@@ -794,15 +828,14 @@
 	a developer, as well as how to use different CVS commands. You may
 	also browse the source code using the URL:
 
-	   http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/dapl/
-
+        http://svn.sourceforge.net/viewvc/dapl/trunk/
 
 	SYSTEM REQUIREMENTS
 
 	This project has been implemented on Red Hat Linux 7.3, SuSE
-	SLES 8, Windows 2000, RHEL 3.0, and a couple of other Linux
-	distrubutions. The structure of the code is designed to allow
-	other operating systems to easily be adapted.
+	SLES 8, 9, and 10, Windows 2000, RHEL 3.0, 4.0 and 5.0 and a few 
+        other Linux distrubutions. The structure of the code is designed 
+        to allow other operating systems to easily be adapted.
 
 	The DAPL team has used Mellanox Tavor based InfiniBand HCAs for
 	development, and continues with this platform. Our HCAs use the
@@ -824,14 +857,13 @@
 
 	Explicit machine configurations are available upon request.	
 
-
 	IN THE TREE
 
 	The DAPL tree contains source code for the uDAPL and kDAPL
 	implementations, and also includes tests and documentation.
 
 	Included documentation has the base level API of the
-	providers: the IBM Access API and the Mellanox Verbs API. Also
+	providers: OpenFabrics, IBM Access, and Mellanox Verbs API. Also
 	included are a growing number of DAPL design documents which
 	lead the reader through specific DAPL subsystems. More
 	design documents are in progress and will appear in the tree in
@@ -849,60 +881,29 @@
 	providing DAPL implementation are strongly encouraged to run
 	this set of tests.
 
-
 	MAKEFILE NOTES
 
 	There are a number #ifdef's in the code that were necessary
 	during early development. They are disappearing as we
 	have time to take advantage of features and work available from
-	newer releases of provider software. You may notice an #ifdef
-	<something>_BUSTED, which indicates a particular feature was not
-	working at the time the code was written and the DAPL team
-	developed a work-around.
-
-	These #ifdefs are not documented as the intent is to remove
-	them as soon as possible.
-
-	Of particular relevance are the following #defines:
-
-	- CM_BUSTED
-
-	  The DAPL team has been an early adopter of InfiniBand and has
-	  had to improvise missing functionality while the vendors lag
-	  our development. InfiniBand uses a Connection Manager (CM) to
-	  establish a connection between nodes. This #define essentially
-	  'fakes' a connection by moving a QP into the appropriate
-	  state. Most of the IB vendors have a working CM now and this
-	  is no longer the default, but the code remains as some
-	  development groups are working to catch up.
-
-	- NO_NAME_SERVICE
-
-	  Naming is a thorny issue in InfiniBand; translating from a
-	  hostname or an interface name to a GID that can be used to
-	  establish a connection with a remote machine. The reference
-	  implementation provides a simple name service under this
-	  #define. The goal is to use IPoIB when it becomes
-	  available. NO_NAME_SERVICE will probably remain in the code
-	  long term in order to enable various implementations. A
-	  description of how this works is found in the end_point_design
-	  document in the doc/ directory.
-
+	newer releases of provider software. These #ifdefs are not 
+        documented as the intent is to remove them as soon as possible.
 
 	CONTRIBUTIONS
 
 	As is common to Source Forge projects, there are a small number
 	of developers directly associated with the source tree and having
 	privileges to change the tree. Requested updates, changes, bug
-	fixes, enhancements, or contributions should be sent to Steve
-	Sears at sjs@netapp.com for review. We welcome your
+	fixes, enhancements, or contributions should be sent to 
+        James Lentini at jlentinit@netapp.com for review. We welcome your
 	contributions and expect the quality of the project will
 	improve thanks to your help.
 
 	The core DAPL team is:
 
+	  James Lentini
+          Arlin Davis
 	  Steve Sears
-	  Philip Christopher
 
 	  ... with contributions from a number of excellent engineers in
 	  various companies contributing to the open source effort.
