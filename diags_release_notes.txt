@@ -48,7 +48,7 @@ flags per utility can be found in the usage message and can be displayed
 using util_name -h syntax.
 
 # Debugging flags
-	-d	raise the IB debugging level. June be used
+	-d	raise the IB debugging level. May be used
 		several times (-ddd or -d -d -d).
 	-e	show umad send receive errors (timeouts and others)
 	-h	display the usage message
