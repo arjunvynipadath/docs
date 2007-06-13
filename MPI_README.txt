@@ -338,19 +338,16 @@ to run on.
 
 Example1: Running the OSU bandwidth:
 
-!!! SOMEONE PLEASE CHECK THESE DIRECTORIES AND EXECUTABLE NAMES
     > cd /usr/mpi/gcc/openmpi-1.2.2-1/tests/osu_benchmarks-2.2
     > mpirun -np <N> -hostfile <HOSTFILE> osu_bw
 
 Example2: Running the Intel MPI Benchmark benchmarks:
 
-!!! SOMEONE PLEASE CHECK THESE DIRECTORIES AND EXECUTABLE NAMES
     > cd /usr/mpi/gcc/openmpi-1.2.2-1/tests/IMB-2.3
     > mpirun -np <N> -hostfile <HOSTFILE> IMB-MPI1
 
 Example3: Running the Presta benchmarks:
 
-!!! SOMEONE PLEASE CHECK THESE DIRECTORIES AND EXECUTABLE NAMES
     > cd /usr/mpi/gcc/openmpi-1.2.2-1/tests/presta-1.4.0
     > mpirun -np <N> -hostfile <HOSTFILE> com -o 100
 
