@@ -8,7 +8,7 @@
 Table of Contents
 ===============================================================================
 1. General
-2. OSU MVAPICH MPI
+2. MVAPICH
 3. Open MPI
 4. MVAPICH2
 
@@ -18,12 +18,11 @@ Table of Contents
 ===============================================================================
 Three MPI stacks are included in this release of OFED:
 
-- Ohio State University (OSU) MVAPICH 0.9.9
-  Technologies)
+- MVAPICH 0.9.9
 - Open MPI 1.2.2-1
 - MVAPICH2 0.9.8p3
 
-Setup, compilation and run information of OSU MVAPICH, Open MPI and MVAPICH2 is
+Setup, compilation and run information of MVAPICH, Open MPI and MVAPICH2 is
 provided below in sections 2, 3 and 4 respectively.
 
 1.1 Installation Note
@@ -123,18 +122,17 @@ The web sites of each MPI implementation are listed below:
 - MVAPICH2: http://mvapich.cse.ohio-state.edu/overview/mvapich2/
 
 ===============================================================================
-2. OSU MVAPICH MPI
+2. MVAPICH MPI
 ===============================================================================
 
-This package is a 0.9.9 version of the Ohio State University (OSU)
-MVAPICH MPI software package, and is the officially supported
-MPI stack for this release of OFED. 
+This package is a 0.9.9 version of the MVAPICH software package,
+and is the officially supported MPI stack for this release of OFED. 
 See http://mvapich.cse.ohio-state.edu for more details.
  
 
-2.1 Setting up for OSU MVAPICH MPI
-----------------------------------
-To launch OSU MPI jobs, its installation directory needs to be included
+2.1 Setting up for MVAPICH
+--------------------------
+To launch MPI jobs, its installation directory needs to be included
 in PATH and LD_LIBRARY_PATH. To set them, execute one of the following
 commands:
   source <prefix>/mpi/<compiler>/<mpi stack>/bin/mpivars.sh
@@ -144,8 +142,8 @@ commands:
 	-- when using csh for launching MPI jobs
 
 
-2.2 Compiling OSU MVAPICH MPI Applications:
--------------------------------------------
+2.2 Compiling MVAPICH Applications:
+-----------------------------------
 ***Important note***: 
 A valid Fortran compiler must be present in order to build the MVAPICH MPI
 stack and tests.
@@ -154,9 +152,9 @@ The default gcc-g77 Fortran compiler is provided with all RedHat Linux
 releases.  SuSE distributions earlier than SuSE Linux 9.0 do not provide
 this compiler as part of the default installation.
 
-The following compilers are supported by OFED's OSU MPI package: Gcc,
+The following compilers are supported by OFED's MVAPICH package: Gcc,
 Intel,Pathscale and PGI.  The install script prompts the user to choose
-the compiler with which to build the OSU MVAPICH MPI RPM. Note that more
+the compiler with which to build the MVAPICH RPM. Note that more
 than one compiler can be selected simultaneously, if desired.
 
 For details see:
@@ -165,14 +163,14 @@ For details see:
 To review the default configuration of the installation, check the default
 configuration file: <prefix>/mpi/<compiler>/<mpi stack>/etc/mvapich.conf
 
-2.3 Running OSU MVAPICH MPI Applications:
------------------------------------------ 
+2.3 Running MVAPICH Applications:
+---------------------------------
 Requirements:
 o At least two nodes. Example: mtlm01, mtlm02
 o Machine file: Includes the list of machines. Example: /root/cluster
 o Bidirectional rsh or ssh without a password
  
-Note for OSU: ssh will be used unless -rsh is specified. In order to use
+Note: ssh will be used unless -rsh is specified. In order to use
 rsh, add to the mpirun_rsh command the parameter: -rsh
 
 *** Running OSU tests ***
