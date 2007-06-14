@@ -20,7 +20,7 @@ Three MPI stacks are included in this release of OFED:
 
 - MVAPICH 0.9.9
 - Open MPI 1.2.2-1
-- MVAPICH2 0.9.8p3
+- MVAPICH2 0.9.8p2
 
 Setup, compilation and run information of MVAPICH, Open MPI and MVAPICH2 is
 provided below in sections 2, 3 and 4 respectively.
