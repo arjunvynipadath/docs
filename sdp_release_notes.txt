@@ -1,7 +1,7 @@
 	     Open Fabrics Enterprise Distribution (OFED)
 		    SDP in OFED 1.2 Release Notes
 
-			  May 2007
+			  June 2007
 
 
 
@@ -113,6 +113,9 @@ SDP in OFED is at GA level for OFED 1.2.
   with default parameters.  Limiting max_large_sockets and rcvbuf_scale allows
   more sockets to be opened but at a performance cost.
 
+- http using a client over curl has problems connecting using libsdp matching 
+  rules. Using SIMPLE_LIBSDP causes data tranfer to stall.
+
 
 ===============================================================================
 5. Supported Socket Options
@@ -215,7 +218,7 @@ IPPROTO_TCP:
 	     Open Fabrics Enterprise Distribution (OFED)
 	      libsdp v. 9382 in OFED 1.2 Release Notes
 
-			  May 2007
+			  June 2007
 
 
 ===============================================================================

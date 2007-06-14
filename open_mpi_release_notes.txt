@@ -1,17 +1,11 @@
              Open Fabrics Enterprise Distribution (OFED)
-     Open MPI in OFED 1.1 Copyrights, License, and Release Notes
+     Open MPI in OFED 1.2 Copyrights, License, and Release Notes
 			  
-                          May 2007
+                          June 2007
 
 
 Open MPI Copyrights
 -------------------
-Most files in this release are marked with the copyrights of the
-organizations who have edited them.  The copyrights below generally
-reflect members of the Open MPI core team who have contributed code to
-this release.  The copyrights for code used under license from other
-parties are included in the corresponding files.
-
 Copyright (c) 2004-2007 The Trustees of Indiana University and Indiana
                         University Research and Technology
                         Corporation.  All rights reserved.
@@ -26,6 +20,8 @@ Copyright (c) 2006-2007 Cisco Systems, Inc.  All rights reserved.
 Copyright (c) 2006      Voltaire, Inc. All rights reserved.
 Copyright (c) 2006      Sun Microsystems, Inc.  All rights reserved.
 Copyright (c) 2007      Myricom, Inc.  All rights reserved.
+
+Additional copyrights may follow
 
 Open MPI License
 ----------------
@@ -96,27 +92,53 @@ Much, much more information is also available in the Open MPI FAQ:
 OFED-Specific Release Notes
 ---------------------------
 
-SLES 10 with non-gcc compiler support:
+** SLES 10 with Pathscale compiler support:
 
-Open MPI can be built from source to support environments not
-supported by the default OFED installer.  The source code for Open MPI
-can be extracted from the SRPM shipped with OFED or downloaded from
-the main Open MPI web site: http://www.open-mpi.org/.
+Using the Pathscale compiler to build Open MPI on SLES10 may result in
+a non-functional Open MPI installation (every Open MPI command fails).
+If this problem occurs, please use a different compiler to compile
+Open MPI.
 
-To compile with Open MPI from source with OFED support, fully install
-the rest of OFED and then configure Open MPI with the
-"--with-openib=/usr" command line option.  See the rest of the
-documentation below for other configure command line options and
-installation instructions.
-
-Intel compiler support:
+** Intel compiler support:
 
 Some versions of the Intel 9.1 C++ compiler suite series produce
 incorrect code when used with the Open MPI C++ bindings.  Symptoms of
 this problem include crashing applications (e.g., segmentation
 violations) and Open MPI producing errors about incorrect parameters.
+Be sure to upgrade to the latest maintenance release of the Intel 9.1
+compiler to avoid these problems.
+
+** Installing newer versions of Open MPI after OFED is installed:
+
+Open MPI can be built from source after OFED is fully installed.  The
+source code for Open MPI can be extracted from the SRPM shipped with
+OFED or downloaded from the main Open MPI web site:
+http://www.open-mpi.org/.
+
+To compile with Open MPI from source with OFED support, fully install
+the rest of OFED.  If you used the default prefix for the OFED
+installation (/usr), Open MPI should build with OpenFabrics support by
+default.  If you used a different OFED prefix, you must tell Open MPI
+what it is with the "--with-openib=<OFED_prefix>" switch to
+configure.  You can verify that Open MPI installed with OpenFabrics
+support by running:
+
+  shell$ ompi_info | grep openib
+          MCA btl: openib (MCA v1.0, API v1.0.1, Component v1.3)
+
+See the rest of the documentation below for other configure command
+line options and installation instructions.
 
 ===========================================================================
+
+Much, much more information is also available in the Open MPI FAQ:
+
+    http://www.open-mpi.org/faq/
+
+===========================================================================
+
+General Release Notes
+---------------------
 
 The following abbreviated list of release notes applies to this code
 base as of this writing (1 March 2007):

@@ -1,7 +1,7 @@
 	     Open Fabrics Enterprise Distribution (OFED)
-		    mlx4 in OFED 1.2.c.5 Release Notes
+		    mlx4 in OFED 1.2.c.7 Release Notes
 			  
-			   May 2007
+			   June 2007
 
 
 ===============================================================================
@@ -38,32 +38,38 @@ mlx4_core parameters:
 
 
 ===============================================================================
-2. Tested ULPs
+2. Supported FW version
 ===============================================================================
-o The only ULPs that are thoroughly tested are: OpenSM and MPI (MVAPICH and Open
-  MPI)a and IPoIB UD.
+This release must be used with the FW version 2.0.158 or beyond.
+If someone will use older FW the driver load will succeed (since its only load
+the device driver) but ibv_devinfo will have this message:
+# ibv_devinfo
+No IB devices found
+
+And in /var/log/messages you will see this message:
+
+mlx4_core 0000:08:00.0: Installed FW version 2.0.15r67
+mlx4_core 0000:08:00.0: The Command i/f revision (1) of the installed FW
+mlx4_core 0000:08:00.0: is not supported by the installed driver.
+mlx4_core 0000:08:00.0: The driver supports Command i/f revision 2.
+
+===============================================================================
+3. Tested ULPs
+===============================================================================
+o The only ULPs that are thoroughly tested are: OpenSM and MPI (MVAPICH and 
+  Open MPI) and IPoIB UD.
 o SDP was partially tested.
 
 ===============================================================================
-3. Fixed Bugs 
+4. Fixed Bugs 
 ===============================================================================
-1. Fixed the issue that caused long MPI runs to halt. The solution requires
-   latest FW release above 2.0.156.
-2. x86 systems are now supported (could have kernel hangs before)
-3. RDMA READ performance is good after fixing the wrong calculation of RDMA 
-   reads configuration.
-4. Fix the calculation of max_inline_data and max_send_sge returned to the
-   user. Without this fix, the size of the SQ WQEs may increase every
-   time create QP is called using values returned from a previous call
-5. IPoIB ifconfig down/up caused kernel oops. Fix was to initialize send queue
-   entry ownership bits also when QP is modified from reset to init.
-6. Pass send queue sizes from userspace to kernel. Without this fix create QP 
-   may fail due to wrong calculation of QP size between kernel and user.
-7. Use wc_wmb() when posting BlueFlame send WQEs.
-
+1. Fix errors in CQ cleanup when associated QPs are closed.
+2. Prevents the following error: Caller posts a 2-WQE list, with the second WQE
+   in the list being an INLINE which is too long.
+3. Set correctly the RNR_RETRY parameter passed to modify_qp.
 
 ===============================================================================
-3. Known Issues
+5. Known Issues
 ===============================================================================
 1. SRQ is not supported. One must use VIADEV_USE_SRQ=0 when lunching an MPI job 
    otherwise the MPI job will hang.
@@ -77,3 +83,4 @@ o SDP was partially tested.
 4. Fork is not supported
 5. Resize CQ is not supported
 6. FMRs are not supported
+7. ibstat does not present all entries. Use ibv_devinfo instead.
