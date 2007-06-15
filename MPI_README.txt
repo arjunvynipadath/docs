@@ -96,7 +96,6 @@ convenient set of command line tools and menus.
 
 1.4 Updating MPI Installations
 ------------------------------
-
 Note that all of the MPI implementations included in the OFED software
 package are the versions that were available when OFED v1.2 was
 released.  They have been QA tested with this version of OFED and are
@@ -332,22 +331,41 @@ Example:
 
 In the following examples, replace <N> with the number of hosts to run on,
 and <HOSTFILE> with the filename of a valid hostfile listing the hosts
-to run on.
+to run on (unless you are running under a supported resource manager,
+in which case a hostfile is unnecessary).
 
-Example1: Running the OSU bandwidth:
+Also note that Open MPI is highly run-time tunable.  There are many
+options that can be tuned to obtain optimal performance of your MPI
+applications (see the Open MPI web site / FAQ for more information:
+http://www.open-mpi.org/faq/).
+
+It is worth noting that the "mpi_leave_pinned" run-time tunable
+parameter is usually *very* good for running benchmarks, but can
+actually be detrimental to real-world MPI applications -- and is
+therefore disabled by default.  When running the benchmarks listed
+below, it is advistable enable the "mpi_leave_pinned" option in order
+to see maximum performance (*).
+
+Example 1: Running the OSU bandwidth:
 
     > cd /usr/mpi/gcc/openmpi-1.2.2-1/tests/osu_benchmarks-2.2
-    > mpirun -np <N> -hostfile <HOSTFILE> osu_bw
+    > mpirun -np <N> --mca mpi_leave_pinned 1 -hostfile <HOSTFILE> osu_bw
 
-Example2: Running the Intel MPI Benchmark benchmarks:
+Example 2: Running the Intel MPI Benchmark benchmarks:
 
     > cd /usr/mpi/gcc/openmpi-1.2.2-1/tests/IMB-2.3
-    > mpirun -np <N> -hostfile <HOSTFILE> IMB-MPI1
+    > mpirun -np <N> --mca mpi_leave_pinned 1 -hostfile <HOSTFILE> IMB-MPI1
 
-Example3: Running the Presta benchmarks:
+Example 3: Running the Presta benchmarks:
 
     > cd /usr/mpi/gcc/openmpi-1.2.2-1/tests/presta-1.4.0
-    > mpirun -np <N> -hostfile <HOSTFILE> com -o 100
+    > mpirun -np <N> --mca mpi_leave_pinned 1 -hostfile <HOSTFILE> com -o 100
+
+(*) The "mpi_leave_pinned" option can increase bandwidth and decrease
+    latency for applications that repeatedly send and/or receive from
+    the same buffers.  If your application does not repeatedly
+    send/receive from the same buffers, mpi_leave_pinned will likely
+    have little effect on your performance.
 
 3.5 More Open MPI Information
 -----------------------------
