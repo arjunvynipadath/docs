@@ -237,19 +237,23 @@ Bugs fixed in each package are reported in the packages release notes.
 ===============================================================================
 4. Known Issues
 ===============================================================================
-The following is a list of major limitations and known issues of the various
+The following is a list of general limitations and known issues of the various
 components of the OFED 1.2 release.
 
-1. Memory registration by user is limited according to the administrator
+1. When upgrading from older OFED versions, the installation script does not
+   stop the old OFED version before uninstalling it. 
+   Workaround: Stop the old OFED stack (/etc/init.d/openibd stop) before 
+   upgrade to OFED 1.2.
+2. Memory registration by user is limited according to the administrator
    setting. See "Pinning (Locking) User Memory Pages" in OFED_tips.txt for
    system configuration.
-2. Fork support from kernel 2.6.12 and above is available provided
+3. Fork support from kernel 2.6.12 and above is available provided
    that applications do not use threads. The fork() is supported as long
    as parent process does not run before child exits or calls exec().
    The former can be achieved by calling wait(childpid) the later can be
    achieved by application specific means.  Posix system() call is
    supported.
-3. ipath driver is supported only on 64 bit platforms.
-4. There are issues using Intel MPI with Qlogic card driver that cause failures 
+4. ipath driver is supported only on 64 bit platforms.
+5. There are issues using Intel MPI with Qlogic card driver that cause failures 
 
 Note: See the release notes of each component for additional issues.
