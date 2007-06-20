@@ -1,5 +1,5 @@
 	     Open Fabrics Enterprise Distribution (OFED)
-		    mlx4 in OFED 1.2.c.7 Release Notes
+		    mlx4 in OFED 1.2.c.8 Release Notes
 			  
 			   June 2007
 
@@ -8,9 +8,10 @@
 Table of Contents
 ===============================================================================
 1. Overview
-2. Tested ULPs
-3. Fixed Bugs 
-4. Known Issues
+2. Supported FW version
+3. Tested ULPs
+4. Fixed Bugs 
+5. Known Issues
 
 ===============================================================================
 1. Overview
@@ -48,7 +49,7 @@ No IB devices found
 
 And in /var/log/messages you will see this message:
 
-mlx4_core 0000:08:00.0: Installed FW version 2.0.15r67
+mlx4_core 0000:08:00.0: Installed FW version 2.0.157
 mlx4_core 0000:08:00.0: The Command i/f revision (1) of the installed FW
 mlx4_core 0000:08:00.0: is not supported by the installed driver.
 mlx4_core 0000:08:00.0: The driver supports Command i/f revision 2.
@@ -67,6 +68,7 @@ o SDP was partially tested.
 2. Prevents the following error: Caller posts a 2-WQE list, with the second WQE
    in the list being an INLINE which is too long.
 3. Set correctly the RNR_RETRY parameter passed to modify_qp.
+4. Improved RDMA read latency
 
 ===============================================================================
 5. Known Issues
@@ -84,3 +86,9 @@ o SDP was partially tested.
 5. Resize CQ is not supported
 6. FMRs are not supported
 7. ibstat does not present all entries. Use ibv_devinfo instead.
+8. In order to work with RHEL5 with PPC one need to add the following line to
+   the ini file: Under the [HCA] section:
+   log2_uar_bar_megabytes = 5
+   After burning the new FW need also to reboot the system.
+   The reason is that the default page size in RHEL5 on PPC is 64K
+
