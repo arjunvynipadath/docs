@@ -389,7 +389,7 @@ Document list:
    o Examples of configuration files
    o OFED_tips.txt
    o HOWTO.build_ofed
-   o All release notes
+   o All release notes and README files
 
 For more information, please visit the OpenFabrics web site:
 

@@ -63,5 +63,4 @@ NOTE: In OpenPower 720 and p550 port 1 is at the top, port 2 is at the bottom.
 2. Furthermore the port(s) needs to be connected to an active switch port while
 loading the ehca device driver.
 
-
-
+3. ehca does not compile on RedHat EL4 up5 PPC64 
