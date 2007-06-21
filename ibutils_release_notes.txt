@@ -83,9 +83,9 @@ Software Dependencies:
 ===============================================================================
 The default directory for all generated report files is /tmp.
 
-The ibadiagnet and ibdiagpath utilities collect summary information regarding
-all the fabric SMs during the run, and then output that information at the end
-of the run in the file /tmp/ibdiagnet.sm. 
+The ibadiagnet utility collect summary information regarding all the fabric SMs
+during the run, and then output that information at the end of the run in the 
+file /tmp/ibdiagnet.sm. 
 
 Each report message includes the following items:
    - Device Type
