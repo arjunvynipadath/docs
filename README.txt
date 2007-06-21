@@ -2,13 +2,12 @@
                             Version 1.2
 			      README
 			  
-			  June 2007
+			     June 2007
 
-
-This is the OpenFabrics Enterprise Distribution (OFED) version 1.2 software
-package supporting InfiniBand fabrics. It is composed of several software
-modules intended for use on a computer cluster constructed as an InfiniBand 
-network.
+This is the OpenFabrics Enterprise Distribution (OFED) version 1.2
+software package supporting InfiniBand and iWARP fabrics. It is composed
+of several software modules intended for use on a computer cluster
+constructed as an InfiniBand subnet or an iWARP network.
 
 *** Note:  If you plan to upgrade OFED on your cluster, please upgrade all
 	   its nodes to this new version.
@@ -24,47 +23,60 @@ This document includes the following sections:
 7. MPI (Message Passing Interface) 
 8. Related Documentation
 
-
 OpenFabrics Home Page:  http://www.openfabrics.org
-The OFED rev 1.2 software download available in www.openib.org/downloads.html
+
+The OFED rev 1.2 software download available in
+http://www.openfabrics.org/downloads.htm 
+http://www.openfabrics.org/builds/ofed-1.2/
 
 Please email bugs and error reports to your InfiniBand vendor, or use bugzilla
-http://openib.org/bugzilla/
+https://bugs.openfabrics.org/
 
 
 
 1. HW and SW Requirements:
 ==========================
-1) Server platform with InfiniBand HCA (see OFED Distribution
+1) Server platform with InfiniBand HCA or iWARP RNIC (see OFED Distribution
    Release Notes for details)
 
-2) Linux OS (see OFED Distribution Release Notes for details) 
+2) Linux operating system (see OFED Distribution Release Notes for details)
 
 3) Administrator privileges on your machine(s)
 
-4) Disk Space: 	- For Build & Installation: 300MB
-		- For Installation only:    200MB 
+4) Disk Space:  - For Build & Installation: 300MB
+                - For Installation only:    200MB
 
-5) For the OFED Distribution to compile on your machine, some software packages
-   of your OS distribution are required. These are listed here.
+5) For the OFED Distribution to compile on your machine, some software
+   packages of your operating system (OS) distribution are required. These
+   are listed here.
 
-OS Distribution		Required Packages
----------------		----------------------------------   	
+OS Distribution         Required Packages
+---------------         ----------------------------------
 General:
 o  Common to all        gcc, glib, glib-devel, glibc, glibc-devel,
-                        automake, autoconf, libtool.
+                        glibc-devel-32bit (to build 32-bit libraries on x86_86
+                        and ppc64),
+                        zlib-devel, automake, autoconf, libtool.
 o  RedHat, Fedora       kernel-devel, rpm-build
 o  SLES 9.0             kernel-source, udev, rpm
 o  SLES 10.0            kernel-source, rpm
 
-Note:   To build 32-bit libraries on x86_64 and ppc64 glibc-devel 32bit
-        should be installed
+Note:   To build 32-bit libraries on x86_64 and ppc64 platforms, the 32-bit
+        glibc-devel should be installed.
 
 Specific Component Requirements:
-o  OSU MPI requires:    Fortran Compiler(default: gcc-g77) 
-o  ibutils:  		tcl-8.4, tcl-devel-8.4, tk
-o  tvflash: 		pciutils-devel
-o  mvapich2:            libsysfs, libsysfs-devel
+o  Mvapich              a Fortran Compiler (such as gcc-g77)
+o  Mvapich2             libstdc++-devel, sysfsutils (SuSE),
+                        libsysfs-devel (RedHat5.0, Fedora C6)
+o  Open MPI             libstdc++-devel, sysfsutils (SuSE),
+                        libsysfs-devel (RedHat5.0, Fedora C6)
+o  ibutils              tcl-8.4, tcl-devel-8.4, tk, libstdc++-devel
+o  tvflash              pciutils-devel
+o  mstflint             libstdc++-devel (32-bit on ppc64)
+
+Note:   The installer will warn you if you attempt to compile any of the
+        above packages and do not have the prerequisites installed.
+
 
 *** Important Note for open-iscsi users:
     Installing iSER as part of OFED installation will also install open-iscsi.
@@ -77,24 +89,29 @@ o  mvapich2:            libsysfs, libsysfs-devel
 ========================
 
 The OFED Distribution package generates RPMs for installing the following:
-  
-  o   OpenFabrics core and ULPs:
-	- HCA drivers (mthca, ipath, ehca)
-	- core 
-	- Upper Layer Protocols: IPoIB, SDP, SRP Initiator, iSER Initiator, 
-	  and uDAPL
-  o   OpenFabrics utilities:
-	- OpenSM: InfiniBand Subnet Manager
-  	- Diagnostic tools
-	- Performance tests
-  o   MPI:
-	- OSU MPI stack supporting the InfiniBand interface
-	- Open MPI stack supporting the InfiniBand interface
-	- MPI benchmark tests (OSU BW/LAT, Intel MPI Benchmark, Presta)
-  o   open-iscsi: open-iscsi initiator with iSER support
-  o   Sources of all software modules (under conditions mentioned in the 
-      modules' LICENSE files) 
+
+  o   OpenFabrics core and ULPs
+        - HCA drivers (mthca, ipath, ehca)
+        - iWARP driver (cxgb3)
+        - core
+        - Upper Layer Protocols: IPoIB, SDP, SRP Initiator, iSER Initiator
+          RDS, VNIC and uDAPL
+  o   OpenFabrics utilities
+        - OpenSM: InfiniBand Subnet Manager
+        - Diagnostic tools
+        - Performance tests
+  o   MPI
+        - OSU MVAPICH stack supporting the InfiniBand and iWARP interface
+        - Open MPI stack supporting the InfiniBand and iWARP interface
+        - OSU MVAPICH2 stack supporting the InfiniBand and iWARP interface
+        - MPI benchmark tests (OSU BW/LAT, Intel MPI Benchmark, Presta)
+  o   Extra packages
+        - open-iscsi: open-iscsi initiator with iSER support
+        - ib-bonding: Bonding driver for IPoIB interface
+  o   Sources of all software modules (under conditions mentioned in the
+      modules' LICENSE files)
   o   Documentation
+
 
 
 3. A Note on the Installation Process
@@ -113,9 +130,6 @@ install.sh will first build the RPMs, then install them onto the local machine.
 If the RPMs already exist, the install.sh script will simply install them onto
 the local machine without re-building them.
 
-*** Important Note for Open MPI users ONLY: 
-    You must install OFED (run install.sh). Building the OFED RPMs is 
-    not sufficient.
 
 4. Building OFED Software RPMs
 ==============================

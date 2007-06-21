@@ -1,8 +1,8 @@
-	  Open Fabrics Enterprise Distribution (OFED)
+            Open Fabrics Enterprise Distribution (OFED)
                           Version 1.2
-		       Installation Guide
-			  
-			 June 2007
+                       Installation Guide
+
+                           June 2007
 
 ==============================================================================
 Table of contents
@@ -52,10 +52,10 @@ The OFED Distribution package generates RPMs for installing the following:
 
   o   OpenFabrics core and ULPs
         - HCA drivers (mthca, ipath, ehca)
-	- iWARP driver (cxgb3)
+        - iWARP driver (cxgb3)
         - core
-        - Upper Layer Protocols: IPoIB, SDP, SRP Initiator, iSER Initiator 
-	  RDS, VNIC and uDAPL
+        - Upper Layer Protocols: IPoIB, SDP, SRP Initiator, iSER Initiator
+          RDS, VNIC and uDAPL
   o   OpenFabrics utilities
         - OpenSM: InfiniBand Subnet Manager
         - Diagnostic tools
@@ -66,9 +66,9 @@ The OFED Distribution package generates RPMs for installing the following:
         - OSU MVAPICH2 stack supporting the InfiniBand and iWARP interface
         - MPI benchmark tests (OSU BW/LAT, Intel MPI Benchmark, Presta)
   o   Extra packages
-  	- open-iscsi: open-iscsi initiator with iSER support
-  	- ib-bonding: Bonding driver for IPoIB interface
-  o   Sources of all software modules (under conditions mentioned in the 
+        - open-iscsi: open-iscsi initiator with iSER support
+        - ib-bonding: Bonding driver for IPoIB interface
+  o   Sources of all software modules (under conditions mentioned in the
       modules' LICENSE files)
   o   Documentation
 
@@ -93,8 +93,10 @@ The OFED Distribution package generates RPMs for installing the following:
 OS Distribution         Required Packages
 ---------------         ----------------------------------
 General:
-o  Common to all        gcc, glib, glib-devel, glibc, glibc-devel, zlib-devel
-                        automake, autoconf, libtool.
+o  Common to all        gcc, glib, glib-devel, glibc, glibc-devel,
+                        glibc-devel-32bit (to build 32-bit libraries on x86_86
+                        and ppc64),
+                        zlib-devel, automake, autoconf, libtool.
 o  RedHat, Fedora       kernel-devel, rpm-build
 o  SLES 9.0             kernel-source, udev, rpm
 o  SLES 10.0            kernel-source, rpm
@@ -103,16 +105,21 @@ Note:   To build 32-bit libraries on x86_64 and ppc64 platforms, the 32-bit
         glibc-devel should be installed.
 
 Specific Component Requirements:
-o  OSU MPI              a Fortran Compiler (such as gcc-g77)
-o  ibutils              tcl-8.4, tcl-devel-8.4, tk
+o  Mvapich              a Fortran Compiler (such as gcc-g77)
+o  Mvapich2             libstdc++-devel, sysfsutils (SuSE),
+                        libsysfs-devel (RedHat5.0, Fedora C6)
+o  Open MPI             libstdc++-devel, sysfsutils (SuSE),
+                        libsysfs-devel (RedHat5.0, Fedora C6)
+o  ibutils              tcl-8.4, tcl-devel-8.4, tk, libstdc++-devel
 o  tvflash              pciutils-devel
+o  mstflint             libstdc++-devel (32-bit on ppc64)
 
 Note:   The installer will warn you if you attempt to compile any of the
-	above packages and do not have the prerequisites installed.
+        above packages and do not have the prerequisites installed.
 
 
 ==============================================================================
-4. How to Download and Extract the OFED	Distribution
+4. How to Download and Extract the OFED Distribution
 ==============================================================================
 
 1) Download the OFED-X.X.X.tgz file to your target Linux host.
@@ -122,7 +129,7 @@ Note:   The installer will warn you if you attempt to compile any of the
 
 2) Extract the package using:
 
-     tar xzvf OFED-X.X.X.tgz 
+     tar xzvf OFED-X.X.X.tgz
 
 ==============================================================================
 5. Installing OFED Software
@@ -139,7 +146,7 @@ Note:   The installer will warn you if you attempt to compile any of the
      ./install.sh
 
    Interactive menus will direct you through the install process.
-   
+
    Note: After the installer completes, information about the OFED
          installation such as the prefix, the kernel version, and
          installation parameters can be found by running
@@ -163,12 +170,12 @@ Note:   The installer will warn you if you attempt to compile any of the
 
 Notes:
 ------
-a. It is possible to rename and/or edit the ofed.conf and ofed_net.conf files. 
-   Thus it is possible to change user choices (observing the original format). 
+a. It is possible to rename and/or edit the ofed.conf and ofed_net.conf files.
+   Thus it is possible to change user choices (observing the original format).
    See examples of ofed.conf and ofed_net.conf under OFED-X.X.X/docs.
 
 b. To make debugging kernel issues easier, it is recommended to set the
-   following environment variable before building OFED: 
+   following environment variable before building OFED:
    export OPENIB_KERNEL_EXTRA_CFLAGS=-g
    This will attach debug info to generated kernel binaries without affecting
    their speed.
@@ -201,7 +208,7 @@ o The package kernel include files are placed under <prefix>/src/openib.
   "backported" to your kernel).
 o The raw package (un-backported) source files are placed under
   <prefix>/src/ofa_kernel-1.2
-o The script "openibd" is installed under /etc/init.d/. This script can 
+o The script "openibd" is installed under /etc/init.d/. This script can
   be used to load and unload the software stack.
 o The directory /etc/infiniband is created with the files "info" and
   "openib.conf". The "info" script can be used to retrieve OFED
@@ -215,20 +222,20 @@ o If libibverbs-utils is installed, then ofed.sh and ofed.csh are
   installed under /etc/ld.so.conf.d/ to update the dynamic linker's
   run-time search path to find the InfiniBand shared libraries.
 o The file /etc/modprobe.conf is updated to include the following:
-  - "alias ib<n> ib_ipoib" for each ib<n> interface. 
+  - "alias ib<n> ib_ipoib" for each ib<n> interface.
   - "alias net-pf-27 ib_sdp" for sdp.
 o If opensm is installed, the daemon opensmd is installed under /etc/init.d/
   and opensm.conf is installed under /etc.
 o If IPoIB configuration files are included, ifcfg-ib<n> files will be
   installed at:
-  - RedHat: /etc/sysconfig/network-scripts/ 
+  - RedHat: /etc/sysconfig/network-scripts/
   - SuSE: /etc/sysconfig/network/
-o If iSER is included, open-iscsi user-space files will be also installed: 
+o If iSER is included, open-iscsi user-space files will be also installed:
   - Configuration files will be installed at /etc/iscsi
   - Startup script will be installed at:
     - RedHat: /etc/init.d/iscsi
     - SuSE: /etc/init.d/open-iscsi
-  - Other tools (iscsiadm, iscsid, iscsi_discovery, iscsi-iname, iscsistart) 
+  - Other tools (iscsiadm, iscsid, iscsi_discovery, iscsi-iname, iscsistart)
     will be installed under /sbin.
   - Documentation will be installed under:
     - RedHat: /usr/share/doc/iscsi-initiator-utils-<version number>
@@ -261,7 +268,7 @@ o man pages will be installed under /usr/share/man/.
 
    Note: It is possible to rename and/or edit the ofed.conf file. Thus
          it is possible to change user choices (observing the original format).
-	 See an example of ofed.conf under OFED-X.X.X/docs.
+         See an example of ofed.conf under OFED-X.X.X/docs.
 
 Build Process Results
 ---------------------
@@ -324,7 +331,7 @@ NETWORK_ib0=172.16.0.0
 BROADCAST_ib0=172.16.255.255
 ONBOOT_ib0=1
 
-# Based on eth0; each '*' will be replaced with corresponding octet 
+# Based on eth0; each '*' will be replaced with corresponding octet
 # from eth0.
 LAN_INTERFACE_ib0=eth0
 IPADDR_ib0=172.16.'*'.'*'
@@ -361,7 +368,7 @@ the installation by modifying the relevant configuration files.  The
 list of the modules that will be loaded automatically upon boot can be
 found in the /etc/infiniband/openib.conf file.  Other configuration
 files include:
-- SDP configuration file:    /etc/libsdp.conf 
+- SDP configuration file:    /etc/libsdp.conf
 - OpenSM configuration file: /etc/opensm.conf
 - DAPL configuration file:   /etc/dat.conf
 
