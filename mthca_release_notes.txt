@@ -14,8 +14,8 @@ Table of Contents
 ===============================================================================
 1. Overview
 ===============================================================================
-mthca is the low level driver implementation for Mellanox Technologies HCAs: 
-InfiniHost, InfiniHost III Ex and InfiniHost III Lx.
+mthca is the low level driver implementation for the following Mellanox Techno-
+logies HCAs: InfiniHost, InfiniHost III Ex and InfiniHost III Lx.
 
 mthca Available Parameters
 --------------------------
@@ -25,60 +25,64 @@ In order to set mthca parameters, add the following line to /etc/modpobe.conf:
 
 mthca parameters:
 
-  - tune_pci               increase PCI burst from the default set by BIOS if nonzero
-  - msi	                   attempt to use MSI if nonzero
-  - msi_x                  attempt to use MSI-X if nonzero
-  - fw_cmd_doorbell        post FW commands through doorbell page if nonzero (and
-                           supported by FW)
-  - catas_reset_disable    disable device reset on a catastrophic event if nonzero
+  tune_pci		- increase PCI burst from the default set by BIOS if
+			  nonzero
+  msi			- attempt to use MSI if nonzero
+  msi_x			- attempt to use MSI-X if nonzero
+  fw_cmd_doorbell	- post firmware commands through doorbell page if non-
+			  zero (and supported by firmware)
+  catas_reset_disable   - disable device reset on a catastrophic event if non-
+			  zero
 
 
 ===============================================================================
 2. Fixed Bugs
 ===============================================================================
-1.  Allocating many MRs (which uses many memory pages) causes kernel Oops. (490)
-2.  Improve scheduling of kernel QPs in mthca. (542)
-3.  Wrong mthca errors (e.g. CQ entry for unknown QP bd0406). (394)
+1.  Allocating many MRs uses many memory pages and causes a kernel oops. (490)
+2.  Improved scheduling of kernel QPs in mthca. (542)
+3.  Wrong mthca error reporting (e.g., CQ entry for unknown QP bd0406). (394)
 4.  Kernel panic on boot when using Hide-DDR FW. (544)
-5.  Off-by-one in FMR handling on MemFree can cause memory corruption. (424)
-6.  InfiniHost III Lx: Data corruption when working with FMR (Influence on the
-    ULPs: iSER, SRP and Lustre).
-7.  Fix RESET to ERROR transition
-8.  Set cleaned CQEs back to HW ownership when cleaning CQ
-9.  Fix posting >255 receive WRs for InfiniHost
-10. Fix error path in mthca_alloc_memfree()
-11. Allow the QP state transition RESET->RESET
-12. Fix access to MTT and MPT tables on non-cache-coherent CPUs
+5.  Off-by-one FMR handling can cause memory corruption for mem-free devices.
+    (424)
+6.  InfiniHost III Lx: Data corruption when working with FMR (Affected ULPs:
+    iSER, SRP and Lustre).
+7.  RESET to ERROR transition
+8.  Set cleaned CQEs back to HW ownership upon cleaning the CQ
+9.  (InfiniHost) Posting more than 255 receive Work Requests
+10. Error path in mthca_alloc_memfree()
+11. The QP state transition RESET->RESET was not allowed
+12. Access to MTT and MPT tables on non-cache-coherent CPUs
 
 
 
 ===============================================================================
 3. Known Issues
 ===============================================================================
-1. UAR size other than 8MB prevents mthca driver loading. The default UAR
-   size is 8MB. If it is changed, the following error message will be logged to
-   /var/log/messages upon attempt to load the mthca driver:
+1. A UAR size other than 8MB prevents mthca driver loading. The default UAR
+   size is 8MB. If the size is changed, the following error message will be
+   logged to /var/log/messages upon attempting to load the mthca driver:
    ib_mthca 0000:04:00.0: Missing UAR, aborting.
 
-2. If a user level application that uses multicast receives a control signal
+2. If a user level application using multicast receives a control signal
    in the process of detaching from a multicast group, its QP may remain a
    member of the multicast group (in HCA).
    Workaround: Destroy the multicast group after detaching the QP from it.
 
-3. On MemFree devices, RC QPs can be created with a maximum of (max_sge - 3)
+3. In mem-free devices, RC QPs can be created with a maximum of (max_sge - 3)
    entries only.
 
-4. Performance degradation due to wrong BIOS configuration:
-   The PCI Express spec. requires BIOS to set the MaxReadReq register
-   for each card for maximum performance and stability. 
+4. Performance can be degraded due to a wrong BIOS configuration:
+   The PCI Express specification requires the BIOS to set the MaxReadReq
+   register for each HCA card for maximum performance and stability. 
 
-   If you are seeing bandwidth performance degradation, you can try forcing
-   the card to behave out of PCI Express spec. by setting the tune_pci=1 module
-   parameter.  This tune_pci=1 option was the default setting in OFED
-   1.0, which might have masked performance degradation on some systems.
+   If you experience bandwidth performance degradation, try forcing the card to
+   behave not according to the PCI Express specification by setting the
+   tune_pci=1 module parameter. This tune_pci=1 assignment was the default
+   setting in OFED 1.0; therefore, it may have masked performance degradation
+   on some systems.
 
-   If tune_pci=1 improves bandwidth, please report the issue to your 
-   BIOS vendor. Please note that Mellanox Technologies does not recommend using
-   tune_pci=1 in production systems: working with tune_pci=1 option set is
-   untested and is known to trigger stability issues on some platforms.
+   If tune_pci=1 improves bandwidth, please report the issue to your BIOS
+   vendor. Please note that Mellanox Technologies does not recommend using
+   tune_pci=1 in production systems: working with tune_pci=1 set is untested
+   and is known to trigger instability issues on some platforms.
 

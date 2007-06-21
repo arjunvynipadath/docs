@@ -36,14 +36,16 @@ target port using RDMA communication service.
 ==============================================================================
 2. Changes and Bug Fixes
 ==============================================================================
-* Support HA in Red Hat
-* Use a rules file for filtering targets and adding attributes values
+* Support for High Availability in Red Hat
+* Added a rules file for filtering targets and adding attribute values
   (max_cmd_per_lun, max_sect).
-* Decrease log size in ./var/log/messages 
-* support CM dgid redirection
-* Handle a rare race condition.
-* Fix Bugs: fix some memory leaks and potential out of buffer writes,
-  correct line in error messages in rule files 
+* Decreased the log size of ./var/log/messages 
+* Support for CM dgid redirection
+* Bug fixes:
+  - Memory leaks and potential out of buffer writes
+  - Correct line in error messages in rule files 
+  - A rare race condition
+
 
 ==============================================================================
 3. Software Dependencies
@@ -194,7 +196,7 @@ ibsrpdm usage
 srp_daemon
 ----------
 The srp_daemon utility is based on ibsrpdm and extends its functionality.
-In addition to the ibsrpdm functionality described above, srp_daemon can also:
+In addition to the ibsrpdm functionality described above, srp_daemon can also
 - Establish an SRP connection by itself (without the need to issue the "echo"
   command described in Section 6)
 - Continue running in background, detecting new targets and establishing SRP
@@ -202,7 +204,7 @@ In addition to the ibsrpdm functionality described above, srp_daemon can also:
 - Discover reachable SRP targets given an infiniband HCA name and port, rather
   than just by /dev/umad<N> where <N> is a digit
 - Enable High Availability operation (together with Device-Mapper Multipath)
-- Have a configuration file that can decide to which targets to connect.
+- Have a configuration file that determines the targets to connect to
 
 a. srp_daemon commands equivalent to ibsrpdm:
 
@@ -222,23 +224,21 @@ b. srp_daemon extensions to ibsrpdm
    - To both discover the SRP Targets and establish connections with them, just
      add the -e option to the above command.
 
-   - Executing srp_daemon without -a option will display only the reachable
-     Targets to which the initiator is not connected (via the port upon which
-     srp_daemon was activated). When executing with the -e option it is better
-     to omit -a.
+   - Executing srp_daemon over a port without the -a option will only display
+     the reachable targets via the port and to which the initiator is not
+     connected. If executing with the -e option it is better to omit -a.
 
    - It is recommended to use the -n option. This option adds the initiator_ext
      to the connecting string. (See Section 9 for more details).
 
-   - One can set a configuration file for srp_daemon. The default
-     configuration file is /etc/srp_daemon.conf but it is possible to supply
-     another configuration file using the -f option. The configuration file
-     configure to which targets srp_daemon is allowed to connect. The
-     configuration file can be used also to set values for additional
+   - srp_daemon has a configuration file that can be set, where the default is 
+     /etc/srp_daemon.conf. Use the -f to supply a different configuration file
+     that configures the targets srp_daemon is allowed to connect to. The
+     configuration file can also be used to set values for additional
      parameters (e.g., max_cmd_per_lun, max_sect).
 
-   - Continuous background (daemon) operation, providing automatic ongoing
-     detection and connection capability -- see the next section.
+   - A continuous background (daemon) operation, providing an automatic ongoing
+     detection and connection capability. See Section 8.
 
 ==============================================================================
 8. Automatic Discovery and Connecting to Targets
@@ -251,9 +251,9 @@ b. srp_daemon extensions to ibsrpdm
   srp_daemon -e -o.  This utility will scan the fabric once, connect to
   every Target it detects, and then exit. 
 
- - Note that srp_daemon will follow the configuration it finds in
-   /etc/srp_daemon.conf. It can ignore a target if this target is disallowed
-   by the configuration file.
+  NOTE: srp_daemon will follow the configuration it finds in
+  /etc/srp_daemon.conf. Thus, it will ignore a target that is disallowed in
+  the configuration file.
 
 - To connect to all the existing Targets in the fabric and to connect
   to new targets that will join the fabric, execute srp_daemon -e. This utility
@@ -339,20 +339,19 @@ the scsi_host is removed, multipath switches to another path to this target
 When the failed path recovers, it will be detected by the SRP daemon. The SRP
 daemon will then request ib_srp to connect to this target. Once the connection
 is up, there will be a new scsi_host for this target. Multipath will be 
-executed on the devices of this host, and we will return to the original state
-(before the path failed).
+executed on the devices of this host, returning to the original state (prior to
+the failed path).
 
 High Availability Prerequisites
 -------------------------------
 
 Installation for RHEL4: (Execute once)
-   - Verify that the standard device-mapper-multipath rpm is installed. If not, install it from the RHEL distribution.
+   - Verify that the standard device-mapper-multipath rpm is installed. If not,
+     install it from the RHEL distribution.
 
 Installation for SLES10: (Execute once)
-   - Verify that multipath is installed. If not, install it from the
-     installation. It is also possible to download it
-     from  http://christophe.varoqui.free.fr/multipath-tools/multipath-tools-0.4.7.tar.bz2
-     and then compile and install it.
+   - Verify that multipath is installed. If not, take it from the installation
+     or download it from  http://christophe.varoqui.free.fr/multipath-tools/multipath-tools-0.4.7.tar.bz2 and then compile and install it.
 
    - Update udev: (Execute once - for manual activation of High Availability only)
    
@@ -360,9 +359,9 @@ Installation for SLES10: (Execute once)
      This file should have one line:
        ACTION=="add", KERNEL=="sd*[!0-9]", RUN+="/sbin/multipath %M:%m"
 
-   Note that when SRPHA_ENABLE is set to "yes" (see below in Automatic activation
-   of High Availability subsection), this file is created upon each boot of
-   the driver and deleted when the driver is unloaded.
+   Note: When SRPHA_ENABLE is set to "yes" (see Automatic Activation of High
+   Availability below), this file is created upon each boot of the driver and
+   is deleted when the driver is unloaded.
 
 
 Manual Activation of High Availability
@@ -375,17 +374,17 @@ Initialization: (Execute after each boot of the driver)
 	   as described above
         4) Execute for each port and each HCA:
               srp_daemon -c -e -R 300 -i <InfiniBand HCA name> -p <port number>
-          (You can use another value for -R. See in Known Issues section the
-            workaround for the rare race condition.)
+          (You can use another value for -R. See under the Known Issues section
+	   the workaround for the rare race condition.)
            
 	   This step can be performed by executing srp_daemon.sh, which sends 
            its log to /var/log/srp_daemon.log.
 
 	Now it is possible to access the SRP LUNs on /dev/mapper/.
 
-	NOTE: It is possible that regular (not SRP) LUNs may also be present;
-      	the SRP LUNs may be identified by their name. you may want to
-	configure the /etc/multipath.conf file to change multipath behavior.
+	NOTE: It is possible for regular (non-SRP) LUNs to also be present;
+      	the SRP LUNs may be identified by their names. You can configure the
+        /etc/multipath.conf file to change multipath behavior.
 
 
 Automatic Activation of High Availability
@@ -453,10 +452,10 @@ should make sure this will not occur. One solution may be to stop "haldaemon"
   from a target during run-time.
 
 - There is a very rare race condition which can cause the SRP daemon to miss a
-  target that joins the fabric. The race can occur if a target join and leaves
-  the fabric several times in a short time. (This can happen if the cable is
-  not connected well). In such a case the SM may ignore this quick change of
-  state and may not send an InformInfo to the srp_daemon. 
+  target that joins the fabric. The race can occur if a target joins and leaves
+  the fabric several times in a short time (e.g., if the cable is not connected
+  well). In such a case, the SM may ignore this quick change of state and may
+  not send an InformInfo to the srp_daemon. 
 
   Workaround: Execute the srp_daemon command with the -R <sec> option. This
   option causes the SRP daemon to perform a full rescan of the fabric every
@@ -490,9 +489,9 @@ should make sure this will not occur. One solution may be to stop "haldaemon"
   to the Target" for details.
 
 - The srp_daemon tool reads by default the configuration file 
-  /etc/srp_daemon.conf. In case this configuration file disallows to connect
-  to a certain target, srp_daemon will ignore this target. If you find out
-  that srp_daemon ignores a target, please check /etc/srp_daemon.conf file.
+  /etc/srp_daemon.conf. In case this configuration file disallows connecting
+  to a certain target, srp_daemon will ignore the target. If you find out
+  that srp_daemon ignores a target, please check the /etc/srp_daemon.conf file.
 
 ==============================================================================
 13. Vendor Specific Notes
@@ -524,8 +523,8 @@ successfully:
         /sys/class/inifiniband_srp/srp-mthca0-1/add_target
 
 
-2. Change the SRP map on the Qlogic SRP Target to set the expected
-   initiator extension to 0. For details on how to change the SRP map on a
-   Qlogic SRP Target, please refer to product documentation.
+2. Change the SRP map on the Qlogic SRP Target to set the expected initiator
+   extension to 0. For details on how to change the SRP map on a Qlogic SRP
+   Target, please refer to product documentation.
 
 

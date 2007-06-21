@@ -4,51 +4,71 @@
                           June 2007
 
 
-Overview
---------
+===============================================================================
+Table of Contents
+===============================================================================
+1. Overview
+2. Software Dependencies
+3. New Features
+4. Bug Fixes
+5. Known Issues
+6. Main Verification Flows
+
+
+===============================================================================
+1. Overview
+===============================================================================
 These are the release notes for OSU MPI MVAPICH-0.9.9.
 OSU MPI is an MPI channel implementation over InfiniBand 
-from Ohio State University (OSU).
+by Ohio State University (OSU).
 
-(http://nowlab.cse.ohio-state.edu/projects/mpi-iba/).
+See http://nowlab.cse.ohio-state.edu/projects/mpi-iba/.
 
-Software Dependencies
----------------------
-OSU MPI depends on the installation of the OFED Distribution stack with OpenSM
-running. The MPI module also requires an established network interface (either
+
+===============================================================================
+2. Software Dependencies
+===============================================================================
+OSU MPI depends on the installation of the OFED stack with OpenSM running.
+The MPI module also requires an established network interface (either
 InfiniBand IPoIB or Ethernet).
 
-New Features ( compared to mvapich 0.9.7-mlnx2.2.0 )
-------------
+
+===============================================================================
+3. New Features ( Compared to mvapich 0.9.7-mlnx2.2.0 )
+===============================================================================
 This version for OFED has the following additional features:
-- Improved message coalescing:
+- Improved message coalescing
   * Reduction of per QP send queues for reduction in memory requirement
-  * Increases the small message messaging rate significantly
-- Multi-core optimizations:
+  * Significant increase in small message messaging rate
+- Multi-core optimizations
   * Optimized scalable shared memory design 
-  * Optimized, high-performance shared memory aware collective operations
+  * Optimized, high-performance shared-memory-aware collective operations
   * Multi-port support for enabling user processes to bind to different IB ports
     for balanced communication performance
 - On-demand connection management using native IB UD support
 - Multi-path support for hot-spot avoidance in large scale clusters
 - Memory Hook Support provided by integration with ptmalloc2 library
 
-Bug Fixes
----------
-- Error report fixes.
-- PKEY support fix.
 
-Known Issues
-------------
+===============================================================================
+4. Bug Fixes
+===============================================================================
+- Error report fixes
+- PKEY support fix
+
+
+===============================================================================
+5. Known Issues
+===============================================================================
 - A process running MPI cannot fork after MPI_Init. Using fork might cause a
   segmentation fault.
 - Using mpirun with ssh has a signal collection problem. Killing the run
   (using CTRL-C) might leave some of the processes running on some of the
   nodes. This can also happen if one of the processes exits with an error.
   Note: This problem does not exist with rsh.
-- The MPD job launcher feature of OSU MPI module has not been tested by Mellanox
-  Technologies.  See http://nowlab.cse.ohio-state.edu/projects/mpi-iba/ for more
-  details.
+- The MPD job launcher feature of the OSU MPI module has not been tested by
+  Mellanox Technologies.
+  See http://nowlab.cse.ohio-state.edu/projects/mpi-iba/ for more details.
 - For users of Mellanox Technologies firmware fw-23108 or fw-25208 only:
   OSU MPI might fail in its default configuration if your HCA is burnt with an
   fw-23108 version that is earlier than 3.4.000, or with an fw-25208 version
@@ -61,14 +81,16 @@ Known Issues
   Workaround: Edit /etc/hosts and comment-out/remove the line that maps 
   IP address 127.0.0.2 to the system's fully qualified hostname.
 
-Main Verification Flows
------------------------
+
+===============================================================================
+5. Main Verification Flows
+===============================================================================
 In order to verify the correctness of OSU MPI, the following tests and
 parameters were run.
 
 Test 				Description
-===================================================================
-Intel's 			test suite 1400 Intel tests
+-------------------------------------------------------------------
+Intel's 			Test suite - 1400 Intel tests
 BW/LT 				OSU's test for bandwidth latency
 IMB 		        	Intel's MPI Benchmark test
 mpitest 			b_eff test

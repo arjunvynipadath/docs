@@ -17,75 +17,79 @@ Table of Contents
 ===============================================================================
 1. Overview
 ===============================================================================
-IPoIB is a network driver implementation that enables transmission of IP and
-ARP protocol packets over an InfiniBand UD channel. The implementation conforms
-to the relevant IETF working group's RFCs (http://www.ietf.org).
+IPoIB is a network driver implementation that enables transmitting IP and ARP
+protocol packets over an InfiniBand UD channel. The implementation conforms to
+the relevant IETF working group's RFCs (http://www.ietf.org).
 
 
 ===============================================================================
 2. New Features
 ===============================================================================
+IPoIB now supports "connected mode" (RFC 4755). IPOIB CM is enabled by default
+on hardware that supports the SRQ optional feature (mthca, ipath).
+The maximum MTU for connected mode has been increased to 65520. By default, MTU
+will be configured to this maximum value.
 
-IPoIB now supports connected mode (RFC 4755). IPOIB CM is enabled by default
-on hardware that supports SRQ optional feature (mthca, ipath).
-Max MTU for connected mode is increased to 65520.
-By default, MTU will be configured to this maximum value.
+1. IPoIB will accept incoming connected mode connections unless connected mode
+   is disabled at compile time.
+2. IPoIB will use connected mode for all outgoing traffic to unicast destina-
+   tions that support connected mode if and only if connected mode is enabled
+   at run time.
+3. For destinations that do not support connected mode, IPoIB will fall back on
+   datagram mode.
+4. For multicast traffic, IPoIB always uses datagram mode.
 
-1. IPoIB will accept incoming connected mode connections
-   unless disabled at compile time
-2. IPoIB will use connected mode for all outgoing traffic
-   to unicast destinations that support connected mode,
-   if and only if connected mode is enabled at run time.
-3. For destinations that do not support connected mode, IPoIB
-   will fall back on datagram mode
-4. For multicast traffic, IPoIB always uses datagram mode
 
 Usage and configuration:
 
-1. To check current mode used for outgoing connections:
+1. To check the current mode used for outgoing connections, enter:
    cat /sys/class/net/ib0/mode
-2. To disable IPoIB CM at compile time:
+2. To disable IPoIB CM at compile time, enter:
    cd OFED-1.2
-export OFA_KERNEL_PARAMS="--without-ipoib-cm"
+   export OFA_KERNEL_PARAMS="--without-ipoib-cm"
    ./install.sh
-3. To change run time configuration for IPoIB:
+3. To change the run-time configuration for IPoIB, enter:
    edit /etc/infiniband/openib.conf, change the following parameters:
    # Enable IPoIB Connected Mode
    SET_IPOIB_CM=yes
    # Set IPoIB MTU
    IPOIB_MTU=65520
 
-4. You can also change mode and MTU for a specific interface manually:
-   To enable connected mode for interface ib0:
+4. You can also change the mode and MTU for a specific interface manually.
+   
+   To enable connected mode for interface ib0, enter:
    echo connected > /sys/class/net/ib0/mode
-   To increase MTU:
+   
+   To increase MTU, enter:
    ifconfig ib0 mtu 65520
+
 
 ===============================================================================
 3. Known Issues
 ===============================================================================
-1. A host that has multiple interfaces, each belonging to a different IP subnet,
-   yet they use the same InfiniBand Partition and are connected to the same IB
-   Switch, violates the IP rule requiring different broadcast domains and hence
-   may build an incorrect ARP table.
+1. If a host has multiple interfaces and (a) each interface belongs to a
+   different IP subnet, (b) they all use the same InfiniBand Partition, and (c)
+   they are connected to the same IB Switch, then the host violates the IP rule
+   requiring different broadcast domains. Consequently, the host may build an
+   incorrect ARP table.
 
-   Thus the correct setting of multi-homed IPoIB host would be to use a different
-   PKEY for each IP subnet. When a host has multiple interfaces on the same IP
-   subnet, to avoid the case of a peer building an incorrect ARP entry (neighbor),
-   set the net.ipv4.conf.X.arp_ignore value to 1 or 2, where X stands for the IPoIB
-   (non child) interfaces (eg ib0, ib1, etc), this would cause the network stack to
-   send ARP replies only on the interface with the IP address specified in the ARP
-   request:
+   The correct setting of a multi-homed IPoIB host is achieved by using a
+   different PKEY for each IP subnet. If a host has multiple interfaces on the
+   same IP subnet, then to prevent a peer from building an incorrect ARP entry
+   (neighbor) set the net.ipv4.conf.X.arp_ignore value to 1 or 2, where X
+   stands for the IPoIB (non-child) interfaces (e.g., ib0, ib1, etc). This
+   causes the network stack to send ARP replies only on the interface with the
+   IP address specified in the ARP request:
 
    sysctl -w net.ipv4.conf.ib0.arp_ignore=1
    sysctl -w net.ipv4.conf.ib1.arp_ignore=1
 
-   or globally,
+   Or, globally,
 
    sysctl -w net.ipv4.conf.all.arp_ignore=1
 
-   To learn more on the arp_ignore param, see Documentation/networking/ip-sysctl.txt
-   Note that distributions have the means to make kernel params persistent.
+   To learn more about the arp_ignore parameter, see Documentation/networking/ip-sysctl.txt.
+   Note that distributions have the means to make kernel parameters persistent.
 
 2. On SuSE 10 and SLES 10:
    a.   There are IPoIB alias lines in modprobe.conf which prevent stopping/
@@ -93,45 +97,46 @@ export OFA_KERNEL_PARAMS="--without-ipoib-cm"
 	These alias lines cause the drivers to be loaded again by udev scripts.
 
 	Workaround: Change modprobe.conf to set
-	OPENIB_PARAMS="--without-modprobe" before running install.sh, 
+	OFA_KERNEL_PARAMS="--without-modprobe" before running install.sh, 
 	or remove the alias lines from modprobe.conf.
    
    b.   The ib1 interface uses the configuration script of ib0.
 
         Workaround: Invoke ifup/ifdown using both the interface name and the
-		configuration script name (example: ifup ib1 ib1).
+	configuration script name (example: ifup ib1 ib1).
 
-3. After a hotplug event, IPoIB interface falls back on datagram mode,
+3. After a hotplug event, the IPoIB interface falls back to datagram mode, and
    MTU is reduced to 2K.
    Workarounds:
-   - Set up IPoIB HA service as documented below
-   - Re-enable connected mode and increase the mtu manually:
-     echo connected > /sys/class/net/ib0/mode
-     ifconfig ib0 mtu 65520
+   a. Set up the IPoIB HA service as documented below
+   b. Re-enable connected mode and increase MTU manually:
+      echo connected > /sys/class/net/ib0/mode
+      ifconfig ib0 mtu 65520
 
-4. Since the IPoIB configuration files (ifcfg-ib<n>) are installed at the
+4. Since the IPoIB configuration files (ifcfg-ib<n>) are installed under the
    standard networking scripts location (RedHat:/etc/sysconfig/network-scripts/
    and SuSE: /etc/sysconfig/network/), the option IPOIB_LOAD=no in openib.conf
    does not prevent the loading of IPoIB on boot.
 
-5. On RedHat EL 4 up4, IPOIB implementation is not spec compliant:
+5. On RedHat EL 4 up4, the IPOIB implementation is not spec-compliant:
    - ipoib multicast does not work
-   - ipoib can not inter-operate between RHEL4U4 and other hosts
-   This is due to missing code in the kernel which was available in u3 and u5 and removed
-   in u4. As a work around, upgrade to RHEL4U5.
+   - ipoib cannot interoperate between RHEL4U4 and other hosts. This is due to
+     missing code in the kernel which was available in U3 and U5 but removed in
+     U4. As a workaround, upgrade to RHEL4U5.
 
-6. IPoIB connected mode, if enabled, uses large MTU for connected mode messages
-   and small MTU for datagram (in particular, multicast) messages, and relies on
-   path mtu discovery to adjust MTU appropriately. Packets sent in the window
-   before MTU discovery automatically reduces the MTU for a specific destination
-   will be dropped, producing the following message in system log:
+6. If IPoIB connected mode is enabled, it uses a large MTU for connected mode
+   messages and a small MTU for datagram (in particular, multicast) messages,
+   and relies on path MTU discovery to adjust MTU appropriately. Packets sent
+   in the window before MTU discovery automatically reduces the MTU for a
+   specific destination will be dropped, producing the following message in the
+   system log:
    "packet len <actual length> (> <max allowed length>) too long to send, dropping"
 
-   To warn about this, a message is produced in system log each time
-   MTU is set to a value higher than 2K.
+   To warn about this, a message is produced in the system log each time MTU is
+   set to a value higher than 2K.
 
 7. In connected mode, TCP latency for short messages is larger by approx. 1usec
-   (~5%) than in datagram mode. As a work-around, use datagram mode.
+   (~5%) than in datagram mode. As a workaround, use datagram mode.
 
 8. Single-socket TCP bandwidth for kernels < 2.6.18 is lower than with
    newer kernels. We recommend kernels from 2.6.18 and up for
@@ -160,28 +165,28 @@ DHCP Notes
 ----------
 1. It may be required to run over different UDP ports than the well known ports
    (67 and 68). Free port numbers greater than 0x8000 must be chosen. To
-   specify a server or client port number, use the option -p <port number>.
+   specify a server or a client port number, use the option -p <port number>.
    The client's port number must be the chosen server's port number plus one.
 
-2. For IPoIB to use DHCP, it is required to patch ISC's DHCP. The patch file can
-   be found under OFED-1.2/docs/dhcp after extracting the distribution file
-   (after installation it can also be found under <prefix>/docs/dhcp). The patch
-   should be applied for the server and for each client. Tests were run on
-   version 3.0.4 of the DHCP package.
+2. For IPoIB to use DHCP, you must patch ISC's DHCP. The patch file can be
+   found under OFED-1.2/docs/dhcp after extracting the distribution file.
+   (After installation it can also be found under <prefix>/docs/dhcp.) The
+   patch should be applied for the server and for each client. Tests were run
+   on version 3.0.4 of the DHCP package.
 
 
 ===============================================================================
 5. High Availability (HA) Service
 ===============================================================================
 High Availability (HA) service for IPoIB interfaces is provided via the
-ipoibtools package. Ipoibtools currently includes a perl script, ipoib_ha.pl,
-and two executables, arpingib and mcasthandle.
+ipoibtools package. The package currently includes a perl script, ipoib_ha.pl,
+and two executables: arpingib and mcasthandle.
 
-The HA service operates as follows: A user-level daemon runs in background to
-detect failure of the primary IPoIB interface.  If such a failure is detected
-(e.g., port down), the daemon configures the secondary IPoIB interface with the
-configuration parameters of the primary IPoIB interface (so that the secondary
-interface assumes the IP identity of the primary interface).
+The HA service operates as follows: a user-level daemon runs in background to
+detect failure of the primary IPoIB interface.  If such a failure is detected,
+(e.g., a port is down), the daemon configures the secondary IPoIB interface
+with the configuration parameters of the primary IPoIB interface. Thus, the
+secondary interface assumes the IP identity of the primary interface.
 
 Enabling the HA Service
 -----------------------
@@ -203,7 +208,7 @@ The HA service may also be activated manually, via the following command:
 
     -p                  primary IPoIB interface (default: ib0)
     -s                  secondary IPoIB interface (default: ib1)
-    --with-arping       use modified arping utility to send an unsolicited
+    --with-arping       use a modified arping utility to send an unsolicited
                         ARP REPLY
     --with-multicast    support applications that are using multicast
     -v                  verbose output
@@ -212,22 +217,22 @@ The HA service may also be activated manually, via the following command:
 6. The ib-bonding driver
 ===============================================================================
 The ib-bonding driver is a High Availability solution for IPoIB interfaces. 
-It is based on the Linux Ethernet Bonding Driver and was adopted to work with
-IPoIB.  ib-bonding package contains a bonding driver and a utility called 
+It is based on the Linux Ethernet Bonding Driver and was adapted to work with
+IPoIB. The ib-bonding package contains a bonding driver and a utility called 
 ib-bond to manage and control the driver operation. 
 The ib-bonding driver comes with the ib-bonding package (run rpm -qi ib-bonding
 to get the package information).
 
 Using the ib-bonding driver
 ---------------------------
-The ib-bonding driver can be loaded manually or automatically
+The ib-bonding driver can be loaded manually or automatically.
 
 1. Manual operation:
-Use the utility ib-bond to stop/query/stop the driver. To get help about this
+Use the utility ib-bond to stop, query, or stop the driver. For details on this
 utility, read the documentation that comes with the ib-bonding package.
 
 2. Automatic operation:
-Edit file '/etc/infiniband/openib.conf' as follows:
+Edit the file '/etc/infiniband/openib.conf' as follows:
 		# Enable the bonding driver on startup.
 		IPOIBBOND_ENABLE=yes
 		# # Set bond interface names
@@ -239,7 +244,7 @@ Edit file '/etc/infiniband/openib.conf' as follows:
 		bond1_SLAVES=ib2,ib3,ib4
 
 Notes:
-* The ib-bonding driver doesn't load when the HA service is configured to load.
-* If bondX name is defined but one of bondX_SLAVES or bondX_IP is missing, then that
-  specific bond will not be created.
+* The ib-bonding driver does not load when the HA service is configured to load
+* If the bondX name is defined but one of bondX_SLAVES or bondX_IPs is missing,
+  then that specific bond will not be created.
 

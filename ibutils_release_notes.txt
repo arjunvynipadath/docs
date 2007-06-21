@@ -17,92 +17,94 @@ Table of Contents
 1. Overview
 ===============================================================================
 
-The IBUTILS package provides diagnostic tools and procedures for InfiniBand 
-fabrics. Target users of these utilities are network and data-centers
-managers with basic knowledge of the InfiniBand specification.
+The IBUTILS package provides diagnostic tools and procedures for InfiniBand
+fabrics. Target users of these utilities are network and data-center managers
+with basic knowledge of the InfiniBand specification.
 
 The following tools are provided:
 o ibdiagnet - performs a diagnostic check of the entire InfiniBand subnet.
-  Should be used on any suspicion of fabric misbehavior.
-  The default invocation can be enhanced to perform more advanced checks and   
-produce more reports. The following is a partial set of checks it performs:
-   - Check for a single master SM
-   - Check all routes between hosts are set correctly (include also multicast
+  This utility should be used upon suspicion of fabric misbehavior. The default
+  invocation can be enhanced to perform more advanced checks and to produce
+  additional reports. The following is a partial set of checks it performs:
+   - Checks for a single master Subnet Manager (SM)
+   - Checks that all routes between hosts are set correctly (including multicast
      groups)
-	- Check for fabric links health
+   - Checks for fabric links health
 
 o ibdiagpath - traces a path between two nodes specified by LIDs or a directed 
-  path. This utility should be used when connectivity between specific two 
+  path. This utility should be used when the connectivity between two specific
   hosts is broken.
 
 o ibdiagui - a graphic user interface on top of ibdiagnet 
-  Mostly suitable for medium size fabrics (<100 nodes) and for users who needs 
-  to explore an unknown InfiniBand subnet. The main features it provides is an 
-  automatically generated connectivity graph, an object properties browser and 
-  hyperlinking of ibdiagnet log to these widgets.
+  ibdiagui is mostly suitable for medium sized fabrics (<100 nodes) and for
+  users who wish to explore an unknown InfiniBand subnet. The main features it
+  provides are an automatically generated connectivity graph, an object-
+  properties browser, and hyperlinks of the ibdiagnet log to these widgets.
 
-Note: man pages are provided for each tools.
+Note: man pages are provided for each tool.
 
-The package tools performs the following diagnostic procedures:
+The package tools perform the following diagnostic procedures:
 * Discover the InfiniBand subnet connectivity
-* Determine whether or not a Subnet Manager (SM) is running
+* Determine whether or not an SM is running
 * Identify links which drop packets and/or incur errors by sending MAD
   packets multiple times, across all the links, reporting port monitor counters
-* Identify fabric level mismatches or inconsistencies such as:
+* Identify fabric level mismatches or inconsistencies such as
   - Duplicate port GUIDs - Two or more different ports with the same GUID
   - Duplicate node GUIDs - Two or more different nodes with the same node GUID
   - Duplicate LIDs - Two or more devices that have the same assigned LID
   - Zero valued LIDs - A device with LID=0 indicates that the SM did not
-    assign a LID to this device.
+    assign a LID to this device
   - Zero valued system GUIDs - A device with system GUID=0 indicates that
-    the vendor did not assign it a GUID.
-  - An InfiniBand link is in the INIT state, which prevents data transfer
+    the vendor did not assign it a GUID
+  - An InfiniBand link is in the INIT state which prevents data transfer
   - Unexpected link width (when using the -lw flag)
   - Unexpected link speed (when using the -ls flag)
-  - Check for partitions and SL2VL settings preventing communication between 
-	 specific nodes (ibdiagpath)
+  - Partitions and SL2VL settings preventing communication between specific
+    nodes (ibdiagpath)
+
 
 ===============================================================================
 2. Requirements
 ===============================================================================
 
-Software dependency:
+Software Dependencies:
 
-1. ibis and ibdm must be installed.
+1. ibis and ibdm must be installed (are part of this OFED package).
 
-2. ibdiagui also depends on installation of the following packages:
-	* Tk8.4 is standard on all Linux distributions, but if not please 
-	  download and install from: http://www.tcl.tk/software/tcltk/
-	* Graphviz - an automatic graph layout utility. 
-	  Can be downloaded and installed from: http://www.graphviz.org/
+2. ibdiagui also depends on the installation of the following packages:
+   - Tk8.4 is standard on all Linux distributions. If it is missing on your
+     machine, download it from http://www.tcl.tk/software/tcltk/
+   - Graphviz - an automatic graph layout utility. It can be downloaded from
+     http://www.graphviz.org/
+
 
 ===============================================================================
 3. Reports
 ===============================================================================
-The default directory for all generated report files is /tmp .
+The default directory for all generated report files is /tmp.
 
-Both utilities collect summary information regarding all the fabric SM's
-during the run, and then output that information at end of the run in file
-/tmp/ibdiagnet.sm.
+The ibadiagnet and ibdiagpath utilities collect summary information regarding
+all the fabric SMs during the run, and then output that information at the end
+of the run in the file /tmp/ibdiagnet.sm. 
 
-Each report message includes: 
+Each report message includes the following items:
    - Device Type
    - Device portGUID
    - The direct path to the device 
-   - If a topology file is provided to be matched with the discovered fabric,
-     the node name is also provided in the report message. Otherwise, host
-     names are included only in HCA-related report messages.  
+   - If a topology file is provided for matching with the discovered InfiniBand
+     fabric, the node name is also provided in the report message. Otherwise,
+     hostnames are included only in HCA-related report messages.  
+
 
 ===============================================================================
 4. Known Issues
 ===============================================================================
    ibdiagpath issues:
    - If no subnet manager is initialized in the subnet, FDB tables may be
-     incorrectly set. Consequently, PortCounter MADs cannot be sent.
+     incorrectly set. Consequently, PortCounter MADs cannot be sent. 
 
    - A link along a LID-routed path in INIT state causes ibdiagpath performance
-     queries to fail. The performance queries fail since they cannot proceed via
-     non-ACTIVE links. 
+     queries to fail since the queries cannot proceed via non-ACTIVE links. 
 
    - ibdiagpath cannot validate the provided topology file against the existing 
      fabric topology. If the topology file includes a device/link that does not
@@ -112,9 +114,7 @@ Each report message includes:
 
    - If the hostname provided for the -s flag is not the actual local hostname, 
      then all the extracted names from the topology file will be incorrect. 
-     However, all the other information provided will be correct.
+     Nevertheless, all the other information provided will be correct.
 
-   - Executing "ibis exit" in order to terminate ibis, while running over RHEL5 
-     i686, causes ibis to exit uncleanly.
-
-
+   - If running on RHEL5, then executing "ibis exit" to terminate ibis yields
+     an unclean exit.

@@ -7,17 +7,16 @@
 ===============================================================================
 Table of Contents
 ===============================================================================
-1. General
+1. Overview
 2. MVAPICH
 3. Open MPI
 4. MVAPICH2
 
 
 ===============================================================================
-1. General
+1. Overview
 ===============================================================================
 Three MPI stacks are included in this release of OFED:
-
 - MVAPICH 0.9.9
 - Open MPI 1.2.2-1
 - MVAPICH2 0.9.8p2
@@ -42,7 +41,7 @@ bandwidth (bw), latency (lt), Intel MPI Benchmark, and Presta. The tests
 are located under: <prefix>/mpi/<compiler>/<mpi stack>/tests/, 
 where <prefix> is /usr by default.
 
-1.3 Selecting which MPI to use: mpi-selector
+1.3 Selecting Which MPI to Use: mpi-selector
 --------------------------------------------
 Depending on how the OFED installer was run, multiple different MPI
 implementations may be installed on your system.  The OFED installer
@@ -77,7 +76,7 @@ on a networked filesystem, and is therefore specific to the host on
 which it was run.  As such, it is recommended to run the
 mpi-selector-menu command on all hosts in a cluster, picking the same
 default MPI implementation on each.  It may be more convenient,
-however, to use the the mpi-selector command in script-based scenarios
+however, to use the mpi-selector command in script-based scenarios
 (such as running on every host in a cluster); mpi-selector effects all
 the same functionality as mpi-selector-menu, but is intended for
 automated environments.  See the mpi-selector(1) manual page for more
@@ -389,7 +388,7 @@ page for more information:
 ===============================================================================
 
 MVAPICH2 is an MPI-2 implementation which includes all MPI-1 features.
-It is based on  MPICH2 and MVICH.  MVAPICH2 0.9.8 provides many features
+It is based on MPICH2 and MVICH.  MVAPICH2 0.9.8 provides many features
 including fault-tolerance with checkpoint-restart, RDMA_CM support,
 iWARP support, optimized collectives, on-demand connection management,
 multi-core optimized and scalable shared memory support, and memory hook
@@ -433,7 +432,7 @@ below:
           - Default DAPL Provider          [default "ib0"]
 
 For non-interactive builds where no MVAPICH2 build options are stored in
-OFED configuration file, the default settings are:
+the OFED configuration file, the default settings are:
 
 Implementation:             OFA
 ROMIO Support:              Y
@@ -550,7 +549,7 @@ $ mpdallexit
 It is also possible to use the mpirun command in place of mpiexec.  They are
 actually the same command in MVAPICH2, however using mpiexec is preferred.
 
-It is possible to run more processes than hosts.  In that case, multiple
+It is possible to run more processes than hosts.  In this case, multiple
 processes will run on some or all of the hosts used.  The following examples
 demonstrate how to run the MPI tests.  The default installation prefix and
 gcc version of MVAPICH2 are shown.  In each case, it is assumed that a hosts
