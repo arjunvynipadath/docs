@@ -10,6 +10,7 @@ Table of Contents
 2. Debug HOWTOs
 3. Pinning (Locking) User Memory Pages
 4. External Module Compilation Over OFED-1.2
+5. Adding/Deleting a patch to OFED package
 
 
 ===============================================================================
@@ -168,7 +169,7 @@ or not). This file is a part of the ofed-docs RPM and installed under
 /usr/share/doc/ofed-docs-1.2 on RedHat, and under 
 /usr/share/doc/packages/ofed-docs-1.2 on SuSE.
 
-The same imformation can be obtained by executing the 'ofed_info' command. For
+The same information can be obtained by executing the 'ofed_info' command. For
 example:
 
 > ofed_info
@@ -310,3 +311,29 @@ Module.symvers file.
 
 See "Module versioning & Module.symvers" in the modules.txt from kernel
 documentation (e.g. linux-2.6.20/Documentation/kbuild/modules.txt).
+
+
+===============================================================================
+5. Adding/Deleting a patch to OFED package
+===============================================================================
+If there is a need to add or delete a patch to OFED package one should use the 
+ofed_patch.sh script, that is available under the docs directory.
+
+Usage:
+Add patch to OFED:
+ofed_patch.sh  --add
+               --ofed|-o <path_to_ofed>
+               --patch|-p <path_to_patch>
+               --type|-t <user|kernel|backport <kernel tag>|addons <kernel tag>>
+
+Remove patch from OFED:
+ofed_patch.sh  --remove
+               --ofed|-o <path_to_ofed>
+               --patch|-p <patch name>
+               --type|-t <user|kernel|backport <kernel tag>|addons <kernel tag>>
+
+Examples:
+ofed_patch.sh --add --ofed /tmp/OFED-1.2/ --patch /tmp/cma_fix.patch --type kernel
+
+ofed_patch.sh --remove --ofed /tmp/OFED-1.2/ --patch cma_fix.patch --type kernel
+
