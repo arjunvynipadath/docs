@@ -236,15 +236,17 @@ Edit the file '/etc/infiniband/openib.conf' as follows:
 		# Enable the bonding driver on startup.
 		IPOIBBOND_ENABLE=yes
 		# # Set bond interface names
-		IPOIB_BONDS=bond0,bond1
+		IPOIB_BONDS=bond0,bond8007
 		# Set specific bond params; address and slaves
-		bond0_IP=10.10.10.1
+		bond0_IP=10.10.10.1/24
 		bond0_SLAVES=ib0,ib1
-		bond1_IP=20.10.10.1
-		bond1_SLAVES=ib2,ib3,ib4
+		bond8007_IP=20.10.10.1
+		bond1_SLAVES=ib0.8007,ib1.8007
 
 Notes:
 * The ib-bonding driver does not load when the HA service is configured to load
 * If the bondX name is defined but one of bondX_SLAVES or bondX_IPs is missing,
   then that specific bond will not be created.
+* The bondX name must not contain characters which are disallowed for bash
+  variable names such as '.' and '-'
 
