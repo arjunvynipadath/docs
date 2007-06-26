@@ -89,28 +89,9 @@ Note:   The installer will warn you if you attempt to compile any of the
 ========================
 
 The OFED Distribution package generates RPMs for installing the following:
-<<<<<<< HEAD:README.txt
-  
-  o   OpenFabrics core and ULPs:
-	- HCA drivers (mthca, mlx4, ipath, ehca)
-	- core 
-	- Upper Layer Protocols: IPoIB, SDP, SRP Initiator, iSER Initiator, 
-	  and uDAPL
-  o   OpenFabrics utilities:
-	- OpenSM: InfiniBand Subnet Manager
-  	- Diagnostic tools
-	- Performance tests
-  o   MPI:
-	- OSU MPI stack supporting the InfiniBand interface
-	- Open MPI stack supporting the InfiniBand interface
-	- MPI benchmark tests (OSU BW/LAT, Intel MPI Benchmark, Presta)
-  o   open-iscsi: open-iscsi initiator with iSER support
-  o   Sources of all software modules (under conditions mentioned in the 
-      modules' LICENSE files) 
-=======
 
   o   OpenFabrics core and ULPs
-        - HCA drivers (mthca, ipath, ehca)
+	- HCA drivers (mthca, mlx4, ipath, ehca)
         - iWARP driver (cxgb3)
         - core
         - Upper Layer Protocols: IPoIB, SDP, SRP Initiator, iSER Initiator
@@ -129,7 +110,6 @@ The OFED Distribution package generates RPMs for installing the following:
         - ib-bonding: Bonding driver for IPoIB interface
   o   Sources of all software modules (under conditions mentioned in the
       modules' LICENSE files)
->>>>>>> ofed_1_2:README.txt
   o   Documentation
 
 
