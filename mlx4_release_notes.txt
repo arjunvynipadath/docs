@@ -1,5 +1,5 @@
 	     Open Fabrics Enterprise Distribution (OFED)
-		    mlx4 in OFED 1.2.c.8 Release Notes
+		    mlx4 in OFED 1.2.c-8 Release Notes
 			  
 			   June 2007
 
@@ -8,7 +8,7 @@
 Table of Contents
 ===============================================================================
 1. Overview
-2. Supported FW version
+2. Supported Firmware Version
 3. Tested ULPs
 4. Fixed Bugs 
 5. Known Issues
@@ -16,79 +16,88 @@ Table of Contents
 ===============================================================================
 1. Overview
 ===============================================================================
-mlx4 is the low level driver implementation for ConnectX HCA from Mellanox
-Technologies. Because these adapters can also be used as Ethernet NICs and Fibre 
-Channel HBAs, the driver is split into two modules:
+mlx4 is the low level driver implementation for the ConnectX adapters designed
+by Mellanox Technologies. The ConnectX can operate as an InfiniBand adapter,
+as an Ethernet NIC, or as a Fibre Channel HBA. To accommodate the three flavors,
+the driver is split into two modules:
     
-mlx4_core: Handles low-level things like device initialization and
-        processing firmware commands.  Also controls resource allocation
-        so that the InfiniBand, Ethernet and FC functions can share a
-        device without stepping on each other.
-    
-mlx4_ib: Handles InfiniBand-specific things; plugs into the InfiniBand midlayer.
+- mlx4_core
+	Handles low-level functions like device initialization and firmware
+	commands processing. Also controls resource allocation so that the
+	InfiniBand, Ethernet and FC functions can share a device without
+	interfering with each other.
+- mlx4_ib
+	Handles InfiniBand-specific functions and plugs into the InfiniBand
+	midlayer
 
 mlx4 Available Parameters
 --------------------------
 In order to set mlx4 parameters, add the following line to /etc/modpobe.conf:
+   options mlx4_core parameter=<value>
 
-	options mlx4_core parameter=<value>
-
-mlx4_core parameters:
-  - msi_x          attempt to use MSI-X if nonzero supported by FW)
-  - debug_level    Enable debug tracing if > 0 
+   mlx4_core parameters:
+   - msi_x          attempt to use MSI-X if non-zero is supported by firmware
+   - debug_level    Enable debug tracing if > 0 
 
 
 ===============================================================================
-2. Supported FW version
+2. Supported Firmware Version
 ===============================================================================
-This release must be used with the FW version 2.0.158 or beyond.
-If someone will use older FW the driver load will succeed (since its only load
-the device driver) but ibv_devinfo will have this message:
-# ibv_devinfo
-No IB devices found
-
-And in /var/log/messages you will see this message:
-
-mlx4_core 0000:08:00.0: Installed FW version 2.0.157
-mlx4_core 0000:08:00.0: The Command i/f revision (1) of the installed FW
-mlx4_core 0000:08:00.0: is not supported by the installed driver.
-mlx4_core 0000:08:00.0: The driver supports Command i/f revision 2.
+This release must be used with firmware version 2.0.158 or later. If you use
+older firmware, the driver will load will succeed (as only the device driver is
+loaded), but ibv_devinfo will list the following message:
+   # ibv_devinfo
+   No IB devices found
+Also, /var/log/messages will list a message such as the following:
+   mlx4_core 0000:08:00.0: Installed FW version 2.0.157
+   mlx4_core 0000:08:00.0: The Command i/f revision (1) of the installed FW
+   mlx4_core 0000:08:00.0: is not supported by the installed driver.
+   mlx4_core 0000:08:00.0: The driver supports Command i/f revision 2.
 
 ===============================================================================
 3. Tested ULPs
 ===============================================================================
-o The only ULPs that are thoroughly tested are: OpenSM and MPI (MVAPICH and 
-  Open MPI) and IPoIB UD.
-o SDP was partially tested.
+- The following ULPs were thoroughly tested:
+  o OpenSM
+  o MPI (MVAPICH and Open MPI)
+  o IPoIB UD
+- SDP was partially tested
 
 ===============================================================================
 4. Fixed Bugs 
 ===============================================================================
-1. Fix errors in CQ cleanup when associated QPs are closed.
-2. Prevents the following error: Caller posts a 2-WQE list, with the second WQE
-   in the list being an INLINE which is too long.
-3. Set correctly the RNR_RETRY parameter passed to modify_qp.
-4. Improved RDMA read latency
+- Fixed errors in CQ cleanup when associated QPs are closed
+- The following error is prevented: Caller posts a 2-WQE list with the second
+  WQE being an INLINE which is too long.
+- The RNR_RETRY parameter is now passed to modify_qp with the correct setting
+- Improved the RDMA read latency
 
 ===============================================================================
 5. Known Issues
 ===============================================================================
-1. SRQ is not supported. One must use VIADEV_USE_SRQ=0 when lunching an MPI job 
-   otherwise the MPI job will hang.
-    Examples:  
-	mpirun -np $NP -rsh -hostfile $HOSTFILE VIADEV_USE_SRQ=0 $TEST_BIN_PATH
-	or
-	Add the line VIADEV_USE_SRQ=0 to mvapich.conf file
-2. IPoIB is working in UD mode only; openibd.conf was changed to set the 
-   default to UD.
-3. Query QP is not supported
-4. Fork is not supported
-5. Resize CQ is not supported
-6. FMRs are not supported
-7. ibstat does not present all entries. Use ibv_devinfo instead.
-8. In order to work with RHEL5 with PPC one need to add the following line to
-   the ini file: Under the [HCA] section:
-   log2_uar_bar_megabytes = 5
-   After burning the new FW need also to reboot the system.
-   The reason is that the default page size in RHEL5 on PPC is 64K
+- SRQ is not supported. Set VIADEV_USE_SRQ=0 when lunching an MPI job to avoid
+  hanging the MPI job. This setting can be provided in the command line or
+  placed in the file mvapich.conf.
+  Example:  
+   mpirun -np $NP -rsh -hostfile $HOSTFILE VIADEV_USE_SRQ=0 $TEST_BIN_PATH
+
+- IPoIB works in UD mode only. openibd.conf sets the default IPoIB mode
+  accordingly (to UD). 
+
+- The following commands and/or features are not supported:
+  o Query QP
+  o Fork
+  o Resize CQ
+  o FMRs
+
+- ibstat does not present all entries. Use ibv_devinfo instead.
+
+- A PPC machine with RHEL5 has 64kB as the default page size. This must be
+  changed for the driver to work. Perform the following three steps:
+  1. Add the following line in the firmware configuration (INI) file under the
+     [HCA] section:
+       log2_uar_bar_megabytes = 5
+  2. Burn a modified firmware image with the changed INI file
+  3. Reboot the system
+     
 

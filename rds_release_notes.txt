@@ -9,7 +9,8 @@ Table of Contents
 ===============================================================================
 1. Overview
 2. Supported Platforms
-3. Known Issues
+3. Installation & Configuration
+4. New Features
 
 ===============================================================================
 1. Overview
@@ -28,9 +29,32 @@ Also available at: http://oss.oracle.com/projects/rds/dist/documentation/rds.7.t
         SLES 10
 
 ===============================================================================
-3. Known Issues
+3. Installation & Configuration
 ===============================================================================
-1. RDS HA fails
-	
-	
+To install RDS select rds in OFED's manual installation or put 'rds=y' in the
+ofed.conf for unattended installation.
 
+To load RDS module upon boot edit file '/etc/infiniband/openib.conf' as 
+follows:
+
+# Load RDS module
+RDS_LOAD=yes
+
+===============================================================================
+4. New Features
+===============================================================================
+RDS socket send buffers are now per socket, not per flow, and the new recv
+buffer value is per socket.  So we should use the core stack sndbuf and rcvbuf
+values instead of offering a separate interface.
+
+Use the following script to change the default and max socket buffer sysctls 
+to a 1 MB:
+
+#!/bin/bash
+
+nr=$((1 * 1024 * 1024))
+sys="/proc/sys/net/core"
+
+for f in {r,w}mem_{default,max}; do
+        echo $nr > $sys/$f
+done

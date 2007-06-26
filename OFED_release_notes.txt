@@ -83,10 +83,12 @@ Notes:
   o   Linux Operating Systems:
 	- RedHat EL4 up3: 2.6.9-34.ELsmp
 	- RedHat EL4 up4: 2.6.9-42.ELsmp
-	- RedHat EL4 up5: 2.6.9-42.ELsmp
-	- RedHat EL5: 2.6.9-42.ELsmp
+	- RedHat EL4 up5: 2.6.9-55.ELsmp
+	- RedHat EL5: 2.6.18-8.el5
+	- SLES9 SP3: 2.6.5-7.244-smp
 	- SLES10: 2.6.16.21-0.8-smp
 	- kernel.org: 2.6.20.x
+	- SLES10 SP1: 2.6.16.46-0.12-smp (partialy tested)
 	
 1.3 HCAs and RNICs Supported
 ----------------------------
@@ -132,8 +134,8 @@ The following third party packages have been tested with OFED 1.2:
 1. Intel MPI, Version 3.0 - Package ID: l_mpi_p_3.0.043
 2. HP MPI, Version 2.2.5
 
-1.6 OFED Sources:
------------------
+1.6 OFED Sources
+----------------
 Source repositories: 
 Kernel sources: ~vlad/ofed_1_2/.git
 User level Sources are located in all git trees starting with: ofed_1_2/ 
@@ -148,29 +150,29 @@ For details see HOWTO.build_ofed.
 Note: For details regarding the various changes,  please see the release notes
 for each package in the docs directory.
 
-    2.1 General changes:
+    2.1 General changes
 	o Kernel code based on 2.6.20
 	o New kernel modules: SA Cache, RDS, VNIC, bonding
 	o High availability of SRP and IPoIB in GA level
 	o Added iWARP support (with Chelsio driver)
 	o MAN pages for libraries (libibverbs and librdmacm)
 
-    2.1 IPoIB:
+    2.1 IPoIB
         o IPoIB Connected Mode
 	o High availability support using the bonding module.
 
-    2.2 SDP:
+    2.2 SDP
 	o netstat is now available
-        o Improved message BW:
+        o Improved message BW
           - 10X for small messages 
           - 5X for medium messages
-        o Scalability:
+        o Scalability
           - Added a memory consumption limit
 
-    2.3 SRP:
+    2.3 SRP
         o High availability is now supported for all systems.
 
-    2.4 iSER:
+    2.4 iSER
 	o Testing more platforms (e.g., ppc64 and ia64)
 	o Updated packages for ISCSI kernel & user components bundled with OFED.
 
@@ -178,17 +180,17 @@ for each package in the docs directory.
      	o Scalability features needed for Intel MPI 
 
     2.6 Libraries
-        a. libibverbs 1.1:
+        a. libibverbs 1.1
 	   o Fork support (requires apps change) 
 	   o Better low-level driver handling, including multiple drivers linked 
 	     in statically
 	   o Documentation: man pages
-        b. librdmacm (uCMA) 1.0:
+        b. librdmacm (uCMA) 1.0
 	   o Multicast joining from user space
 	   o UD support
 	   o Documentation: man pages
 
-    2.7 OSM:
+    2.7 OSM
         o Routing improvements
         o Performance improvement to min hop and up/down of over an order of magnitude
         o New fat-tree and LASH algorithms
@@ -196,32 +198,32 @@ for each package in the docs directory.
         o IB router enablement
         o SA database dump/restore
 
-    2.8 Management: 
+    2.8 Management 
         o Many diagnostic improvements since OFED 1.1 (see detailed RN)
         o ibdiagui: A GUI for ibdiagnet
 
-    2.9 Install:
+    2.9 Install
         o Default prefix directory is now /usr
 
     2.6 MPI: 
-	a. OSU MVAPICH:
+	a. OSU MVAPICH
       		o Version was updated to 0.9.9
-	b. Open MPI:
+	b. Open MPI
 		o Version was updated to 1.2.1
 		o See http://www.open-mpi.org/svn/new.php for details
-	c. OSU MVAPICH2:
+	c. OSU MVAPICH2
 		o MVAPICH2 version 0.98 was added to the OFED package.
-	d. Common MPI setup sourcing:
+	d. Common MPI setup sourcing
 	   Simple menu-driven interface to choose which MPI implementation to set as
 	   the default on a per-user and/or system-wide basis
 
     2.7 iWARP Support
         o Chelsio NIC supported
-        o Verbs and CMA APIs are the same as Infiniband
-        o ULPs that are supported:
+        o Verbs and CMA APIs are the same as InfiniBand
+        o ULPs supported
           - MPI (mvapich2 tested)
           - uDAPL
-        o Basic Testing:
+        o Basic Testing
           - uDAPL
           - mvapich2
           - NFS-RDMA
@@ -257,27 +259,33 @@ for each package in the docs directory.
 1. OFED installation now supports installing lib32 on 64-bit systems.
 2. Hotplug removal does not hang the system when the device is used by
    the uverbs interface.
-3. MVAPICH does work on ppc64.
+3. MVAPICH now works on ppc64.
 4. libibcm is now thread safe.
 
-Bugs fixed in each package are reported in the packages release notes.
+Bugs fixed in each package are reported in the package's release notes.
+
 
 ===============================================================================
 5. Known Issues
 ===============================================================================
-The following is a list of major limitations and known issues of the various
+The following is a list of general limitations and known issues of the various
 components of the OFED 1.2 release.
 
-1. Memory registration by user is limited according to the administrator
+1. When upgrading from older OFED versions, the installation script does not
+   stop the old OFED version before uninstalling it. 
+   Workaround: Stop the old OFED stack (/etc/init.d/openibd stop) before 
+   upgrade to OFED 1.2.
+1. Memory registration by  theuser is limited according to the administrator
    setting. See "Pinning (Locking) User Memory Pages" in OFED_tips.txt for
    system configuration.
 2. Fork support from kernel 2.6.12 and above is available provided
    that applications do not use threads. The fork() is supported as long
-   as parent process does not run before child exits or calls exec().
-   The former can be achieved by calling wait(childpid) the later can be
-   achieved by application specific means.  Posix system() call is
+   as the parent process does not run before the child exits or calls exec().
+   The former can be achieved by calling wait(childpid), and the latter can be
+   achieved by application specific means.  The Posix system() call is
    supported.
-3. ipath driver is supported only on 64 bit platforms.
-4. There are issues using Intel MPI with Qlogic card driver that cause failures 
+3. The ipath driver is supported only on 64-bit platforms.
+4. There are issues using Intel's MPI with the Qlogic card driver that cause
+   failures.
 
 Note: See the release notes of each component for additional issues.

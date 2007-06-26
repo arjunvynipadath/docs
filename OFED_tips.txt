@@ -9,7 +9,8 @@ Table of Contents
 1. OFED Utilities
 2. Debug HOWTOs
 3. Pinning (Locking) User Memory Pages
-4. External module compilation over OFED-1.2
+4. External Module Compilation Over OFED-1.2
+5. Adding/Deleting a patch to OFED package
 
 
 ===============================================================================
@@ -17,8 +18,8 @@ Table of Contents
 ===============================================================================
 
 The OFED package includes utilities under <prefix>/bin, where <prefix> stands
-for the OFED installation path. To retrieve the this path, run the script 
-"/etc/infiniband/info" as explained in 2.2 below.
+for the OFED installation path. To retrieve this path, run the script 
+"/etc/infiniband/info" as explained in Section 2.2 below.
 
 Notes:
 ------
@@ -161,16 +162,15 @@ c. Using sysfs file system
 2. Debug HOWTOs
 ===============================================================================
 
-2.1 OFED Components and version information
+2.1 OFED Components and Version Information
 -------------------------------------------
-The text file BUILD_ID provides data on all OFED components (whether 
-installed or not). 
-This file is a part of the ofed-docs RPM and installed under 
-/usr/share/doc/ofed-docs-1.2 on RedHat and under 
-/usr/share/doc/packages/ofed-docs-1.2 on SuSE
+The text file BUILD_ID provides data on all OFED components (whether installed
+or not). This file is a part of the ofed-docs RPM and installed under 
+/usr/share/doc/ofed-docs-1.2 on RedHat, and under 
+/usr/share/doc/packages/ofed-docs-1.2 on SuSE.
 
-The same imformation can be obtained by executing 'ofed_info' command.
-For example:
+The same information can be obtained by executing the 'ofed_info' command. For
+example:
 
 > ofed_info
 OFED-1.2-20070429-0610
@@ -245,7 +245,7 @@ mpitests-2.0-705.src.rpm
 2.2 Installed OFED Components
 -------------------------------
 The script /etc/infiniband/info provides data on the specific OFED installation
-on this machine.
+on the machine.
 
 For example:
 
@@ -262,11 +262,11 @@ For example:
    /lib/modules/2.6.9-22.ELsmp/build --with-libibcm --with-libibverbs
    --with-libipathverbs --with-libmthca --with-mstflint --with-perftest
 
-2.3 Building/Installing IB Modules with debug information
----------------------------------------------------------
+2.3 Building/Installing InfiniBand (IB) Modules With Debug Information
+----------------------------------------------------------------------
 To compile/build/install the IB modules so that they will contain debug
 information, set OPENIB_KERNEL_EXTRA_CFLAGS="-g" in your environment
-before running OFED install.sh/build.sh .
+before running OFED's install.sh/build.sh .
 
 
 ===============================================================================
@@ -280,7 +280,7 @@ requires pinning memory, thus an application cannot register more memory than
 it is allowed to pin.
 
 The user can change the system per-process memory lock limit by adding
-the following two lines to file /etc/security/limits.conf:
+the following two lines to the file /etc/security/limits.conf:
 
   *  soft  memlock  <number>
   *  hard  memlock  <number>
@@ -296,18 +296,44 @@ these limits entirely.
 	      
 Note: The file /etc/security/limits.conf contains further documentation.
 
+
 ===============================================================================
-4. External module compilation over OFED-1.2
+4. External Module Compilation Over OFED-1.2
 ===============================================================================
 
-In order to build kernel modules depending on OFED's modules take 
-Modules.symvers file from <prefix>/src/openib/Module.symvers (part of 
-kernel-ib-devel RPM) and copy this to modules subdir and then compile
-your module.
+To build kernel modules depending on OFED's modules, take the Modules.symvers
+file from <prefix>/src/openib/Module.symvers (part of the kernel-ib-devel RPM)
+and copy it to the modules subdir and then compile your module.
 
-If <prefix>/src/openib/Module.symvers does not exist or empty use 
-create_Module.symvers.sh (a part of the ofed-docs RPM) script to create 
+If <prefix>/src/openib/Module.symvers does not exist or it is empty, use the
+create_Module.symvers.sh (a part of the ofed-docs RPM) script to create the
 Module.symvers file.
 
 See "Module versioning & Module.symvers" in the modules.txt from kernel
 documentation (e.g. linux-2.6.20/Documentation/kbuild/modules.txt).
+
+
+===============================================================================
+5. Adding/Deleting a patch to OFED package
+===============================================================================
+If there is a need to add or delete a patch to OFED package one should use the 
+ofed_patch.sh script, that is available under the docs directory.
+
+Usage:
+Add patch to OFED:
+ofed_patch.sh  --add
+               --ofed|-o <path_to_ofed>
+               --patch|-p <path_to_patch>
+               --type|-t <user|kernel|backport <kernel tag>|addons <kernel tag>>
+
+Remove patch from OFED:
+ofed_patch.sh  --remove
+               --ofed|-o <path_to_ofed>
+               --patch|-p <patch name>
+               --type|-t <user|kernel|backport <kernel tag>|addons <kernel tag>>
+
+Examples:
+ofed_patch.sh --add --ofed /tmp/OFED-1.2/ --patch /tmp/cma_fix.patch --type kernel
+
+ofed_patch.sh --remove --ofed /tmp/OFED-1.2/ --patch cma_fix.patch --type kernel
+

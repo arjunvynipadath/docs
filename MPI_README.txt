@@ -7,17 +7,16 @@
 ===============================================================================
 Table of Contents
 ===============================================================================
-1. General
+1. Overview
 2. MVAPICH
 3. Open MPI
 4. MVAPICH2
 
 
 ===============================================================================
-1. General
+1. Overview
 ===============================================================================
 Three MPI stacks are included in this release of OFED:
-
 - MVAPICH 0.9.9
 - Open MPI 1.2.2-1
 - MVAPICH2 0.9.8p2
@@ -42,7 +41,7 @@ bandwidth (bw), latency (lt), Intel MPI Benchmark, and Presta. The tests
 are located under: <prefix>/mpi/<compiler>/<mpi stack>/tests/, 
 where <prefix> is /usr by default.
 
-1.3 Selecting which MPI to use: mpi-selector
+1.3 Selecting Which MPI to Use: mpi-selector
 --------------------------------------------
 Depending on how the OFED installer was run, multiple different MPI
 implementations may be installed on your system.  The OFED installer
@@ -77,7 +76,7 @@ on a networked filesystem, and is therefore specific to the host on
 which it was run.  As such, it is recommended to run the
 mpi-selector-menu command on all hosts in a cluster, picking the same
 default MPI implementation on each.  It may be more convenient,
-however, to use the the mpi-selector command in script-based scenarios
+however, to use the mpi-selector command in script-based scenarios
 (such as running on every host in a cluster); mpi-selector effects all
 the same functionality as mpi-selector-menu, but is intended for
 automated environments.  See the mpi-selector(1) manual page for more
@@ -96,7 +95,6 @@ convenient set of command line tools and menus.
 
 1.4 Updating MPI Installations
 ------------------------------
-
 Note that all of the MPI implementations included in the OFED software
 package are the versions that were available when OFED v1.2 was
 released.  They have been QA tested with this version of OFED and are
@@ -332,22 +330,41 @@ Example:
 
 In the following examples, replace <N> with the number of hosts to run on,
 and <HOSTFILE> with the filename of a valid hostfile listing the hosts
-to run on.
+to run on (unless you are running under a supported resource manager,
+in which case a hostfile is unnecessary).
 
-Example1: Running the OSU bandwidth:
+Also note that Open MPI is highly run-time tunable.  There are many
+options that can be tuned to obtain optimal performance of your MPI
+applications (see the Open MPI web site / FAQ for more information:
+http://www.open-mpi.org/faq/).
+
+It is worth noting that the "mpi_leave_pinned" run-time tunable
+parameter is usually *very* good for running benchmarks, but can
+actually be detrimental to real-world MPI applications -- and is
+therefore disabled by default.  When running the benchmarks listed
+below, it is advistable enable the "mpi_leave_pinned" option in order
+to see maximum performance (*).
+
+Example 1: Running the OSU bandwidth:
 
     > cd /usr/mpi/gcc/openmpi-1.2.2-1/tests/osu_benchmarks-2.2
-    > mpirun -np <N> -hostfile <HOSTFILE> osu_bw
+    > mpirun -np <N> --mca mpi_leave_pinned 1 -hostfile <HOSTFILE> osu_bw
 
-Example2: Running the Intel MPI Benchmark benchmarks:
+Example 2: Running the Intel MPI Benchmark benchmarks:
 
     > cd /usr/mpi/gcc/openmpi-1.2.2-1/tests/IMB-2.3
-    > mpirun -np <N> -hostfile <HOSTFILE> IMB-MPI1
+    > mpirun -np <N> --mca mpi_leave_pinned 1 -hostfile <HOSTFILE> IMB-MPI1
 
-Example3: Running the Presta benchmarks:
+Example 3: Running the Presta benchmarks:
 
     > cd /usr/mpi/gcc/openmpi-1.2.2-1/tests/presta-1.4.0
-    > mpirun -np <N> -hostfile <HOSTFILE> com -o 100
+    > mpirun -np <N> --mca mpi_leave_pinned 1 -hostfile <HOSTFILE> com -o 100
+
+(*) The "mpi_leave_pinned" option can increase bandwidth and decrease
+    latency for applications that repeatedly send and/or receive from
+    the same buffers.  If your application does not repeatedly
+    send/receive from the same buffers, mpi_leave_pinned will likely
+    have little effect on your performance.
 
 3.5 More Open MPI Information
 -----------------------------
@@ -371,7 +388,7 @@ page for more information:
 ===============================================================================
 
 MVAPICH2 is an MPI-2 implementation which includes all MPI-1 features.
-It is based on  MPICH2 and MVICH.  MVAPICH2 0.9.8 provides many features
+It is based on MPICH2 and MVICH.  MVAPICH2 0.9.8 provides many features
 including fault-tolerance with checkpoint-restart, RDMA_CM support,
 iWARP support, optimized collectives, on-demand connection management,
 multi-core optimized and scalable shared memory support, and memory hook
@@ -415,7 +432,7 @@ below:
           - Default DAPL Provider          [default "ib0"]
 
 For non-interactive builds where no MVAPICH2 build options are stored in
-OFED configuration file, the default settings are:
+the OFED configuration file, the default settings are:
 
 Implementation:             OFA
 ROMIO Support:              Y
@@ -532,7 +549,7 @@ $ mpdallexit
 It is also possible to use the mpirun command in place of mpiexec.  They are
 actually the same command in MVAPICH2, however using mpiexec is preferred.
 
-It is possible to run more processes than hosts.  In that case, multiple
+It is possible to run more processes than hosts.  In this case, multiple
 processes will run on some or all of the hosts used.  The following examples
 demonstrate how to run the MPI tests.  The default installation prefix and
 gcc version of MVAPICH2 are shown.  In each case, it is assumed that a hosts

@@ -1,7 +1,8 @@
-	     Open Fabrics Enterprise Distribution (OFED)
-		    ehca in OFED 1.2 Release Notes
 
-			   June 2007
+             Open Fabrics Enterprise Distribution (OFED)
+                    ehca in OFED 1.2 Release Notes
+
+                           June 2007
 
 
 Overview
@@ -12,7 +13,7 @@ ehca Available Parameters
 --------------------------
 In order to set ehca parameters, add the following line(s) to /etc/modprobe.conf:
 
-	options ib_ehca <parameter>=<value>
+        options ib_ehca <parameter>=<value>
 
 whereby <parameter> is one of the following items:
 - debug_level     debug level (0: no debug traces (default), 1: with debug traces)
@@ -32,26 +33,32 @@ Fixed Bugs
 - Removed do_mmap() and obsolete prototypes
 - Serialized calls to register_mr() (Bugzilla #574)
 
+Available backports
+-------------------
+- RedHat EL4 up5: 2.6.9-42.ELsmp
+- RedHat EL5: 2.6.18-8.ELsmp
+- SLES10: 2.6.16.21-0.8-smp
+- kernel.org: 2.6.19.x and 2.6.20.x
+
 Known Issues
 ------------
-
 1. The device driver normally uses both ports. For using just one port connect
 the ports as shown in Figure 1 and load the device driver by running
 `modprobe ib_ehca nr_ports=1`.
 
- 	  --------- IB Card in p570
-	  |
+          --------- IB Card in p570
+          |
          \ /
-	+---+
+        +---+
         | # |
         | # |
         | # |
         | # |  <--- Port 2: NOT CONNECTED
-	| # |
+        | # |
         |---|
         | # |
         | # |
-        | # |
+        | # |  
         | # |  <--- Port 1: CONNECTED TO THE INFINIBAND SWITCH
         | # |
         +---+
@@ -63,5 +70,6 @@ NOTE: In OpenPower 720 and p550 port 1 is at the top, port 2 is at the bottom.
 2. Furthermore the port(s) needs to be connected to an active switch port while
 loading the ehca device driver.
 
-
+3. RedHat EL5 2.6.18-8.ELsmp
+   User space not supported
 
