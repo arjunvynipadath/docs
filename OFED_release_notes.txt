@@ -101,7 +101,7 @@ well as iWARP RNICs by Chelsio Communications.
 	                     with memory: fw-25208 Rev 4.8.200)
 	- InfiniHost III Lx (fw-25204 Rev 1.2.000)
 	The SDR and DDR modes of the InfiniHost III family are supported.
-	- ConnectX IB (fw-25408 Rev 2.0.162)
+	- ConnectX IB (fw-25408 Rev 2.0.164)
 
 	For official firmware versions please see:
 	http://www.mellanox.com/support/firmware_table.php
