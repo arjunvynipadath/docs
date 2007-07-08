@@ -1,7 +1,7 @@
 	    Open Fabrics Enterprise Distribution (OFED)
-	               Version 1.2.c-8
+	               Version 1.2.c-9
 		        Release Notes
-			  June 2007
+			  July 2007
 
 
 ===============================================================================
@@ -66,7 +66,7 @@ The OFED package contains the following components:
   o   Documentation
 
 Notes:
-1. mlx4 driver is in beta quality: Only OpenSM, MPI, IPoIB and SDP can be used. 
+1. mlx4 driver is in beta quality.
 2. cxgb3 driver is in technology preview state.
 3. The Virtual NIC (VNIC) driver is presented as a technology preview on OFED 1.2.
 4. All other OFED components are of production quality.
@@ -77,31 +77,30 @@ Notes:
 ---------------------------------------------
   o   CPU architectures:
 	- x86_64
-	- ppc64
 	- x86
+	- ppc64
+	-ia64
 	
   o   Linux Operating Systems:
 	- RedHat EL4 up3: 2.6.9-34.ELsmp
 	- RedHat EL4 up4: 2.6.9-42.ELsmp
 	- RedHat EL4 up5: 2.6.9-55.ELsmp
 	- RedHat EL5: 2.6.18-8.el5
-	- SLES9 SP3: 2.6.5-7.244-smp
 	- SLES10: 2.6.16.21-0.8-smp
 	- kernel.org: 2.6.20.x
-	- SLES10 SP1: 2.6.16.46-0.12-smp (partialy tested)
+	- SLES10 SP1: 2.6.16.46-0.12-smp (partially tested)
 	
 1.3 HCAs and RNICs Supported
 ----------------------------
 This release supports IB HCAs by Mellanox Technologies, Qlogic and IBM as
 well as iWARP RNICs by Chelsio Communications.
 
-  o   Mellanox Technologies HCAs:
+  o   Mellanox Technologies HCAs (SDR and DDR modes are supported):
 	- InfiniHost (fw-23108 Rev 3.5.000)
 	- InfiniHost III Ex (MemFree: fw-25218 Rev 5.2.000 
 	                     with memory: fw-25208 Rev 4.8.200)
 	- InfiniHost III Lx (fw-25204 Rev 1.2.000)
-	The SDR and DDR modes of the InfiniHost III family are supported.
-	- ConnectX IB (fw-25408 Rev 2.0.164)
+	- ConnectX IB (fw-25408 Rev 2.1.0)
 
 	For official firmware versions please see:
 	http://www.mellanox.com/support/firmware_table.php
@@ -136,8 +135,8 @@ The following third party packages have been tested with OFED 1.2:
 
 1.6 OFED Sources
 ----------------
-Source repositories: 
-Kernel sources: ~vlad/ofed_1_2/.git
+All sources are located under git://git.openfabrics.org/
+Kernel sources: ~vlad/ofed_kernel.git
 User level Sources are located in all git trees starting with: ofed_1_2/ 
 
 The kernel sources are based on Linux 2.6.20 mainline kernel. Its patches
@@ -145,7 +144,7 @@ are included in the OFED sources directory.
 For details see HOWTO.build_ofed.
 
 ===============================================================================
-3. Main Changes from OFED 1.1
+2. Main Changes from OFED 1.1
 ===============================================================================
 Note: For details regarding the various changes,  please see the release notes
 for each package in the docs directory.
@@ -244,23 +243,16 @@ for each package in the docs directory.
     - perftest
 
     Kernel: 
+    - Code is based on kernel 2.6.22
     - mthca
     - mlx4_core (new) 
     - mlx4_ib(new)
     - core (the verbs providers)
 
-3.2 Other changes:
-    - IPoIB is working in UD mode by default
-
-
 ===============================================================================
-4. Fixed Bugs
+4. Fixed Bugs since OFED 1.2.c-8
 ===============================================================================
-1. OFED installation now supports installing lib32 on 64-bit systems.
-2. Hotplug removal does not hang the system when the device is used by
-   the uverbs interface.
-3. MVAPICH now works on ppc64.
-4. libibcm is now thread safe.
+1. Kernel oops in IPoIB on restart of the driver
 
 Bugs fixed in each package are reported in the package's release notes.
 
@@ -275,7 +267,7 @@ components of the OFED 1.2 release.
    stop the old OFED version before uninstalling it. 
    Workaround: Stop the old OFED stack (/etc/init.d/openibd stop) before 
    upgrade to OFED 1.2.
-1. Memory registration by  theuser is limited according to the administrator
+1. Memory registration by  the user is limited according to the administrator
    setting. See "Pinning (Locking) User Memory Pages" in OFED_tips.txt for
    system configuration.
 2. Fork support from kernel 2.6.12 and above is available provided

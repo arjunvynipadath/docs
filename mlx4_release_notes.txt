@@ -1,7 +1,7 @@
 	     Open Fabrics Enterprise Distribution (OFED)
-		    mlx4 in OFED 1.2.c-8 Release Notes
+		    mlx4 in OFED 1.2.c-9 Release Notes
 			  
-			   June 2007
+			   July 2007
 
 
 ===============================================================================
@@ -54,46 +54,36 @@ Also, /var/log/messages will list a message such as the following:
    mlx4_core 0000:08:00.0: is not supported by the installed driver.
    mlx4_core 0000:08:00.0: The driver supports Command i/f revision 2.
 
+This release was tested with FW 2.1.0.
+
 ===============================================================================
 3. Tested ULPs
 ===============================================================================
 - The following ULPs were thoroughly tested:
   o OpenSM
   o MPI (MVAPICH and Open MPI)
-  o IPoIB UD
+  o IPoIB UD and CM
 - SDP was partially tested
 
 ===============================================================================
-4. Fixed Bugs 
+4. Fixed Bugs and enhancements
 ===============================================================================
-- Fixed errors in CQ cleanup when associated QPs are closed
-- The following error is prevented: Caller posts a 2-WQE list with the second
-  WQE being an INLINE which is too long.
-- The RNR_RETRY parameter is now passed to modify_qp with the correct setting
-- Improved the RDMA read latency
+- Query QP and SRQ are now supported.
 
 ===============================================================================
 5. Known Issues
 ===============================================================================
-- SRQ is not supported. Set VIADEV_USE_SRQ=0 when lunching an MPI job to avoid
-  hanging the MPI job. This setting can be provided in the command line or
-  placed in the file mvapich.conf.
-  Example:  
-   mpirun -np $NP -rsh -hostfile $HOSTFILE VIADEV_USE_SRQ=0 $TEST_BIN_PATH
-
-- IPoIB works in UD mode only. openibd.conf sets the default IPoIB mode
-  accordingly (to UD). 
-
 - The following commands and/or features are not supported:
-  o Query QP
   o Fork
   o Resize CQ
   o FMRs
 
 - ibstat does not present all entries. Use ibv_devinfo instead.
 
-- A PPC machine with RHEL5 has 64kB as the default page size. This must be
-  changed for the driver to work. Perform the following three steps:
+- To load the driver on machines with 64kB default page size UAR bar must be
+  enlarged. 64kB page size is the default of PPC with RHEL5 and Itanium with
+  64kB page size enabled.
+  Perform the following three steps:
   1. Add the following line in the firmware configuration (INI) file under the
      [HCA] section:
        log2_uar_bar_megabytes = 5
