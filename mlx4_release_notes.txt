@@ -10,7 +10,7 @@ Table of Contents
 1. Overview
 2. Supported Firmware Version
 3. Tested ULPs
-4. Fixed Bugs 
+4. Fixed Bugs and Enhancements
 5. Known Issues
 
 ===============================================================================
@@ -66,9 +66,11 @@ This release was tested with FW 2.1.0.
 - SDP was partially tested
 
 ===============================================================================
-4. Fixed Bugs and enhancements
+4. Fixed Bugs and Enhancements
 ===============================================================================
 - Query QP and SRQ are now supported.
+- Internal error flow was added
+- Number of QPs that can be attached to the same multicast group increased to 56.
 
 ===============================================================================
 5. Known Issues
