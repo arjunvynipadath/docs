@@ -252,7 +252,8 @@ for each package in the docs directory.
 ===============================================================================
 4. Fixed Bugs since OFED 1.2.c-8
 ===============================================================================
-1. Kernel oops in IPoIB on restart of the driver
+1. Kernel oops in IPoIB on restart of the driver.
+2. IPoIB CM is now the default.
 
 Bugs fixed in each package are reported in the package's release notes.
 
@@ -267,17 +268,18 @@ components of the OFED 1.2 release.
    stop the old OFED version before uninstalling it. 
    Workaround: Stop the old OFED stack (/etc/init.d/openibd stop) before 
    upgrade to OFED 1.2.
-1. Memory registration by  the user is limited according to the administrator
+2. It is not recommended to use MPI with SRQ on ConnectX.
+3. Memory registration by the user is limited according to the administrator
    setting. See "Pinning (Locking) User Memory Pages" in OFED_tips.txt for
    system configuration.
-2. Fork support from kernel 2.6.12 and above is available provided
+4. Fork support from kernel 2.6.12 and above is available provided
    that applications do not use threads. The fork() is supported as long
    as the parent process does not run before the child exits or calls exec().
    The former can be achieved by calling wait(childpid), and the latter can be
    achieved by application specific means.  The Posix system() call is
    supported.
-3. The ipath driver is supported only on 64-bit platforms.
-4. There are issues using Intel's MPI with the Qlogic card driver that cause
+5. The ipath driver is supported only on 64-bit platforms.
+6. There are issues using Intel's MPI with the Qlogic card driver that cause
    failures.
 
 Note: See the release notes of each component for additional issues.

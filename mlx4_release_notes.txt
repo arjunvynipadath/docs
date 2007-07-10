@@ -71,6 +71,7 @@ This release was tested with FW 2.1.0.
 - Query QP and SRQ are now supported.
 - Internal error flow was added
 - Number of QPs that can be attached to the same multicast group increased to 56.
+- Itanium is now supported.
 
 ===============================================================================
 5. Known Issues
