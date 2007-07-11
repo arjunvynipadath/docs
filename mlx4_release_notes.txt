@@ -36,8 +36,9 @@ In order to set mlx4 parameters, add the following line to /etc/modpobe.conf:
    options mlx4_core parameter=<value>
 
    mlx4_core parameters:
-   - msi_x          attempt to use MSI-X if non-zero is supported by firmware
-   - debug_level    Enable debug tracing if > 0 
+   - msi_x   	         attempt to use MSI-X if non-zero is supported by firmware
+   - debug_level    	 enable debug tracing if > 0
+   - ierr_reset_disable  disable reset on Internal Error event if nonzero 
 
 
 ===============================================================================
@@ -54,38 +55,42 @@ Also, /var/log/messages will list a message such as the following:
    mlx4_core 0000:08:00.0: is not supported by the installed driver.
    mlx4_core 0000:08:00.0: The driver supports Command i/f revision 2.
 
-This release was tested with FW 2.1.0.
+This release was tested with FW 2.1.000
 
 ===============================================================================
 3. Tested ULPs
 ===============================================================================
-- The following ULPs were thoroughly tested:
+The following ULPs are tested:
   o OpenSM
   o MPI (MVAPICH and Open MPI)
   o IPoIB UD and CM
-- SDP was partially tested
+  o SDP was partially tested
 
 ===============================================================================
 4. Fixed Bugs and Enhancements
 ===============================================================================
-- Query QP and SRQ are now supported.
-- Internal error flow was added
-- Number of QPs that can be attached to the same multicast group increased to 56.
+- Query QP and query SRQ are now supported.
+- Internal error flow was added.
+- Number of QPs that can be attached to the same multicast group was increased
+  to 56.
 - Itanium is now supported.
+- SRQ is now supported.
+- Fork is now supported.
 
 ===============================================================================
 5. Known Issues
 ===============================================================================
 - The following commands and/or features are not supported:
-  o Fork
   o Resize CQ
   o FMRs
+  o APM
+  o SQD
 
 - ibstat does not present all entries. Use ibv_devinfo instead.
 
-- To load the driver on machines with 64kB default page size UAR bar must be
-  enlarged. 64kB page size is the default of PPC with RHEL5 and Itanium with
-  64kB page size enabled.
+- To load the driver on machines with 64KB default page size UAR bar must be
+  enlarged. 64KB page size is the default of PPC with RHEL5 and Itanium with
+  64KB page size enabled.
   Perform the following three steps:
   1. Add the following line in the firmware configuration (INI) file under the
      [HCA] section:
