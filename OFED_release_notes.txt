@@ -79,7 +79,7 @@ Notes:
 	- x86_64
 	- x86
 	- ppc64
-	-ia64
+	- ia64
 	
   o   Linux Operating Systems:
 	- RedHat EL4 up3: 2.6.9-34.ELsmp
@@ -100,7 +100,7 @@ well as iWARP RNICs by Chelsio Communications.
 	- InfiniHost III Ex (MemFree: fw-25218 Rev 5.2.000 
 	                     with memory: fw-25208 Rev 4.8.200)
 	- InfiniHost III Lx (fw-25204 Rev 1.2.000)
-	- ConnectX IB (fw-25408 Rev 2.1.0)
+	- ConnectX IB (fw-25408 Rev 2.1.000)
 
 	For official firmware versions please see:
 	http://www.mellanox.com/support/firmware_table.php

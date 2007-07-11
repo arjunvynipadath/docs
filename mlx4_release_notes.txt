@@ -69,6 +69,7 @@ The following ULPs are tested:
 ===============================================================================
 4. Fixed Bugs and Enhancements
 ===============================================================================
+- Added support for PCI-Ex gen2 devices; device IDs: 26418 and 26428.
 - Query QP and query SRQ are now supported.
 - Internal error flow was added.
 - Number of QPs that can be attached to the same multicast group was increased
@@ -98,4 +99,3 @@ The following ULPs are tested:
   2. Burn a modified firmware image with the changed INI file
   3. Reboot the system
      
-
