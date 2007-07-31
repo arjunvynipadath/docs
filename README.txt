@@ -1,10 +1,10 @@
 	    Open Fabrics Enterprise Distribution (OFED)
-                            Version 1.2
+                            Version 1.2.c
 			      README
 			  
-			     June 2007
+			     July 2007
 
-This is the OpenFabrics Enterprise Distribution (OFED) version 1.2
+This is the OpenFabrics Enterprise Distribution (OFED) version 1.2.c
 software package supporting InfiniBand and iWARP fabrics. It is composed
 of several software modules intended for use on a computer cluster
 constructed as an InfiniBand subnet or an iWARP network.
@@ -25,9 +25,8 @@ This document includes the following sections:
 
 OpenFabrics Home Page:  http://www.openfabrics.org
 
-The OFED rev 1.2 software download available in
-http://www.openfabrics.org/downloads.htm 
-http://www.openfabrics.org/builds/ofed-1.2/
+The OFED rev 1.2.c software download available in
+http://www.openfabrics.org/builds/connectx/release/
 
 Please email bugs and error reports to your InfiniBand vendor, or use bugzilla
 https://bugs.openfabrics.org/
@@ -151,7 +150,7 @@ is /usr
 The RPMs will be placed under ./RPMS directory.
 
 For further details, see "Building OFED RPMs" and "Advanced Usage of OFED" in
-OFED_Installation_Guide.txt under OFED-1.2/docs. 
+OFED_Installation_Guide.txt under OFED-1.2.c/docs. 
 
 
 5. Installing OFED Software
@@ -160,11 +159,11 @@ OFED_Installation_Guide.txt under OFED-1.2/docs.
 The default installation directory is:   /usr
 
 Install Quick Guide:
-1) Download and extract: tar xzvf OFED-1.2.tgz file.
-2) Change into directory: cd OFED-1.2
+1) Download and extract: tar xzvf OFED-1.2.c.tgz file.
+2) Change into directory: cd OFED-1.2.c
 3) Run as root: ./install.sh
 4) Follow the directions to install required components. For details, please see
-   OFED_Installation_Guide.txt under OFED-1.2/docs.
+   OFED_Installation_Guide.txt under OFED-1.2.c/docs.
 
 
 Note: The install script removes previously installed IB packages and 
@@ -227,11 +226,10 @@ In Step 2 of the main menu of install.sh, options 2, 3 and 4 can
 install one or more MPI stacks.  Multiple MPI stacks can be installed
 simultaneously -- they will not conflict with each other.  
 
-There are two MPI stacks included in this release of OFED:
-
-- Ohio State University's MVAPICH 0.9.9 (specifically updated and
-  modified by Mellanox Technologies and Cisco or this release of OFED)
-- Open MPI 1.2.1
+Three MPI stacks are included in this release of OFED:
+- MVAPICH 0.9.9
+- Open MPI 1.2.2-1
+- MVAPICH2 0.9.8p2
 
 OFED also includes 4 basic tests that can be run against each MPI
 stack: bandwidth (bw), latency (lt), Intel MPI Benchmark and Presta. The tests
@@ -244,12 +242,12 @@ the tests.
 8. Related Documentation
 ========================
 1) Release Notes for OFED Distribution components are to be found under 
-   OFED-1.2/docs and, after the package installation, under 
-   /usr/share/doc/ofed-docs-1.2 for RedHat
-   /usr/share/doc/packages/ofed-docs-1.2 for SuSE.
+   OFED-1.2.c/docs and, after the package installation, under 
+   /usr/share/doc/ofed-docs-1.2.c for RedHat
+   /usr/share/doc/packages/ofed-docs-1.2.c for SuSE.
 2) For a detailed installation guide, see OFED_Installation_Guide.txt.
 3) For more information, please visit the OFED web-page http://www.openfabrics.org
 
 
-For more information contact your InfiniBand vendor. 
+For more information contact your vendor. 
 

@@ -1,5 +1,5 @@
 	     Open Fabrics Enterprise Distribution (OFED)
-		    mlx4 in OFED 1.2.c-9 Release Notes
+		    mlx4 in OFED 1.2.c-10 Release Notes
 			  
 			   July 2007
 
@@ -64,26 +64,29 @@ The following ULPs are tested:
   o OpenSM
   o MPI (MVAPICH and Open MPI)
   o IPoIB UD and CM
-  o SDP was partially tested
+  o SDP 
+  o SRP was partially tested
 
 ===============================================================================
 4. Fixed Bugs and Enhancements
 ===============================================================================
-- Added support for PCI-Ex gen2 devices; device IDs: 26418 and 26428.
-- Query QP and query SRQ are now supported.
-- Internal error flow was added.
-- Number of QPs that can be attached to the same multicast group was increased
-  to 56.
-- Itanium is now supported.
-- SRQ is now supported.
-- Fork is now supported.
+  o FMRs are now supported
+    In addition:
+    - MTT entries now written by driver directly (WRITE_MTT firmware command
+      no longer used) -- avoids cache-line write race conditions due to FMRs
+    - MPT table now allocated from coherent memory, to avoid race conditions
+      between FMRs and firmware.
+  o query_qp now returns the RQ capabilities to userspace.
+  o Prevent possible data corruption when multiple gather segments are used.
+    This fix requires to write s/g segments and the inline segment (for MSI/GSI)
+    in reverse order into the WQE.
+  o Eliminate double-kfree in mlx4_mr_alloc error flow.
 
 ===============================================================================
 5. Known Issues
 ===============================================================================
 - The following commands and/or features are not supported:
   o Resize CQ
-  o FMRs
   o APM
   o SQD
 

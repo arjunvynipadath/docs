@@ -87,7 +87,7 @@ Notes:
 	- RedHat EL4 up5: 2.6.9-55.ELsmp
 	- RedHat EL5: 2.6.18-8.el5
 	- SLES10: 2.6.16.21-0.8-smp
-	- kernel.org: 2.6.20.x
+	- kernel.org: 2.6.20.x and 2.6.22
 	- SLES10 SP1: 2.6.16.46-0.12-smp (partially tested)
 	
 1.3 HCAs and RNICs Supported
@@ -235,8 +235,6 @@ for each package in the docs directory.
 3.1 Changes in components:
     The following components are different between OFED 1.2 and OFED 1.2.c:
     User space:
-    - libibverbs
-    - libmthca
     - libmlx4 (new) 
     - mstflint (was enhanced to support ConnectX IB)
     - ofascripts
@@ -250,13 +248,15 @@ for each package in the docs directory.
     - core (the verbs providers)
 
 ===============================================================================
-4. Fixed Bugs since OFED 1.2.c-8
+4. Fixed Bugs since OFED 1.2.c-9
 ===============================================================================
-1. Kernel oops in IPoIB on restart of the driver.
-2. IPoIB CM is now the default.
-3. MPI with SRQ is supported.
+- Kernel 2.6.22 is now supported
+- Add libsysfs and libstdc++ 32-bit dependency for openmpi on PPC64.
+- iser: kfifo.c now taken from upstream kernel.
+- cma: Added module parameter to allow adjusting the response timeout for
+  situations when the default timeout is not long enough
 
-Bugs fixed in each package are reported in the package's release notes.
+Bugs fixed in mlx4 (ConnectX driver) are reported in mlx4_release_notes.txt.
 
 
 ===============================================================================
