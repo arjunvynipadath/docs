@@ -1,5 +1,5 @@
 	    Open Fabrics Enterprise Distribution (OFED)
-	               Version 1.2.c-9
+	               Version 1.2.c-10
 		        Release Notes
 			  July 2007
 
