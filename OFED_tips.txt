@@ -1,7 +1,7 @@
 		Open Fabrics Enterprise Distribution (OFED)
 		      Tips for Working with OFED 1.2
 
-		 	     June 2007
+		 	     August 2007
 
 ===============================================================================
 Table of Contents

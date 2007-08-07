@@ -1,7 +1,7 @@
 		Open Fabrics Enterprise Distribution (OFED)
 			MPI in OFED 1.2 README
 
-			    June 2007
+			    August 2007
 
 
 ===============================================================================

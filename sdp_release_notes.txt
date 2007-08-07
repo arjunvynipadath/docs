@@ -1,7 +1,7 @@
 	     Open Fabrics Enterprise Distribution (OFED)
 		    SDP in OFED 1.2 Release Notes
 
-			  June 2007
+			  August 2007
 
 
 
@@ -220,7 +220,7 @@ IPPROTO_TCP:
 	     Open Fabrics Enterprise Distribution (OFED)
 	      libsdp v. 9382 in OFED 1.2 Release Notes
 
-			  June 2007
+			  August 2007
 
 
 ===============================================================================

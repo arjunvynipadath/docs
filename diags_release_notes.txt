@@ -1,7 +1,7 @@
 	     Open Fabrics Enterprise Distribution (OFED)
              Diagnostic Tools in OFED 1.2 Release Notes
 			  
-			   June 2007
+			   August 2007
 
 
 Repo:    git://git.openfabrics.org/~ofed_1_2/management.git (release)

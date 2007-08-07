@@ -1,7 +1,7 @@
 	     Open Fabrics Enterprise Distribution (OFED)
 		    RDMA CM in OFED 1.2 Release Notes
 			  
-			   June 2007
+			   August 2007
 
 
 ===============================================================================

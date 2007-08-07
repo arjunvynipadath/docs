@@ -2,7 +2,7 @@
                             Version 1.2.c
 			      README
 			  
-			     July 2007
+			     August 2007
 
 This is the OpenFabrics Enterprise Distribution (OFED) version 1.2.c
 software package supporting InfiniBand and iWARP fabrics. It is composed
