@@ -251,13 +251,18 @@ for each package in the docs directory.
 4. Fixed Bugs since OFED 1.2.c-10
 ===============================================================================
 - mlx4 drivers were not created on kernel 2.6.22
-IPoIB:
-- Leak in ipoib_transport_dev_init
-- Add interrupt moderation support for ipoib
-- Fixed kernel oops in IPoIB download
+- mad: Fix address handle leak in mad_rmpp
+- opensm: Sets the time a packet can live in the Head of Queue of a port that 
+  drives a CA port to approximately 1 second.
+  In addition number of dropped packets due to HOQ that will stall the CA was
+  increased to 7 (instead of 1).
+- New MVAPICH package 
 
-
-Bugs fixed in mlx4 (ConnectX driver) are reported in mlx4_release_notes.txt.
+For changed in the following components see specific release notes:
+- mlx4 (ConnectX driver)
+- IPoIB
+- RDS
+- MVAPICH
 
 
 ===============================================================================
