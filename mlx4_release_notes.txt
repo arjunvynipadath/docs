@@ -1,7 +1,7 @@
 	     Open Fabrics Enterprise Distribution (OFED)
 		    mlx4 in OFED 1.2.c-10 Release Notes
 			  
-			   July 2007
+			   August 2007
 
 
 ===============================================================================
@@ -55,7 +55,7 @@ Also, /var/log/messages will list a message such as the following:
    mlx4_core 0000:08:00.0: is not supported by the installed driver.
    mlx4_core 0000:08:00.0: The driver supports Command i/f revision 2.
 
-This release was tested with FW 2.1.000
+This release was tested with FW 2.2.000
 
 ===============================================================================
 3. Tested ULPs
@@ -65,22 +65,18 @@ The following ULPs are tested:
   o MPI (MVAPICH and Open MPI)
   o IPoIB UD and CM
   o SDP 
-  o SRP was partially tested
+  o SRP
+  o RDS was partialy tested
 
 ===============================================================================
 4. Fixed Bugs and Enhancements
 ===============================================================================
-  o FMRs are now supported
-    In addition:
-    - MTT entries now written by driver directly (WRITE_MTT firmware command
-      no longer used) -- avoids cache-line write race conditions due to FMRs
-    - MPT table now allocated from coherent memory, to avoid race conditions
-      between FMRs and firmware.
-  o query_qp now returns the RQ capabilities to userspace.
-  o Prevent possible data corruption when multiple gather segments are used.
-    This fix requires to write s/g segments and the inline segment (for MSI/GSI)
-    in reverse order into the WQE.
-  o Eliminate double-kfree in mlx4_mr_alloc error flow.
+o Added support for interrupt moderation for create cq to support ipoib.
+o Display the following device information via sysfs: board_id, fw_ver,
+  hw_rev and hca_type. As a result ibstat presenting all entries.
+o Fixed destroy special QPs.
+o Fixed the work completion opcode for RDMA_READ operation
+
 
 ===============================================================================
 5. Known Issues
@@ -89,8 +85,6 @@ The following ULPs are tested:
   o Resize CQ
   o APM
   o SQD
-
-- ibstat does not present all entries. Use ibv_devinfo instead.
 
 - To load the driver on machines with 64KB default page size UAR bar must be
   enlarged. 64KB page size is the default of PPC with RHEL5 and Itanium with

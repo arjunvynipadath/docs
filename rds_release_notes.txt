@@ -1,7 +1,7 @@
 	  Open Fabrics Enterprise Distribution (OFED)
-             RDS in OFED 1.2 Release Notes
+             RDS in OFED 1.2.c Release Notes
 			  
-			   June 2007
+			   August 2007
 
 
 ===============================================================================
@@ -11,6 +11,7 @@ Table of Contents
 2. Supported Platforms
 3. Installation & Configuration
 4. New Features
+5. Bug fixes and Enhancements since OFED 1.2 
 
 ===============================================================================
 1. Overview
@@ -43,7 +44,7 @@ RDS_LOAD=yes
 ===============================================================================
 4. New Features
 ===============================================================================
-RDS socket send buffers are now per socket, not per flow, and the new recv
+RDS socket send buffers are now per socket, not per flow, and the new receive
 buffer value is per socket.  So we should use the core stack sndbuf and rcvbuf
 values instead of offering a separate interface.
 
@@ -58,3 +59,32 @@ sys="/proc/sys/net/core"
 for f in {r,w}mem_{default,max}; do
         echo $nr > $sys/$f
 done
+
+===============================================================================
+5. Bug fixes and Enhancements since OFED 1.2 
+===============================================================================
+1.  rds_poll() always returns POLLOUT.  If you try to send and get
+    EWOULDBLOCK because the remote receiver is congested then you don't get
+    to wait for POLLOUT to be raised before sending again -- it's always
+    raised.  This is worked around by implementing some kind of exponential
+    back-off while retrying the send.  This can be done by increasing the
+    timeout given to poll().  At each poll() timeout expiry the send is
+    tried again.
+
+    This idea of waking poll() waiters on congestion notification hopes to
+    cut down on the latency between when the send could succeed and when the
+    poll() timeout hits and the send is retried.  If we receive a congestion
+    bitmap update from the remote node we wake poll() waiters, giving them a
+    chance to retry their send. 
+
+2.  Set max send and receive scatter/gather list size to 2 in the QP attributes.
+    The second sge used for RDS header.
+
+3.  Added rs_poll_flag to rds_socket structure to indicate the back pressure
+    status and send space availability.
+
+    rds_poll set POLLIN in case of released back pressure, send space became
+    available and if there are messages in the receive queue.
+    set POLLOUT if send buffer is available
+
+4.  Added MODULE_VERSION.

@@ -1,7 +1,7 @@
              Open Fabrics Enterprise Distribution (OFED)
-          OSU MPI MVAPICH-0.9.9, in OFED 1.2 Release Notes
+          OSU MPI MVAPICH-0.9.9, in OFED 1.2.c Release Notes
 
-                          June 2007
+                          August 2007
 
 
 ===============================================================================
@@ -11,8 +11,9 @@ Table of Contents
 2. Software Dependencies
 3. New Features
 4. Bug Fixes
-5. Known Issues
-6. Main Verification Flows
+5. Bug fixes since OFED 1.2
+6. Known Issues
+7. Main Verification Flows
 
 
 ===============================================================================
@@ -56,9 +57,20 @@ This version for OFED has the following additional features:
 - Error report fixes
 - PKEY support fix
 
+===============================================================================
+5. Bug fixes since OFED 1.2
+===============================================================================
+New version mvapich-0.9.9-1451
+
+- mpirun_rsh fixes:
+  * Check that we do not overflow command line size
+  * better handling for accept
+- Fix for memory allocations whose size is bigger than 2^31-1
+- Fix for multiple communicator problem
+- Fix for MPI_Finalize segmentation fault
 
 ===============================================================================
-5. Known Issues
+6. Known Issues
 ===============================================================================
 - A process running MPI cannot fork after MPI_Init. Using fork might cause a
   segmentation fault.
@@ -83,7 +95,7 @@ This version for OFED has the following additional features:
 
 
 ===============================================================================
-5. Main Verification Flows
+7. Main Verification Flows
 ===============================================================================
 In order to verify the correctness of OSU MPI, the following tests and
 parameters were run.

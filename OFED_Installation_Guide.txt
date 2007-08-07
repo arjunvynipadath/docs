@@ -2,7 +2,7 @@
                           Version 1.2.c
                        Installation Guide
 
-                           July 2007
+                           August 2007
 
 ==============================================================================
 Table of contents

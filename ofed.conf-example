@@ -12,10 +12,10 @@ cxgb3=n
 ib_ipath=n
 ib_sdp=y
 ib_srp=y
-ib_iser=n
+ib_iser=y
 ib_ehca=n
 vnic=n
-rds=n
+rds=y
 
 ib_bonding=n
 
@@ -59,8 +59,8 @@ librdmacm=y
 librdmacm_devel=y
 librdmacm_utils=y
 rds_tools=n
-dapl=n
-dapl_devel=n
+dapl=y
+dapl_devel=y
 ibutils=y
 
 mvapich=y

@@ -1,7 +1,7 @@
 	    Open Fabrics Enterprise Distribution (OFED)
-	               Version 1.2.c-10
+	               Version 1.2.c-11
 		        Release Notes
-			  July 2007
+			  August 2007
 
 
 ===============================================================================
@@ -66,7 +66,7 @@ The OFED package contains the following components:
   o   Documentation
 
 Notes:
-1. mlx4 driver is in beta quality.
+1. mlx4 driver is in GA quality.
 2. cxgb3 driver is in technology preview state.
 3. The Virtual NIC (VNIC) driver is presented as a technology preview on OFED 1.2.
 4. All other OFED components are of production quality.
@@ -100,7 +100,7 @@ well as iWARP RNICs by Chelsio Communications.
 	- InfiniHost III Ex (MemFree: fw-25218 Rev 5.2.000 
 	                     with memory: fw-25208 Rev 4.8.200)
 	- InfiniHost III Lx (fw-25204 Rev 1.2.000)
-	- ConnectX IB (fw-25408 Rev 2.1.000)
+	- ConnectX IB (fw-25408 Rev 2.2.000)
 
 	For official firmware versions please see:
 	http://www.mellanox.com/support/firmware_table.php
@@ -248,13 +248,14 @@ for each package in the docs directory.
     - core (the verbs providers)
 
 ===============================================================================
-4. Fixed Bugs since OFED 1.2.c-9
+4. Fixed Bugs since OFED 1.2.c-10
 ===============================================================================
-- Kernel 2.6.22 is now supported
-- Add libsysfs and libstdc++ 32-bit dependency for openmpi on PPC64.
-- iser: kfifo.c now taken from upstream kernel.
-- cma: Added module parameter to allow adjusting the response timeout for
-  situations when the default timeout is not long enough
+- mlx4 drivers were not created on kernel 2.6.22
+IPoIB:
+- Leak in ipoib_transport_dev_init
+- Add interrupt moderation support for ipoib
+- Fixed kernel oops in IPoIB download
+
 
 Bugs fixed in mlx4 (ConnectX driver) are reported in mlx4_release_notes.txt.
 

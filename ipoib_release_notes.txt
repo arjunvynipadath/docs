@@ -1,7 +1,7 @@
 	     Open Fabrics Enterprise Distribution (OFED)
-		    IPoIB in OFED 1.2 Release Notes
+		    IPoIB in OFED 1.2.c Release Notes
 			  
-			   June 2007
+			   August 2007
 
 
 ===============================================================================
@@ -13,6 +13,7 @@ Table of Contents
 4. DHCP Support of IPoIB
 5. High Availability (HA) Service
 6. The ib-bonding driver
+7. Bug fixes and Enhancements since OFED 1.2
 
 ===============================================================================
 1. Overview
@@ -249,4 +250,13 @@ Notes:
   then that specific bond will not be created.
 * The bondX name must not contain characters which are disallowed for bash
   variable names such as '.' and '-'
+
+
+===============================================================================
+7. Bug fixes and Enhancements since OFED 1.2
+===============================================================================
+- Add interrupt moderation support for ipoib
+- NAPI is avilable using a module parameter
+- Fixed a leak in ipoib_transport_dev_init
+- Fixed kernel oops in IPoIB download
 
