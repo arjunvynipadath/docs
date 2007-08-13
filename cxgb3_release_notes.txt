@@ -10,7 +10,7 @@ The iw_cxgb3 and cxgb3 modules provide iWARP and NIC support for the
 Chelsio S310, S320, and R310 adapters.  Make sure you choose the 'cxgb3'
 options when generating your ofed-1.2 rpms.
 
-This release is a technology preview.
+This is a Beta Release.
 
 ============================================
 Loadable Module options:
@@ -58,7 +58,15 @@ msi             - whether to use MSI or MSI-X.  Default is 2.
 Updating Firmware:
 ============================================
 
-Contact chelsio to obtain the latest firmware and cxgbtool source. 
+This release requires firmware version 4.6.x, and Protocol SRAM version
+1.1.x.  This firmware can be downloaded from http://service.chelsio.com.
+
+If your distro/kernel supports firmware loading, you can place the
+chelsio firmware and psram images in /lib/firmware, then unload and reload
+the cxgb3 module to get the new images loaded.  If this does not work,
+then you can load the firmware images manually:
+
+Obtain the cxgbtool tool and the update_eeprom.sh script from Chelsio.
 
 To build cxgbtool:
 
@@ -72,9 +80,10 @@ Then load the cxgb3 driver:
 Now note the ethernet interface name for the T3 device.  This can be
 done by typing 'ifconfig -a' and noting the interface name for the
 interface with a HW address that begins with "00:07:43".  Then load the
-new firmware:
+new firmware and eeprom file:
 
 # cxgbtool ethxx loadfw <firmware_file>
+# update_eeprom.sh ethxx <eeprom_file>
 # reboot
 
 ============================================

@@ -67,7 +67,7 @@ The OFED package contains the following components:
 
 Notes:
 1. mlx4 driver is in GA quality.
-2. cxgb3 driver is in technology preview state.
+2. cxgb3 driver is Beta quality.
 3. The Virtual NIC (VNIC) driver is presented as a technology preview on OFED 1.2.
 4. All other OFED components are of production quality.
 5. See release notes for each package in the docs directory.
