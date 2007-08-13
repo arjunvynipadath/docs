@@ -66,17 +66,7 @@ The following ULPs are tested:
   o IPoIB UD and CM
   o SDP 
   o SRP
-  o RDS was partialy tested
-
-===============================================================================
-4. Fixed Bugs and Enhancements
-===============================================================================
-o Added support for interrupt moderation for create cq to support ipoib.
-o Display the following device information via sysfs: board_id, fw_ver,
-  hw_rev and hca_type. As a result ibstat presenting all entries.
-o Fixed destroy special QPs.
-o Fixed the work completion opcode for RDMA_READ operation
-
+  o RDS 
 
 ===============================================================================
 5. Known Issues
@@ -96,3 +86,6 @@ o Fixed the work completion opcode for RDMA_READ operation
   2. Burn a modified firmware image with the changed INI file
   3. Reboot the system
      
+- When creating a qp, do not use the max_qp_wr returned by ibv_query_device as 
+  is for specifiying the "max_send_wr" capability.  The maximun value used for
+  max_send_wr should be (max_qp_wr - 33).

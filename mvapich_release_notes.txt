@@ -60,7 +60,7 @@ This version for OFED has the following additional features:
 ===============================================================================
 5. Bug fixes since OFED 1.2
 ===============================================================================
-New version mvapich-0.9.9-1451
+New version mvapich-0.9.9-1458
 
 - mpirun_rsh fixes:
   * Check that we do not overflow command line size
@@ -68,6 +68,7 @@ New version mvapich-0.9.9-1451
 - Fix for memory allocations whose size is bigger than 2^31-1
 - Fix for multiple communicator problem
 - Fix for MPI_Finalize segmentation fault
+- Change the RNR value to 64 Mili
 
 ===============================================================================
 6. Known Issues
