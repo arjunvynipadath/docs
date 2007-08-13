@@ -1,5 +1,5 @@
              Open Fabrics Enterprise Distribution (OFED)
-          OSU MPI MVAPICH-0.9.9, in OFED 1.2.c Release Notes
+          OSU MPI MVAPICH-0.9.9, in OFED 1.2.5 Release Notes
 
                           August 2007
 

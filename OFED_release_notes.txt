@@ -1,14 +1,14 @@
 	    Open Fabrics Enterprise Distribution (OFED)
-	               Version 1.2.c-11
+	                Version 1.2.5
 		        Release Notes
-			  August 2007
+			 August 2007
 
 
 ===============================================================================
 Table of Contents
 ===============================================================================
 1. Overview, which includes:
-	- OFED Distribution Rev 1.2.c Contents
+	- OFED Distribution Rev 1.2.5 Contents
 	- Supported Platforms and Operating Systems
 	- Supported HCA and RNIC Adapter Cards and Firmware Versions
 	- Tested Switch Platforms
@@ -24,7 +24,7 @@ Table of Contents
 1. Overview
 ===============================================================================
 These are the release notes of OpenFabrics Enterprise Distribution (OFED)
-release 1.2.c The OFED software package is composed of several software modules,
+release 1.2.5 The OFED software package is composed of several software modules,
 and is intended for use on a computer cluster constructed as an InfiniBand
 subnet or iWARP network. 
 
@@ -40,7 +40,7 @@ Important notes:
 1. Only Mellanox HCAs were tested with this package. 
 2. See mlx4_release_notes.txt for limitations and known issues using ConnectX IB.
 
-1.1 OFED 1.2.c Contents
+1.1 OFED 1.2.5 Contents
 -----------------------
 The OFED package contains the following components:
   o   OpenFabrics core and ULPs:
@@ -233,7 +233,7 @@ for each package in the docs directory.
 3. Main Changes from OFED 1.2
 ===============================================================================
 3.1 Changes in components:
-    The following components are different between OFED 1.2 and OFED 1.2.c:
+    The following components are different between OFED 1.2 and OFED 1.2.5:
     User space:
     - libmlx4 (new) 
     - mstflint (was enhanced to support ConnectX IB)
@@ -248,9 +248,8 @@ for each package in the docs directory.
     - core (the verbs providers)
 
 ===============================================================================
-4. Fixed Bugs since OFED 1.2.c-10
+4. Fixed Bugs since OFED 1.2.0
 ===============================================================================
-- mlx4 drivers were not created on kernel 2.6.22
 - mad: Fix address handle leak in mad_rmpp
 - opensm: Sets the time a packet can live in the Head of Queue of a port that 
   drives a CA port to approximately 1 second.

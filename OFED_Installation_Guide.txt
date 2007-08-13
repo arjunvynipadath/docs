@@ -1,5 +1,5 @@
             Open Fabrics Enterprise Distribution (OFED)
-                          Version 1.2.c
+                          Version 1.2.5
                        Installation Guide
 
                            August 2007
@@ -24,7 +24,7 @@ Table of contents
 1. Overview
 ==============================================================================
 
-This is the OpenFabrics Enterprise Distribution (OFED) version 1.2.c
+This is the OpenFabrics Enterprise Distribution (OFED) version 1.2.5
 software package supporting InfiniBand and iWARP fabrics. It is composed
 of several software modules intended for use on a computer cluster
 constructed as an InfiniBand subnet or an iWARP network.
