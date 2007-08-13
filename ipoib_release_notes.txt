@@ -256,7 +256,9 @@ Notes:
 7. Bug fixes and Enhancements since OFED 1.2
 ===============================================================================
 - Add interrupt moderation support for ipoib
-- NAPI is avilable using a module parameter
+- NAPI is available using a module parameter
 - Fixed a leak in ipoib_transport_dev_init
 - Fixed kernel oops in IPoIB download
+- Fix a crasher bug in IPoIB CM by initializing RX before moving QP to RTR. 
+
 
