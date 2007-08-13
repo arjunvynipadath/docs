@@ -86,6 +86,6 @@ The following ULPs are tested:
   2. Burn a modified firmware image with the changed INI file
   3. Reboot the system
      
-- When creating a qp, do not use the max_qp_wr returned by ibv_query_device as 
-  is for specifiying the "max_send_wr" capability.  The maximun value used for
+- When creating a QP, do not use the max_qp_wr returned by ibv_query_device as 
+  is for specifying the "max_send_wr" capability.  The maximum value used for
   max_send_wr should be (max_qp_wr - 33).
