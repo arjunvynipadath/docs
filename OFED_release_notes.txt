@@ -36,10 +36,6 @@ to the core and mthca driver driver
 Note: If you plan to upgrade the OFED package on your cluster, please upgrade
 all of its nodes to this new version.
 
-Important notes:
-1. Only Mellanox HCAs were tested with this package. 
-2. See mlx4_release_notes.txt for limitations and known issues using ConnectX IB.
-
 1.1 OFED 1.2.5 Contents
 -----------------------
 The OFED package contains the following components:
