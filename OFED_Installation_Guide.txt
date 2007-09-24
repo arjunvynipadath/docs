@@ -16,8 +16,9 @@ Table of contents
  6.  Building OFED RPMs
  7.  IPoIB Configuration
  8.  Uninstalling OFED
- 9.  Configuration
- 10. Related Documentation
+ 9.  Upgrading OFED
+ 10. Configuration
+ 11. Related Documentation
 
 
 ==============================================================================
@@ -361,9 +362,17 @@ There are two ways to uninstall OFED:
 2) Using the script ofed_uninstall.sh. The script is part of ofed-scripts
    package.
 
+==============================================================================
+9. Upgrading OFED
+==============================================================================
+
+If an old OFED version is installed, it may be upgraded by installing a
+new OFED version as described in section 5. Note that if the old OFED
+version was loaded before upgrading, you need to restart OFED or reboot
+your machine in order to start the new OFED stack.
 
 ==============================================================================
-9. Configuration
+10. Configuration
 ==============================================================================
 
 Most of the OFED components can be configured or reconfigured after
@@ -383,7 +392,7 @@ Note: After the installer completes, information about the OFED
       /etc/infiniband/info.
 
 ==============================================================================
-10. Related Documentation
+11. Related Documentation
 ==============================================================================
 
 OFED documentation is located in the ofed-docs RPM.  After
