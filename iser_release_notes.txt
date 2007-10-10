@@ -1,5 +1,5 @@
 	     Open Fabrics Enterprise Distribution (OFED)
-              iSER initiator in OFED 1.2 Release Notes
+              iSER initiator in OFED 1.3 Release Notes
 			  
 			   August 2007
 

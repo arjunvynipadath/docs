@@ -1,6 +1,6 @@
 
              Open Fabrics Enterprise Distribution (OFED)
-		    SRP in OFED 1.2 Release Notes
+		    SRP in OFED 1.3 Release Notes
 			  
 			    August 2007
 
@@ -125,7 +125,7 @@ automatically.
 7. SRP Tools - ibsrpdm and srp_daemon
 ==============================================================================
 
-To assist in performing the steps in Section 6, the OFED 1.2 distribution
+To assist in performing the steps in Section 6, the OFED 1.3 distribution
 provides two utilities which:
 - Detect targets on the fabric reachable by the Initiator (for step 1)
 - Output target attributes in a format suitable for use in the above
@@ -498,7 +498,7 @@ should make sure this will not occur. One solution may be to stop "haldaemon"
 ==============================================================================
 
 Hosts connected to Qlogic SRP Targets must perform one of the following
-steps after upgrading to OFED 1.2 to continue accessing their storage
+steps after upgrading to OFED 1.3 to continue accessing their storage
 successfully:
 
 1. When issuing the "echo" command to add a new SRP Target, the host

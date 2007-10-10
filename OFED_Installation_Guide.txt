@@ -1,5 +1,5 @@
             Open Fabrics Enterprise Distribution (OFED)
-                          Version 1.2.5
+                          Version 1.3
                        Installation Guide
 
                            August 2007
@@ -25,7 +25,7 @@ Table of contents
 1. Overview
 ==============================================================================
 
-This is the OpenFabrics Enterprise Distribution (OFED) version 1.2.5
+This is the OpenFabrics Enterprise Distribution (OFED) version 1.3
 software package supporting InfiniBand and iWARP fabrics. It is composed
 of several software modules intended for use on a computer cluster
 constructed as an InfiniBand subnet or an iWARP network.
@@ -211,7 +211,7 @@ o The package kernel include files are placed under <prefix>/src/openib.
   the Openfabrics stack. (Note that these includes, if needed, are
   "backported" to your kernel).
 o The raw package (un-backported) source files are placed under
-  <prefix>/src/ofa_kernel-1.2
+  <prefix>/src/ofa_kernel-1.3
 o The script "openibd" is installed under /etc/init.d/. This script can
   be used to load and unload the software stack.
 o The directory /etc/infiniband is created with the files "info" and
@@ -397,8 +397,8 @@ Note: After the installer completes, information about the OFED
 
 OFED documentation is located in the ofed-docs RPM.  After
 installation the documents are located under the directory:
-/usr/share/doc/ofed-docs-1.2 for RedHat
-/usr/share/doc/packages/ofed-docs-1.2 for SuSE
+/usr/share/doc/ofed-docs-1.3 for RedHat
+/usr/share/doc/packages/ofed-docs-1.3 for SuSE
 
 Document list:
 

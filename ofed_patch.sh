@@ -26,7 +26,7 @@
 # and/or other materials provided with the distribution.
 #
 #
-# Add/Remove a patch to/from OFED-1.2's ofa package
+# Add/Remove a patch to/from OFED-1.3's ofa package
 
 
 usage()
@@ -47,9 +47,9 @@ cat << EOF
                                 --type|-t <user|kernel|backport <kernel tag>|addons <kernel tag>>
 
         Example:
-                `basename $0` --add --ofed /tmp/OFED-1.2/ --patch /tmp/cma_establish.patch --type kernel
+                `basename $0` --add --ofed /tmp/OFED-1.3/ --patch /tmp/cma_establish.patch --type kernel
 
-                `basename $0` --remove --ofed /tmp/OFED-1.2/ --patch cma_establish.patch --type kernel
+                `basename $0` --remove --ofed /tmp/OFED-1.3/ --patch cma_establish.patch --type kernel
 
 EOF
 }

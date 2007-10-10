@@ -1,5 +1,5 @@
 		Open Fabrics Enterprise Distribution (OFED)
-        		  How To Build OFED 1.2
+        		  How To Build OFED 1.3
 
 		 	     August 2007
 
@@ -58,9 +58,9 @@ Name: build_ofed.sh
 
 Example:
 
-    ./build_ofed.sh --ver 1.2-rc6
+    ./build_ofed.sh --ver 1.3-rc6
 
-    This command will create a package (i.e., subtree) called OFED-1.2-rc6
+    This command will create a package (i.e., subtree) called OFED-1.3-rc6
     in the current working directory.
 
 Sources are extracted by default from the following locations:

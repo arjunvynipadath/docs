@@ -1,5 +1,5 @@
 	     Open Fabrics Enterprise Distribution (OFED)
-		    IPoIB in OFED 1.2.5 Release Notes
+		    IPoIB in OFED 1.3 Release Notes
 			  
 			   August 2007
 
@@ -46,7 +46,7 @@ Usage and configuration:
 1. To check the current mode used for outgoing connections, enter:
    cat /sys/class/net/ib0/mode
 2. To disable IPoIB CM at compile time, enter:
-   cd OFED-1.2
+   cd OFED-1.3
    export OFA_KERNEL_PARAMS="--without-ipoib-cm"
    ./install.sh
 3. To change the run-time configuration for IPoIB, enter:
@@ -170,7 +170,7 @@ DHCP Notes
    The client's port number must be the chosen server's port number plus one.
 
 2. For IPoIB to use DHCP, you must patch ISC's DHCP. The patch file can be
-   found under OFED-1.2/docs/dhcp after extracting the distribution file.
+   found under OFED-1.3/docs/dhcp after extracting the distribution file.
    (After installation it can also be found under <prefix>/docs/dhcp.) The
    patch should be applied for the server and for each client. Tests were run
    on version 3.0.4 of the DHCP package.

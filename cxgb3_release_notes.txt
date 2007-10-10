@@ -8,7 +8,7 @@ Author: Steve Wise
 
 The iw_cxgb3 and cxgb3 modules provide iWARP and NIC support for the
 Chelsio S310, S320, and R310 adapters.  Make sure you choose the 'cxgb3'
-options when generating your ofed-1.2 rpms.
+options when generating your ofed-1.3 rpms.
 
 This is a Beta Release.
 

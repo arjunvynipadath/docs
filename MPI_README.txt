@@ -1,5 +1,5 @@
 		Open Fabrics Enterprise Distribution (OFED)
-			MPI in OFED 1.2 README
+			MPI in OFED 1.3 README
 
 			    August 2007
 
@@ -96,7 +96,7 @@ convenient set of command line tools and menus.
 1.4 Updating MPI Installations
 ------------------------------
 Note that all of the MPI implementations included in the OFED software
-package are the versions that were available when OFED v1.2 was
+package are the versions that were available when OFED v1.3 was
 released.  They have been QA tested with this version of OFED and are
 fully supported.
 
@@ -106,7 +106,7 @@ been successfully installed.  There is nothing specific about the
 OFED-included MPI software packages that prohibit installing
 newer/other MPI implementations.
 
-It should be also noted that versions of MPI released after OFED v1.2
+It should be also noted that versions of MPI released after OFED v1.3
 are not supported by OFED.  But since each MPI has its own release
 schedule and QA process (each of which involves testing with the OFED
 stack), it may sometimes be desirable -- or even advisable, depending
