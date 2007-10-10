@@ -75,8 +75,8 @@ Notes:
 	- RedHat EL4 up5: 2.6.9-55.ELsmp
 	- RedHat EL5: 2.6.18-8.el5
 	- SLES10: 2.6.16.21-0.8-smp
-	- kernel.org: 2.6.23.x
 	- SLES10 SP1: 2.6.16.46-0.12-smp
+	- kernel.org: 2.6.23
 	
 1.3 HCAs and RNICs Supported
 ----------------------------
@@ -138,116 +138,71 @@ Note: For details regarding the various changes,  please see the release notes
 for each package in the docs directory.
 
     2.1 General changes
-	o Kernel code based on 2.6.23-rc8
+	o Kernel code based on 2.6.23
 	o Quality of Service support in OpenSM, CMA, IPoIB, SRP
 	o Added Neteffect driver (nes)
 
-    2.1 IPoIB
-        o IPoIB Connected Mode
-	o High availability support using the bonding module.
+    2.2 Package and install
+	o Break the user space packages RPMs
+	o The option for a build without installing is not supported any more
+	o Added an option to generate tarball with kernel sources for each
+	  kernel
 
-    2.2 SDP
-	o netstat is now available
-        o Improved message BW
-          - 10X for small messages 
-          - 5X for medium messages
-        o Scalability
-          - Added a memory consumption limit
+    2.3 IPoIB
+        o Stateless offloads
+	o IGMP for user-space multicast IB
+	o NAPI is enabled default
+	o High availability is supported via the bonding module only (removed 
+	  the scripts)
 
-    2.3 SRP
-        o High availability is now supported for all systems.
+    2.4 SDP
+	o Keep-alive
+	o Asynch IO
+	o Send Zero Copy
 
-    2.4 iSER
-	o Testing more platforms (e.g., ppc64 and ia64)
-	o Updated packages for ISCSI kernel & user components bundled with OFED.
+    2.5 iSER
+	o ???
 
-    2.5 uDAPL
-     	o Scalability features needed for Intel MPI 
+    2.6 VNIC
+    	o Update for PathScale HCA
 
-    2.6 Libraries
+    2.7 RDS
+	o RDMA API (using FMRs)
+	o GA quality with Oracle 11
+
+    2.8 uDAPL
+	o Add DAT 2.0 API run-time library and development support. i
+	  uDAPL 2.0 will include IB extensions for IB rdma write with immediate
+	  data and IB atomic operations. 
+	o Both uDAPL 1.2 and 2.0 packages will be provided and will co-exist
+
+    2.9 Libraries
         a. libibverbs 1.1
-	   o Fork support (requires apps change) 
-	   o Better low-level driver handling, including multiple drivers linked 
-	     in statically
 	   o Documentation: man pages
         b. librdmacm (uCMA) 1.0
 	   o Multicast joining from user space
 	   o UD support
 	   o Documentation: man pages
 
-    2.7 OSM
-        o Routing improvements
-        o Performance improvement to min hop and up/down of over an order of magnitude
-        o New fat-tree and LASH algorithms
-        o SA optional record support "virtually" complete
-        o IB router enablement
-        o SA database dump/restore
+    2.10 OSM
+	o More routing performance improvements
+	o Even more speedups
+	o Better packaging/installation
+	o "Native" daemon mode
+	o Performance management
+	o Quality of Service manager: Based on IBTA annex 
 
-    2.8 Management 
-        o Many diagnostic improvements since OFED 1.1 (see detailed RN)
-        o ibdiagui: A GUI for ibdiagnet
+    2.11 Management 
+        o Multiple partitions
 
-    2.9 Install
-        o Default prefix directory is now /usr
-
-    2.6 MPI: 
+    2.12 MPI: 
 	a. OSU MVAPICH
       		o Version was updated to 0.9.9
 	b. Open MPI
-		o Version was updated to 1.2.1
+		o Version was updated to 1.2.2-1
 		o See http://www.open-mpi.org/svn/new.php for details
 	c. OSU MVAPICH2
-		o MVAPICH2 version 0.98 was added to the OFED package.
-	d. Common MPI setup sourcing
-	   Simple menu-driven interface to choose which MPI implementation to set as
-	   the default on a per-user and/or system-wide basis
-
-    2.7 iWARP Support
-        o Chelsio NIC supported
-        o Verbs and CMA APIs are the same as InfiniBand
-        o ULPs supported
-          - MPI (mvapich2 tested)
-          - uDAPL
-        o Basic Testing
-          - uDAPL
-          - mvapich2
-          - NFS-RDMA
-        o Status: Beta
-
-
-===============================================================================
-3. Main Changes from OFED 1.2
-===============================================================================
-3.1 Changes in components:
-    The following components are different between OFED 1.2 and OFED 1.2.5:
-    User space:
-    - libmlx4 (new) 
-    - mstflint (was enhanced to support ConnectX IB)
-    - ofascripts
-    - perftest
-
-    Kernel: 
-    - Code is based on kernel 2.6.22
-    - mthca
-    - mlx4_core (new) 
-    - mlx4_ib(new)
-    - core (the verbs providers)
-
-===============================================================================
-4. Fixed Bugs since OFED 1.2.0
-===============================================================================
-- mad: Fix address handle leak in mad_rmpp
-- opensm: Sets the time a packet can live in the Head of Queue of a port that 
-  drives a CA port to approximately 1 second.
-  In addition number of dropped packets due to HOQ that will stall the CA was
-  increased to 7 (instead of 1).
-- New MVAPICH package 
-
-For changed in the following components see specific release notes:
-- mlx4 (ConnectX driver)
-- IPoIB
-- RDS
-- MVAPICH
+		o Version was updated to 1.0-1.
 
 
 ===============================================================================
