@@ -145,18 +145,18 @@ for each package in the docs directory.
     2.2 Package and install
         o There is a new install script. See OFED_Installation_Guide.txt for
 	  more details on the new installation and build procedures.
-	o User space packages are now in different RPMs (as opposed to one RPM
-	  in previous OFED releases)
-	o The option for a build without installing is not supported any more
+	o User space packages are now in different source RPMs (as opposed to 
+	  one source RPM in previous OFED releases).
+	o The option for a build without installing is not supported any more.
 	o Added an option to generate tarball with kernel sources for each
-	  kernel
+	  kernel.
 
     2.3 IPoIB
         o Stateless offloads
 	o IGMP for user-space multicast IB
 	o NAPI is enabled default
 	o High availability is supported via the bonding module only (removed 
-	  the scripts)
+	  ipoib tool scripts)
 
     2.4 SDP
 	o Keep-alive
@@ -166,7 +166,7 @@ for each package in the docs directory.
     2.5 iSER
 	o ???
 
-    2.6 VNIC
+    2.6 qlgc_vnic
     	o Update for PathScale HCA
 
     2.7 RDS
@@ -180,12 +180,9 @@ for each package in the docs directory.
 	o Both uDAPL 1.2 and 2.0 packages will be provided and will co-exist
 
     2.9 Libraries
-        a. libibverbs 1.1
-	   o Documentation: man pages
-        b. librdmacm (uCMA) 1.0
-	   o Multicast joining from user space
-	   o UD support
-	   o Documentation: man pages
+        a. libibverbs 1.1.1
+	   o Added Extended RC transport type
+        b. librdmacm (uCMA) 1.0.3
 
     2.10 OSM
 	o More routing performance improvements
@@ -200,9 +197,9 @@ for each package in the docs directory.
 
     2.12 MPI: 
 	a. OSU MVAPICH
-      		o Version was updated to 0.9.9
+      		o Version is 0.9.9
 	b. Open MPI
-		o Version was updated to 1.2.2-1
+		o Version is 1.2.2-1
 		o See http://www.open-mpi.org/svn/new.php for details
 	c. OSU MVAPICH2
 		o Version was updated to 1.0-1.

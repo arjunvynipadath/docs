@@ -171,18 +171,18 @@ Note:   The installer will warn you if you attempt to compile any of the
 
 3) Install script usage:
 
-   ./install.pl [-c <packages config_file>|--all|--hpc|--basic] [-n|--net <network config_file>]
+   ./install.pl [-c <packages config_file>|--all|--hpc|--basic] 
+                [-n|--net <network config_file>]
 
     --all|--hpc|--basic 		Install all,hpc or basic packages 
     					correspondingly
     -c|--config <packages config_file>	Example of the config file can be found
     					under docs
-    -l|--prefix 			Set installation prefix
+    -l|--prefix 			Set installation prefix; default is /usr
     -p|--print-available 		Print available packages for current 
-    					platform
-                                	And create corresponding ofed.conf file
-    -k|--kernel <kernel version> 	Default use the kernel installed on the
-    					installed system
+    					platform and create the ofed.conf file
+    -k|--kernel <kernel version> 	Default: use the kernel installed on the
+    					system
     -s|--kernel-sources <kernel sources path>	Default: 
     					/lib/modules/'uname -r'/build
     --build32        			Build 32-bit libraries. Relevant for 
@@ -211,9 +211,7 @@ c. Important note for open-iscsi users:
    installation process to fail.
 
 
-Install Process Results
-
-:
+Install Process Results:
 ------------------------
 
 o The OFED package is installed under <prefix> directory. Default prefix is
@@ -276,7 +274,7 @@ o man pages will be installed under /usr/share/man/.
      cd /..../OFED-X.X.X
 
 2) Run install.pl as explained above
-   This script also builds OFED binary RPMs under OFED-X.X.X/RPMS; the sources i
+   This script also builds OFED binary RPMs under OFED-X.X.X/RPMS; the sources
    are placed in OFED-X.X.X/SRPMS/.
 
    Once the install process has completed, the user may run ./install.pl on
