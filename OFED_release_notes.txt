@@ -143,7 +143,10 @@ for each package in the docs directory.
 	o Added Neteffect driver (nes)
 
     2.2 Package and install
-	o Break the user space packages RPMs
+        o There is a new install script. See OFED_Installation_Guide.txt for
+	  more details on the new installation and build procedures.
+	o User space packages are now in different RPMs (as opposed to one RPM
+	  in previous OFED releases)
 	o The option for a build without installing is not supported any more
 	o Added an option to generate tarball with kernel sources for each
 	  kernel

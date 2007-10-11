@@ -2,7 +2,7 @@
                           Version 1.3
                        Installation Guide
 
-                           August 2007
+                           October 2007
 
 ==============================================================================
 Table of contents
@@ -53,13 +53,10 @@ The OFED Distribution package generates RPMs for installing the following:
 
   o   OpenFabrics core and ULPs:
         - HCA drivers (mthca, mlx4, ipath, ehca)
-	- iWARP driver (cxgb3)
-  o   OpenFabrics core and ULPs
-        - HCA drivers (mthca, ipath, ehca)
-        - iWARP driver (cxgb3)
+	- iWARP driver (cxgb3, nes)
         - core
         - Upper Layer Protocols: IPoIB, SDP, SRP Initiator, iSER Initiator
-          RDS, VNIC and uDAPL
+          RDS, qlgc_vnic and uDAPL
   o   OpenFabrics utilities
         - OpenSM: InfiniBand Subnet Manager
         - Diagnostic tools
@@ -147,7 +144,7 @@ Note:   The installer will warn you if you attempt to compile any of the
    menu-driven first build and installation, run the installer
    script:
 
-     ./install.sh
+     ./install.pl
 
    Interactive menus will direct you through the install process.
 
@@ -170,7 +167,29 @@ Note:   The installer will warn you if you attempt to compile any of the
 
    For an automatic installation on any host, run the following:
 
-     ./OFED-X.X.X/install.sh -c <path>/ofed.conf -net <path>/ofed_net.conf
+     ./OFED-X.X.X/install.pl -c <path>/ofed.conf -n <path>/ofed_net.conf
+
+3) Install script usage:
+
+   ./install.pl [-c <packages config_file>|--all|--hpc|--basic] [-n|--net <network config_file>]
+
+    --all|--hpc|--basic 		Install all,hpc or basic packages 
+    					correspondingly
+    -c|--config <packages config_file>	Example of the config file can be found
+    					under docs
+    -l|--prefix 			Set installation prefix
+    -p|--print-available 		Print available packages for current 
+    					platform
+                                	And create corresponding ofed.conf file
+    -k|--kernel <kernel version> 	Default use the kernel installed on the
+    					installed system
+    -s|--kernel-sources <kernel sources path>	Default: 
+    					/lib/modules/'uname -r'/build
+    --build32        			Build 32-bit libraries. Relevant for 
+    					x86_64 and ppc64 platforms
+    -v|-vv|-vvv     			Set verbosity level
+    -q					Set quiet - no messages will be printed
+
 
 Notes:
 ------
@@ -192,7 +211,9 @@ c. Important note for open-iscsi users:
    installation process to fail.
 
 
-Install Process Results:
+Install Process Results
+
+:
 ------------------------
 
 o The OFED package is installed under <prefix> directory. Default prefix is
@@ -254,44 +275,19 @@ o man pages will be installed under /usr/share/man/.
 
      cd /..../OFED-X.X.X
 
-   Building RPMs can be done as a non-root user.
+2) Run install.pl as explained above
+   This script also builds OFED binary RPMs under OFED-X.X.X/RPMS; the sources i
+   are placed in OFED-X.X.X/SRPMS/.
 
-2) For interactive build run the build.sh script:
-
-     ./build.sh
-
-   Interactive menus will direct you through the build process.
-
-   During the manual building of OFED RPMs, ofed.conf is generated.
-   ofed.conf holds the selected software modules and configuration
-   settings chosen by the user.
-
-3) For an automated build, run the following:
-
-     ./OFED-X.X.X/build.sh -c <path>/ofed.conf
-
-   Note: It is possible to rename and/or edit the ofed.conf file. Thus
-         it is possible to change user choices (observing the original format).
-         See an example of ofed.conf under OFED-X.X.X/docs.
-
-Build Process Results
----------------------
-
-The OFED build.sh script builds OFED binary RPMs under
-OFED-X.X.X/RPMS; the sources are placed in OFED-X.X.X/SRPMS/.
-Running this script does not change any currently installed
-components, and the script does not change the current kernel build.
-
-Once the build process has completed, the user may run ./install.sh to
-install the new RPMs. This time, however, any previously installed
-OFED components will be uninstalled and the newly built package will
-be installed.
+   Once the install process has completed, the user may run ./install.pl on
+   other machines that have the same operating system and kernel to
+   install the new RPMs. 
 
 Note: Depending on your hardware, the build procedure may take 30-45
       minutes.  Installation, however, is a relatively short process
       (~5 minutes).  A common strategy for OFED installation on large
       homogeneous clusters is to extract the tarball on a network
-      file system (such as NFS), build OFED on NFS, and then run the
+      file system (such as NFS), build OFED RPMs on NFS, and then run the
       installer on each node with the RPMs that were previously built.
 
 ==============================================================================
