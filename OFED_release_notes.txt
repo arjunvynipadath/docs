@@ -1,7 +1,7 @@
 	    Open Fabrics Enterprise Distribution (OFED)
 	                Version 1.3-alpha
 		        Release Notes
-			October 2007
+			November 2007
 
 
 ===============================================================================
@@ -33,27 +33,27 @@ all of its nodes to this new version.
 1.1 OFED 1.3 Contents
 -----------------------
 The OFED package contains the following components:
-  o   OpenFabrics core and ULPs:
+ - OpenFabrics core and ULPs:
         - IB HCA drivers (mthca, mlx4, ipath, ehca)
 	- iWARP RNIC driver (cxgb3, nes)
         - core
         - Upper Layer Protocols: IPoIB, SDP, SRP Initiator, iSER Host, RDS, 
 	  uDAPL and qlgc_vnic.
-  o   OpenFabrics utilities:
+ - OpenFabrics utilities:
         - OpenSM (OSM): InfiniBand Subnet Manager
         - Diagnostic tools
         - Performance tests
-  o   MPI:
+ - MPI:
         - OSU MPI stack supporting the InfiniBand and iWARP interface
         - Open MPI stack supporting the InfiniBand and iWARP interface
 	- OSU MVAPICH2 stack supporting the InfiniBand and iWARP interface
         - MPI benchmark tests (OSU benchmarks, Intel MPI benchmarks, Presta)
-  o   Extra packages:
+ - Extra packages:
         - open-iscsi: open-iscsi initiator with iSER support
 	- ib-bonding: Bonding driver for IPoIB interface
-  o   Sources of all software modules (under conditions mentioned in the modules'
+ - Sources of all software modules (under conditions mentioned in the modules'
       LICENSE files)
-  o   Documentation
+ - Documentation
 
 Notes:
 1. nes driver is in Beta quality.
@@ -73,17 +73,19 @@ Notes:
   o   Linux Operating Systems:
 	- RedHat EL4 up4: 2.6.9-42.ELsmp
 	- RedHat EL4 up5: 2.6.9-55.ELsmp
-	- RedHat EL5: 2.6.18-8.el5
-	- SLES10: 2.6.16.21-0.8-smp
-	- SLES10 SP1: 2.6.16.46-0.12-smp
-	- kernel.org: 2.6.23
+	- RedHat EL5:     2.6.18-8.el5
+	- RedHat EL5 up1: 2.6.18-53.el5
+	- SLES10:         2.6.16.21-0.8-smp
+	- SLES10 SP1:     2.6.16.46-0.12-smp
+	- SLES10 SP1 up1: 2.6.16.53-0.16-smp
+	- kernel.org:     2.6.23 and 2.6.24
 	
 1.3 HCAs and RNICs Supported
 ----------------------------
 This release supports IB HCAs by Mellanox Technologies, Qlogic and IBM as
 well as iWARP RNICs by Chelsio Communications.
 
-  o   Mellanox Technologies HCAs (SDR and DDR modes are supported):
+  o   Mellanox Technologies HCAs (SDR and DDR Modes are Supported):
 	- InfiniHost (fw-23108 Rev 3.5.000)
 	- InfiniHost III Ex (MemFree: fw-25218 Rev 5.2.000 
 	                     with memory: fw-25208 Rev 4.8.200)
@@ -106,6 +108,10 @@ well as iWARP RNICs by Chelsio Communications.
 	- S310/S320 10GbE Storage Accelerators
 	- R310E 10GbE iWARP Adapters
 
+  o   NetEffect RNICs:
+        - NE020 10Gb iWARP Adapter
+
+
 1.4 Switches Supported
 ----------------------
 This release was tested with switches and gateways provided by the following
@@ -124,10 +130,10 @@ The following third party packages have been tested with OFED 1.2:
 1.6 OFED Sources
 ----------------
 All sources are located under git://git.openfabrics.org/
-Kernel sources: ~vlad/ofed_kernel.git
-User level Sources are located in all git trees starting with: ofed_1_2/ 
+Kernel sources: git://git.openfabrics.org/ofed_1_3/linux-2.6.git ofed_kernel
+User level Sources are located in all git trees as written in the BUILD_ID
 
-The kernel sources are based on Linux 2.6.23 mainline kernel. Its patches
+The kernel sources are based on Linux 2.6.24 mainline kernel. Its patches
 are included in the OFED sources directory.
 For details see HOWTO.build_ofed.
 
@@ -138,9 +144,15 @@ Note: For details regarding the various changes,  please see the release notes
 for each package in the docs directory.
 
     2.1 General changes
-	o Kernel code based on 2.6.23
+	o Kernel code based on 2.6.24-rc2
 	o Quality of Service support in OpenSM, CMA, IPoIB, SRP
 	o Added Neteffect driver (nes)
+	o Added SRP target package: Based on Mellanox IBGD SRPT and interfaces
+	  with SCST scsi target
+        o New verbs to support Extended RC (XRC).
+	o Updated SA cache Integrated with sa_query module; use of SA events 
+	  (GID up/down) to provide additional synchronization; User-space 
+	  control for dynamic enable/disable and update
 
     2.2 Package and install
         o There is a new install script. See OFED_Installation_Guide.txt for
@@ -148,61 +160,77 @@ for each package in the docs directory.
 	o User space packages are now in different source RPMs (as opposed to 
 	  one source RPM in previous OFED releases).
 	o The option for a build without installing is not supported any more.
-	o Added an option to generate tarball with kernel sources for each
-	  kernel.
-
+	o Added the script make-dist to generate tarball with kernel sources 
+	  for each kernel.
+  
     2.3 IPoIB
-        o Stateless offloads
+        o Stateless offloads - for Datagram mode
 	o IGMP for user-space multicast IB
 	o NAPI is enabled default
 	o High availability is supported via the bonding module only (removed 
 	  ipoib tool scripts)
+	o 
 
     2.4 SDP
 	o Keep-alive
 	o Asynch IO
-	o Send Zero Copy
+	o Send Zero Copy (disabled by default)
 
-    2.5 iSER
-	o ???
-
-    2.6 qlgc_vnic
+    2.5 qlgc_vnic
     	o Update for PathScale HCA
 
-    2.7 RDS
-	o RDMA API (using FMRs)
+    2.6 RDS
+	o RDMA API (using FMRs) - RDS API version 3
 	o GA quality with Oracle 11
 
-    2.8 uDAPL
-	o Add DAT 2.0 API run-time library and development support. i
+    2.7 uDAPL
+	o Add DAT 2.0 API run-time library and development support.
 	  uDAPL 2.0 will include IB extensions for IB rdma write with immediate
 	  data and IB atomic operations. 
-	o Both uDAPL 1.2 and 2.0 packages will be provided and will co-exist
+	o Both uDAPL 1.2 and 2.0 packages are provided and co-exist
 
-    2.9 Libraries
-        a. libibverbs 1.1.1
-	   o Added Extended RC transport type
-        b. librdmacm (uCMA) 1.0.3
+    2.9 iSER
+        o open-iscsi is based on r865.12. 
 
-    2.10 OSM
-	o More routing performance improvements
-	o Even more speedups
-	o Better packaging/installation
-	o "Native" daemon mode
-	o Performance management
-	o Quality of Service manager: Based on IBTA annex 
+    2.9 Management 
+	o OpenSM
+	  - Quality of Service manager
+	  - QoS implementation of the IBTA annex
+	  - QoS policy parser and support for SA (PR, MPR)
+	  - Scalability/stability improvements
+	  - Performance improvements of the routing algorithms (min-hops, up/down,  lash)
+	  - Optimized port and switch tables update policy
+	  - "Native" daemon mode
+	o Performance manager
+	  - Fetches and stores performance counters
+	  - OpenSM integrated, work in any OpenSM state (standby, disabled)
+	  - Plug-in interface
+	o Diagnostic tools enhancements
+	o IBSIM . IB fabric simulator (new)
+	  - Emulates user_mad layer
+	  - useful for OpenSM and management tools testing
 
-    2.11 Management 
-        o Multiple partitions
-
-    2.12 MPI: 
-	a. OSU MVAPICH
-      		o Version is 0.9.9
-	b. Open MPI
-		o Version is 1.2.2-1
-		o See http://www.open-mpi.org/svn/new.php for details
-	c. OSU MVAPICH2
-		o Version was updated to 1.0-1.
+    2.10 MPI: 
+	a. OSU MVAPICH 1.0
+	   - Asynchronous progress
+	   - Flexible message coalescing
+	   - APM support
+	   - Enhanced mpirun_rsh for scalable launching
+	   - UD-based design
+	   - Optimized and tuned collectives
+	   - Support for ConnectX
+	   - Support for QLogic/PSM
+	b. Open MPI 1.2.5
+	   - ConnectX support
+	c. OSU MVAPICH2 1.0
+	   - Message Coalescing
+	   - Hot-spot avoidance
+	   - Application-initiated systems-level checkpointing
+	   - APM support
+	   - Multi-rail support for iWARP
+	   - On-demand connection management for iWARP and uDAPL
+	   - RDMA Read
+	   - Blocking
 
 
 ===============================================================================
@@ -211,11 +239,11 @@ for each package in the docs directory.
 The following is a list of general limitations and known issues of the various
 components of the OFED 1.3 release.
 
-1. When upgrading from older OFED versions, the installation script does not
-   stop the old OFED version before uninstalling it. 
+1. When upgrading from an earlier OFED version, the installation script does not
+   stop the earlier OFED version prior to uninstalling it. 
    Workaround: Stop the old OFED stack (/etc/init.d/openibd stop) before 
-   upgrade to OFED 1.3.
-2. Memory registration by the user is limited according to the administrator
+   upgrading to OFED 1.3.
+2. Memory registration by the user is limited according to administrator
    setting. See "Pinning (Locking) User Memory Pages" in OFED_tips.txt for
    system configuration.
 3. Fork support from kernel 2.6.12 and above is available provided
