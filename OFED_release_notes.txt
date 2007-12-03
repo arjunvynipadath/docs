@@ -225,7 +225,7 @@ for each package in the docs directory.
 	c. OSU MVAPICH2 1.0
 	   - Message Coalescing
 	   - Hot-spot avoidance
-	   - Application-initiated systems-level checkpointing
+	   - Application-initiated systems-level check-pointing
 	   - APM support
 	   - Multi-rail support for iWARP
 	   - On-demand connection management for iWARP and uDAPL
