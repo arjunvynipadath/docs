@@ -1,8 +1,8 @@
 	    Open Fabrics Enterprise Distribution (OFED)
-                            Version 1.3
-			      README
+                        Version 1.3
+		         README
 			  
-			     August 2007
+		       December 2007
 
 This is the OpenFabrics Enterprise Distribution (OFED) version 1.3
 software package supporting InfiniBand and iWARP fabrics. It is composed
@@ -26,7 +26,7 @@ This document includes the following sections:
 OpenFabrics Home Page:  http://www.openfabrics.org
 
 The OFED rev 1.3 software download available in
-http://www.openfabrics.org/builds/connectx/release/
+http://www.openfabrics.org/builds/ofed-1.3/release/
 
 Please email bugs and error reports to your InfiniBand vendor, or use bugzilla
 https://bugs.openfabrics.org/
@@ -91,7 +91,7 @@ The OFED Distribution package generates RPMs for installing the following:
 
   o   OpenFabrics core and ULPs
 	- HCA drivers (mthca, mlx4, ipath, ehca)
-        - iWARP driver (cxgb3)
+        - iWARP driver (cxgb3, nes)
         - core
         - Upper Layer Protocols: IPoIB, SDP, SRP Initiator, iSER Initiator
           RDS, VNIC and uDAPL

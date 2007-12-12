@@ -1,7 +1,7 @@
 	    Open Fabrics Enterprise Distribution (OFED)
-	                Version 1.3-alpha
+	                Version 1.3-RC1
 		        Release Notes
-			November 2007
+			December 2007
 
 
 ===============================================================================
@@ -22,6 +22,8 @@ Table of Contents
 ===============================================================================
 1. Overview
 ===============================================================================
+Note: Most of the documents are not yet updated for OFED 1.3.
+
 These are the release notes of OpenFabrics Enterprise Distribution (OFED)
 release 1.3 The OFED software package is composed of several software modules,
 and is intended for use on a computer cluster constructed as an InfiniBand
@@ -29,6 +31,7 @@ subnet or iWARP network.
 
 Note: If you plan to upgrade the OFED package on your cluster, please upgrade
 all of its nodes to this new version.
+
 
 1.1 OFED 1.3 Contents
 -----------------------
@@ -90,7 +93,7 @@ well as iWARP RNICs by Chelsio Communications.
 	- InfiniHost III Ex (MemFree: fw-25218 Rev 5.2.000 
 	                     with memory: fw-25208 Rev 4.8.200)
 	- InfiniHost III Lx (fw-25204 Rev 1.2.000)
-	- ConnectX IB (fw-25408 Rev 2.2.000)
+	- ConnectX IB (fw-25408 Rev 2.3.000)
 
 	For official firmware versions please see:
 	http://www.mellanox.com/support/firmware_table.php
