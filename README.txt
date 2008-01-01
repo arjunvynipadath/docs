@@ -2,7 +2,7 @@
                         Version 1.3
 		         README
 			  
-		       December 2007
+		       January 2008
 
 This is the OpenFabrics Enterprise Distribution (OFED) version 1.3
 software package supporting InfiniBand and iWARP fabrics. It is composed
@@ -17,11 +17,10 @@ This document includes the following sections:
 1. HW and SW Requirements
 2. OFED Package Contents
 3. A Note on the Installation Process
-4. Building OFED Software RPMs
-5. Installing OFED
-6. Starting and Verifying the IB Fabric
-7. MPI (Message Passing Interface) 
-8. Related Documentation
+4. Installing OFED
+5. Starting and Verifying the IB Fabric
+6. MPI (Message Passing Interface) 
+7. Related Documentation
 
 OpenFabrics Home Page:  http://www.openfabrics.org
 
@@ -94,7 +93,7 @@ The OFED Distribution package generates RPMs for installing the following:
         - iWARP driver (cxgb3, nes)
         - core
         - Upper Layer Protocols: IPoIB, SDP, SRP Initiator, iSER Initiator
-          RDS, VNIC and uDAPL
+          RDS, qlgc_vnic and uDAPL
   o   OpenFabrics utilities
         - OpenSM: InfiniBand Subnet Manager
         - Diagnostic tools
@@ -121,39 +120,15 @@ install the OFED package on a multi-node cluster, it is recommended to build
 OFED RPMs once into a shared directory, and use the created RPMs in order to
 install the package on the rest of the cluster machines. 
 
-Use the script build.sh to build the OFED RPMs. This script can be used as a
-non-root user. 
+To build the OFED package run install.pl on one machine and this will build
+the RPMs. 
 
-To install the package, use the install.sh script. When installing from scratch,
-install.sh will first build the RPMs, then install them onto the local machine.
-If the RPMs already exist, the install.sh script will simply install them onto
+To install the package, use the install.pl script. When installing from scratch,
+install.pl will first build the RPMs, then install them onto the local machine.
+If the RPMs already exist, the install.pl script will simply install them onto
 the local machine without re-building them.
 
-
-4. Building OFED Software RPMs
-==============================
-
-Building OFED SW RPM packages can be a separate process or part of the
-installer. In the latter case you may skip this section and move to the next
-one: "Installing OFED Software".
-
-Some users may wish to build OFED RPM files separate from the main
-installation flow. To do this, please run the ./build.sh  script. (See note in
-Section 3 above.)
-
-The build process will temporarily use the following default directory:
-/var/tmp/OFED. The build.sh script will prompt the user to enter a different
-temporary directory if desired.
-
-build.sh will also prompt the user for the installation directory. By default it
-is /usr
-The RPMs will be placed under ./RPMS directory.
-
-For further details, see "Building OFED RPMs" and "Advanced Usage of OFED" in
-OFED_Installation_Guide.txt under OFED-1.3/docs. 
-
-
-5. Installing OFED Software
+4. Installing OFED Software
 ============================
 
 The default installation directory is:   /usr
@@ -161,18 +136,27 @@ The default installation directory is:   /usr
 Install Quick Guide:
 1) Download and extract: tar xzvf OFED-1.3.tgz file.
 2) Change into directory: cd OFED-1.3
-3) Run as root: ./install.sh
+3) Run as root: ./install.pl
 4) Follow the directions to install required components. For details, please see
    OFED_Installation_Guide.txt under OFED-1.3/docs.
 
 
-Note: The install script removes previously installed IB packages and 
-      re-installs from scratch. You will be prompted to acknowledge the deletion
-      of the old packages. However, configuration files (.conf) will be
-      preserved and saved with a ".rpmsave" extension. 
+Notes: 
+1.  The install script removes previously installed IB packages and 
+    re-installs from scratch. You will be prompted to acknowledge the deletion
+    of the old packages. However, configuration files (.conf) will be
+    preserved and saved with a ".rpmsave" extension. 
+
+2.  After the installer completes, information about the OFED
+    installation such as the prefix, the kernel version, and
+    installation parameters can be found by running
+    /etc/infiniband/info.
+
+3.  Information on the driver version and source git trees can be found
+    using the ofed_info utility
 
 
-6. Starting and Verifying the IB Fabric
+5. Starting and Verifying the IB Fabric
 =======================================
 
 1)  If you rebooted your machine after the installation process completed,
@@ -219,17 +203,17 @@ Note: The install script removes previously installed IB packages and
     The default 'stack_prefix' is /usr
 
 
-7. MPI (Message Passing Interface)
+6. MPI (Message Passing Interface)
 ==================================
 
-In Step 2 of the main menu of install.sh, options 2, 3 and 4 can
+In Step 2 of the main menu of install.pl, options 2, 3 and 4 can
 install one or more MPI stacks.  Multiple MPI stacks can be installed
 simultaneously -- they will not conflict with each other.  
 
 Three MPI stacks are included in this release of OFED:
-- MVAPICH 0.9.9
-- Open MPI 1.2.2-1
-- MVAPICH2 0.9.8p2
+- MVAPICH 1.0.0
+- Open MPI 1.2.5
+- MVAPICH2 1.0.1-1
 
 OFED also includes 4 basic tests that can be run against each MPI
 stack: bandwidth (bw), latency (lt), Intel MPI Benchmark and Presta. The tests

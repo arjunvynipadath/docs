@@ -2,7 +2,7 @@
                           Version 1.3
                        Installation Guide
 
-                          December 2007
+                          January 2008
 
 ==============================================================================
 Table of contents
@@ -222,10 +222,14 @@ o The kernel modules are installed under:
   - open-iscsi:
     /lib/modules/`uname -r`/updates/kernel/drivers/scsi/
   - Chelsio driver:
-  /lib/modules/`uname -r`/updates/kernel/drivers/net/cxgb3/cxgb3.ko
+    /lib/modules/`uname -r`/updates/kernel/drivers/net/cxgb3/cxgb3.ko
+  - ConnectX driver:
+    /lib/modules/`uname -r`/updates/kernel/drivers/net/mlx4/mlx4_core.ko
   - RDS:
     /lib/modules/`uname -r`/updates/kernel/net/rds/rds.ko
-o The package kernel include files are placed under <prefix>/src/openib.
+  - Bonding module:
+    /lib/modules/`uname -r`/updates/kernel/drivers/net/bonding/bonding.ko
+o The package kernel include files are placed under <prefix>/src/ofa_kernel/.
   These includes should be used when building kernel modules which use
   the Openfabrics stack. (Note that these includes, if needed, are
   "backported" to your kernel).
@@ -238,7 +242,6 @@ o The directory /etc/infiniband is created with the files "info" and
   installation information. The "openib.conf" file contains the list of
   modules that are loaded when the "openibd" script is used.
 o The file "90-ib.rules" is installed under /etc/udev/rules.d/
-o man pages are installed under /usr/share/man
 o If libibverbs-utils is installed, then ofed.sh and ofed.csh are
   installed under /etc/profile.d/. These automatically update the PATH
   environment variable with <prefix>/bin.  In addition, ofed.conf is
@@ -313,6 +316,8 @@ IPoIB, you must manually specify the full IP configuration during the
 interactive installation: IP address, network address, netmask, and
 broadcast address.
 
+For bonding setting please see "ipoib_release_notes.txt"
+
 For unattended installations, a configuration file can be provided
 with this information.  The configuration file must specify the
 following information:
@@ -346,6 +351,7 @@ NETMASK_ib0=255.255.0.0
 NETWORK_ib0=172.16.0.0
 BROADCAST_ib0=172.16.255.255
 ONBOOT_ib0=1
+
 
 ==============================================================================
 8. Uninstalling OFED

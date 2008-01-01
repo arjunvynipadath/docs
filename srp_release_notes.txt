@@ -2,7 +2,7 @@
              Open Fabrics Enterprise Distribution (OFED)
 		    SRP in OFED 1.3 Release Notes
 			  
-			    August 2007
+			    January 2008
 
 
 ==============================================================================
