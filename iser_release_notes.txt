@@ -20,35 +20,49 @@
 
 	SLES 10
 	SLES 10 sp1
+	RHAS 4 up4
+	RHAS 4 up5
+	RHAS 4 up6
 	RHEL 5
+	RHEL 5.1
 
 	The release has been tested against Voltaire iSCSI over iSER target
-	running in Voltaire's IB/Fibre-Channel router. It was also tested
-	against FalconStor's iSCSI over iSER target (IPStor).
+	running in Voltaire's IB/Fibre-Channel router (SR4G).
 
 * Installation/upgrade of open-iscsi
 	If iSER is selected to be installed with OFED, open-iscsi will be also
 	installed (or upgraded if another version of open-iscsi is already
 	installed).  Installing/upgrading open-iscsi is required for iSER to
-	work properly.
+	work properly. Before installing OFED, please make sure that no version
+	of open-iscsi is installed or add the following key to your ofed.conf
+	file: upgrade_open_iscsi=yes. Using this key will remove any old version
+	of open-iscsi.
 
-* Known issues 
+	If an older version of open-iscsi was installed, it is recommended to
+	delete its records before running open-iscsi. This can easily be done by
+	running the following command (while open-iscsi is stopped):
 
-	SCSI command aborts may cause some instabilities
-	
+	rm -rf /etc/iscsi/nodes/* /etc/iscsi/send_targets/*
+
+	Then, open-iscsi may be started, and targets may be discovered by running
+	'iscsi_discovery <target_ip>'.
+
 * iSER links
 
-	WIKI pages
+	Wiki pages
 
-	information on building/configuring/running the open iscsi initiator w.
-	iSER https://wiki.openfabrics.org/tiki-index.php?page=iSER
+	Information on building/configuring/running the open iscsi initiator over
+	iSER: https://wiki.openfabrics.org/tiki-index.php?page=iSER
 
 	IETF pages
 
 	iSCSI and iSER specifications come out of the IETF IP storage (IPS) work
-	group http://www.ietf.org/html.charters/ips-charter.html.
+	group.
 
-	"ABOUT" page
+	iSCSI specification:    http://www.ietf.org/rfc/rfc3720.txt
+	iSER specification:     http://www.ietf.org/rfc/rfc5046.txt
+
+	"About" page
 
 	general and detailed information on iSCSI and iSER 
 	http://www.voltaire.com/Products/Server_Products/iSER_iSCSI_RDMA
