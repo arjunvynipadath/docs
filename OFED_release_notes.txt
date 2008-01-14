@@ -90,7 +90,7 @@ well as iWARP RNICs by Chelsio Communications.
 
   o   Mellanox Technologies HCAs (SDR and DDR Modes are Supported):
 	- InfiniHost (fw-23108 Rev 3.5.000)
-	- InfiniHost III Ex (MemFree: fw-25218 Rev 5.2.000 
+	- InfiniHost III Ex (MemFree: fw-25218 Rev 5.3.000 
 	                     with memory: fw-25208 Rev 4.8.200)
 	- InfiniHost III Lx (fw-25204 Rev 1.2.000)
 	- ConnectX IB (fw-25408 Rev 2.3.000)
