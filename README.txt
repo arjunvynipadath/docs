@@ -16,11 +16,10 @@ This document includes the following sections:
 
 1. HW and SW Requirements
 2. OFED Package Contents
-3. A Note on the Installation Process
-4. Installing OFED
-5. Starting and Verifying the IB Fabric
-6. MPI (Message Passing Interface) 
-7. Related Documentation
+3. Installing OFED Software
+4. Starting and Verifying the IB Fabric
+5. MPI (Message Passing Interface) 
+6. Related Documentation
 
 OpenFabrics Home Page:  http://www.openfabrics.org
 
@@ -53,8 +52,7 @@ OS Distribution         Required Packages
 General:
 o  Common to all        gcc, glib, glib-devel, glibc, glibc-devel,
                         glibc-devel-32bit (to build 32-bit libraries on x86_86
-                        and ppc64),
-                        zlib-devel, automake, autoconf, libtool.
+                        and ppc64), zlib-devel
 o  RedHat, Fedora       kernel-devel, rpm-build
 o  SLES 9.0             kernel-source, udev, rpm
 o  SLES 10.0            kernel-source, rpm
@@ -66,15 +64,13 @@ Specific Component Requirements:
 o  Mvapich              a Fortran Compiler (such as gcc-g77)
 o  Mvapich2             libstdc++-devel, sysfsutils (SuSE),
                         libsysfs-devel (RedHat5.0, Fedora C6)
-o  Open MPI             libstdc++-devel, sysfsutils (SuSE),
-                        libsysfs-devel (RedHat5.0, Fedora C6)
+o  Open MPI             libstdc++-devel
 o  ibutils              tcl-8.4, tcl-devel-8.4, tk, libstdc++-devel
 o  tvflash              pciutils-devel
-o  mstflint             libstdc++-devel (32-bit on ppc64)
+o  mstflint             libstdc++-devel (32-bit on ppc64), gcc-c++
 
 Note:   The installer will warn you if you attempt to compile any of the
         above packages and do not have the prerequisites installed.
-
 
 *** Important Note for open-iscsi users:
     Installing iSER as part of OFED installation will also install open-iscsi.
@@ -111,24 +107,7 @@ The OFED Distribution package generates RPMs for installing the following:
   o   Documentation
 
 
-
-3. A Note on the Installation Process
-=====================================
-
-The OFED build process can take up to 40 minutes. If you are planning to
-install the OFED package on a multi-node cluster, it is recommended to build
-OFED RPMs once into a shared directory, and use the created RPMs in order to
-install the package on the rest of the cluster machines. 
-
-To build the OFED package run install.pl on one machine and this will build
-the RPMs. 
-
-To install the package, use the install.pl script. When installing from scratch,
-install.pl will first build the RPMs, then install them onto the local machine.
-If the RPMs already exist, the install.pl script will simply install them onto
-the local machine without re-building them.
-
-4. Installing OFED Software
+3. Installing OFED Software
 ============================
 
 The default installation directory is:   /usr
@@ -156,7 +135,7 @@ Notes:
     using the ofed_info utility
 
 
-5. Starting and Verifying the IB Fabric
+4. Starting and Verifying the IB Fabric
 =======================================
 
 1)  If you rebooted your machine after the installation process completed,
@@ -173,12 +152,10 @@ Notes:
     Example:
     sminfo: sm lid 0x1 sm guid 0x2c9010b7c2ae1, activity count 20 priority 1 
 
-    To check if OpenSM is running on the management node, enter: /etc/init.d/opensmd status
-    To start OpenSM, enter: /etc/init.d/opensmd start
+    To check if OpenSM is running on the management node, enter: /etc/init.d/opensm status
+    To start OpenSM, enter: /etc/init.d/opensm start
 
-    Note: OpenSM parameters can be set via the file /etc/opensm.conf.
-    Note: OpenSM can be configured to run upon boot by setting 'ONBOOT=yes' 
-          in /etc/opensm.conf.
+    Note: OpenSM parameters can be set via the file /etc/sysconfig/opensm.
 
 4)  Verify the status of ports by using ibv_devinfo: all connected ports should
     report a "PORT_ACTIVE" state.
@@ -203,7 +180,7 @@ Notes:
     The default 'stack_prefix' is /usr
 
 
-6. MPI (Message Passing Interface)
+5. MPI (Message Passing Interface)
 ==================================
 
 In Step 2 of the main menu of install.pl, options 2, 3 and 4 can
@@ -223,7 +200,7 @@ Please see MPI_README.txt for more details on each MPI package and how to run
 the tests.
 
 
-8. Related Documentation
+6. Related Documentation
 ========================
 1) Release Notes for OFED Distribution components are to be found under 
    OFED-1.3/docs and, after the package installation, under 

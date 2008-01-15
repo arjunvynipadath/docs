@@ -40,10 +40,10 @@ General Notes:
     the old packages.
 
  2) When installing OFED on an entire [homogeneous] cluster, a common
-    strategy is to build the software only once (perhaps on a shared
-    file system such as NFS).  The resulting RPMs can then be installed
-    on all nodes in the cluster using any cluster-aware tools (such as
-    pdsh).
+    strategy is to install the software on one of the cluster nodes
+    (perhaps on a shared file system such as NFS). The resulting RPMs,
+    created under OFED-1.3/RPMS directory, can then be installed on all
+    nodes in the cluster using any cluster-aware tools (such as pdsh).
 
 ==============================================================================
 2. OFED Package Contents
@@ -53,7 +53,7 @@ The OFED Distribution package generates RPMs for installing the following:
 
   o   OpenFabrics core and ULPs:
         - HCA drivers (mthca, mlx4, ipath, ehca)
-	- iWARP driver (cxgb3, nes)
+        - iWARP driver (cxgb3, nes)
         - core
         - Upper Layer Protocols: IPoIB, SDP, SRP Initiator, iSER Initiator
           RDS, qlgc_vnic and uDAPL
@@ -96,8 +96,7 @@ OS Distribution         Required Packages
 General:
 o  Common to all        gcc, glib, glib-devel, glibc, glibc-devel,
                         glibc-devel-32bit (to build 32-bit libraries on x86_86
-                        and ppc64),
-                        zlib-devel, automake, autoconf, libtool.
+                        and ppc64), zlib-devel
 o  RedHat, Fedora       kernel-devel, rpm-build
 o  SLES 9.0             kernel-source, udev, rpm
 o  SLES 10.0            kernel-source, rpm
@@ -109,15 +108,20 @@ Specific Component Requirements:
 o  Mvapich              a Fortran Compiler (such as gcc-g77)
 o  Mvapich2             libstdc++-devel, sysfsutils (SuSE),
                         libsysfs-devel (RedHat5.0, Fedora C6)
-o  Open MPI             libstdc++-devel, sysfsutils (SuSE),
-                        libsysfs-devel (RedHat5.0, Fedora C6)
+o  Open MPI             libstdc++-devel
 o  ibutils              tcl-8.4, tcl-devel-8.4, tk, libstdc++-devel
 o  tvflash              pciutils-devel
-o  mstflint             libstdc++-devel (32-bit on ppc64)
+o  mstflint             libstdc++-devel (32-bit on ppc64), gcc-c++
 
 Note:   The installer will warn you if you attempt to compile any of the
         above packages and do not have the prerequisites installed.
 
+*** Important Note for open-iscsi users:
+    Installing iSER as part of OFED installation will also install open-iscsi.
+    Before installing OFED, please uninstall any open-iscsi version that may
+    be installed on your machine. Installing OFED with iSER support while
+    another open-iscsi version is already installed will cause the installation
+    process to fail.
 
 ==============================================================================
 4. How to Download and Extract the OFED Distribution
@@ -171,37 +175,37 @@ Note:   The installer will warn you if you attempt to compile any of the
 
 3) Install script usage:
 
-   ./install.pl [-c <packages config_file>|--all|--hpc|--basic] 
-                [-n|--net <network config_file>]
+ Usage: ./install.pl [-c <packages config_file>|--all|--hpc|--basic] [-n|--net <network config_file>]
 
-    --all|--hpc|--basic 		Install all,hpc or basic packages 
-    					correspondingly
-    -c|--config <packages config_file>	Example of the config file can be found
-    					under docs
-    -l|--prefix 			Set installation prefix; default is /usr
-    -p|--print-available 		Print available packages for current 
-    					platform and create the ofed.conf file
-    -k|--kernel <kernel version> 	Default: use the kernel installed on the
-    					system
-    -s|--kernel-sources <kernel sources path>	Default: 
-    					/lib/modules/'uname -r'/build
-    --build32        			Build 32-bit libraries. Relevant for 
-    					x86_64 and ppc64 platforms
-    -v|-vv|-vvv     			Set verbosity level
-    -q					Set quiet - no messages will be printed
+           -c|--config <packages config_file>. Example of the config file can
+                                               be found under docs.
+           -l|--prefix          Set installation prefix.
+           -p|--print-available Print available packages for current platform.
+                                And create corresponding ofed.conf file.
+           -k|--kernel <kernel version>. Default on this system: $(uname -r)
+           -s|--kernel-sources  <path to the kernel sources>. Default on this
+                                system: /lib/modules/$(uname -r)/build
+           --build32            Build 32-bit libraries. Relevant for x86_64 and
+                                ppc64 platforms
+           --without-depcheck   Skip Distro's libraries check
+           -v|-vv|-vvv.         Set verbosity level
+           -q.                  Set quiet - no messages will be printed
 
+           --all|--hpc|--basic  Install all,hpc or basic packages
+                                correspondingly
 
 Notes:
 ------
 a. It is possible to rename and/or edit the ofed.conf and ofed_net.conf files.
    Thus it is possible to change user choices (observing the original format).
    See examples of ofed.conf and ofed_net.conf under OFED-X.X.X/docs.
+   Run './install.pl -p' to get ofed.conf with all available packages included.
 
 b. To make debugging kernel issues easier, it is recommended to set the
    following environment variable before building OFED:
    export OPENIB_KERNEL_EXTRA_CFLAGS=-g
    This will attach debug info to generated kernel binaries without affecting
-   their speed.
+   their speed. Currently, set by default.
 
 c. Important note for open-iscsi users:
    Installing iSER as part of the OFED installation will also install
