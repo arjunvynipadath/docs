@@ -319,18 +319,20 @@ documentation (e.g. linux-2.6.20/Documentation/kbuild/modules.txt).
 If there is a need to add or delete a patch to OFED package one should use the 
 ofed_patch.sh script, that is available under the docs directory.
 
+This script supports kernel sources only.
+
 Usage:
 Add patch to OFED:
 ofed_patch.sh  --add
                --ofed|-o <path_to_ofed>
                --patch|-p <path_to_patch>
-               --type|-t <user|kernel|backport <kernel tag>|addons <kernel tag>>
+               --type|-t <kernel|backport <kernel tag>|addons <kernel tag>>
 
 Remove patch from OFED:
 ofed_patch.sh  --remove
                --ofed|-o <path_to_ofed>
                --patch|-p <patch name>
-               --type|-t <user|kernel|backport <kernel tag>|addons <kernel tag>>
+               --type|-t <kernel|backport <kernel tag>|addons <kernel tag>>
 
 Examples:
 ofed_patch.sh --add --ofed /tmp/OFED-1.3/ --patch /tmp/cma_fix.patch --type kernel
