@@ -38,13 +38,13 @@ cat << EOF
                 `basename $0`   --add
                                 --ofed|-o <path_to_ofed> 
                                 --patch|-p <path_to_patch>
-                                --type|-t <user|kernel|backport <kernel tag>|addons <kernel tag>>
+                                --type|-t <kernel|backport <kernel tag>|addons <kernel tag>>
 
             Remove patch from OFED:
                 `basename $0`   --remove
                                 --ofed|-o <path_to_ofed> 
                                 --patch|-p <patch name>
-                                --type|-t <user|kernel|backport <kernel tag>|addons <kernel tag>>
+                                --type|-t <kernel|backport <kernel tag>|addons <kernel tag>>
 
         Example:
                 `basename $0` --add --ofed /tmp/OFED-1.3/ --patch /tmp/cma_establish.patch --type kernel
@@ -184,9 +184,6 @@ main()
                 kernel|backport|addons)
                 set_rpm_info ofa_kernel
                 ;;
-                user)
-                set_rpm_info ofa_user
-                ;;
                 *)
                 echo "Unknown type $type"
                 exit 1
@@ -216,13 +213,6 @@ main()
                         add_patch $patch ${package}/kernel_patches/fixes
                 else
                         remove_patch $patch ${package}/kernel_patches/fixes
-                fi
-                ;;
-                user)
-                if [ "$action" == "add" ]; then
-                        add_patch $patch ${package}/user_patches/fixes
-                else
-                        remove_patch $patch ${package}/user_patches/fixes
                 fi
                 ;;
                 backport)
