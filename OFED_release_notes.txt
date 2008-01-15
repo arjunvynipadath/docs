@@ -1,5 +1,5 @@
 	    Open Fabrics Enterprise Distribution (OFED)
-	                Version 1.3-RC1
+	                Version 1.3-RC2
 		        Release Notes
 			January 2008
 
@@ -40,8 +40,8 @@ The OFED package contains the following components:
         - IB HCA drivers (mthca, mlx4, ipath, ehca)
 	- iWARP RNIC driver (cxgb3, nes)
         - core
-        - Upper Layer Protocols: IPoIB, SDP, SRP Initiator, iSER Host, RDS, 
-	  uDAPL and qlgc_vnic.
+        - Upper Layer Protocols: IPoIB, SDP, SRP Initiator and target, iSER 
+	  Initiator, RDS, uDAPL and qlgc_vnic.
  - OpenFabrics utilities:
         - OpenSM (OSM): InfiniBand Subnet Manager
         - Diagnostic tools
@@ -59,8 +59,8 @@ The OFED package contains the following components:
  - Documentation
 
 Notes:
-1. nes driver is in Beta quality.
-2. cxgb3 driver is Beta quality.
+1. nes and cxgb3 drivers are in Beta quality.
+2. SRP target is in Beta quality.
 3. All other OFED components are of production quality.
 4. See release notes for each package in the docs directory.
 5. Any Topspin copyright belongs to Cisco Systems, Inc.
@@ -172,7 +172,6 @@ for each package in the docs directory.
 	o NAPI is enabled default
 	o High availability is supported via the bonding module only (removed 
 	  ipoib tool scripts)
-	o 
 
     2.4 SDP
 	o Keep-alive
