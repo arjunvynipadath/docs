@@ -1,5 +1,5 @@
 	    Open Fabrics Enterprise Distribution (OFED)
-	                Version 1.3-RC2
+	                Version 1.3-RC3
 		        Release Notes
 			January 2008
 
@@ -59,7 +59,7 @@ The OFED package contains the following components:
  - Documentation
 
 Notes:
-1. nes and cxgb3 drivers are in Beta quality.
+1. nes driver is in Beta quality.
 2. SRP target is in Beta quality.
 3. All other OFED components are of production quality.
 4. See release notes for each package in the docs directory.
@@ -109,7 +109,7 @@ well as iWARP RNICs by Chelsio Communications.
 
   o   Chelsio RNICs:
 	- S310/S320 10GbE Storage Accelerators
-	- R310E 10GbE iWARP Adapters
+	- R310/R320 10GbE iWARP Adapters
 
   o   NetEffect RNICs:
         - NE020 10Gb iWARP Adapter
@@ -126,7 +126,7 @@ companies:
 
 1.5 Third Party Packages
 ------------------------
-The following third party packages have been tested with OFED 1.2:
+The following third party packages have been tested with OFED 1.3:
 1. Intel MPI, Version 3.0 - Package ID: l_mpi_p_3.0.043
 2. HP MPI, Version 2.2.5
 
