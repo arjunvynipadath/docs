@@ -74,14 +74,19 @@ Notes:
 	- ia64
 	
   o   Linux Operating Systems:
-	- RedHat EL4 up4: 2.6.9-42.ELsmp
-	- RedHat EL4 up5: 2.6.9-55.ELsmp
-	- RedHat EL5:     2.6.18-8.el5
-	- RedHat EL5 up1: 2.6.18-53.el5
-	- SLES10:         2.6.16.21-0.8-smp
-	- SLES10 SP1:     2.6.16.46-0.12-smp
-	- SLES10 SP1 up1: 2.6.16.53-0.16-smp
-	- kernel.org:     2.6.23 and 2.6.24
+        - RedHat EL4 up4: 	2.6.9-42.ELsmp
+        - RedHat EL4 up5: 	2.6.9-55.ELsmp
+        - RedHat EL4 up6: 	2.6.9-67.ELsmp      *
+        - RedHat EL5: 		2.6.18-8.el5
+	- RedHat EL5 up1: 	2.6.18-53.el5
+        - Fedora C6: 		2.6.18-8.fc6        *
+        - SLES10: 		2.6.16.21-0.8-smp
+        - SLES10 SP1: 		2.6.16.46-0.12-smp
+	- SLES10 SP1 up1: 	2.6.16.53-0.16-smp
+	- OpenSuSE 10.3: 	2.6.22-*-*          *
+	- kernel.org:     	2.6.23 and 2.6.24
+
+      * OSes that are partially tested
 	
 1.3 HCAs and RNICs Supported
 ----------------------------
@@ -147,8 +152,8 @@ Note: For details regarding the various changes,  please see the release notes
 for each package in the docs directory.
 
     2.1 General changes
-	o Kernel code based on 2.6.24-rc2
-	o Quality of Service support in OpenSM, CMA, IPoIB, SRP
+	o Kernel code based on 2.6.24
+	o Quality of Service support in OpenSM, CMA, IPoIB, SRP, SDP and RDS.
 	o Added Neteffect driver (nes)
 	o Added SRP target package: Based on Mellanox IBGD SRPT and interfaces
 	  with SCST scsi target
