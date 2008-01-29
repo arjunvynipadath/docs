@@ -11,6 +11,7 @@ Table of Contents
 3. Pinning (Locking) User Memory Pages
 4. External Module Compilation Over OFED-1.3
 5. Adding/Deleting a patch to OFED package
+6. Adding vendor specific actions to the installation of OFED
 
 
 ===============================================================================
@@ -173,74 +174,85 @@ The same information can be obtained by executing the 'ofed_info' command. For
 example:
 
 > ofed_info
-OFED-1.3-20070429-0610
+OFED-1.3-20080128-0600
 
 ofa_kernel-1.3:
 Git:
-git://git.openfabrics.org/~vlad/ofed_1_2/.git
-commit f5829ec5964166081a0004753e9995b5641c168d
+git://git.openfabrics.org/ofed_1_3/linux-2.6.git ofed_kernel
+commit 359f200e73049284f5ee9fe545de226f9f902039
 
-ofa_user-1.3:
 libibverbs:
-git://git.openfabrics.org/ofed_1_2/libibverbs.git ofed_1_2
-commit 300810860e4c318b6db71331f62838fda39c7dad
+git://git.openfabrics.org/ofed_1_3/libibverbs.git ofed_1_3
+commit 6e99cddf835d4715ea7ca3641944e6285f27f2df
 libmthca:
-git://git.openfabrics.org/ofed_1_2/libmthca.git ofed_1_2
-commit 1539526f180e5b13fbf937e306025ea860b5d5fd
+git://git.openfabrics.org/ofed_1_3/libmthca.git ofed_1_3
+commit 9501e698d257949acfab2edc90812602966dbcc9
+libmlx4:
+git://git.openfabrics.org/ofed_1_3/libmlx4.git ofed_1_3
+commit 3869d6dab7e12fe452270ca641f7dd7082b42482
 libehca:
-git://git.openfabrics.org/ofed_1_2/libehca.git ofed_1_2
-commit d4b3dd6c078a85a8e67a480161d1d9138ae66029
+git://git.openfabrics.org/ofed_1_3/libehca.git ofed_1_3
+commit dbcba8e758fcccfa1727821bd0da64a44105a425
 libipathverbs:
-git://git.openfabrics.org/ofed_1_2/libipathverbs.git ofed_1_2
-commit 15f62c3f045295dd2a941ae8d4e0e36035aad5cf
-tvflash:
-git://git.openfabrics.org/ofed_1_2/tvflash.git ofed_1_2
-commit 5049e070afeebedf7916bb04a3363e9af38be6df
-libibcm:
-git://git.openfabrics.org/ofed_1_2/libibcm.git ofed_1_2
-commit 8154d4d57f69789be6d26fdc8f10b552c83a87ec
-libsdp:
-git://git.openfabrics.org/ofed_1_2/libsdp.git ofed_1_2
-commit 77c35bd3258aa2f20878f478b5a467a7fa6f84f4
-mstflint:
-git://git.openfabrics.org/ofed_1_2/mstflint.git ofed_1_2
-commit 896f66fc85825e9cfe24d0583dc69287abc3e535
-perftest:
-git://git.openfabrics.org/ofed_1_2/perftest.git ofed_1_2
-commit 16cf32e9ff226bc92d58844af53b7440cb1c65dd
-srptools:
-git://git.openfabrics.org/ofed_1_2/srptools.git ofed_1_2
-commit 7c84a3ea92eb4e1062b9fce6e0c9d0f9287b879c
-ipoibtools:
-git://git.openfabrics.org/ofed_1_2/ipoibtools.git ofed_1_2
-commit e29da6049cb725b175423fddc80181980ebfa0b4
-librdmacm:
-git://git.openfabrics.org/ofed_1_2/librdmacm.git ofed_1_2
-commit 9450ee3953c5765d276f1310bdd045d0d3b62082
-dapl:
-git://git.openfabrics.org/ofed_1_2/dapl.git ofed_1_2
-commit 04da88bb70ee33b249a4cf2f5a92122eeec83e3c
-imgen:
-git://git.openfabrics.org/ofed_1_2/imgen.git ofed_1_2
-commit 2b5da49987426a3942fa23fe5bc693e16e370643
-management:
-git://git.openfabrics.org/ofed_1_2/management.git ofed_1_2
-commit 9d44348a0c26c9a1c62585f10c1b7bdc3102a4ea
+git://git.openfabrics.org/ofed_1_3/libipathverbs.git ofed_1_3
+commit 306d414eab5f62a959746e427b0af02676007c45
 libcxgb3:
-git://git.openfabrics.org/ofed_1_2/libcxgb3.git ofed_1_2
-commit e889105a95381ae41c0c83716ad8097ed25c8aae
-qlvnictools:
-git://git.openfabrics.org/ofed_1_2/qlvnictools.git ofed_1_2
-commit 1639f124eee359db87467e1fa124aff39737621c
+git://git.openfabrics.org/ofed_1_3/libcxgb3.git ofed_1_3
+commit 946e1572d38d786038d3bca5a2ec184dcf7636c4
+libnes:
+git://git.openfabrics.org/ofed_1_3/libnes.git ofed_1_3
+commit 27ebf415cb65918237c7c21fd8b28bc1dbf4fca6
+libibcm:
+git://git.openfabrics.org/~shefty/libibcm.git master
+commit a45e43483ac29a26c1803f217ca21a07534494c4
+librdmacm:
+git://git.openfabrics.org/ofed_1_3/librdmacm.git ofed_1_3
+commit afe87c16f40fe4a3622f231672737950c0ebf9fa
+dapl1:
+git://git.openfabrics.org/~ardavis/dapl.git master
+commit 95935648f81ac5177ae7120b35e55483902b8c64
+dapl2:
+git://git.openfabrics.org/~ardavis/dapl.git dat2.0
+commit abb4356cd765d38cf5cff2dfbdb610b380f944a2
+libsdp:
+git://git.openfabrics.org/ofed_1_3/libsdp.git ofed_1_3
+commit 47801f8f1e2168c34690b93edaccadc2ece936ef
 sdpnetstat:
-git://git.openfabrics.org/ofed_1_2/sdpnetstat.git ofed_1_2
-commit 3329358b7ded50a2b51b436eebb5c9aeeb5e4e5e
+git://git.openfabrics.org/ofed_1_3/sdpnetstat.git ofed_1_3
+commit 3341620a7259c4f7bdd4180864b98e260c3dc223
+srptools:
+git://git.openfabrics.org/ofed_1_3/srptools.git ofed_1_3
+commit d127b2ed8280aaccd8c071212388255040221c33
+perftest:
+git://git.openfabrics.org/ofed_1_3/perftest.git ofed_1_3
+commit a909b982fa6494a179faaf817be3ef019e106199
+qlvnictools:
+git://git.openfabrics.org/ofed_1_3/qlvnictools.git ofed_1_3
+commit 41a148393a602810df80109e71086970a91c1d8d
+tvflash:
+git://git.openfabrics.org/~rdreier/tvflash.git master
+commit 39a63301f0344b6b3d45bc4b16d76be81f4377c0
+mstflint:
+git://git.openfabrics.org/ofed_1_3/mstflint.git ofed_1_3
+commit 260ae655d80fa3ed15c4544519a4c7f0cf768bd6
+qperf:
+git://git.openfabrics.org/ofed_1_3/qperf.git ofed_1_3
+commit f6863fac0fd55659aa3a9acc9b47f7d5eb6f6e22
+management:
+git://git.openfabrics.org/ofed_1_3/management.git ofed_1_3
+commit 264eb24f3b2b05dd1ee2f5c1025470845cf8ca36
+ibutils:
+git://git.openfabrics.org/ofed_1_3/ibutils.git ofed_1_3
+commit 0225143c82416d02d6f00cf93bb0f38915557a12
+ibsim:
+git://git.openfabrics.org/~sashak/ibsim.git master
+commit 3b20040b50da6afc5c4ef85f6d458f9023ed7ed9
 
 # MPI
-mvapich-0.9.9-1207.src.rpm
-mvapich2-0.9.8-11.src.rpm
-openmpi-1.2.1-1.src.rpm
-mpitests-2.0-705.src.rpm
+mvapich-1.0.0-1870.src.rpm
+mvapich2-1.0.1-2.src.rpm
+openmpi-1.2.5-1.src.rpm
+mpitests-3.0-773.src.rpm
 
 2.2 Installed OFED Components
 -------------------------------
@@ -338,4 +350,83 @@ Examples:
 ofed_patch.sh --add --ofed /tmp/OFED-1.3/ --patch /tmp/cma_fix.patch --type kernel
 
 ofed_patch.sh --remove --ofed /tmp/OFED-1.3/ --patch cma_fix.patch --type kernel
+
+===============================================================================
+6. Adding vendor specific actions to the installation of OFED
+===============================================================================
+
+Vendors that want to add actions to the install/uninstall process of OFED can
+bind external scripts to hooks in install.pl and ofed_uninstall.sh.
+
+4.1  Specifying vendor scripts and configuration parameters
+-----------------------------------------------------------
+This option is only available when installing ofed in non interactive mode.
+Edit the OFED configuration file (ofed.conf ) and add the lines below (you don't have to use all of them).
+
+# Script to run before install process starts
+vendor_pre_install=my_pre_install.sh
+# Script to run after install process finishes
+vendor_post_install=my_post_install.sh
+# Script to run before uninstall process starts
+vendor_pre_uninstall=my_pre_uninstall.sh
+# Script to run after uninstall process finishes
+vendor_post_uninstall=my_post_uninstall.sh
+
+You can also also add vendor specific configuration parameters. Lines that start
+with vendor_config_ will not be parsed by install.pl and can be parsed by one
+of the vendor scripts
+
+vendor_config_something=value_for_that_something
+
+Running ./install.pl -c ofed.conf in the OFED directory will now invoke the
+relevant vendor specific actions.
+
+4.2. Requirements from vendor scripts
+-------------------------------------
+The script files that are given to install.pl in ofed.conf should
+	- be located in the root directory of OFED
+	- return zero on success
+
+If vendor script fails it fails the entire installation.
+
+4.2 Skeleton for pre/post install vendor script
+-----------------------------------------------
+install.pl passes some useful installation variables to the vendor pre/post
+install scripts environment. See the example below for a typical usage.
+
+#!/bin/bash
+
+eval $*
+
+# The following env. parameters are set at this point
+# 
+# CONFIG: full path filename of the OFED configuration file
+# RPMS: directory of binary RPMs
+# SRPMS: directory of source RPMS
+# PREFIX: prefix of installation
+# TOPDIR: root of OFED package
+# QUIET: quiet operation indicator
+
+function readconf() {
+        local config=$1
+        while read line; do
+            # skip comments
+            [[ ${line:0:1} == "#" ]] && continue
+
+            # skip empty lines
+            [[ -z "$line" ]] && continue
+
+            # parse line
+            token=$(echo $line|cut -f1 -d=)
+            value=$(echo $line|cut -f2 -d=)
+
+        done < "$config"
+}
+
+readconf $CONFIG
+
+exit 0
+
+
+
 
