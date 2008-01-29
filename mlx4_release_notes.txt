@@ -9,9 +9,8 @@ Table of Contents
 ===============================================================================
 1. Overview
 2. Supported Firmware Version
-3. Tested ULPs
-4. Fixed Bugs and Enhancements
-5. Known Issues
+3. Fixed Bugs and Enhancements
+4. Known Issues
 
 ===============================================================================
 1. Overview
@@ -36,40 +35,34 @@ In order to set mlx4 parameters, add the following line to /etc/modpobe.conf:
    options mlx4_core parameter=<value>
 
    mlx4_core parameters:
-   - msi_x   	         attempt to use MSI-X if non-zero is supported by firmware
-   - debug_level    	 enable debug tracing if > 0
-   - ierr_reset_disable  disable reset on Internal Error event if nonzero 
+   msi_x:		attempt to use MSI-X if nonzero (default 1)
+   enable_qos:		Enable Quality of Service support in the HCA if > 0, (default 1) 
+   internal_err_reset:	Reset device on internal errors if non-zero (default 1)
+   debug_level:		Enable debug tracing if > 0 (default 0)
+   log_num_qp:		log maximum number of QPs per HCA 
+   log_num_srq:		log maximum number of SRQs per HCA 
+   log_rdmarc_per_qp:	log number of RDMARC buffers per QP 
+   log_num_cq:		log maximum number of CQs per HCA 
+   log_num_mcg:		log maximum number of multicast groups per HCA
+   log_num_mpt:		log maximum number of memory protection table entries per HCA 
+   log_num_mtt:		log maximum number of memory translation table segments per HCA
 
 
 ===============================================================================
 2. Supported Firmware Version
 ===============================================================================
-This release must be used with firmware version 2.0.158 or later. If you use
-older firmware, the driver will load will succeed (as only the device driver is
-loaded), but ibv_devinfo will list the following message:
-   # ibv_devinfo
-   No IB devices found
-Also, /var/log/messages will list a message such as the following:
-   mlx4_core 0000:08:00.0: Installed FW version 2.0.157
-   mlx4_core 0000:08:00.0: The Command i/f revision (1) of the installed FW
-   mlx4_core 0000:08:00.0: is not supported by the installed driver.
-   mlx4_core 0000:08:00.0: The driver supports Command i/f revision 2.
+- This release must be used with firmware version 2.2.000 or later. 
 
-This release was tested with FW 2.2.000
+- This release was tested with FW 2.3.000
 
 ===============================================================================
-3. Tested ULPs
+3. Fixed Bugs and Enhancements from OFED 1.2.5.5
 ===============================================================================
-The following ULPs are tested:
-  o OpenSM
-  o MPI (MVAPICH and Open MPI)
-  o IPoIB UD and CM
-  o SDP 
-  o SRP
-  o RDS 
+
+
 
 ===============================================================================
-5. Known Issues
+4. Known Issues
 ===============================================================================
 - The following commands and/or features are not supported:
   o Resize CQ
