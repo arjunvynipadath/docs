@@ -230,19 +230,22 @@ The ib-bonding driver can be loaded manually or automatically.
 
 1. Manual operation:
 Use the utility ib-bond to stop, query, or stop the driver. For details on this
-utility, read the documentation that comes with the ib-bonding package.
+utility, read the documentation for the ib-bonding package.
 
 2. Automatic operation:
-Edit the file '/etc/infiniband/openib.conf' as follows:
-		# Enable the bonding driver on startup.
-		IPOIBBOND_ENABLE=yes
-		# # Set bond interface names
-		IPOIB_BONDS=bond0,bond8007
-		# Set specific bond params; address and slaves
-		bond0_IP=10.10.10.1/24
-		bond0_SLAVES=ib0,ib1
-		bond8007_IP=20.10.10.1
-		bond1_SLAVES=ib0.8007,ib1.8007
+	a. Edit the file '/etc/infiniband/openib.conf' as follows:
+			# Enable the bonding driver on startup.
+			IPOIBBOND_ENABLE=yes
+			# # Set bond interface names
+			IPOIB_BONDS=bond0,bond8007
+			# Set specific bond params; address and slaves
+			bond0_IP=10.10.10.1/24
+			bond0_SLAVES=ib0,ib1
+			bond8007_IP=20.10.10.1
+			bond1_SLAVES=ib0.8007,ib1.8007
+	b. Use standard OS tools (sysconfig in SuSE and sysconfig in Redhat)
+to create a configuration that will come up with network restart. For details
+on this, read the documentation for the ib-bonding package.
 
 Notes:
 * The ib-bonding driver does not load when the HA service is configured to load
@@ -250,6 +253,10 @@ Notes:
   then that specific bond will not be created.
 * The bondX name must not contain characters which are disallowed for bash
   variable names such as '.' and '-'
+* Using /etc/infiniband/openib.conf to create a persistent configuration is
+  depracated and not recommended. Use it unless you have no other option and
+  prefer the standard way. It is not guaranteed that the first method will be
+  supported in future versions of OFED.
 
 
 ===============================================================================

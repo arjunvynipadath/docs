@@ -1,0 +1,159 @@
+IB Bonding
+===============================================================================
+
+1. Introduction
+2. How to work with ib-bond
+3. How to work with interface configuration scripts
+3.1 Configuration with initscripts support
+3.1.1 Writing network scripts under Redhat-AS4 (Update 4, 5 or 6)
+3.1.2 Writing network scripts under Redhhat-EL5
+3.2 Configuration with sysconfig support
+3.2.1 Writing network scripts under SLES-10
+
+1. Introduction
+-------------------------------------------------------------------------------
+ib-bonding is a High Availability solution for IPoIB interfaces. It is based
+on the Linux Ethernet Bonding Driver and was adopted to work with IPoIB.
+ib-bonding package contains a bonding driver and a utility called ib-bond to
+manage and control the driver operation.
+
+2. How to work with ib-bond
+-------------------------------------------------------------------------------
+
+* Creating a bonding network interface
+ --bond-name: sets the name of the bonding network interface. Default is bond0
+ --bond-ip <IP/[MASK]>: sets the IP address of bond0. If MASK is not given it
+   is set to 255.255.255.0 (24 bits). Note that MASK should be the number of 1
+   bits in the netmask.
+ --slaves: a comma separated list of slave ib devices. If not given ib0 and
+   ib1 will be used as slaves. Child interfaces are allowed.
+ --miimon: the MII monitoring interval in mSec. Default is 100
+* Deleting a bonding network interface
+ --stop: unenslave slaves and delete a specific bonding network interface (use with --bond-name)
+ --stop-all: unenslave slaves and delete all bonding network interfaces
+* Querying a bonding network interface
+ --status: show the status of a specific bonding network interface (use with --bond-name)
+ --status-all: show the status of all bonding network interfaces
+ 
+Examples:
+
+* To bring up bond0 with ib0 and ib2 as slaves (assumes 2 HCAs)
+	ib-bond --bond-ip 192.186.10.100 --slaves ib0,ib2
+* To bring up bond1 with ib0.f1f1 1and ib1.f1f1 as slaves with non default
+  netmask
+	ib-bond --bond-name bond1 --bond-ip 192.186.10.100/25 --slaves ib0.f1f1,ib1.f1f1
+* To query the status of bond1
+	ib-bond --bond-name bond1 --status
+* To query the status of all bonding interfaces
+	ib-bond --status-all
+* To stop bond1 
+	ib-bond --bond-name bond1 --stop
+* To stop all bonding interfaces
+	ib-bond --stop-all
+
+3. How to work with interface configuration scripts
+-------------------------------------------------------------------------------
+Using ib-bond to configure interfaces doesn't save the configuration anywhere,
+so whenever the master or one of the slaves is destroyed the configuration
+should be restored by running ib-bond again (e.g. after system reboot).
+It is possible to avoid that if you create an interface configuration script for
+the ibX and bondX interfaces. To do that, you should use the standard syntax to
+create the bonding configuration (depending on your OS).
+
+3.1 Configuration with initscripts support
+------------------------------------------
+Note: This feature is available only for Redhat-AS4 (Update 4, Update 5 or
+Update 6) and
+      for Redhat-EL5 and above.
+
+3.1.1 Writing network scripts under Redhat-AS4 (Update 4, 5 or 6)
+--------------------------------------------------------------
+* In the master (bond) interface script add the line:
+TYPE=Bonding
+
+Exmaple: for bond0 (master) the file is named /etc/sysconfig/network-scripts/ifcfg-bond0
+with the following text in the file:
+
+DEVICE=bond0
+IPADDR=192.168.1.1
+NETMASK=255.255.255.0
+NETWORK=192.168.1.0
+BROADCAST=192.168.1.255
+ONBOOT=yes
+BOOTPROTO=none
+USERCTL=no
+TYPE=Bonding
+
+* In the slave (ib) interface script put the following lines:
+SLAVE=yes
+MASTER=<bond name>
+TYPE=InfiniBand
+
+Example: the script for ib0 (slave) would be named /etc/sysconfig/network-scripts/ifcfg-ib0
+with the following text in the file:
+
+DEVICE=ib0
+USERCTL=no
+ONBOOT=yes
+MASTER=bond0
+SLAVE=yes
+BOOTPROTO=none
+TYPE=InfiniBand
+
+After the configuration is saved, restart the network service by running:
+/etc/init.d/network restart
+
+3.1.2 Writing network scripts under Redhhat-EL5
+---------------------------------------------------
+Follow the instructions in 3.1.1 (Writing network scripts under Redhat-AS4)
+with the following changes:
+* In the bondX (master) script - the line TYPE=Bonding is not needed.
+* in the ibX (slave) script - the line TYPE=InfiniBand is not needed.
+* in /etc/modprobe.conf add the following lines
+alias bond0 bonding
+options bond0 miimon=100 mode=1 max_bonds=1
+
+If you want more than one bonding interface, name them bond1, bond2... and 
+just add the necessary lines in /etc/modprobe.conf and change max_bonds=1 to
+max_bonds=N where N=number_of_bonding_interfaces
+
+Note: restarting OFED doesn't keep the bonding configuration via initscripts.
+You have to restart the netowork service in order to recreate the bonding
+interface.
+
+3.2 Configuration with sysconfig support
+----------------------------------------
+Note: This feature is available only for SLES-10 and above.
+
+3.2.1 Writing network scripts under SLES-10
+-------------------------------------------
+* In the master (bond) interface script add the lins:
+
+BONDING_MASTER=yes
+BONDING_MODULE_OPTS="mode=active-backup miimon=<value>"
+BONDING_SLAVE0=slave0
+BONDING_SLAVE1=slave1
+
+Exmaple: for bond0 (master) the file is named /etc/sysconfig/network/ifcfg-bond0
+with the following text in the file:
+
+BOOTPROTO="static"
+BROADCAST="10.0.2.255"
+IPADDR="10.0.2.10"
+NETMASK="255.255.0.0"
+NETWORK="10.0.2.0"
+REMOTE_IPADDR=""
+STARTMODE="onboot"
+BONDING_MASTER="yes"
+BONDING_MODULE_OPTS="mode=active-backup miimon=100"
+BONDING_SLAVE0=ib0
+BONDING_SLAVE1=ib1
+
+* The slave (ib) interace script should look like this:
+
+BOOTPROTO='none'
+STARTMODE='off'
+PRE_DOWN_SCRIPT=/etc/sysconfig/network/unenslave.sh
+
+After the configuration is saved, restart the network service by running:
+/etc/init.d/network restart
