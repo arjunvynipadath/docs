@@ -29,10 +29,12 @@ manage and control the driver operation.
    ib1 will be used as slaves. Child interfaces are allowed.
  --miimon: the MII monitoring interval in mSec. Default is 100
 * Deleting a bonding network interface
- --stop: unenslave slaves and delete a specific bonding network interface (use with --bond-name)
+ --stop: unenslave slaves and delete a specific bonding network interface 
+         (use with --bond-name)
  --stop-all: unenslave slaves and delete all bonding network interfaces
 * Querying a bonding network interface
- --status: show the status of a specific bonding network interface (use with --bond-name)
+ --status: show the status of a specific bonding network interface 
+           (use with --bond-name)
  --status-all: show the status of all bonding network interfaces
  
 Examples:
@@ -41,7 +43,8 @@ Examples:
 	ib-bond --bond-ip 192.186.10.100 --slaves ib0,ib2
 * To bring up bond1 with ib0.f1f1 1and ib1.f1f1 as slaves with non default
   netmask
-	ib-bond --bond-name bond1 --bond-ip 192.186.10.100/25 --slaves ib0.f1f1,ib1.f1f1
+	ib-bond --bond-name bond1 --bond-ip 192.186.10.100/25 
+	        --slaves ib0.f1f1,ib1.f1f1
 * To query the status of bond1
 	ib-bond --bond-name bond1 --status
 * To query the status of all bonding interfaces
@@ -67,7 +70,7 @@ Update 6) and
       for Redhat-EL5 and above.
 
 3.1.1 Writing network scripts under Redhat-AS4 (Update 4, 5 or 6)
---------------------------------------------------------------
+-----------------------------------------------------------------
 * In the master (bond) interface script add the line:
 TYPE=Bonding
 
@@ -89,7 +92,8 @@ SLAVE=yes
 MASTER=<bond name>
 TYPE=InfiniBand
 
-Example: the script for ib0 (slave) would be named /etc/sysconfig/network-scripts/ifcfg-ib0
+Example: the script for ib0 (slave) would be named 
+         /etc/sysconfig/network-scripts/ifcfg-ib0
 with the following text in the file:
 
 DEVICE=ib0
