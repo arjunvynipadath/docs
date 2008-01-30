@@ -358,7 +358,7 @@ ofed_patch.sh --remove --ofed /tmp/OFED-1.3/ --patch cma_fix.patch --type kernel
 Vendors that want to add actions to the install/uninstall process of OFED can
 bind external scripts to hooks in install.pl and ofed_uninstall.sh.
 
-4.1  Specifying vendor scripts and configuration parameters
+6.1  Specifying vendor scripts and configuration parameters
 -----------------------------------------------------------
 This option is only available when installing ofed in non interactive mode.
 Edit the OFED configuration file (ofed.conf ) and add the lines below (you don't have to use all of them).
@@ -381,7 +381,7 @@ vendor_config_something=value_for_that_something
 Running ./install.pl -c ofed.conf in the OFED directory will now invoke the
 relevant vendor specific actions.
 
-4.2. Requirements from vendor scripts
+6.2. Requirements from vendor scripts
 -------------------------------------
 The script files that are given to install.pl in ofed.conf should
 	- be located in the root directory of OFED
@@ -389,7 +389,7 @@ The script files that are given to install.pl in ofed.conf should
 
 If vendor script fails it fails the entire installation.
 
-4.2 Skeleton for pre/post install vendor script
+6.3 Skeleton for pre/post install vendor script
 -----------------------------------------------
 install.pl passes some useful installation variables to the vendor pre/post
 install scripts environment. See the example below for a typical usage.
