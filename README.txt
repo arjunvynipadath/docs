@@ -2,7 +2,7 @@
                         Version 1.3
 		         README
 			  
-		       January 2008
+		       February 2008
 
 This is the OpenFabrics Enterprise Distribution (OFED) version 1.3
 software package supporting InfiniBand and iWARP fabrics. It is composed

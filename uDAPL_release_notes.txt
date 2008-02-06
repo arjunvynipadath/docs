@@ -1,7 +1,7 @@
 
 		   Release Notes for 
 	Gamma 3.3 and OFED 1.3 DAPL Release
-		    January 2008
+		    February 2008
 
 
         DAPL GAMMA 3.3/OFED 1.3 RELEASE NOTES

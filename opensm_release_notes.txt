@@ -4,7 +4,7 @@
 Version: OpenFabrics Enterprise Distribution (OFED) 1.3
 Repo:    git://git.openfabrics.org/~ofed_1_2/management.git (release)
          git://git.openfabrics.org/~halr/management.git (development)
-Date:    January 2008
+Date:    February 2008
 
 1 Overview
 ----------

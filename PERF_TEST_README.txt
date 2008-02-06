@@ -1,7 +1,7 @@
 	     Open Fabrics Enterprise Distribution (OFED)
                 Performance Tests README for OFED 1.3
 		  
-			  January 2008
+			  February 2008
 
 
 
