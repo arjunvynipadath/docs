@@ -8,7 +8,7 @@
 Table of Contents
 ===============================================================================
 1. Overview
-2. Supported Firmware Version
+2. Supported Firmware Versions
 3. Fixed Bugs and Enhancements
 4. Known Issues
 
@@ -39,35 +39,36 @@ In order to set mlx4 parameters, add the following line to /etc/modpobe.conf:
    enable_qos:		Enable Quality of Service support in the HCA if > 0, (default 1) 
    internal_err_reset:	Reset device on internal errors if non-zero (default 1)
    debug_level:		Enable debug tracing if > 0 (default 0)
-   log_num_qp:		log maximum number of QPs per HCA 
-   log_num_srq:		log maximum number of SRQs per HCA 
-   log_rdmarc_per_qp:	log number of RDMARC buffers per QP 
-   log_num_cq:		log maximum number of CQs per HCA 
-   log_num_mcg:		log maximum number of multicast groups per HCA
-   log_num_mpt:		log maximum number of memory protection table entries per HCA 
-   log_num_mtt:		log maximum number of memory translation table segments per HCA
+   log_num_qp:		log maximum number of QPs per HCA (default is 17; max is 20)
+   log_num_srq:		log maximum number of SRQs per HCA (default is 16; max is 20)
+   log_rdmarc_per_qp:	log number of RDMARC buffers per QP (default is 4; max is 7)
+   log_num_cq:		log maximum number of CQs per HCA (default is 16 max is 20)
+   log_num_mcg:		log maximum number of multicast groups per HCA (default is 13; max is 26)
+   log_num_mpt:		log maximum number of memory protection table entries per HCA (default is 17; max is 20)
+   log_num_mtt:		log maximum number of memory translation table segments per HCA (default is 20; max is 20)
 
+  
 
 ===============================================================================
-2. Supported Firmware Version
+2. Supported Firmware Versions
 ===============================================================================
-- This release must be used with firmware version 2.2.000 or later. 
-
-- This release was tested with FW 2.3.000
+- This release was tested with FW 2.3.000.
+- The minimal version to use is 2.2.000. 
+- For QoS need to use version 2.4.928, until a GA release will be available.
 
 ===============================================================================
 3. Fixed Bugs and Enhancements from OFED 1.2.5.5
 ===============================================================================
+Enhancements:
+- Added XRC (eXtended Reliable Connected) support.
+- Add module parameter to enable/disable QoS support.
+- Support for IPoIB LSO feature.
+
 Bug fixes:
-- remove eliminated fields from QUERY_ADAPTER. Get rev_id from MAD_IFC.
+- Remove eliminated fields from QUERY_ADAPTER. Get rev_id from MAD_IFC.
   As a result, ibstat now prints out correct revision ID for mlx4.
 - Can now create a QP using the value of max_qp_wr returned by ibv_query_device.
 - QP limits returned to caller of ibv_create_qp now always lie within device limits.
-
-Enhancements:
-- add module parameter to enable/disable QoS support.
-- support for IPoIB LSO feature.
-- Added XRC (Xtended Reliably Connected) support.
 
 ===============================================================================
 4. Known Issues
