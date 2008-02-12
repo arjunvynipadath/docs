@@ -92,21 +92,21 @@ Usage and configuration:
    To learn more about the arp_ignore parameter, see Documentation/networking/ip-sysctl.txt.
    Note that distributions have the means to make kernel parameters persistent.
 
-2. On SuSE 10 and SLES 10:
-   a.   There are IPoIB alias lines in modprobe.conf which prevent stopping/
-        unloading the stack (i.e., '/etc/init.d/openibd stop' will fail). 
-	These alias lines cause the drivers to be loaded again by udev scripts.
+2. There are IPoIB alias lines in modprobe.conf which prevent stopping/
+   unloading the stack (i.e., '/etc/init.d/openibd stop' will fail). 
+   These alias lines cause the drivers to be loaded again by udev scripts.
 
-	Workaround: Change modprobe.conf to set
-	OFA_KERNEL_PARAMS="--without-modprobe" before running install.sh, 
-	or remove the alias lines from modprobe.conf.
+   Workaround: Change modprobe.conf to set
+   OFA_KERNEL_PARAMS="--without-modprobe" before running install.sh, or remove 
+   the alias lines from modprobe.conf.
    
-   b.   The ib1 interface uses the configuration script of ib0.
+3. On SLES 10:
+   The ib1 interface uses the configuration script of ib0.
 
-        Workaround: Invoke ifup/ifdown using both the interface name and the
-	configuration script name (example: ifup ib1 ib1).
+   Workaround: Invoke ifup/ifdown using both the interface name and the
+   configuration script name (example: ifup ib1 ib1).
 
-3. After a hotplug event, the IPoIB interface falls back to datagram mode, and
+4. After a hotplug event, the IPoIB interface falls back to datagram mode, and
    MTU is reduced to 2K.
    Workarounds:
    a. Set up the IPoIB HA service as documented below
@@ -114,18 +114,18 @@ Usage and configuration:
       echo connected > /sys/class/net/ib0/mode
       ifconfig ib0 mtu 65520
 
-4. Since the IPoIB configuration files (ifcfg-ib<n>) are installed under the
+5. Since the IPoIB configuration files (ifcfg-ib<n>) are installed under the
    standard networking scripts location (RedHat:/etc/sysconfig/network-scripts/
    and SuSE: /etc/sysconfig/network/), the option IPOIB_LOAD=no in openib.conf
    does not prevent the loading of IPoIB on boot.
 
-5. On RedHat EL 4 up4, the IPOIB implementation is not spec-compliant:
+6. On RedHat EL 4 up4, the IPOIB implementation is not spec-compliant:
    - ipoib multicast does not work
    - ipoib cannot interoperate between RHEL4U4 and other hosts. This is due to
      missing code in the kernel which was available in U3 and U5 but removed in
      U4. As a workaround, upgrade to RHEL4U5.
 
-6. If IPoIB connected mode is enabled, it uses a large MTU for connected mode
+7. If IPoIB connected mode is enabled, it uses a large MTU for connected mode
    messages and a small MTU for datagram (in particular, multicast) messages,
    and relies on path MTU discovery to adjust MTU appropriately. Packets sent
    in the window before MTU discovery automatically reduces the MTU for a
@@ -136,10 +136,10 @@ Usage and configuration:
    To warn about this, a message is produced in the system log each time MTU is
    set to a value higher than 2K.
 
-7. In connected mode, TCP latency for short messages is larger by approx. 1usec
+8. In connected mode, TCP latency for short messages is larger by approx. 1usec
    (~5%) than in datagram mode. As a workaround, use datagram mode.
 
-8. Single-socket TCP bandwidth for kernels < 2.6.18 is lower than with
+9. Single-socket TCP bandwidth for kernels < 2.6.18 is lower than with
    newer kernels. We recommend kernels from 2.6.18 and up for
    best IPoIB performance.
 
