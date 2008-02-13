@@ -142,5 +142,12 @@ iw_cxgb3 modules enabled.  This forces the kernel to pull in the genalloc
 allocator, which is requried for the OFED iw_cxgb3 module.  Make sure
 these config options are included in your .config file:
 
-CONFIG_CHELSIO_T3=m
-CONFIG_INFINIBAND_CXGB=m
+	CONFIG_CHELSIO_T3=m
+	CONFIG_INFINIBAND_CXGB=m
+
+4) If you run the RDMA latency test using the ib_rdma_lat program, make
+sure you use the following command lines to limit the amount of inline
+data to 64:
+
+	server:	ib_rdma_lat -c -I 64
+	client:	ib_rdma_lat -c -I 64 server_ip_addr
