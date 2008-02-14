@@ -1,0 +1,62 @@
+            Open Fabrics Enterprise Distribution (OFED)
+                NetEffect RNIC RELEASE NOTES
+                       February 2008
+
+
+
+The iw_nes and libnes modules provide RDMA and NIC support for the
+NetEffect NE020 series of adapters.  
+
+============================================
+Loadable Module options:
+============================================
+The following options can be used when loading the iw_nes module:
+
+mpa_version = 1;  
+    "MPA version to be used int MPA Req/Resp (0 or 1)"
+
+disable_mpa_crc = 0; 
+    "Disable checking of MPA CRC"
+
+send_first = 0;
+    "Send RDMA Message First on Active Connection"
+
+nes_drv_opt = 0;
+    "Driver option parameters"
+
+    NES_DRV_OPT_ENABLE_MSI           0x00000010
+    NES_DRV_OPT_DUAL_LOGICAL_PORT    0x00000020
+    NES_DRV_OPT_SUPRESS_OPTION_BC    0x00000040
+    NES_DRV_OPT_NO_INLINE_DATA       0x00000080
+    NES_DRV_OPT_DISABLE_INT_MOD      0x00000100
+    NES_DRV_OPT_DISABLE_VIRT_WQ      0x00000200
+    NES_DRV_OPT_DISABLE_LRO          0x00000400
+
+nes_debug_level = 0;
+    "Enable debug output level"
+
+
+============================================
+Runtime Module options:
+============================================
+The following options can be used to alter the behavior of the iw_nes module:
+
+tso 
+    ethtool -K eth2 tso on  == enables tso
+    ethtool -K eth2 tso off == disables tso
+                  
+jumbo
+    ifconfig eth2 mtu 9000  == largest mtu supported
+
+static interrupt moderation
+    ethtool -C eth2 rx-usecs-irq 128    
+                  
+dynamic interrupt moderation 
+    ethtool -C eth2 adaptive-rx on == enable
+    ethtool -C eth2 adaptive-rx off == disable
+    
+dynamic interrupt moderation 
+    ethtool -C eth2 rx-frames-low 12    == low watermark of rx queue
+    ethtool -C eth2 rx-frames-high 255  == high watermark of rx queue
+    ethtool -C eth2 rx-usecs-low 40     == smallest interrupt moderation timer
+    ethtool -C eth2 rx-usecs-high 1500  == largest interrupt moderation timer
