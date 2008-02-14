@@ -59,11 +59,10 @@ The OFED package contains the following components:
  - Documentation
 
 Notes:
-1. nes driver is in Beta quality.
-2. SRP target is in Beta quality.
-3. All other OFED components are of production quality.
-4. See release notes for each package in the docs directory.
-5. Any Topspin copyright belongs to Cisco Systems, Inc.
+1. SRP target is in Beta quality.
+2. All other OFED components are of production quality.
+3. See release notes for each package in the docs directory.
+4. Any Topspin copyright belongs to Cisco Systems, Inc.
 
 1.2 Supported Platforms and Operating Systems
 ---------------------------------------------
