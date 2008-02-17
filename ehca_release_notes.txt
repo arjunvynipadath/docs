@@ -9,7 +9,14 @@ Overview
 --------
 ehca is the low level driver implementation for all IBM GX-based HCAs.
 
-ehca Available Parameters
+Supported HCAs
+--------------
+- GX Dual-port SDR 4x IB HCA
+- GX Dual-port SDR 12x IB HCA
+- GX Dual-port DDR 4x IB HCA
+- GX Dual-port DDR 12x IB HCA
+
+Available Parameters
 --------------------------
 In order to set ehca parameters, add the following line(s) to /etc/modprobe.conf:
 
@@ -17,59 +24,48 @@ In order to set ehca parameters, add the following line(s) to /etc/modprobe.conf
 
 whereby <parameter> is one of the following items:
 - debug_level     debug level (0: no debug traces (default), 1: with debug traces)
-- nr_ports        number of connected ports (default: 2)
+- nr_ports        number of connected ports (2: (default), -1: autodetect mdoe)
 - port_act_time   time to wait for port activation (default: 30 sec)
-- scaling_code    enable scaling code (default: 1), 0: disable scaling code
+- scaling_code    scaling code (0: disable (default), 1: enable)
 
 New Features
 ------------
-- Scaling code can now be turned on (default) or off at module load time.
-  Enabling scaling code helps to distribute processing completions across CPUs.
+- Port connection autodetect mode
+- eHCA2 only:
+  * Large page MRs
+  * Shared receive QPs
+  * Low latency QPs
+  * 4k MTU
 
 Fixed Bugs
 ----------
-- Mismatched sync/locking between completion handler and destroy cq
-- Reworked irq handler to avoid/reduce missed irq events
-- Removed do_mmap() and obsolete prototypes
-- Serialized calls to register_mr() (Bugzilla #574)
+- Serialize HCA-related hCalls if necessary
+- Fix static rate if path faster than link
+- Return physical link information in query_port()
+- Fix clipping of device limits to INT_MAX
+- Fix issues related to path migration support
+- Support more than 4k QPs for userspace and kernelspace
+- Prevent sending UD packets to QP0
+- Prevent RDMA-related connection failures on some eHCA2 hardware
 
 Available backports
 -------------------
 - RedHat EL4 up5: 2.6.9-42.ELsmp
+- RedHat EL4 up6: 2.6.9-65.ELsmp
 - RedHat EL5: 2.6.18-8.ELsmp
+- RedHat EL5 up1: 2.6.18-53.ELsmp
 - SLES10: 2.6.16.21-0.8-smp
-- kernel.org: 2.6.19.x and 2.6.20.x
+- SLES10SP1: 2.6.16-53-0.16-smp
+- kernel.org: 2.6.19-24.x
 
 Known Issues
 ------------
-1. The device driver normally uses both ports. For using just one port connect
-the ports as shown in Figure 1 and load the device driver by running
-`modprobe ib_ehca nr_ports=1`.
-
-          --------- IB Card in p570
-          |
-         \ /
-        +---+
-        | # |
-        | # |
-        | # |
-        | # |  <--- Port 2: NOT CONNECTED
-        | # |
-        |---|
-        | # |
-        | # |
-        | # |  
-        | # |  <--- Port 1: CONNECTED TO THE INFINIBAND SWITCH
-        | # |
-        +---+
-
-*Figure 1:* Connections if only one port is used.
-
-NOTE: In OpenPower 720 and p550 port 1 is at the top, port 2 is at the bottom.
+1. The device driver normally uses both ports. For using just one port it is
+strongly recommended to set option nr_ports=-1 to enable autodetect mode:
+   modprobe ib_ehca nr_ports=-1
 
 2. Furthermore the port(s) needs to be connected to an active switch port while
 loading the ehca device driver.
 
 3. RedHat EL5 2.6.18-8.ELsmp
    User space not supported
-
