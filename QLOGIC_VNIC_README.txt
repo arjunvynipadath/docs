@@ -1,0 +1,156 @@
+This is a technology preview release of the QLogic VNIC driver on OFED 1.3.
+This driver is currently supported on Intel x86 32 and 64 bit machines with
+Mellanox HCAs. Supported OS are RHEL 4 Update 3, RHEL 4 Update 4, SLES 10
+and the vanilla 2.6.19 kernel.
+
+The VNIC driver in conjunction with the QLogic Virtual Ethernet I/O gateway
+(VEx) provides Ethernet interfaces on a host with IB HCA(s) without the need
+for any physical Ethernet NIC.
+
+This file describes the use of the VNIC ULP service on an OFED stack
+and covers the following points:
+
+A) Creating VNIC interfaces
+B) Discovering VEx IOCs present on the fabric using ibvexdm
+C) Starting the VNIC driver and the VNIC interfaces
+D) Assigning IP addresses etc for the VNIC interfaces
+E) Information about the VNIC interfaces
+F) Deleting a specific VNIC interface
+
+A) Creating VNIC interfaces
+
+The VNIC interfaces can be created with the help of
+a configuration file which must be placed at /etc/infiniband/qlogic_vnic.cfg.
+
+Please take a look at qlogic_vnic.cfg.sample file (available as part of the
+documentation) to see how VNIC configuration files are written. You can use
+this configuration file as the basis for creating a VNIC configuration file by 
+copying it to /etc/infiniband/qlogic_vnic.cfg. Of course you will have to
+replace the IOCGUID, IOCSTRING values etc in the sample configuration file
+with those of the VEx IOCs present on your fabric.
+
+[As back ward compatibility for the QLogic Infiniserv stack, if the
+/etc/infiniband/qlogic_vnic.cfg file is not present, the VNIC service will
+look for the /etc/sysconfig/ics_inic.cfg configuration file]
+
+B) Discovering VEx IOCs present on the fabric using ibvexdm
+
+For writing the configuration file, you will need information
+about the VEx IOCs present on the fabric like their IOCGUID,
+IOCSTRING etc. The ibvexdm tool should be used to get this
+information. 
+
+When ibvexdm is executed without any options, it displays
+detailed information about all the VEx IOCs present on the fabric:
+
+# ibvexdm
+IO Unit Info:
+    port LID:        0003
+    port GID:        fe8000000000000000066a0258000001
+    change ID:       0009
+    max controllers: 0x03
+
+
+    controller[  1]
+        GUID:      00066a0130000001
+        vendor ID: 00066a
+        device ID: 000030
+        IO class : 2000
+        ID:        Chassis 0x00066A00010003F2, Slot 1, IOC 1
+        service entries: 2
+            service[  0]: 1000066a00000001 / InfiniNIC.InfiniConSys.Control:01
+            service[  1]: 1000066a00000101 / InfiniNIC.InfiniConSys.Data:01
+
+    controller[  2]
+        GUID:      00066a0230000001
+        vendor ID: 00066a
+        device ID: 000030
+        IO class : 2000
+        ID:        Chassis 0x00066A00010003F2, Slot 1, IOC 2
+        service entries: 2
+            service[  0]: 1000066a00000002 / InfiniNIC.InfiniConSys.Control:02
+            service[  1]: 1000066a00000102 / InfiniNIC.InfiniConSys.Data:02
+
+    controller[  3]
+        GUID:      00066a0330000001
+        vendor ID: 00066a
+        device ID: 000030
+        IO class : 2000
+        ID:        Chassis 0x00066A00010003F2, Slot 1, IOC 3
+        service entries: 2
+            service[  0]: 1000066a00000003 / InfiniNIC.InfiniConSys.Control:03
+            service[  1]: 1000066a00000103 / InfiniNIC.InfiniConSys.Data:03
+
+
+When ibvexdm is run with -e option, it reports the IOCGUID information 
+and with -s option it reports the IOCSTRING information for the VEx IOCs
+present on the fabric.
+
+# ibvexdm -e
+ioc_guid=00066a0130000001,dgid=fe8000000000000000066a0258000001,pkey=ffff
+ioc_guid=00066a0230000001,dgid=fe8000000000000000066a0258000001,pkey=ffff
+ioc_guid=00066a0330000001,dgid=fe8000000000000000066a0258000001,pkey=ffff
+
+#ibvexdm -s
+"Chassis 0x00066A00010003F2, Slot 1, IOC 1"
+"Chassis 0x00066A00010003F2, Slot 1, IOC 2"
+"Chassis 0x00066A00010003F2, Slot 1, IOC 3"
+
+#ibvexdm -es
+ioc_guid=00066a0130000001,dgid=fe8000000000000000066a0258000001,pkey=ffff,"Chassis 0x00066A00010003F2, Slot 1, IOC 1"
+ioc_guid=00066a0230000001,dgid=fe8000000000000000066a0258000001,pkey=ffff,"Chassis 0x00066A00010003F2, Slot 1, IOC 2"
+ioc_guid=00066a0330000001,dgid=fe8000000000000000066a0258000001,pkey=ffff,"Chassis 0x00066A00010003F2, Slot 1, IOC 3"
+
+C) Starting the VNIC driver and the VNIC interfaces
+
+Once you have created a configuration file, you can start the VNIC driver
+and create the VNIC interfaces specified in the configuration file with:
+#/etc/init.d/openibd start
+
+
+The VNIC driver is started by default as a part of openibd service.
+(If openibd is configured to start on boot VNIC driver will also start on boot)
+If you do not want to start the VNIC driver as a part of openibd service, set
+VNIC_LOAD=no in /etc/infiniband/openib.conf
+
+You can stop the VNIC driver and openibd services with
+#/etc/init.d/openibd stop
+
+You can restart the VNIC driver and openibd service using
+#/etc/init.d/openibd restart
+
+After starting openibd service you can independently control the VNIC driver using ql_vnic service
+To stop the VNIC driver you  can use
+#/etc/init.d/ql_vnic stop
+
+If you make changes to the VNIC configuration file and want the changes to be
+reflected, you can restart the VNIC service independently, using
+#/etc/init.d/ql_vnic restart
+
+Note that it is required to start openibd service before using ql_vnic service
+
+D) Assigning IP addresses etc for the VNIC interfaces
+
+This can be done with ifconfig or by setting up the ifcfg-XXX (ifcfg-veth0 for
+an interface named veth0 etc) network files for the corresponding VNIC interfaces.
+
+E) Information about the VNIC interfaces
+
+Information about the created VNIC interfaces can be obtained from
+/sys/class/infiniband_vnic/interfaces/. A directory is created
+for each interface under this directory.
+
+The directory for each interface contains information about the interface
+and the primary and secondary connections.
+
+F) Deleting a specific VNIC interface
+
+VNIC interfaces can be deleted by writing the name of the interface to 
+the /sys/class/infiniband_vnic/interfaces/delete_vnic file.
+
+For example to delete interface veth0
+
+echo -n veth0 > /sys/class/infiniband_vnic/interfaces/delete_vnic
+
+
+ 
