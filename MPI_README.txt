@@ -18,7 +18,7 @@ Table of Contents
 ===============================================================================
 Three MPI stacks are included in this release of OFED:
 - MVAPICH 0.9.9
-- Open MPI 1.2.2-1
+- Open MPI 1.2.5-1
 - MVAPICH2 0.9.8p2
 
 Setup, compilation and run information of MVAPICH, Open MPI and MVAPICH2 is
@@ -194,7 +194,7 @@ rsh, add to the mpirun_rsh command the parameter: -rsh
 ===============================================================================
 
 Open MPI is a next-generation MPI implementation from the Open MPI
-Project (http://www.open-mpi.org/).  Version 1.2-2-1 of Open MPI is
+Project (http://www.open-mpi.org/).  Version 1.2.5-1 of Open MPI is
 included in this release, which is also available directly from the
 main Open MPI web site.
 
@@ -347,17 +347,17 @@ to see maximum performance (*).
 
 Example 1: Running the OSU bandwidth:
 
-    > cd /usr/mpi/gcc/openmpi-1.2.2-1/tests/osu_benchmarks-2.2
+    > cd /usr/mpi/gcc/openmpi-1.2.5-1/tests/osu_benchmarks-3.0
     > mpirun -np <N> --mca mpi_leave_pinned 1 -hostfile <HOSTFILE> osu_bw
 
 Example 2: Running the Intel MPI Benchmark benchmarks:
 
-    > cd /usr/mpi/gcc/openmpi-1.2.2-1/tests/IMB-2.3
+    > cd /usr/mpi/gcc/openmpi-1.2.5-1/tests/IMB-3.0
     > mpirun -np <N> --mca mpi_leave_pinned 1 -hostfile <HOSTFILE> IMB-MPI1
 
 Example 3: Running the Presta benchmarks:
 
-    > cd /usr/mpi/gcc/openmpi-1.2.2-1/tests/presta-1.4.0
+    > cd /usr/mpi/gcc/openmpi-1.2.5-1/tests/presta-1.4.0
     > mpirun -np <N> --mca mpi_leave_pinned 1 -hostfile <HOSTFILE> com -o 100
 
 (*) The "mpi_leave_pinned" option can increase bandwidth and decrease
