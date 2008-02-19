@@ -20,6 +20,7 @@ neutral interface for establishing connections.  The API is based on sockets,
 but adapted for queue pair (QP) based semantics: communication must be
 over a specific RDMA device, and data transfers are message based.
 
+
 The RDMA CM only provides the communication management (connection setup /
 teardown) portion of an RDMA API.  It works in conjunction with the verbs
 API for data transfers.
@@ -27,6 +28,23 @@ API for data transfers.
 ===============================================================================
 2. New Features
 ===============================================================================
+for OFED 1.3:
+Added support for valgrind checks.
+
+Added quality of service support.  Quality of service (QoS) is automatically
+enabled through the use of the kernel rdma_cm, if the local subnet is
+configured for QoS.  Additionally, the librdmacm allows users to request
+a specific type of service to use when connecting through a new API.
+Support for QoS is fabric dependent, and usually configured by an
+administrator.  Details of QoS are outside the scope of this document;
+additional information may be found in subnet management (SM) documentation.
+
+Added sanity checks and fixes for maximum outstanding RDMA operations in an
+effort to detect application errors earlier in the connection process.
+
+Various documentation updates.
+
+for OFED 1.2:
 The RDMA CM now supports connected, datagram, and multicast data transfers.
 
 When used over Infiniband, the RDMA CM will make use of a local path record
