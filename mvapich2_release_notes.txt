@@ -1,7 +1,7 @@
 ========================================================================
 
              Open Fabrics Enterprise Distribution (OFED)
-              MVAPICH2-0.9.8 in OFED 1.3 Release Notes
+              MVAPICH2-1.0.2 in OFED 1.3 Release Notes
 
                           February 2008
 
@@ -9,42 +9,55 @@
 Overview
 --------
 
-These are the release notes for MVAPICH2-0.9.8.  This is OFED's edition of
-the MVAPICH2-0.9.8 release. MVAPICH2 is an MPI2 implementation over
-InfiniBand from Ohio State University (OSU)
-(http://nowlab.cse.ohio-state.edu/projects/mpi-iba/).
+These are the release notes for MVAPICH2-1.0.2.  This is OFED's edition of
+the MVAPICH2-1.0.2 release. MVAPICH2 is an MPI-2 implementation over
+InfiniBand and iWARP from the Ohio State University
+(http://mvapich.cse.ohio-state.edu/).
+
+
+User Guide
+----------
+
+For more information on using MVAPICH2-1.0.2, please visit the user guide at
+http://mvapich.cse.ohio-state.edu/support/.
+
 
 Software Dependencies
 ---------------------
 
 MVAPICH2 depends on the installation of the OFED Distribution stack with
 OpenSM running. The MPI module also requires an established network
-interface (either InfiniBand, IPoIB, or Ethernet). BLCR support is needed
-if built with fault tolerance support.
+interface (either InfiniBand, IPoIB, iWARP, uDAPL, or Ethernet). BLCR support
+is needed if built with fault tolerance support.
+
 
 New Features
 ------------
 
-MVAPICH2 (MPI-2 over InfiniBand) is an MPI-2 implementation based on
-MPICH2. MVAPICH2 0.9.8 is available as a single integrated package (with
-MPICH2 1.0.3). This version of MVAPICH2-0.9.8 for OFED has the following
-additional features:
+MVAPICH2 (MPI-2 over InfiniBand and iWARP) is an MPI-2 implementation based on
+MPICH2.  MVAPICH2 1.0.2 is available as a single integrated package (with
+MPICH2 1.0.5p4).  This version of MVAPICH2-1.0.2 for OFED has the following
+changes from MVAPICH2-1.0.1:
 
-- RDMA CM-based connection management support for OFA Gen2 interface
-- Support for OFA iWARP: This is for the emerging 10GigE adapters
-  supporting OFA iWARP interface
-- Fault tolerance support
-    * Checkpoint-restart support for application transparent systems-level
-      fault tolerance. BLCR-based support using native OFA Gen2 interface
-    * Flexible interface to work with different files systems. Tested with
-      ext3 (local disk), NFS and PVFS2
-- Efficient Buffer Organization for Memory Scalability of Intra-node
-  Communication
-- Shared memory optimizations for collective communication operations
+- Explicitly name unions in struct ibv_wr_descriptor and reference the
+  members in the code properly.
+- Change "inline" functions to "static inline" properly.
+- Increase the maximum number of buffer allocations for communication
+  intensive applications.
+- Corrections for warnings from the Sun Studio 12 compiler.
+- If malloc hook initialization fails, then turn off registration
+  cache.
+- Add MV_R3_THESHOLD and MV_R3_NOCACHE_THRESHOLD which allows
+  R3 to be used for smaller messages instead of registering the
+  buffer and using a zero-copy protocol.
+- Fixed an error in message coalescing.
+- Setting application initiated checkpoint as default if CR is turned on.
+
 
 Main Verification Flows
 -----------------------
-In order to verify the correctness of MVAPICH2-0.9.8, the following tests
+
+In order to verify the correctness of MVAPICH2-1.0.2, the following tests
 and parameters were run.
 
 Test                            Description
@@ -58,17 +71,13 @@ Linpack                         Linpack benchmark
 NAS                             NAS Parallel Benchmarks (NPB3.2)
 NAMD                            NAMD application
 
-User Guide and Mailing List
----------------------------
 
-For more information regarding installing/using MVAPICH2-0.9.8, please
-visit the online user guide at:
-http://nowlab.cse.ohio-state.edu/projects/mpi-iba/download-mvapich2/mvapich2_user_guide.html
+Mailing List
+------------
 
 There is a public mailing list mvapich-discuss@cse.ohio-state.edu for
-mvapich users or developers to
+mvapich users and developers to
 - Ask for help and support from each other and get prompt response
 - Contribute patches and enhancements
-
 
 ========================================================================

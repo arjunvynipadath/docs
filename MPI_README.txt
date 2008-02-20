@@ -19,7 +19,7 @@ Table of Contents
 Three MPI stacks are included in this release of OFED:
 - MVAPICH 1.0.0
 - Open MPI 1.2.5-1
-- MVAPICH2 0.9.8p2
+- MVAPICH2 1.0.2
 
 Setup, compilation and run information of MVAPICH, Open MPI and MVAPICH2 is
 provided below in sections 2, 3 and 4 respectively.
@@ -388,16 +388,15 @@ page for more information:
 ===============================================================================
 
 MVAPICH2 is an MPI-2 implementation which includes all MPI-1 features.
-It is based on MPICH2 and MVICH.  MVAPICH2 0.9.8 provides many features
-including fault-tolerance with checkpoint-restart, RDMA_CM support,
-iWARP support, optimized collectives, on-demand connection management,
-multi-core optimized and scalable shared memory support, and memory hook
-with ptmalloc2 library support. The ADI-3-level design of MVAPICH2 0.9.8
-supports many features including: MPI-2 functionalities (one-sided,
-collectives and data-type), multi-threading and all MPI-1 functionalities.
-It also supports a wide range of platforms (architecture, OS, compilers,
-InfiniBand adapters and iWARP adapters).  More information can be found
-on the MVAPICH2 project site:
+It is based on MPICH2 and MVICH.  MVAPICH2 provides many features including
+fault-tolerance with checkpoint-restart, RDMA_CM support, iWARP support,
+optimized collectives, on-demand connection management, multi-core optimized
+and scalable shared memory support, and memory hook with ptmalloc2 library
+support. The ADI-3-level design of MVAPICH2 supports many features including:
+MPI-2 functionalities (one-sided, collectives and data-type), multi-threading
+and all MPI-1 functionalities.  It also supports a wide range of platforms
+(architecture, OS, compilers, InfiniBand adapters and iWARP adapters).  More
+information can be found on the MVAPICH2 project site:
 
 http://mvapich.cse.ohio-state.edu/overview/mvapich2/
 
