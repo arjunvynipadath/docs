@@ -108,8 +108,10 @@ well as iWARP RNICs by Chelsio Communications.
 	- QLE6140 (PathScale InfiniPath PE-880)
 
   o   IBM HCAs:
-	- GX Dual-port 4x IB HCA 
-	- GX Dual-port 12x IB HCA 
+	- GX Dual-port SDR 4x IB HCA
+	- GX Dual-port SDR 12x IB HCA
+	- GX Dual-port DDR 4x IB HCA
+	- GX Dual-port DDR 12x IB HCA
 
   o   Chelsio RNICs:
 	- S310/S320 10GbE Storage Accelerators
