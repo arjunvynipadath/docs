@@ -1,17 +1,17 @@
-                        OpenSM Release Notes 3.0.13
+                        OpenSM Release Notes 3.1.9
                        =============================
 
 Version: OpenFabrics Enterprise Distribution (OFED) 1.3
-Repo:    git://git.openfabrics.org/~ofed_1_2/management.git (release)
-         git://git.openfabrics.org/~halr/management.git (development)
+Repo:    git://git.openfabrics.org/~ofed_1_3/management.git (release)
+         git://git.openfabrics.org/~sashak/management.git (development)
 Date:    February 2008
 
 1 Overview
 ----------
-This document describes the contents of the OpenSM OFED 1.3 release. 
+This document describes the contents of the OpenSM OFED 1.3 release.
 OpenSM is an InfiniBand compliant Subnet Manager and Administration,
-and runs on top of OpenIB. The OpenSM version for this release 
-is openib-3.0.13
+and runs on top of OpenIB. The OpenSM version for this release
+is openib-3.1.9
 
 This document includes the following sections:
 1 This Overview section (describing new features and software
@@ -24,64 +24,98 @@ This document includes the following sections:
 
 1.1 Major New Features
 
+* QoS manager
+  This QoS manager implementation is in accordance with IBA QoS Annex.
+  Highly configurable QoS Policy is parsed from OpenSM QoS policy file.
+  Valid QoS parameters will be reported in SA PathRecord and
+  MultiPathRecord. In addition simple QoS levels per ULPs configuration
+  is supported too.
+
+* Performance Manager
+  When enabled it collects a fabric port counters and able to log it or
+  to pass to external program via event plugin interface. It handles
+  counters overflow, supports LID/QP redirection and is able to work
+  when OpenSM is in master. standby and inactive states.
+
+* Dimension Order routing (DOR) algorithm
+  DOR Unicast routing algorithm - based on the Min Hop algorithm,  but
+  avoids  port  equalization  except for redundant links between the
+  same two switches.  This provides deadlock free routes for hypercubes
+  when the  fabric  is  cabled  as a hypercube and for meshes when cabled
+  as a mesh (see details in OpenSM man page).
+
 * Routing improvements
-  Two additional routing algorithms have been added in addition to
-  performance improvements to the existing routing algorithms. The
-  two new routing algorithms are FAT tree and LASH. See the 
-  opensm man page for additional details.
+  Speedup the current routing algorithms default MinHops, Up/Down and
+  LASH and lid matrix generation. Fat Tree routing engine is able to work
+  with not pure fat free topology.
 
-* SA Optional Record support now "virtually" complete
-  Includes SA InformInfo improvements and InformInfoRecord support in
-  addition to support for the remaining SA optional records 
-  (MulticastForwardingTableRecord, SwitchInfoRecord). Also, SMInfoRecord 
-  support was improved to include all SMs found.
+* Multiple IB routers support
+  OpenSM now able to keep configurable subnet prefix to router table.
+  SA will report path to this routers when SA PathRecord was issued with
+  non-local DGID.
 
-* SA database dump/restore
-  OpenSM now includes the ability to dump and restore the SA database.
-  This allows for all SA registrations (multicast, services, and events)
-  to be saved and restored later.
+* Node map
+  This is possible to name nodes in this config file. Those names will be
+  used for logging and by QoS configuration.
 
-  In verbose mode, OpenSM will dump SA DB (existing multicast groups,
-  services and InformInfo) into dump file which named "opensm-sa.dump"
-  and located under standard OpenSM dump directory (/var/log by default).
+* PKey index support
+  Proper support for PKey index in GSI queries.
 
-  If option -S is specified and SA DB dump file name is provided, OpenSM
-  will try to restore SA database from this file. And if restore is
-  successful, OpenSM won't ask for client reregistration at subnet bring-up.
+* Incremental LFTs. PKey, SL2VL, VLarbitration table update
+  OpenSM will only fetch those tables in first heavy sweep and then
+  will maintain this internally.
 
-* Modular routing for multicast
-  In conjunction was SA database dump/restore, there is the ability to
-  dump and load switch lid matrices (min hops tables) which are used
-  for multicast route calculation.
+* Fast port and switch detector
+  When port and/or switch was externally reset and it was fast so sweep
+  doesn't find this device as disconnected OpenSM will detect this by
+  changed port states and handle accordingly.
 
-* IB router enablement
-  OpenSM now supports router ports properly (in terms of PortInfo handling).
-  There is also some experimental support for IB routers which is enabled
-  via the ROUTER_EXP compile flag. This support includes SA PathRecord and 
-  MCMemberRecord support for off subnet GIDs.
+* Duplicated GUIDs/port moving detector.
+  OpenSM will be able to detect port moving during a fabric discovery
+  and will not report duplicated GUIDs in this case.
 
-* Socket support added to console
-  OpenSM console now supports remote in addition to local access.
-  Remote access is currently via telnet.
+* Multicast rerouting speedup
+  Now OpenSM will calculate and setup multicast forwarding tables for
+  all altered multicast groups and not for each one.
+
+* Event plugin API
+  OpenSM allows to load dynamically various plugin modules.
+
+* Many generic improvements
 
 1.2 Minor New Features:
 
-* Change output format of DR path from hex to decimal port numbers
+* Daemon mode can be activated with -B option.
 
-* Log rotation
-  The OpenSM log can now be rotated while OpenSM is running (without
-  stopping and restarting OpenSM). This is accomplished via SIGUSR1.
+* Support multiple scopes for IPoIB multicast groups in partition config.
 
-* Support scope for IPoIB multicast groups in partition config
+* Loopback connection handling
+  Loopback connection is not interpreted as duplicated GUID anymore.
 
-* Dump filename changed from subnet.lst to osm-subnet.lst
-  Default temp directory for non Windows platforms was previously changed
-  from /tmp to /var/log.
+* Connect root nodes option for Up/Down routing engine.
+  When this option is specified Up/Down will create routing paths between
+  its root nodes.
+
+* Dump and log filenames changed from osm* to opensm*.
+
+* Support loopback console
+  Socket console with only local access.
+
+* Configurable config directory (the default value is /etc/opensm) and
+  configurable default values of OpenSM config filenames.
 
 * Add option for force SDR link speed
   Add option to opensm.opts to force link speed. Currently, only forcing
   to SDR link speed is supported. This option is not supported as a
   command line option.
+
+* Better packaging
+  Building and RPM packaging were improved and simplified.
+
+* Handle "babbling" ports
+  When a babbling port (port which causes a frequent trap generation) is
+  detected, OpenSM will disable the port which should terminate the trap
+  storm.
 
 1.3 Library API Changes
 
@@ -89,7 +123,7 @@ This document includes the following sections:
 
 1.4 Software Dependencies
 
-OpenSM depends on the installation of either OFED 1.2, OFED 1.1,
+OpenSM depends on the installation of either OFED 1.3, OFED 1.2, OFED 1.1,
 OFED 1.0, OpenIB gen2 (e.g. IBG2 distribution), OpenIB gen1 (e.g. IBGD
 distribution), or Mellanox VAPI stacks. The qualified driver versions
 are provided in Table 2, "Qualified IB Stacks".
@@ -97,40 +131,24 @@ are provided in Table 2, "Qualified IB Stacks".
 1.5 Supported Devices Firmware
 
 The main task of OpenSM is to initialize InfiniBand devices. The
-qualified devices and their corresponding firmware versions 
+qualified devices and their corresponding firmware versions
 are listed in Table 3.
 
 2 Known Issues And Limitations
 ------------------------------
 
 * No Service / Key associations:
-  There is no way to manage Service access by Keys. 
+  There is no way to manage Service access by Keys.
 
-* No SM to SM SMDB synchronization: 
+* No SM to SM SMDB synchronization:
   Puts the burden of re-registering services, multicast groups, and
   inform-info on the client application (or IB access layer core).
-
-* No "port down" event handling:
-  Changing the switch port through which OpenSM connects to the IB
-  fabric may cause incorrect operation. Please restart OpenSM whenever
-  such a connectivity change is made.
-
-* Changing connections during SM operation:
-  Under some conditions the SM can get confused by a change in 
-  cabling (moving a cable from one switch port to the other) and 
-  momentarily see this as having the same GUID appear connected 
-  to two different IB ports. Under some conditions, when the SM fails to 
-  get the corresponding change event it might mistakenly report this case
-  as a "duplicated GUID" case and abort. It is advisable to double-check
-  the syslog after each such change in connectivity and restart
-  OpenSM if it has exited. The same error ("duplicated GUID") will 
-  also appear with a loopback plug.
 
 3 Unsupported IB Compliance Statements
 --------------------------------------
 The following section lists all the IB compliance statements which
 OpenSM does not support. Please refer to the IB specification for detailed
-information regarding each compliance statement. 
+information regarding each compliance statement.
 
 * C14-22 (Authentication):
   M_Key M_KeyProtectBits and M_KeyLeasePeriod shall be set in one
@@ -145,7 +163,7 @@ information regarding each compliance statement.
 * C15-0.1.23.4 (Authentication):
   InformInfoRecords shall always be provided with the QPN set to 0,
   except for the case of a trusted request, in which case the actual
-  subscriber QPN shall be returned. 
+  subscriber QPN shall be returned.
 
 * o13-17.1.2 (Event-FWD):
   If no permission to forward, the subscription should be removed and
@@ -195,21 +213,86 @@ information regarding each compliance statement.
 The following is a list of bugs that were fixed. Note that other less critical
 or visible bugs were also fixed.
 
+* osm_ucast_ftree.c: do load-leveling of non-CN routes
+
+* osm_ucast_ftree.c: ignore port 0 and loopbacks on switches
+
+* lash: fix possible segfault in osm_get_lash_sl()
+
+* osm_ucast_ftree.c: fixing coredump in fat-tree routing
+
+* osm_sa_slvl_record: fix overflow crash
+
+* Break multicast rerouting requests processing when heavy sweep is
+  scheduled.
+
+* updn: report fallback properly
+
+* Fix incorrect identification of routing engine used
+
+* Don't zero base LID when invalid value is received
+
+* lash: fix wrong allocation size
+
+* Fixing broken logic in 'process world' part of LinkRecord processing
+
+* Fix lmc_mask bit order in osm_sa_link_record.c
+
+* Adding missing comparison by to_lid/from_lid in LinkRecord processing
+
+* Broken logic when scanning subnet for PIR request
+
+* No interactive games in daemon mode
+
+* Fixing memory leak in node description
+
+* Fix PortInfo update issues for switch port 0
+
+* Changed method_mask type in user_mad interface in accordance with
+  kernel ABI
+
+* Use umad_get_issm_path() in osm_vendor_set_sm()
+
+* Report message fix
+
+* Uninitialized variables usage fix
+
+* osm_ucast_ftree.c: Possible NULL ptr seg fault
+
+* osm_mcast_mgr.c: Possible NULL ptr seg fault
+
+* TrapRepress was failing for mkey != 0  
+
+* IB_PR_COMPMASK was used in MPR
+
+* Set hop limit when creating ipoib multicast groups
+
+* Fix outstanding mad counters tracking on the error paths.
+
+* Report new ports before handover mastership
+
+* Fix opvls and neighbormtu when remote port invalid.
+
+* Bug in coding trying to set vl_arb_high_limit when PortInfo.base_lid
+  was still zero.
+
+* Protect SMInfo response against port moving issue.
+
 * osm_sminfo_rcv.c: Add SMInfo self query check. OpenSM can query
-  itself for SMInfo occassionally due to port moving during subnet
+  itself for SMInfo occasionally due to port moving during subnet
   discovery process. Don't create remote SM entry in this case to
-  prevent deadlocks. 
-    
+  prevent deadlocks.
+
 * osm_ucast_updn.c: Two similar bugs in up/down routing fixed.
   8-bit integers were used as indexes when scanning subnet, which
   in one case caused OpenSM to crash when ranking "path" is longer
-  than 256 switches, and in the other case, caused OpenSM to go into 
+  than 256 switches, and in the other case, caused OpenSM to go into
   an infinite loop when fabric has more than 256 roots.
 
-* osm_sm_state_mgr.c: In __osm_sm_state_mgr_send_master_sm_info_req, 
+* osm_sm_state_mgr.c: In __osm_sm_state_mgr_send_master_sm_info_req,
   handle master GUID port not found properly
 
-* osm_sa_multipath_record.c: In __osm_mpr_rcv_get_path_parms, return 
+* osm_sa_multipath_record.c: In __osm_mpr_rcv_get_path_parms, return
   IB_NOT_FOUND rather than IB_ERROR when can't route to LID from switch
 
 * osm_sa_path_record.c: In __osm_pr_rcv_get_path_parms, return IB_NOT_FOUND
@@ -355,7 +438,7 @@ OpenSM verification is run using the following activities:
 5.1 osmtest
 
 osmtest is an automated verification tool used for OpenSM
-testing. Its verification flows are described by list below. 
+testing. Its verification flows are described by list below.
 
 * Inventory File: Obtain and verify all port info, node info, link and path
   records parameters.
@@ -368,11 +451,11 @@ testing. Its verification flows are described by list below.
    - Delete the first service
    - Delete the third service
    - Added bad flows of get/delete  non valid service
-   - Add / Get same service with different data 
+   - Add / Get same service with different data
    - Add / Get / Delete by different component  mask values (services
      by Name & Key / Name & Data / Name & Id / Id only )
 
-* Multicast Member Record: 
+* Multicast Member Record:
    - Query of existing Groups (IPoIB)
    - BAD Join with insufficient comp mask (o15.0.1.3)
    - Create given MGID=0 (o15.0.1.4)
@@ -429,7 +512,7 @@ The following test flows are run on the IB management simulator:
 
 * LID Manager:
   Using LMC = 2 the fabric is initialized with LIDs. Faults such as
-  zero LID, Duplicated LID, non-aligned (to LMC) LIDs are 
+  zero LID, Duplicated LID, non-aligned (to LMC) LIDs are
   randomly assigned to various nodes and other errors are randomly
   output to the guid2lid cache file. The SM sweep is run 5 times and
   after each iteration a complete verification is made to ensure that all
@@ -439,14 +522,14 @@ The following test flows are run on the IB management simulator:
 * Multicast Routing:
   Nodes randomly join the 0xc000 group and eventually the
   resulting routing is verified for completeness and adherence to
-  Up/Down routing rules. 
+  Up/Down routing rules.
 
 * osmtest:
   The complete osmtest flow as described in the previous table is run on
   the simulated fabrics.
 
 * Stress Test:
-  This flow merges fabric, LID and stability issues with continuous 
+  This flow merges fabric, LID and stability issues with continuous
   PathRecord, ServiceRecord and Multicast Join/Leave activity to
   stress the SM/SA during continuous sweeps. InformInfo Set/Delete/Get
   were added to the test such both existing and non existing nodes
@@ -466,7 +549,7 @@ tests are:
   network & verify DB correctness.
 
 * Trap Injection: This flow injects traps to the SM and verifies that it
-  handles them gracefully. 
+  handles them gracefully.
 
 * SA Query Test: This test exhaustively checks the SA responses to all
   possible single component mask. To do that the test examines the
@@ -482,7 +565,7 @@ involves real hardware setups of 16 to 32 nodes (or more if a beta site
 is available). Each test is validated by running all-to-all ping through the IB
 interface. The test procedure includes:
 
-* Cluster bringup 
+* Cluster bringup
 
 * Hand-off between 2 or 3 SM's while performing:
   - Node reboots
@@ -495,7 +578,7 @@ interface. The test procedure includes:
 * Trap injection and recovery
 
 
-6 Qualification 
+6 Qualification
 ----------------
 
 Table 2 - Qualified IB Stacks
@@ -503,6 +586,7 @@ Table 2 - Qualified IB Stacks
 
 Stack                                    | Version
 -----------------------------------------|--------------------------
+OFED                                     |   1.3
 OFED                                     |   1.2
 OFED                                     |   1.1
 OFED                                     |   1.0
@@ -510,11 +594,11 @@ OpenIB Gen2 (IBG2 distribution)          |   1.0
 OpenIB Gen1 (IBGD distribution)          |   1.8.0
 VAPI (Mellanox InfiniBand HCA Driver)    |   3.2 and later
 
-Table 3 - Qualified Devices and Corresponding Firmware 
+Table 3 - Qualified Devices and Corresponding Firmware
 ======================================================
 
 Mellanox
-Device  |   FW versions 
+Device  |   FW versions
 --------|-----------------------------------------------------------
 MT43132 |   InfiniScale - fw-43132  5.2.0 (and later)
 MT47396 |   InfiniScale III - fw-47396 0.5.0 (and later)
@@ -530,6 +614,6 @@ iPath   | QHT6040 (PathScale InfiniPath HT-460)
 iPath   | QHT6140 (PathScale InfiniPath HT-465)
 iPath   | QLE6140 (PathScale InfiniPath PE-880)
 
-Note: OpenSM does not run on an IBM Galaxy (eHCA) as it does not expose 
+Note: OpenSM does not run on an IBM Galaxy (eHCA) as it does not expose
 QP0 and QP1. However, it does support it as a device on the subnet.
 
