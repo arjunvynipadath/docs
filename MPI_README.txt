@@ -17,7 +17,7 @@ Table of Contents
 1. Overview
 ===============================================================================
 Three MPI stacks are included in this release of OFED:
-- MVAPICH 0.9.9
+- MVAPICH 1.0.0
 - Open MPI 1.2.5-1
 - MVAPICH2 0.9.8p2
 
@@ -123,7 +123,7 @@ The web sites of each MPI implementation are listed below:
 2. MVAPICH MPI
 ===============================================================================
 
-This package is a 0.9.9 version of the MVAPICH software package,
+This package is a 1.0.0 version of the MVAPICH software package,
 and is the officially supported MPI stack for this release of OFED. 
 See http://mvapich.cse.ohio-state.edu for more details.
  
@@ -173,20 +173,20 @@ rsh, add to the mpirun_rsh command the parameter: -rsh
 
 *** Running OSU tests ***
 
-/usr/mpi/gcc/mvapich-0.9.9/bin/mpirun_rsh -np 2 -hostfile /root/cluster /usr/mpi/gcc/mvapich-0.9.9/tests/osu_benchmarks-2.2/osu_bw
-/usr/mpi/gcc/mvapich-0.9.9/bin/mpirun_rsh -np 2 -hostfile /root/cluster /usr/mpi/gcc/mvapich-0.9.9/tests/osu_benchmarks-2.2/osu_latency
-/usr/mpi/gcc/mvapich-0.9.9/bin/mpirun_rsh -np 2 -hostfile /root/cluster /usr/mpi/gcc/mvapich-0.9.9/tests/osu_benchmarks-2.2/osu_bibw
-/usr/mpi/gcc/mvapich-0.9.9/bin/mpirun_rsh -np 2 -hostfile /root/cluster /usr/mpi/gcc/mvapich-0.9.9/tests/osu_benchmarks-2.2/osu_bcast
+/usr/mpi/gcc/mvapich-1.0.0/bin/mpirun_rsh -np 2 -hostfile /root/cluster /usr/mpi/gcc/mvapich-1.0.0/tests/osu_benchmarks-3.0/osu_bw
+/usr/mpi/gcc/mvapich-1.0.0/bin/mpirun_rsh -np 2 -hostfile /root/cluster /usr/mpi/gcc/mvapich-1.0.0/tests/osu_benchmarks-3.0/osu_latency
+/usr/mpi/gcc/mvapich-1.0.0/bin/mpirun_rsh -np 2 -hostfile /root/cluster /usr/mpi/gcc/mvapich-1.0.0/tests/osu_benchmarks-3.0/osu_bibw
+/usr/mpi/gcc/mvapich-1.0.0/bin/mpirun_rsh -np 2 -hostfile /root/cluster /usr/mpi/gcc/mvapich-1.0.0/tests/osu_benchmarks-3.0/osu_bcast
 
 *** Running Intel MPI Benchmark test (Full test) ***
 
-/usr/mpi/gcc/mvapich-0.9.9/bin/mpirun_rsh -np 2 -hostfile /root/cluster /usr/mpi/gcc/mvapich-0.9.9/tests/IMB-2.3/IMB-MPI1
+/usr/mpi/gcc/mvapich-1.0.0/bin/mpirun_rsh -np 2 -hostfile /root/cluster /usr/mpi/gcc/mvapich-1.0.0/tests/IMB-3.0/IMB-MPI1
  
 *** Running Presta test ***
 
-/usr/local/ofed/mpi/gcc/mvapich-0.9.9/bin/mpirun_rsh -np 2 -hostfile /root/cluster /usr/local/ofed/mpi/gcc/mvapich-0.9.9/tests/presta-1.4.0/com -o 100
-/usr/local/ofed/mpi/gcc/mvapich-0.9.9/bin/mpirun_rsh -np 2 -hostfile /root/cluster /usr/local/ofed/mpi/gcc/mvapich-0.9.9/tests/presta-1.4.0/glob -o 100
-/usr/local/ofed/mpi/gcc/mvapich-0.9.9/bin/mpirun_rsh -np 2 -hostfile /root/cluster /usr/local/ofed/mpi/gcc/mvapich-0.9.9/tests/presta-1.4.0/globalop
+/usr/mpi/gcc/mvapich-1.0.0/bin/mpirun_rsh -np 2 -hostfile /root/cluster /usr/mpi/gcc/mvapich-1.0.0/tests/presta-1.4.0/com -o 100
+/usr/mpi/gcc/mvapich-1.0.0/bin/mpirun_rsh -np 2 -hostfile /root/cluster /usr/mpi/gcc/mvapich-1.0.0/tests/presta-1.4.0/glob -o 100
+/usr/mpi/gcc/mvapich-1.0.0/bin/mpirun_rsh -np 2 -hostfile /root/cluster /usr/mpi/gcc/mvapich-1.0.0/tests/presta-1.4.0/globalop
 
 
 ===============================================================================
