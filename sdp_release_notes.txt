@@ -1,7 +1,7 @@
-	     Open Fabrics Enterprise Distribution (OFED)
-		    SDP in OFED 1.3 Release Notes
+             Open Fabrics Enterprise Distribution (OFED)
+                    SDP in OFED 1.3 Release Notes
 
-			  February 2008
+                          February 2008
 
 
 
@@ -9,94 +9,78 @@
 Table of Contents
 ===============================================================================
 1. Overview
-2. New Features
-3. Bug Fixes
-4. Known Issues
-5. Supported Socket Options
-6. Verification Applications/Flows/Tests
+2. Bug Fixes and Enhancements
+3. Known Issues
+4. Verification Applications/Flows/Tests
 
 ===============================================================================
 1. Overview
 ===============================================================================
-SDP in OFED is at GA level for OFED 1.3. 
-
-===============================================================================
-2. New Features
-===============================================================================
-* Added proc fs support
-
-* OFED is shipped with a patched version of netstat (sdpnetstat).
-  SDP info is printed by default. To view only SDP sockets use the "-S" flag.
-  Info provided by sdpnetstat (for each SDP socket):
-        Recv-Q
-        Send-Q
-        Local Address
-        Foreign Address
-        User
-        Inode
-        PID/Program name
-
-* The user can now bound SDP's memory use via a module parameter
-
-* Implemented slow start on receive buffers. The socket is created with small
-  buffers, and when needed the socket requests the other side to resize its
-  buffers to allow for more data.
+SDP in OFED is at GA level for OFED 1.3.
 
 
 ===============================================================================
-3. Bug Fixes
+2. Bug Fixes and Enhancements
 ===============================================================================
-* Merge of small SKBs on receive side into larger ones (bugzilla 276)
+* Fixes for SDP specification compliance
+    - OOB data not marked as solicited (bug 596)
+    - DisConn, ChRcvBuf, ChRcvBufAck marked solicited (bug 644)
+    - Do not send DisConn if only 1 credit (bug 646)
+    - Validate ChRcvBuf range (bug 647)
 
-* DMA leak and DMA direction (556)
+* Cleanup
+    - Compilation warnings
+    - New kernel support
 
-* Improved bandwidth
+* New function
+    - SIOCOUTQ ioctl support
+    - Add keepalive support
+        - New /sys options: sdp_keepalive_probes_sent, sdp_keepalive_time
+        - New options: SOCK_KEEPALIVE, TCP_KEEPIDLE
+    - Add Zero copy bcopy support (bzcopy)
+        - New /sys option: sdp_zcopy_thresh
 
-* Kernel oops when device is removed (bugzilla 579)
-
-* Non-compliance with CA4-119 (bugzilla 596)
-
-* A CM disconnect does not wake up sleeping processes (bugzzila 492)
-
-* Interoperability bugs in login messages
-
-* Incorrect handling of receive side shutdown on listening socket
-
-* Credit starvation (eliminated by modifying buffer use calculation)
+* Bugs fixed
+    - Resize buffers if out of credits (bug 556)
+    - Resize using skb_put (bug 620)
+    - Move to accept queue on RTU drop and DREQ (bug 645)
+    - Modify memory allocation to support in kernel users
+    - Fix reference count but that prevents driver unload
+    - connect() now allows AF_INET_SDP and AF_INET (bug 294)
+    - poll() always returns POLLOUT on non-blocking socket (bug 829)
+    - Executing netperf with TCP_CORK never ends (bug 837)
+    - Fix bug with FASYNC 
+    - libsdp returns wrong error
+    - multi-threaded libsdp client closes wrong socket under load
 
 
 ===============================================================================
-4. Known Issues
+3. Known Issues
 ===============================================================================
-- Each SDP socket currently consumes up to 2 MB memory. If this value
-  is too high for your installation, it is possible to trade off performance
+- Each SDP socket currently consumes up to 2 MBytes of memory. If this value
+  is high for your installation, it is possible to trade off performance
   for lower memory utilization per socket by reducing the value of the
   "rcvbuf_scale" module parameter (default: 16).
 
-  Note: The minimum legal value for this parameter is 1.
-  If rcvbuf_scale=1 then each socket will consume approximately 128 KB.
+  Note: the minimum legal value for this parameter is 1.
+  At this parameter value, each socket will consume approximately 128 KBytes.
 
-  Note: Memory usage of receive buffers can be limited via the "top_mem_usage"
-  module parameter. Setting the parameter (default: 0) will cause socket
-  memory usage for receive buffers to be the maximum allowed under the system-
-  wide limit.
+- Small message size performance is low when messages are sent by client
+  at a rate lower than the rate at which they are consumed by server,
+  and when TCP_CORK is not set. This is observed, for example, with iperf
+  benchmark. As a workaround, set the TCP_CORK socket option
+  to ensure data is sent in at least 32K byte chunks.
 
-- Small message size performance is low when the rate of Client sent messages
-  is lower than the rate at which they are consumed by Server, and when
-  TCP_CORK is not set. This is observed, for example, with the iperf benchmark.
-  As a workaround, set the TCP_CORK socket option to ensure data is sent in at
-  least 32KB chunks.
+- Performance is low on 32-bit kernels, as SDP utilizes high memory
+  to ease memory pressure. Moving to a 64-bit kernel solves this
+  problem even if the application remains a 32-bit one.
 
-- Performance is low on 32-bit kernels as SDP utilizes high memory to ease
-  memory pressure. Moving to a 64-bit kernel solves this problem even if the
-  application remains a 32-bit one.
+- By default, SDP utilizes a 2 Kbyte MTU size.  This may cause PCI-X cards
+  using Mellanox Technologies "Infinihost" HCAs to experience low bandwidth.
+  Workaround:  reset the MTU size to 1K in this situation, using either of
+  the two methods below:
 
-- By default, SDP utilizes a 2KB MTU size.  This may cause PCI-X cards
-  using Mellanox Technologies InfiniHost HCAs to experience low bandwidth.
-  Workaround:  Reset the MTU size to 1K in this situation, using one of
-  the two following methods:
-
-  1. Activate the "tavor quirk" workaround in opensm
+  1. Activate the "tavor quirk" workaround in opensm:
      a. Create an opensm options cache file (/var/cache/osm/opensm.opts):
           > opensm --cache-options -o
      b. Add the following line to /var/cache/osm/opensm.opts:
@@ -104,121 +88,44 @@ SDP in OFED is at GA level for OFED 1.3.
      c. Rerun opensm using your usual command line options to activate
         the opensm quirk option.
 
-  2. Activate the "tavor quirk" workaround in cma
-       Set the tavor_quirk module parameter of the rdma_cm module to value 1
+  2. Activate the "tavor quirk" workaround in cma:
+       set the tavor_quirk module parameter of the rdma_cm module to value 1
        (default: 0).
 
-- Connection rate in lower than TCP.  This may cause Clients to get connection
-  refused when Server is under connection stress.
+- The new BZCOPY mode is only effective for large block transfers.
+  By setting the /sys parameter 'sdp_zcopy_thresh' to a non-zero value, a 
+  non-standard SDP speedup is enabled.  All messages longer than 
+  'sdp_zcopy_thresh' bytes in length will cause the user space buffer to
+  be pinned and the data sent directly from the original buffer.  This 
+  results in less CPU use and, on many systems, much better bandwidth.
+  The default 64K value for 'sdp_zcopy_thresh' is sometimes too low for
+  some systems.  You must experiment with your hardware to select the
+  best value.
 
-- Due to a limited DMA pool on PPC, SDP cannot sustain more than about 1000
-  sockets with default parameters.  Limiting max_large_sockets and rcvbuf_scale
-  allows more sockets to be opened but at a performance cost.
-
-- http using a Client over curl has problems connecting using libsdp matching 
-  rules. Using SIMPLE_LIBSDP causes data transfer to stall.
-
-
-===============================================================================
-5. Supported Socket Options
-===============================================================================
-	Option	   	   Supported
-
-SOL_SOCKET:
-	SO_BROADCAST		NA
-	SO_DEBUG
-	SO_DONTROUTE		NA
-	SU_ERROR		V
-	SO_KEEPALIVE
-	SO_LINGER		V
-	SO_OOBINLINE		V
-	SO_RCVBUF		V
-	SO_SENDBUF		V
-	SO_RECVLOWAT		V
-	SO_SNDLOWAT		V
-	SO_RCVTIMEO		V
-	SO_SNDTIMEO		V
-	SO_REUSEADDR		V
-	SO_REUSEPORT		V
-	SO_TYPE
-	SO_USELOOPBACK
-	SO_BSDCOMPAT
-	SO_PASSCRED
-	SO_PEERCRED
-	SO_BINDTODEVICE
-	SO_ACCEPTCONN
-	SO_PRIORITY
-	SO_TIMESTAMP
-IPPROTO_IP:
-	IP_HDRINCL
-	IP_OPTIONS
-	IP_RECVDSTADDR
-	IP_RECVIF
-	IP_TOSi			NA
-	IP_TTL			NA
-	IP_PKTINFO		NA
-	IP_RECVTOS		NA
-	IP_RECVTTL		NA
-	IP_RECVOPTS
-	IP_RETOPTS
-	IP_HDRINCL
-	IP_RECVERR
-	IP_MTU_DISCOVER
-	IP_MTU
-	IP_ROUTER_ALERT		NA
-IPPROTO_ICMPV6:
-	ICMP6_FILTER		NA
-IPPROTO_IPV6:
-	IPV6_ADDRFORM		NA
-	IPV6_CHECKSUM		NA
-	IPV6_DSTOPTS		NA
-	IPV6_HOPLIMIT		NA
-	IPV6_HOPOPTS		NA
-	IPV6_NEXTHOP		NA
-	IPV6_PKTINFO		NA
-	IPV6_PKTOPTIONS		NA
-	IPV6_RTHDR		NA
-	IPV6_UNICAST_HOPS	NA
-IPPROTO_TCP:
-	TCP_KEEPALIVE
-	TCP_MAXRT
-	TCP_MAXSEG
-	TCP_NODELAY		V
-	TCP_STDURG
-	TCP_CORK		V
-	TCP_DEFER_ACCEPT
-	TCP_INFO
-	TCP_KEEPCNT
-	TCP_KEEPIDLE
-	TCP_KEEPINTVL
-	TCP_LINGER2
-	TCP_QUICKACK
-	TCP_SYNCNT
-	TCP_WINDOW_CLAMP
-
+- Windows interoperability
+  The Windows version of SDP does not support resizing buffers using the
+  standard protocol messages.  There will sometimes be inter-operability
+  problems for this reason.  
 
 ===============================================================================
-6. Verification Applications/Flows/Tests
+4. Verification Applications/Flows/Tests
 ===============================================================================
-- ssh/sshd/scp
-- wget/netscape/firefox/apache                  
-- netpipe               
-- netperf             
+- ssh/sshd
+- wget/netscape/firefox/apache
+- netpipe
+- netperf
 - LTP socket tests
-- iperf-2.0.2         
+- iperf-2.0.2
 - ttcp
-- Threaded and forking echo Client Server examples
-- Various Java Client Server applications (SUN:jre, BEA:jrockit/WebLogic, GNU:gij/gcj)
+- Threaded and forking echo client server examples
+- Various Java client server applications (SUN:jre, BEA:jrockit/WebLogic,
+  GNU:gij/gcj)
 - Many UNIX utilities to verify that pre-load did not harm the applications
-- shutdown/close/accept
-- lowat/timeo
-- oob
-- select/pselect/poll
 
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	     Open Fabrics Enterprise Distribution (OFED)
-	      libsdp v. 9382 in OFED 1.3 Release Notes
+	      libsdp v. 9382 in OFED 1.2 Release Notes
 
 			  February 2008
 
@@ -246,11 +153,13 @@ is 1.3.
 ===============================================================================
 2. New Features
 ===============================================================================
-* Changed default rules to "both" for Server and Client
+* Add support for new kernel options
+    - SIOCOUTQ ioctl support
+    - Add keepalive support
+        - New options: SOCK_KEEPALIVE, TCP_KEEPIDLE
 
-* Added support for two new APIs: pselect and poll
+* Add libsdp-devel sub-package
 
-* If no match is made, defaults to "both"
 
 ===============================================================================
 3 Bug Fixes
@@ -258,58 +167,30 @@ is 1.3.
 The following list of bugs were fixed. Note that other less critical
 or visible bugs were also fixed.
 
-* Incorrect handling in case another lib is init before libsdp but calls API
-  cloned by libsdp (bugzilla 304)
+* Multi-threaded applications that are opening and closing many SDP sockets
+  quickly using the 'both' flow would incorrectly close a valid socket.
 
-* libsdp.conf does not get overwritten (bugzilla 303)
+* Attempt to bind to an invalid socket using 'both' flow returns the wrong
+  errno.
 
-* Fixed the log file security issue:
-  1. Root file is now under /var/log so users can not play with it
-  2. If the file maps into a link then it is not used (stderr instead)
-  3. The file name is extended with an effective user ID
+* Applications using signal driven IO (FASYNC) on 'both' flow sockets would
+  fail because the second accep() would be executed on the TCP socket.
 
-* Install fails if the target sysconfig directory does not exist
-
-* SDP now accepts when the FD is marked NONBLOCK
-
-* Failure to handle async connect in both mode, default to SDP only
-
-* Document libsdp.conf log levels 3 and 4 (bugzilla 559)
-
-* In "both" mode, only the SDP socket is closed in case the TCP connection 
-  succeeds (bugzilla 576)
-
-* getsockname returns an invalid address for sockets bound to an ipv4 address
-  encapsulated in ipv6 (bugzilla 613)
+* Update error handling to set errno to a valid error code prior to
+  returning -1.
 
 ===============================================================================
 4. Known Issues
 ===============================================================================
-* When using Server to listen on both SDP and TCP, the number of sockets and
-  file descriptors is doubled.
+* libsdp cannot provide its socket switch functionality for executables
+  statically linked with libc.
 
-* A rare race still exists when performing bind/listen on ANY_PORT. The race
-  is between applications and has been greatly minimized. A test to reproduce
-  it has not been found yet. The race is between libsdp running the sequence
-  close(fd1) and bind(fd2, port), and another application/thread explicitly
-  trying to bind(fd3, port) to the same port.
+* When using server to listen on both SDP and TCP, the number of sockets is 
+  doubled.
 
-  To resolve this race a change in SDP/CMA behavior is required: provide a
-  different port number in successive calls to bind (ANY_PORT) and SDP support
-  for "unbind".
-
-* libsdp does not support a non-blocking connect in "both" mode. In this case,
-  libsdp defaults to SDP and a warning is printed to the log file.
-
-* Applications statically linked with libc will not allow dynamic pre-loading.
-  To port these applications to use SDP you need to replace specific socket
-  calls (within the application) with AF_INET_SDP and recompile.
 
 ===============================================================================
 5. Verification Applications/Flows/Tests
 ===============================================================================
 See the corresponding section in the SDP release notes above.
-
-- libsdp rule matching
-- bind mechanism
 
