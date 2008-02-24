@@ -36,16 +36,9 @@ target port using RDMA communication service.
 ==============================================================================
 2. Changes and Bug Fixes
 ==============================================================================
-* Support for High Availability in Red Hat
-* Added a rules file for filtering targets and adding attribute values
-  (max_cmd_per_lun, max_sect).
-* Decreased the log size of ./var/log/messages 
-* Support for CM dgid redirection
-* Bug fixes:
-  - Memory leaks and potential out of buffer writes
-  - Correct line in error messages in rule files 
-  - A rare race condition
-
+* Fix a bug - In the previous version only the last attributes in the allow 
+              line of the rules file was used.
+* Change the default value for the rescan timeout to 60. 
 
 ==============================================================================
 3. Software Dependencies
@@ -345,13 +338,13 @@ the failed path).
 High Availability Prerequisites
 -------------------------------
 
-Installation for RHEL4: (Execute once)
+Installation for RHEL4 and RHEL5: (Execute once)
    - Verify that the standard device-mapper-multipath rpm is installed. If not,
      install it from the RHEL distribution.
 
 Installation for SLES10: (Execute once)
-   - Verify that multipath is installed. If not, take it from the installation
-     or download it from  http://christophe.varoqui.free.fr/multipath-tools/multipath-tools-0.4.7.tar.bz2 and then compile and install it.
+   - Verify that multipath is installed. If not, install it from the
+     installation (You can use yast). 
 
    - Update udev: (Execute once - for manual activation of High Availability only)
    
