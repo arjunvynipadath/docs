@@ -39,6 +39,9 @@ target port using RDMA communication service.
 * Fix a bug - In the previous version only the last attributes in the allow 
               line of the rules file was used.
 * Change the default value for the rescan timeout to 60. 
+* Add the option to automatically execute srp_daemon when the InfiniBand driver
+  starts without using the device mapper. Its enabled by setting the value of 
+  SRP_DAEMON_ENABLE in /etc/infiniband/openib.conf to "yes". 
 
 ==============================================================================
 3. Software Dependencies
@@ -264,7 +267,10 @@ b. srp_daemon extensions to ibsrpdm
   srp_daemon.sh sends its log to /var/log/srp_daemon.log.
 
 - It is possible to configure this script to execute automatically when the 
-  InfiniBand driver starts by changing the value of SRPHA_ENABLE in 
+  InfiniBand driver starts by changing the value of SRP_DAEMON_ENABLE in 
+  /etc/infiniband/openib.conf to "yes". 
+  Another option to to configure this script to execute automatically when the 
+  InfiniBand driver starts is by changing the value of SRPHA_ENABLE in 
   /etc/infiniband/openib.conf to "yes". However, this option also enables 
   SRP High Availability that has some more features. (Please read the High
   Availability section).
@@ -297,7 +303,8 @@ values according to this convention. For example:
   a. It is recommended to use the -n flag for all srp_daemon invocations.
   b. ibsrpdm does not have a corresponding option.
   c. srp_daemon.sh always uses the -n option (whether invoked manually by
-     the user, or automatically at startup by setting SRPHA_ENABLE to yes).
+     the user, or automatically at startup by setting SRPHA_ENABLE or
+     SRP_DAEMON_ENABLE to yes).
 
 ==============================================================================
 10. High Availability (HA)
