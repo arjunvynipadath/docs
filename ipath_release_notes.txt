@@ -1,12 +1,15 @@
 	     Open Fabrics Enterprise Distribution (OFED)
 		   ipath in OFED 1.3 Release Notes
 			  
-			       February 2008
+			    February 2008
 
 
 Overview
 --------
-ipath is the low level driver implementation for all QLogic InfiniPath HCAs.
+
+ipath is the low level driver implementation for all QLogic InfiniPath
+HCAs: the HTX QHT7140, the PCI-Express x8 QLE7140, the PCI-Express x8
+DDR QLE7240, and the PCI-Express x16 DDR QLE7280.
 
 
 1. MSI (Message Signalled Interrupt) support required with
@@ -22,8 +25,3 @@ dmesg at boot:
 [root@sqa-00 ~]# dmesg | grep ipath
   ib_ipath 0000:01:00.0: infinipath0: QLogic PCIE device 0x10 cannot work if 
   CONFIG_PCI_MSI is not enabled
-
-2. Note: 
---------
-When running Fedora Core 4 with the QLogic InfiniPath adapters, it is
-recommended to use the 2.6.17 kernel.
