@@ -80,9 +80,7 @@ for example, ib_write_lat.
 ===============================================================================
 
 Prerequisites: 
-	kernel 2.6
-	ib_uverbs (kernel module) matches libibverbs
-		("match" means binary compatible, but ideally of the same SVN rev)
+OFED installed
 
 Server:		./<test name> <options>
 Client:		./<test name> <options> <server IP address>
@@ -102,6 +100,8 @@ Common Options to all tests:
   -s, --size=<size>            size of message to exchange (default: 1)
   -a, --all                    run sizes from 2 till 2^23
   -t, --tx-depth=<dep>         size of tx queue (default: 50)
+  -g, --mcg                    send messages to multicast group 0xc001
+					(only available in send-UD)
   -n, --iters=<iters>          number of exchanges (at least 100, default: 1000)
   -C, --report-cycles          report times in cpu cycle units
 					(default: microseconds)
@@ -110,6 +110,10 @@ Common Options to all tests:
   -U, --report-unsorted        (implies -H) print out unsorted results
 					(default: sorted)
   -V, --version                display version number
+  -I, --inline_size=<size>     max size of message to be sent in inline mode
+					(default 400)
+  -N, --no peak-bw             cancel peak-bw calculation
+					(default: peak-bw. only available in write_bw)
 
   *** IMPORTANT NOTE: You need to be running a Subnet Manager on the switch or
 		      on one of the nodes in your fabric.
