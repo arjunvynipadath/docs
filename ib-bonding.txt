@@ -6,7 +6,7 @@ IB Bonding
 3. How to work with interface configuration scripts
 3.1 Configuration with initscripts support
 3.1.1 Writing network scripts under Redhat-AS4 (Update 4, 5 or 6)
-3.1.2 Writing network scripts under Redhhat-EL5
+3.1.2 Writing network scripts under Redhhat-EL5 (Update 1)
 3.2 Configuration with sysconfig support
 3.2.1 Writing network scripts under SLES-10
 
@@ -107,8 +107,8 @@ TYPE=InfiniBand
 After the configuration is saved, restart the network service by running:
 /etc/init.d/network restart
 
-3.1.2 Writing network scripts under Redhhat-EL5
----------------------------------------------------
+3.1.2 Writing network scripts under Redhhat-EL5 (Update 1)
+----------------------------------------------------------
 Follow the instructions in 3.1.1 (Writing network scripts under Redhat-AS4)
 with the following changes:
 * In the bondX (master) script - the line TYPE=Bonding is not needed.
