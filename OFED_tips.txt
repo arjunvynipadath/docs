@@ -174,16 +174,10 @@ The same information can be obtained by executing the 'ofed_info' command. For
 example:
 
 > ofed_info
-OFED-1.3-20080128-0600
-
-ofa_kernel-1.3:
-Git:
-git://git.openfabrics.org/ofed_1_3/linux-2.6.git ofed_kernel
-commit 359f200e73049284f5ee9fe545de226f9f902039
-
+OFED-1.3-rc6
 libibverbs:
 git://git.openfabrics.org/ofed_1_3/libibverbs.git ofed_1_3
-commit 6e99cddf835d4715ea7ca3641944e6285f27f2df
+commit 40b771aa6a9c0ad092b2e20775b4723d3b173792
 libmthca:
 git://git.openfabrics.org/ofed_1_3/libmthca.git ofed_1_3
 commit 9501e698d257949acfab2edc90812602966dbcc9
@@ -192,67 +186,73 @@ git://git.openfabrics.org/ofed_1_3/libmlx4.git ofed_1_3
 commit 3869d6dab7e12fe452270ca641f7dd7082b42482
 libehca:
 git://git.openfabrics.org/ofed_1_3/libehca.git ofed_1_3
-commit dbcba8e758fcccfa1727821bd0da64a44105a425
+commit fd898180cfa3b737f893f432a80b91bac3396325
 libipathverbs:
 git://git.openfabrics.org/ofed_1_3/libipathverbs.git ofed_1_3
-commit 306d414eab5f62a959746e427b0af02676007c45
+commit 82be4d81859d1fd2edf830220fe65a9923b80a46
 libcxgb3:
 git://git.openfabrics.org/ofed_1_3/libcxgb3.git ofed_1_3
-commit 946e1572d38d786038d3bca5a2ec184dcf7636c4
+commit 8218482d03898f859e1fa272649fafc64f91f05f
 libnes:
 git://git.openfabrics.org/ofed_1_3/libnes.git ofed_1_3
-commit 27ebf415cb65918237c7c21fd8b28bc1dbf4fca6
+commit 471fa2e5a7bb2f8946119396358c31adcc6c2fb3
 libibcm:
-git://git.openfabrics.org/~shefty/libibcm.git master
-commit a45e43483ac29a26c1803f217ca21a07534494c4
+git://git.openfabrics.org/ofed_1_3/libibcm.git ofed_1_3
+commit 53ec35f544bbc1838bbadc2210909c25a954a5e2
 librdmacm:
 git://git.openfabrics.org/ofed_1_3/librdmacm.git ofed_1_3
-commit afe87c16f40fe4a3622f231672737950c0ebf9fa
+commit e7c55c78f8a8537966feba3ae61bcd5f043cbf97
 dapl1:
-git://git.openfabrics.org/~ardavis/dapl.git master
-commit 95935648f81ac5177ae7120b35e55483902b8c64
+git://git.openfabrics.org/ofed_1_3/dapl1.git ofed_1_3
+commit 93eafe464227375d162e1fc764c2df5eab1ad50f
 dapl2:
-git://git.openfabrics.org/~ardavis/dapl.git dat2.0
-commit abb4356cd765d38cf5cff2dfbdb610b380f944a2
+git://git.openfabrics.org/ofed_1_3/dapl2.git ofed_1_3
+commit ee46aa47e2a4deeded347fe18bd6321db61c6594
 libsdp:
 git://git.openfabrics.org/ofed_1_3/libsdp.git ofed_1_3
-commit 47801f8f1e2168c34690b93edaccadc2ece936ef
+commit c8102dccc502930442b23de658674d386456b350
 sdpnetstat:
 git://git.openfabrics.org/ofed_1_3/sdpnetstat.git ofed_1_3
 commit 3341620a7259c4f7bdd4180864b98e260c3dc223
 srptools:
 git://git.openfabrics.org/ofed_1_3/srptools.git ofed_1_3
-commit d127b2ed8280aaccd8c071212388255040221c33
+commit e0ce2d42eeb25f8e89b8f6daaa32a630c9b64f0d
 perftest:
 git://git.openfabrics.org/ofed_1_3/perftest.git ofed_1_3
-commit a909b982fa6494a179faaf817be3ef019e106199
+commit 398da3f1d503b24141afa990fd46eb55c42a11cf
 qlvnictools:
 git://git.openfabrics.org/ofed_1_3/qlvnictools.git ofed_1_3
 commit 41a148393a602810df80109e71086970a91c1d8d
 tvflash:
-git://git.openfabrics.org/~rdreier/tvflash.git master
+git://git.openfabrics.org/ofed_1_3/tvflash.git ofed_1_3
 commit 39a63301f0344b6b3d45bc4b16d76be81f4377c0
 mstflint:
 git://git.openfabrics.org/ofed_1_3/mstflint.git ofed_1_3
 commit 260ae655d80fa3ed15c4544519a4c7f0cf768bd6
 qperf:
 git://git.openfabrics.org/ofed_1_3/qperf.git ofed_1_3
-commit f6863fac0fd55659aa3a9acc9b47f7d5eb6f6e22
+commit 6221aabd038df0b7033e035378ca190641ed2295
 management:
 git://git.openfabrics.org/ofed_1_3/management.git ofed_1_3
-commit 264eb24f3b2b05dd1ee2f5c1025470845cf8ca36
+commit 2a37e8eb439553e448bdcf9e5905d5673d3b2820
 ibutils:
 git://git.openfabrics.org/ofed_1_3/ibutils.git ofed_1_3
-commit 0225143c82416d02d6f00cf93bb0f38915557a12
+commit b7e9a2df90544591aadb9caa28d670c000c13691
 ibsim:
-git://git.openfabrics.org/~sashak/ibsim.git master
-commit 3b20040b50da6afc5c4ef85f6d458f9023ed7ed9
+git://git.openfabrics.org/ofed_1_3/ibsim.git ofed_1_3
+commit 55113d9f919709c7c97ea41d29991941b9c8be70
+
+ofa_kernel-1.3:
+Git:
+git://git.openfabrics.org/ofed_1_3/linux-2.6.git ofed_kernel
+commit 2942aaa279dc11281b114e23d843e306dd6696b8
 
 # MPI
-mvapich-1.0.0-1870.src.rpm
-mvapich2-1.0.1-2.src.rpm
+mvapich-1.0.0-2106.src.rpm
+mvapich2-1.0.2-4.src.rpm
 openmpi-1.2.5-1.src.rpm
 mpitests-3.0-773.src.rpm
+
 
 2.2 Installed OFED Components
 -------------------------------

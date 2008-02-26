@@ -22,8 +22,6 @@ Table of Contents
 ===============================================================================
 1. Overview
 ===============================================================================
-Note: Most of the documents are not yet updated for OFED 1.3.
-
 These are the release notes of OpenFabrics Enterprise Distribution (OFED)
 release 1.3 The OFED software package is composed of several software modules,
 and is intended for use on a computer cluster constructed as an InfiniBand
@@ -75,7 +73,7 @@ Notes:
   o   Linux Operating Systems:
         - RedHat EL4 up4: 	2.6.9-42.ELsmp
         - RedHat EL4 up5: 	2.6.9-55.ELsmp
-        - RedHat EL4 up6: 	2.6.9-67.ELsmp      *
+        - RedHat EL4 up6: 	2.6.9-67.ELsmp 
         - RedHat EL5: 		2.6.18-8.el5
 	- RedHat EL5 up1: 	2.6.18-53.el5
         - Fedora C6: 		2.6.18-8.fc6        *
@@ -214,7 +212,7 @@ for each package in the docs directory.
 	  - OpenSM integrated, work in any OpenSM state (standby, disabled)
 	  - Plug-in interface
 	o Diagnostic tools enhancements
-	o IBSIM . IB fabric simulator (new)
+	o IBSIM: IB fabric simulator (new)
 	  - Emulates user_mad layer
 	  - useful for OpenSM and management tools testing
 
@@ -261,7 +259,7 @@ components of the OFED 1.3 release.
    achieved by application specific means.  The Posix system() call is
    supported.
 4. The ipath driver is supported only on 64-bit platforms.
-5. There are issues using Intel's MPI with the Qlogic card driver that cause
-   failures.
+5. When installing OFED on OpenSuse or Ubuntu one should use the 
+   --without-depcheck option of the install.pl script
 
 Note: See the release notes of each component for additional issues.

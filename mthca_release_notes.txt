@@ -33,27 +33,27 @@ mthca parameters:
 			  zero (and supported by firmware)
   catas_reset_disable   - disable device reset on a catastrophic event if non-
 			  zero
-
+  debug_level		- Enable debug tracing if > 0 (int)
+  num_qp		- maximum number of QPs per HCA (int)
+  rdb_per_qp		- number of RDB buffers per QP (int)
+  num_cq		- maximum number of CQs per HCA (int)
+  num_mcg		- maximum number of multicast groups per HCA (int)
+  num_mpt		- maximum number of memory protection table entries
+                          per HCA (int)
+  num_mtt		- maximum number of memory translation table segments
+                          per HCA (int)
+  num_udav		- maximum number of UD address vectors per HCA (int)
+  fmr_reserved_mtts	- number of memory translation table segments reserved
+                          for FMR (int)
 
 ===============================================================================
 2. Fixed Bugs
 ===============================================================================
-1.  Allocating many MRs uses many memory pages and causes a kernel oops. (490)
-2.  Improved scheduling of kernel QPs in mthca. (542)
-3.  Wrong mthca error reporting (e.g., CQ entry for unknown QP bd0406). (394)
-4.  Kernel panic on boot when using Hide-DDR FW. (544)
-5.  Off-by-one FMR handling can cause memory corruption for mem-free devices.
-    (424)
-6.  InfiniHost III Lx: Data corruption when working with FMR (Affected ULPs:
-    iSER, SRP and Lustre).
-7.  RESET to ERROR transition
-8.  Set cleaned CQEs back to HW ownership upon cleaning the CQ
-9.  (InfiniHost) Posting more than 255 receive Work Requests
-10. Error path in mthca_alloc_memfree()
-11. The QP state transition RESET->RESET was not allowed
-12. Access to MTT and MPT tables on non-cache-coherent CPUs
-
-
+1.  Remove eliminated fields from QUERY_ADAPTER. Get rev_id from MAD_IFC.
+    As a result, ibstat now prints out correct revision ID for mthca.
+2.  Return proper error codes from mthca_fmr_alloc().
+3.  Fix and simplify page size calculation in mthca_reg_phys_mr().
+4.  Pre link receive WQEs in Tavor mode.
 
 ===============================================================================
 3. Known Issues

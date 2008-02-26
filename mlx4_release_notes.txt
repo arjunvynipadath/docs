@@ -33,10 +33,13 @@ mlx4 Available Parameters
 --------------------------
 In order to set mlx4 parameters, add the following line to /etc/modpobe.conf:
    options mlx4_core parameter=<value>
+   or   
+   options mlx4_ib   parameter=<value>
 
-   mlx4_core parameters:
+mlx4_core parameters:
    msi_x:		attempt to use MSI-X if nonzero (default 1)
    enable_qos:		Enable Quality of Service support in the HCA if > 0, (default 1) 
+   block_loopback	Block multicast loopback packets if > 0  (default: 1)
    internal_err_reset:	Reset device on internal errors if non-zero (default 1)
    debug_level:		Enable debug tracing if > 0 (default 0)
    log_num_qp:		log maximum number of QPs per HCA (default is 17; max is 20)
@@ -47,7 +50,8 @@ In order to set mlx4 parameters, add the following line to /etc/modpobe.conf:
    log_num_mpt:		log maximum number of memory protection table entries per HCA (default is 17; max is 20)
    log_num_mtt:		log maximum number of memory translation table segments per HCA (default is 20; max is 20)
 
-  
+mlx4_ib parameters:
+   debug_level: Enable debug tracing if > 0 (default 0)
 
 ===============================================================================
 2. Supported Firmware Versions
@@ -61,7 +65,14 @@ In order to set mlx4 parameters, add the following line to /etc/modpobe.conf:
 ===============================================================================
 Enhancements:
 - Added XRC (eXtended Reliable Connected) support.
-- Add module parameter to enable/disable QoS support.
+- New module parameters:
+  Enable/disable QoS support.
+  Block multicast loopback packets
+  Enable debug tracing 
+- Added support for blocking/unblocking self-loopback of multicast packets.
+- Added debug tracing for mlx4_ib (controlled by module parameter).
+- Added variable-sized WQE capability to kernel-space apps (when
+  certain conditions are met, such as 64-bit hosts only) 
 - Support for IPoIB LSO feature.
 
 Bug fixes:

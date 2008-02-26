@@ -157,6 +157,10 @@ Note:   The installer will warn you if you attempt to compile any of the
          installation parameters can be found by running
          /etc/infiniband/info.
 
+	 Information on the driver version and source git trees can be found
+	 using the ofed_info utility
+
+
    During the interactive installation of OFED, two files are
    generated: ofed.conf and ofed_net.conf.
    ofed.conf holds the installed software modules and configuration settings
@@ -175,7 +179,8 @@ Note:   The installer will warn you if you attempt to compile any of the
 
 3) Install script usage:
 
- Usage: ./install.pl [-c <packages config_file>|--all|--hpc|--basic] [-n|--net <network config_file>]
+ Usage: ./install.pl [-c <packages config_file>|--all|--hpc|--basic]
+                     [-n|--net <network config_file>]
 
            -c|--config <packages config_file>. Example of the config file can
                                                be found under docs.
@@ -218,8 +223,7 @@ c. Important note for open-iscsi users:
 Install Process Results:
 ------------------------
 
-o The OFED package is installed under <prefix> directory. Default prefix is
-  /usr
+o The OFED package is installed under <prefix> directory. Default prefix is /usr
 o The kernel modules are installed under:
   - Infiniband subsystem:
     /lib/modules/`uname -r`/updates/kernel/drivers/infiniband/
@@ -256,6 +260,9 @@ o The file /etc/modprobe.conf is updated to include the following:
   - "alias net-pf-27 ib_sdp" for sdp.
 o If opensm is installed, the daemon opensmd is installed under /etc/init.d/
   and opensm.conf is installed under /etc.
+o All verbs tests and examples are installed under <prefix>/bin and management 
+  utilities under <prefix>/sbin
+e ofed_info script provides information on the OFED version and git repository.
 o If IPoIB configuration files are included, ifcfg-ib<n> files will be
   installed at:
   - RedHat: /etc/sysconfig/network-scripts/
