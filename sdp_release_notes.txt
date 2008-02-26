@@ -49,9 +49,6 @@ SDP in OFED is at GA level for OFED 1.3.
     - connect() now allows AF_INET_SDP and AF_INET (bug 294)
     - poll() always returns POLLOUT on non-blocking socket (bug 829)
     - Executing netperf with TCP_CORK never ends (bug 837)
-    - Fix bug with FASYNC 
-    - libsdp returns wrong error
-    - multi-threaded libsdp client closes wrong socket under load
 
 
 ===============================================================================
