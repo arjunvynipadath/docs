@@ -12,6 +12,7 @@ Table of Contents
 3. Installation & Configuration
 4. New Features
 5. Bug fixes and Enhancements since OFED 1.2 
+6. Known Issues
 
 ===============================================================================
 1. Overview
@@ -94,3 +95,8 @@ control messages is enqueued on the socket, and the application is woken up.
 When application calls recvmsg (2), it will be given the control message 
 containing the bitmap on the socket.
  
+===============================================================================
+6. Known Issues
+===============================================================================
+1. RDS is not supported on ppc64 platforms
+2. RDS is not supported on 2.6.24 kernel
