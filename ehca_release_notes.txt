@@ -17,7 +17,7 @@ Supported HCAs
 - GX Dual-port DDR 12x IB HCA
 
 Available Parameters
---------------------------
+--------------------
 In order to set ehca parameters, add the following line(s) to /etc/modprobe.conf:
 
         options ib_ehca <parameter>=<value>
