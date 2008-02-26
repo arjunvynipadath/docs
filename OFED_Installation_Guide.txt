@@ -206,13 +206,7 @@ a. It is possible to rename and/or edit the ofed.conf and ofed_net.conf files.
    See examples of ofed.conf and ofed_net.conf under OFED-X.X.X/docs.
    Run './install.pl -p' to get ofed.conf with all available packages included.
 
-b. To make debugging kernel issues easier, it is recommended to set the
-   following environment variable before building OFED:
-   export OPENIB_KERNEL_EXTRA_CFLAGS=-g
-   This will attach debug info to generated kernel binaries without affecting
-   their speed. Currently, set by default.
-
-c. Important note for open-iscsi users:
+b. Important note for open-iscsi users:
    Installing iSER as part of the OFED installation will also install
    open-iscsi. Before installing OFED, please uninstall any open-iscsi version
    that may be installed on your machine. Installing OFED with iSER support
