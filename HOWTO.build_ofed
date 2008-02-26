@@ -54,9 +54,9 @@ Sources are extracted by default from the following locations:
     libipathverbs:
         git://git.openfabrics.org/ofed_1_3/libipathverbs.git ofed_1_3
     tvflash:
-        git://git.openfabrics.org/~rdreier/tvflash.git master
+        git://git.openfabrics.org/ofed_1_3/tvflash.git ofed_1_3
     libibcm:
-        git://git.openfabrics.org/~shefty/libibcm.git master
+        git://git.openfabrics.org/ofed_1_3/libibcm.git ofed_1_3
     libsdp:
         git://git.openfabrics.org/ofed_1_3/libsdp.git ofed_1_3
     libnes:
@@ -72,12 +72,12 @@ Sources are extracted by default from the following locations:
     librdmacm:
         git://git.openfabrics.org/ofed_1_3/librdmacm.git ofed_1_3
     dapl:
-        git://git.openfabrics.org/~ardavis/dapl.git master
-        git://git.openfabrics.org/~ardavis/dapl.git dat2.0
+        git://git.openfabrics.org/ofed_1_3/dapl1.git ofed_1_3
+        git://git.openfabrics.org/ofed_1_3/dapl2.git ofed_1_3
     management:
         git://git.openfabrics.org/ofed_1_3/management.git ofed_1_3
     ibsim:
-        git://git.openfabrics.org/~sashak/ibsim.git master
+        git://git.openfabrics.org/ofed_1_3/ibsim.git ofed_1_3
     ibutils:
         git://git.openfabrics.org/ofed_1_3/ibutils.git ofed_1_3
     libcxgb3:
@@ -86,11 +86,14 @@ Sources are extracted by default from the following locations:
         git://git.openfabrics.org/ofed_1_3/qlvnictools.git ofed_1_3
     sdpnetstat:
         git://git.openfabrics.org/ofed_1_3/sdpnetstat.git ofed_1_3
-    rds-tools:
-        http://www.openfabrics.org/~vlad/ofed_1_3/rds-tools
     qperf:
         git://git.openfabrics.org/ofed_1_3/qperf.git ofed_1_3
+    mpi-selector:
+        git://git.openfabrics.org/~jsquyres/mpi-selector.git ofed_1_2
 
+SRPMS:
+    rds-tools:
+        http://www.openfabrics.org/~vlad/ofed_1_3/rds-tools
     mvapich:
         http://www.openfabrics.org/~pasha/ofed_1_3/mvapich
     openmpi:
@@ -99,8 +102,6 @@ Sources are extracted by default from the following locations:
         http://www.openfabrics.org/~perkinjo/ofed_1_3
     mpitests:
         http://www.openfabrics.org/~pasha/ofed_1_3/mpitests
-    mpi-selector:
-        git://git.openfabrics.org/~jsquyres/mpi-selector.git ofed_1_2
     
 
 ==============================================================================
