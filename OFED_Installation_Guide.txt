@@ -253,7 +253,7 @@ o The file /etc/modprobe.conf is updated to include the following:
   - "alias ib<n> ib_ipoib" for each ib<n> interface.
   - "alias net-pf-27 ib_sdp" for sdp.
 o If opensm is installed, the daemon opensmd is installed under /etc/init.d/
-  and opensm.conf is installed under /etc.
+  and opensm.conf is installed under /etc/ofa/ (for RedHat).
 o All verbs tests and examples are installed under <prefix>/bin and management 
   utilities under <prefix>/sbin
 e ofed_info script provides information on the OFED version and git repository.
@@ -386,7 +386,9 @@ list of the modules that will be loaded automatically upon boot can be
 found in the /etc/infiniband/openib.conf file.  Other configuration
 files include:
 - SDP configuration file:    /etc/libsdp.conf
-- OpenSM configuration file: /etc/opensm.conf
+- OpenSM configuration file: /etc/ofa/opensm.conf (for RedHat)
+                             /etc/sysconfig/opensm (for SuSE) - should be
+							 created manually if required.
 - DAPL configuration file:   /etc/dat.conf
 
 See packages Release Notes for more details.
