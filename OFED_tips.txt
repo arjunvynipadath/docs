@@ -12,7 +12,7 @@ Table of Contents
 4. External Module Compilation Over OFED-1.3
 5. Adding/Deleting a patch to OFED package
 6. Adding vendor specific actions to the installation of OFED
-
+7. How to compile OFED sources manually
 
 ===============================================================================
 1. OFED Utilities
@@ -427,6 +427,51 @@ readconf $CONFIG
 
 exit 0
 
+===============================================================================
+7. How to compile OFED sources manually
+===============================================================================
 
+These are the instructions how to compile and install kernel and user parts "manually" 
+meaning without building the RPMs and without using the install.pl script.
 
+7.1 Compiling the kernel modules
+--------------------------------
+1. tar xzf OFED-1.3.tgz
+2. rpm -ihv OFED-1.3/SRPMS/ofa_kernel-1.3-ofed20071122.src.rpm
+3. cd /usr/src/redhat/SOURCES
+4. tar xzvf ofa_kernel-1.3.tgz
+5. cd ofa_kernel-1.3
+6. configure: 
+   run ./configure --help for a list of options.
+   basic invocation is:
+   ./configure --with-core-mod --with-ipoib-mod --with-mthca-mod --with-mlx4_core-mod --with-mlx4_inf-mod
+7. make
+   make install
+     
+NOTES: 
+  1. configure applies the patches to the source code according to the current 
+     kernel. If you wish to rerun configure it is recommend to untar the source 
+     code tree from the beginning and start with a clean state.
+     An alternative is to pass the option: --without-patch to the configure invocation.
+      
+  2. The modules select for install are written to configure.mk.kernel
 
+7.2 Compiling the user space libraries
+--------------------------------------
+To install user space library from the source RPM provided by OFED-1.3 manually,i
+do the following:
+
+Example for libibverbs:
+ 
+1. tar xzf OFED-1.3.tgz
+2. rpm -ihv OFED-1.3/SRPMS/libibverbs-1.1.1-0.10.ofed20080205.src.rpm
+3. cd /usr/src/redhat/SOURCES (for RedHat)
+   or
+   cd /usr/src/packages/SOURCES (for SuSE)
+4. tar xzf libibverbs-1.1.1.tgz
+5. cd libibverbs-1.1.1
+6. ./configure (specify parameters, if required)
+7. make
+8. make install
+ 
+ 
