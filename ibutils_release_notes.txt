@@ -18,7 +18,7 @@ Table of Contents
 ===============================================================================
 
 The ibdiag package was enhanced to check more aspects of the network setup,
-including partitions, IPoIB and QoS. Additional major feature is it's ability
+including partitions, IPoIB and QoS. Additional major feature is its ability
 to write a topology file of the discovered network. A summary table is provided
 with a list of the executed checks and their results.
 
@@ -56,7 +56,7 @@ Other changes:
   the required new IBNL files into an output directory named ibdiag_ibnl.
   This new feature allows you to capture the current state of the fabric
   and later compare to it. Such the features provided by the "Topology
-  Matching" check become available. These feature include recognizing 
+  Matching" check becomes available. These feature include recognizing 
   changes in connections, speed and width. 
 
 + Load subnet database from file:
@@ -67,17 +67,17 @@ Other changes:
   Using this option can save the subnet discovery time for large cluster.
   Note: Some if ibdiagnet checks would not be performed when the -load_db
         option is set. These checks are:
-        - Duplicated GUIDs.
-        - Zero GUIDs.
+        - Duplicated guids.
+        - Zero guids.
         - Links in INIT state.
         - SMs status.
   
  + A new flag, -skip <skip-option(s)>, was added. When this flag is specified, 
    ibdiagnet skips the given check. One or more space separated values can be
    specified.
-   Available skip options: dup_guids, zero_guids, pm, logical_state, part, ipoib.
-   The -skip flag can be used in order to run only specific checks, or to reduce 
-   ibdiagnet run time.
+   Available skip options: dup_guids, zero_guids, pm, logical_state, part, 
+   ipoib. The -skip flag can be used in order to run only specific checks, or 
+   to reduce ibdiagnet run time.
 
 ibdiagpath new features:
 ------------------------
@@ -136,4 +136,5 @@ warnings was added to the tools standard output.
 
 - Ibdiagnet "-wt" option may generate a bad topology file when running on a
   cluster that contains complex switch systems.
+
 
