@@ -14,9 +14,9 @@ Table of Contents
 	- Tested Switch Platforms
 	- Third party Test Packages
 	- OFED sources
-3. Main Changes from OFED 1.2.5
-4. Fixed Bugs
-5. Known Issues
+2. Main Changes from OFED 1.2.5
+3. Fixed Bugs
+4. Known Issues
 
 
 ===============================================================================
@@ -39,7 +39,7 @@ The OFED package contains the following components:
 	- iWARP RNIC driver (cxgb3, nes)
         - core
         - Upper Layer Protocols: IPoIB, SDP, SRP Initiator and target, iSER 
-	  Initiator, RDS, uDAPL and qlgc_vnic.
+	  Initiator, RDS, uDAPL and qlgc_vnic
  - OpenFabrics utilities:
         - OpenSM (OSM): InfiniBand Subnet Manager
         - Diagnostic tools
@@ -57,7 +57,7 @@ The OFED package contains the following components:
  - Documentation
 
 Notes:
-1. SRP target is in Beta quality.
+1. SRP target is of Beta quality.
 2. All other OFED components are of production quality.
 3. See release notes for each package in the docs directory.
 4. Any Topspin copyright belongs to Cisco Systems, Inc.
@@ -174,8 +174,8 @@ for each package in the docs directory.
         o Stateless offloads - for Datagram mode
 	o IGMP for user-space multicast IB
 	o NAPI is enabled default
-	o High availability is supported via the bonding module only (removed 
-	  ipoib tool scripts)
+	o High availability is supported via the bonding module only (ipoib
+	  tool scripts have been removed)
 
     2.4 SDP
 	o Keep-alive
@@ -238,9 +238,15 @@ for each package in the docs directory.
 	   - RDMA Read
 	   - Blocking
 
+===============================================================================
+3. Fixed Bugs
+===============================================================================
+Note: For details regarding the various fixed bugs, please see the
+      release notes for each component in the docs directory.
+
 
 ===============================================================================
-5. Known Issues
+4. Known Issues
 ===============================================================================
 The following is a list of general limitations and known issues of the various
 components of the OFED 1.3 release.
