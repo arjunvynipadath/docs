@@ -86,7 +86,6 @@ Bug fixes:
 ===============================================================================
 - The following commands and/or features are not supported:
   o Resize CQ
-  o APM
   o SQD
 
 - To load the driver on machines with 64KB default page size UAR bar must be
