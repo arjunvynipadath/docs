@@ -24,7 +24,7 @@ This document includes the following sections:
 
 1.1 Major New Features
 
-* QoS manager
+* QoS manager (experimental)
   This QoS manager implementation is in accordance with IBA QoS Annex.
   Highly configurable QoS Policy is parsed from OpenSM QoS policy file.
   Valid QoS parameters will be reported in SA PathRecord and
@@ -127,6 +127,9 @@ OpenSM depends on the installation of either OFED 1.3, OFED 1.2, OFED 1.1,
 OFED 1.0, OpenIB gen2 (e.g. IBG2 distribution), OpenIB gen1 (e.g. IBGD
 distribution), or Mellanox VAPI stacks. The qualified driver versions
 are provided in Table 2, "Qualified IB Stacks".
+
+Also building of QoS manager policy file parser requires flex and bison
+installed.
 
 1.5 Supported Devices Firmware
 
@@ -261,7 +264,7 @@ or visible bugs were also fixed.
 
 * osm_mcast_mgr.c: Possible NULL ptr seg fault
 
-* TrapRepress was failing for mkey != 0  
+* TrapRepress was failing for mkey != 0
 
 * IB_PR_COMPMASK was used in MPR
 
@@ -474,4 +477,3 @@ iPath   | QLE6140 (PathScale InfiniPath PE-880)
 
 Note: OpenSM does not run on an IBM Galaxy (eHCA) as it does not expose
 QP0 and QP1. However, it does support it as a device on the subnet.
-
