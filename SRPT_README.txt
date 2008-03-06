@@ -93,7 +93,7 @@ A. On srp target machine
 dev_handlers drivers (scst_disk, scst_vdisk block or file IO mode, nullio, ...)
 
 Example 1: working with real back-end scsi disks
-a. modprobe scsi_tgt
+a. modprobe scst
 b. modprobe scst_disk
 c. cat /proc/scsi_tgt/scsi_tgt
 
@@ -113,7 +113,7 @@ echo "add 6:0:0:0 2" >/proc/scsi_tgt/groups/Default/devices
 echo "add 7:0:0:0 3" >/proc/scsi_tgt/groups/Default/devices
 
 Example 2: working with VDISK FILEIO mode (using md0 device and file 10G-file)
-a. modprobe scsi_tgt
+a. modprobe scst
 b. modprobe scst_vdisk
 c. echo "open vdisk0 /dev/md0" > /proc/scsi_tgt/vdisk/vdisk
 d. echo "open vdisk1 /10G-file" > /proc/scsi_tgt/vdisk/vdisk
@@ -121,7 +121,7 @@ e. echo "add vdisk0 0" >/proc/scsi_tgt/groups/Default/devices
 f. echo "add vdisk1 1" >/proc/scsi_tgt/groups/Default/devices
 
 Example 3: working with VDISK BLOCKIO mode (using md0 device, sda, and cciss/c1d0)
-a. modprobe scsi_tgt
+a. modprobe scst
 b. modprobe scst_vdisk
 c. echo "open vdisk0 /dev/md0 BLOCKIO" > /proc/scsi_tgt/vdisk/vdisk
 d. echo "open vdisk1 /dev/sda BLOCKIO" > /proc/scsi_tgt/vdisk/vdisk
