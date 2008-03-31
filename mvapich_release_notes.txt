@@ -1,7 +1,7 @@
              Open Fabrics Enterprise Distribution (OFED)
-          OSU MPI MVAPICH-0.9.9, in OFED 1.3 Release Notes
+          OSU MPI MVAPICH-1.0.0, in OFED 1.3 Release Notes
 
-                          February 2008
+                          March 2008
 
 
 ===============================================================================
@@ -11,19 +11,18 @@ Table of Contents
 2. Software Dependencies
 3. New Features
 4. Bug Fixes
-5. Bug fixes since OFED 1.2
-6. Known Issues
-7. Main Verification Flows
+5. Known Issues
+6. Main Verification Flows
 
 
 ===============================================================================
 1. Overview
 ===============================================================================
-These are the release notes for OSU MPI MVAPICH-0.9.9.
+These are the release notes for OSU MPI MVAPICH-1.0.0.
 OSU MPI is an MPI channel implementation over InfiniBand 
 by Ohio State University (OSU).
 
-See http://nowlab.cse.ohio-state.edu/projects/mpi-iba/.
+See http://mvapich.cse.ohio-state.edu
 
 
 ===============================================================================
@@ -35,60 +34,46 @@ InfiniBand IPoIB or Ethernet).
 
 
 ===============================================================================
-3. New Features ( Compared to mvapich 0.9.7-mlnx2.2.0 )
+3. New Features ( Compared to mvapich 0.9.9 )
 ===============================================================================
-This version for OFED has the following additional features:
-- Improved message coalescing
-  * Reduction of per QP send queues for reduction in memory requirement
-  * Significant increase in small message messaging rate
-- Multi-core optimizations
-  * Optimized scalable shared memory design 
-  * Optimized, high-performance shared-memory-aware collective operations
-  * Multi-port support for enabling user processes to bind to different IB ports
-    for balanced communication performance
-- On-demand connection management using native IB UD support
-- Multi-path support for hot-spot avoidance in large scale clusters
-- Memory Hook Support provided by integration with ptmalloc2 library
-
+MVAPICH-1.0.0 has the following additional features:
+- ConnectX support
+- Enhanced coalescing support with varying degrees of coalescing
+- Enhanced mpirun_rsh to provide scalable launching on multi-thousand node
+  clusters
+- Network-level fault tolerance with Automatic Path Migration (APM) for
+  tolerating intermittent network failures over InfiniBand
+- Improved automatic HCA detection
+- Self tunable SRQ
+- Optimized, high-performance shared-memory-aware collective operations for
+  multi-core platforms
 
 ===============================================================================
 4. Bug Fixes
 ===============================================================================
-- Error report fixes
-- PKEY support fix
+- Fixed process cleanup after mpi kill or CTRL-C
+- Fixed multi-core collective operations support for machines with more that 8
+  cores
 
 ===============================================================================
-5. Bug fixes since OFED 1.2
-===============================================================================
-New version mvapich-0.9.9-1458
-
-- mpirun_rsh fixes:
-  * Check that we do not overflow command line size
-  * better handling for accept
-- Fix for memory allocations whose size is bigger than 2^31-1
-- Fix for multiple communicator problem
-- Fix for MPI_Finalize segmentation fault
-- Changed the RNR value to 64 Milli-seconds
-
-===============================================================================
-6. Known Issues
+5. Known Issues
 ===============================================================================
 - A process running MPI cannot fork after MPI_Init. Using fork might cause a
   segmentation fault.
-- Using mpirun with ssh has a signal collection problem. Killing the run
-  (using CTRL-C) might leave some of the processes running on some of the
-  nodes. This can also happen if one of the processes exits with an error.
-  Note: This problem does not exist with rsh.
-- The MPD job launcher feature of the OSU MPI module has not been tested by
-  Mellanox Technologies.
-  See http://nowlab.cse.ohio-state.edu/projects/mpi-iba/ for more details.
+
 - For users of Mellanox Technologies firmware fw-23108 or fw-25208 only:
   OSU MPI might fail in its default configuration if your HCA is burnt with an
   fw-23108 version that is earlier than 3.4.000, or with an fw-25208 version
   4.7.400 or earlier.
+
+	NOTE: There is no issue if you chose to update firmware during Mellanox
+              OFED installation as newer firmware versions were burnt.
+
   Workaround:
-  Option 1 - Update the firmware
+  Option 1 - Update the firmware. For instructions, see Mellanox Firmware Tools
+	    (MFT) User's Manual under the docs/ folder.
   Option 2 - In mvapich.conf, set VIADEV_SRQ_ENABLE=0
+
 - MVAPICH may fail to run on some SLES 10 machines due to problems in resolving
   the host name.
   Workaround: Edit /etc/hosts and comment-out/remove the line that maps 
@@ -96,7 +81,7 @@ New version mvapich-0.9.9-1458
 
 
 ===============================================================================
-7. Main Verification Flows
+6. Main Verification Flows
 ===============================================================================
 In order to verify the correctness of OSU MPI, the following tests and
 parameters were run.
