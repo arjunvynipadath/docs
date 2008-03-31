@@ -354,9 +354,9 @@ of the ULPs is matched:
 IPoIB query is matched by PKey. Default PKey for IPoIB partition is 0x7fff, so
 the following three match rules are equivalent:
 
-    ipoib            : <SL>
-    ipoib, 0x7fff    : <SL>
-    any, pkey 0x7fff : <SL>
+    ipoib              : <SL>
+    ipoib, pkey 0x7fff : <SL>
+    any,   pkey 0x7fff : <SL>
 
 6.2  SDP
 SDP PR query is matched by Service ID. The Service-ID for SDP is
