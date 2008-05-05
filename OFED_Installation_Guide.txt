@@ -1,8 +1,8 @@
             Open Fabrics Enterprise Distribution (OFED)
-                          Version 1.3
+                          Version 1.3.1
                        Installation Guide
 
-                          February 2008
+                             May 2008
 
 ==============================================================================
 Table of contents
@@ -42,7 +42,7 @@ General Notes:
  2) When installing OFED on an entire [homogeneous] cluster, a common
     strategy is to install the software on one of the cluster nodes
     (perhaps on a shared file system such as NFS). The resulting RPMs,
-    created under OFED-1.3/RPMS directory, can then be installed on all
+    created under OFED-1.3.1/RPMS directory, can then be installed on all
     nodes in the cluster using any cluster-aware tools (such as pdsh).
 
 ==============================================================================

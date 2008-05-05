@@ -1,14 +1,24 @@
 		   Release Notes for 
-		OFED 1.3 DAPL Release
-		    February 2008
+		OFED 1.3.1 DAPL Release
+		    May 2008
 
 
-        OFED 1.3 RELEASE NOTES
+        OFED 1.3.1 RELEASE NOTES
 
 	This release of the DAPL reference implementation 
-        is timed to coincide with OFED release 1.3 of the 
+        is timed to coincide with OFED release 1.3.1 of the 
         Open Fabrics (www.openfabrics.org) software stack.
 
+        NEW SINCE OFED 1.3
+	OFED 1.3.1 includes new versions of uDAPL v1 (1.2.6) and v2 (2.0.8)
+	
+	Summary of changes since OFED 1.3 release:
+	v2 - add private data exchange with reject 
+	v1,v2 - better error reporting in non-debug builds 
+	v1,v2 - update only OFA entries in dat.conf, cooperate with non-ofa providers 
+	v1,v2 - support for zero byte operations, iov==NULL 
+	v1,v2 - multi-transport support for inline data and private data differences 
+	v1,v2 - fix memory leaks and other reported bugs since OFED 1.3 
         
         NEW SINCE OFED 1.2
 

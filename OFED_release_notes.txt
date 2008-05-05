@@ -1,7 +1,7 @@
 	    Open Fabrics Enterprise Distribution (OFED)
-	                 Version 1.3
+	              Version 1.3.1-rc1
 		        Release Notes
-			February 2008
+			  May 2008
 
 
 ===============================================================================
@@ -15,7 +15,7 @@ Table of Contents
 	- Third party Test Packages
 	- OFED sources
 2. Main Changes from OFED 1.2.5
-3. Fixed Bugs
+3. Changes and Fixed Bugs since OFED 1.3
 4. Known Issues
 
 
@@ -23,7 +23,7 @@ Table of Contents
 1. Overview
 ===============================================================================
 These are the release notes of OpenFabrics Enterprise Distribution (OFED)
-release 1.3 The OFED software package is composed of several software modules,
+release 1.3.1 The OFED software package is composed of several software modules,
 and is intended for use on a computer cluster constructed as an InfiniBand
 subnet or iWARP network. 
 
@@ -31,7 +31,7 @@ Note: If you plan to upgrade the OFED package on your cluster, please upgrade
 all of its nodes to this new version.
 
 
-1.1 OFED 1.3 Contents
+1.1 OFED 1.3.1 Contents
 -----------------------
 The OFED package contains the following components:
  - OpenFabrics core and ULPs:
@@ -240,8 +240,21 @@ for each package in the docs directory.
 	   - Blocking
 
 ===============================================================================
-3. Fixed Bugs
+3. Changes and Fixed Bugs since OFED 1.3
 ===============================================================================
+- MVAPICH 1.0.1
+- Open MPI 1.2.6
+- uDAPL v1 (1.2.6) and v2 (2.0.8)
+- librdmacm 1.0.7
+- IPoIB bug fixes
+- SRP bug fixes
+- Bonding fixes and support for SM failover.
+- Low level drivers update: 
+	- cxgb3 (Chelsio)
+	- ehca (IBM)
+	- mlx4 (Mellanox)
+	- nes (NetEffect)
+
 Note: For details regarding the various fixed bugs, please see the
       release notes for each component in the docs directory.
 
@@ -268,5 +281,10 @@ components of the OFED 1.3 release.
 4. The ipath driver is supported only on 64-bit platforms.
 5. When installing OFED on OpenSuse or Ubuntu one should use the 
    --without-depcheck option of the install.pl script
-
+6. To install OFED 1.3 on Fedora Core 8 one should:
+	1. Install libtool RPM (required by libibcommon)
+	2. Install tcsh RPM (required by mpi-selector)
+	3. Create the file '.rpmmacros' (required by mvapich): 
+	   echo "%__arch_install_post %{nil}" >> /root/.rpmmacros 
+     
 Note: See the release notes of each component for additional issues.
