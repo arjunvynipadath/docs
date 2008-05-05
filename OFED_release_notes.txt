@@ -248,6 +248,7 @@ for each package in the docs directory.
 - librdmacm 1.0.7
 - IPoIB bug fixes
 - SRP bug fixes
+- RDS bug fixes
 - Bonding fixes and support for SM failover.
 - Low level drivers update: 
 	- cxgb3 (Chelsio)
