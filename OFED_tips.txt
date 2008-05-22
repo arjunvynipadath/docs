@@ -278,7 +278,7 @@ For example:
 ----------------------------------------------------------------------
 To compile/build/install the IB modules so that they will contain debug
 information, set OPENIB_KERNEL_EXTRA_CFLAGS="-g" in your environment
-before running OFED's install.sh/build.sh .
+before running OFED's install.pl/build.sh .
 
 
 ===============================================================================

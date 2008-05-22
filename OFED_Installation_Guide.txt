@@ -183,7 +183,9 @@ Note:   The installer will warn you if you attempt to compile any of the
                      [-n|--net <network config_file>]
 
            -c|--config <packages config_file>. Example of the config file can
-                                               be found under docs.
+                                         be found under docs (ofed.conf-example)
+	   -n|--net <network config_file>      Example of the config file can be
+	                                found under docs (ofed_net.conf-example)
            -l|--prefix          Set installation prefix.
            -p|--print-available Print available packages for current platform.
                                 And create corresponding ofed.conf file.
@@ -339,8 +341,8 @@ NETWORK_ib0=172.16.0.0
 BROADCAST_ib0=172.16.255.255
 ONBOOT_ib0=1
 
-# Based on eth0; each '*' will be replaced with corresponding octet
-# from eth0.
+# Based on eth0; each '*' will be replaced by the script with corresponding 
+# octet from eth0.
 LAN_INTERFACE_ib0=eth0
 IPADDR_ib0=172.16.'*'.'*'
 NETMASK_ib0=255.255.0.0
@@ -349,7 +351,7 @@ BROADCAST_ib0=172.16.255.255
 ONBOOT_ib0=1
 
 # Based on the first eth<n> interface that is found (for n=0,1,...);
-# each '*' will be replaced with corresponding octet from eth<n>.
+# each '*' will be replaced by the script with corresponding octet from eth<n>.
 LAN_INTERFACE_ib0=
 IPADDR_ib0=172.16.'*'.'*'
 NETMASK_ib0=255.255.0.0

@@ -26,7 +26,7 @@ provided below in sections 2, 3 and 4 respectively.
 
 1.1 Installation Note
 ---------------------
-In Step 2 of the main menu of install.sh, options 2, 3 and 4 can install
+In Step 2 of the main menu of install.pl, options 2, 3 and 4 can install
 one or more MPI stacks. Please refer to docs/OFED_Installation_Guide.txt
 to learn about the different options.
 
