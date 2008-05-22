@@ -53,7 +53,7 @@ A. For OFED-1.3
 SRP target is part of ofed-1.3. Go through normal installation with srpt enable
 
 
-B. Instruction to included in and built with OFED-1.2.5 development tree
+B. Instruction to be included in and built with OFED-1.2.5 development tree
 -----------------------------------------------------------------------
 1. cd /usr/src/ofa_kernel-1.2.5 or /usr/src/ofa_kernel-1.2.c or
 ~/ofa_1_2_c_kernel-200708xx-yyyy
