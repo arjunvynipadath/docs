@@ -10,7 +10,7 @@
         Open Fabrics (www.openfabrics.org) software stack.
 
         NEW SINCE OFED 1.3
-	OFED 1.3.1 includes new versions of uDAPL v1 (1.2.6) and v2 (2.0.8)
+	OFED 1.3.1 includes new versions of uDAPL v1 (1.2.7-1) and v2 (2.0.9-1)
 	
 	Summary of changes since OFED 1.3 release:
 	v2 - add private data exchange with reject 
@@ -19,6 +19,9 @@
 	v1,v2 - support for zero byte operations, iov==NULL 
 	v1,v2 - multi-transport support for inline data and private data differences 
 	v1,v2 - fix memory leaks and other reported bugs since OFED 1.3 
+	v1,v2 - dtest,dtestx,dapltest build issues on RHEL5.1 
+	v1,v2 - long delay during dat_ia_open when DNS not configured 
+	v1,v2 - use rdma_read_in/out from ep_attr per consumer instead of HCA max 
         
         NEW SINCE OFED 1.2
 

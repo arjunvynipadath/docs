@@ -40,7 +40,7 @@ will be configured to this maximum value.
    datagram mode.
 4. For multicast traffic, IPoIB always uses datagram mode.
 5. This version adds support for CM mode for HCAs which do not support Infiniband
-   Shared Receive Qeueus (SRQ). The detection is done automatically at run time. In
+   Shared Receive Queues (SRQ). The detection is done automatically at run time. In
    this case, the driver uses RC connections between the peers for transferring IPOIB
    traffic.
 
@@ -53,7 +53,7 @@ will be configured to this maximum value.
 
    Stateless offload features have been introduced:
    checksum offload - generate on send and verify on receive of packet checksum
-   Large Send Offload - support fragmenting a large quantity of data paseed form the
+   Large Send Offload - support fragmenting a large quantity of data passed form the
    TCP/IP stack and fragment it to MSS sized packets.
 7. Support for interrupt moderation was introduced. This is done for HCAs which
    support this feature (like Mellanox's mlx4). Controlling moderation params is
@@ -98,7 +98,7 @@ Usage and configuration:
    To increase MTU, enter:
    ifconfig ib0 mtu 65520
 
-5. Switching between CM and UD mode can be done in runtime:
+5. Switching between CM and UD mode can be done in run time:
    echo datagram > /sys/class/net/ib0/mode sets the mode of ib0 to UD
    echo connected > /sys/class/net/ib0/mode sets the mode ib0 to CM
 
@@ -157,7 +157,7 @@ Usage and configuration:
 
 6. On RedHat EL 4 up4, the IPOIB implementation is not spec-compliant:
    - ipoib multicast does not work
-   - ipoib cannot interoperate between RHEL4U4 and other hosts. This is due to
+   - ipoib cannot inter-operate between RHEL4U4 and other hosts. This is due to
      missing code in the kernel which was available in U3 and U5 but removed in
      U4. As a workaround, upgrade to RHEL4U5.
 
@@ -252,7 +252,7 @@ Notes:
 * The bondX name must not contain characters which are disallowed for bash
   variable names such as '.' and '-'
 * Using /etc/infiniband/openib.conf to create a persistent configuration is
-  depracated and not recommended. Use it unless you have no other option and
+  deprecated and not recommended. Use it unless you have no other option and
   prefer the standard way. It is not guaranteed that the first method will be
   supported in future versions of OFED.
 
@@ -271,4 +271,9 @@ Notes:
 7. Bug Fixes and Enhancements Since OFED 1.3
 ===============================================================================
 - Don't drop multicast sends when they can be queued
-- Bug fix when copying small SKBs
+- IPoIB panics with RHEL5U1, RHEL4U6 and RHEL4U5: Bug fix when copying small 
+  SKBs (bug 989) 	
+- IPoIB failed on stress testing (bug 1004)
+- Kernel Oops during "port up/down test" (bug 1040)
+- Restart the stack during iperf 2.0.4 ver2.0.4 in client side cause to kernel 
+  panic (bug 985)
