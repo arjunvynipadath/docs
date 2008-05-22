@@ -5,7 +5,7 @@
 
 
 Repo:    git://git.openfabrics.org/~ofed_1_3/management.git (release)
-         git://git.openfabrics.org/~halr/management.git (development)
+         git://git.openfabrics.org/~sashak/management/management.git (development)
 
 
 General
