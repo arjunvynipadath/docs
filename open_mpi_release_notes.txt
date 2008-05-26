@@ -1,7 +1,7 @@
              Open Fabrics Enterprise Distribution (OFED)
-     Open MPI in OFED 1.3 Copyrights, License, and Release Notes
+     Open MPI in OFED 1.3.1 Copyrights, License, and Release Notes
 			  
-                          February 2008
+                          May 2008
 
 
 Open MPI Copyrights
@@ -128,6 +128,30 @@ support by running:
 
 See the rest of the documentation below for other configure command
 line options and installation instructions.
+
+** OFED 1.3.1 bug fixes:
+
+- Fix a bug in the inter-allgather for asymmetric inter-communicators. See 
+  ticket #1247.
+- Fix a bug in the openib BTL when setting the CQ depth. See ticket #1245.
+- On Mac OS X Leopard, the execinfo component will be used for
+  backtraces, making for a more durable solution.  See ticket #1246.
+- Added vendor IDs for some QLogic DDR openib HCAs. See ticket #1227.
+- Updated the URL to get the latest config.guess and config.sub files.
+  See ticket #1226.
+- Added shared contexts support to PSM MTL.  See ticket #1225.
+- Added pml_ob1_use_early_completion MCA parameter to allow users
+  to turn off the OB1 early completion semantic and avoid "stall"
+  problems seen on InfiniBand in some cases.  See ticket #1224.
+- Sanitized some #define macros used in mpi.h to avoid compiler warnings
+  caused by MPI programs built with different autoconf versions. See ticket 
+  #1220.
+- Some man page fixes from the Debian maintainers. See ticket #1219.
+- Made the openib BTL a bit more resilient in the face of driver errors. See 
+  ticket #1217.
+- Fixed F90 interface for MPI_CART_CREATE.  See ticket #1208.
+- Fixed some C++ compiler warnings. See ticket #1203.
+- Fixed formatting of the orterun man page.  See ticket #1202.
 
 ===========================================================================
 

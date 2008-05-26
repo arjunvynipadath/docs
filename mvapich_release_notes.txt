@@ -1,7 +1,7 @@
              Open Fabrics Enterprise Distribution (OFED)
-          OSU MPI MVAPICH-1.0.0, in OFED 1.3 Release Notes
+          OSU MPI MVAPICH-1.0.1, in OFED 1.3.1 Release Notes
 
-                          March 2008
+                          May 2008
 
 
 ===============================================================================
@@ -10,9 +10,10 @@ Table of Contents
 1. Overview
 2. Software Dependencies
 3. New Features
-4. Bug Fixes
-5. Known Issues
-6. Main Verification Flows
+4. Bug Fixes from version 0.9.9
+5. Bug Fixes from version 1.0.0
+6. Known Issues
+7. Main Verification Flows
 
 
 ===============================================================================
@@ -56,7 +57,19 @@ MVAPICH-1.0.0 has the following additional features:
   cores
 
 ===============================================================================
-5. Known Issues
+5. Bug Fixes from version 1.0.0
+===============================================================================
+- Fixes for Sun Studio 12 compiler.
+- Avoid falling back to gcc if selected compiler fails. 
+- Fix race condition in on-demand startup.
+- Fixes for process clean up on MPI_Abort.
+- Startup fixes. Try to find mpispawn in the same directory where we found 
+  mpirun_rsh.
+- Fixing error messages
+- Fix for the BLACS problem.
+
+===============================================================================
+6. Known Issues
 ===============================================================================
 - A process running MPI cannot fork after MPI_Init. Using fork might cause a
   segmentation fault.
@@ -81,7 +94,7 @@ MVAPICH-1.0.0 has the following additional features:
 
 
 ===============================================================================
-6. Main Verification Flows
+7. Main Verification Flows
 ===============================================================================
 In order to verify the correctness of OSU MPI, the following tests and
 parameters were run.
