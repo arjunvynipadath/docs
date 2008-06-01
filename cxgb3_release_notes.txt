@@ -1,6 +1,6 @@
             Open Fabrics Enterprise Distribution (OFED)
                 CHELSIO T3 RNIC RELEASE NOTES
-			May 2008
+			June 2008
 
 
 The iw_cxgb3 and cxgb3 modules provide RDMA and NIC support for the
