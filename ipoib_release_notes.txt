@@ -277,3 +277,6 @@ Notes:
 - Kernel Oops during "port up/down test" (bug 1040)
 - Restart the stack during iperf 2.0.4 ver2.0.4 in client side cause to kernel 
   panic (bug 985)
+- Bonding: Enable build for SLES10 SP2
+- Bonding: Fix  issue in using the bonding module for Ethernet slaves (see
+  documentation for details)

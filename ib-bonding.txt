@@ -6,9 +6,10 @@ IB Bonding
 3. How to work with interface configuration scripts
 3.1 Configuration with initscripts support
 3.1.1 Writing network scripts under Redhat-AS4 (Update 4, 5 or 6)
-3.1.2 Writing network scripts under Redhhat-EL5 (Update 1)
+3.1.2 Writing network scripts under Redhhat-EL5
 3.2 Configuration with sysconfig support
 3.2.1 Writing network scripts under SLES-10
+3.3 Configuring Ethernet slaves
 
 1. Introduction
 -------------------------------------------------------------------------------
@@ -29,12 +30,10 @@ manage and control the driver operation.
    ib1 will be used as slaves. Child interfaces are allowed.
  --miimon: the MII monitoring interval in mSec. Default is 100
 * Deleting a bonding network interface
- --stop: unenslave slaves and delete a specific bonding network interface 
-         (use with --bond-name)
+ --stop: unenslave slaves and delete a specific bonding network interface (use with --bond-name)
  --stop-all: unenslave slaves and delete all bonding network interfaces
 * Querying a bonding network interface
- --status: show the status of a specific bonding network interface 
-           (use with --bond-name)
+ --status: show the status of a specific bonding network interface (use with --bond-name)
  --status-all: show the status of all bonding network interfaces
  
 Examples:
@@ -43,8 +42,7 @@ Examples:
 	ib-bond --bond-ip 192.186.10.100 --slaves ib0,ib2
 * To bring up bond1 with ib0.f1f1 1and ib1.f1f1 as slaves with non default
   netmask
-	ib-bond --bond-name bond1 --bond-ip 192.186.10.100/25 
-	        --slaves ib0.f1f1,ib1.f1f1
+	ib-bond --bond-name bond1 --bond-ip 192.186.10.100/25 --slaves ib0.f1f1,ib1.f1f1
 * To query the status of bond1
 	ib-bond --bond-name bond1 --status
 * To query the status of all bonding interfaces
@@ -66,8 +64,7 @@ create the bonding configuration (depending on your OS).
 3.1 Configuration with initscripts support
 ------------------------------------------
 Note: This feature is available only for Redhat-AS4 (Update 4, Update 5 or
-Update 6) and
-      for Redhat-EL5 and above.
+Update 6) and for Redhat-EL5 and above.
 
 3.1.1 Writing network scripts under Redhat-AS4 (Update 4, 5 or 6)
 -----------------------------------------------------------------
@@ -92,8 +89,7 @@ SLAVE=yes
 MASTER=<bond name>
 TYPE=InfiniBand
 
-Example: the script for ib0 (slave) would be named 
-         /etc/sysconfig/network-scripts/ifcfg-ib0
+Example: the script for ib0 (slave) would be named /etc/sysconfig/network-scripts/ifcfg-ib0
 with the following text in the file:
 
 DEVICE=ib0
@@ -107,8 +103,8 @@ TYPE=InfiniBand
 After the configuration is saved, restart the network service by running:
 /etc/init.d/network restart
 
-3.1.2 Writing network scripts under Redhhat-EL5 (Update 1)
-----------------------------------------------------------
+3.1.2 Writing network scripts under Redhhat-EL5
+-----------------------------------------------
 Follow the instructions in 3.1.1 (Writing network scripts under Redhat-AS4)
 with the following changes:
 * In the bondX (master) script - the line TYPE=Bonding is not needed.
@@ -129,8 +125,8 @@ interface.
 ----------------------------------------
 Note: This feature is available only for SLES-10 and above.
 
-3.2.1 Writing network scripts under SLES-10
--------------------------------------------
+3.2.1 Writing network scripts under SLES-10 SP1
+-----------------------------------------------
 * In the master (bond) interface script add the lins:
 
 BONDING_MASTER=yes
@@ -161,3 +157,19 @@ PRE_DOWN_SCRIPT=/etc/sysconfig/network/unenslave.sh
 
 After the configuration is saved, restart the network service by running:
 /etc/init.d/network restart
+
+3.3 Configuring Ethernet slaves
+-------------------------------
+It is not possible to have a mix of Ethernt slaves and IPoIB slaves under the
+same bonding master. It is possible however that a bonding master of Ethernet
+slaves and a bonding master of IPoIB slaves will co-exist in one machne.
+To configure Ethernet slaves under a bonding master use the same instructions
+as for IPoIB slaves (according  to the OS) with one exception. When working
+under Redhat-AS4 do the following when configuring a bonding  master with
+Ethernet slaves
+
+- In the master configuration file add the line
+SLAVEDEV=1
+- In the slave configuration file leave the line
+TYPE=InfiniBand
+
