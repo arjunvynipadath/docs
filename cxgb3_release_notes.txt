@@ -1,14 +1,119 @@
             Open Fabrics Enterprise Distribution (OFED)
                 CHELSIO T3 RNIC RELEASE NOTES
-			February 2008
+			May 2008
 
-
-
-Author: Steve Wise
 
 The iw_cxgb3 and cxgb3 modules provide RDMA and NIC support for the
 Chelsio S310/320 and R310/320 series adapters.  Make sure you choose the
-'cxgb3' and 'libcxgb3' options when generating your ofed-1.3 rpms.
+'cxgb3' and 'libcxgb3' options when generating your ofed-1.3.1 rpms.
+
+
+============================================
+New enhancements for OFED-1.3.1:
+============================================
+
+- Various MPI libraries are enabled via a new iw_cxgb3 module option
+called peer2peer.  When loading iw_cxgb3, set peer2peer=1 to enable Intel
+MPI version 3.1.038, HP MPI version 2.02.05.01, OpenMPI (will be released
+with OMPI-3.1), and Scali MPI (will be available in version 3.13.7).
+This option must be set on all systems in your cluster.  See more info
+below on running these MPIs.  NOTE: None of these MPIs are included in
+the ofed-1.3.1 release.  Contact the specific vendors for obtaining the
+MPI code.  Open MPI can be pulled from www.open-mpi.org.
+
+- New 6.0 firmware required.  Download this firmware from
+service.chelsio.com and put the t3fw-6.0.0.bin file in /lib/firmware.
+Then reload the cxgb3 module and reconfigure the interface to flash this
+new firmware.
+
+- Large memory registration.  User applications can now register > 30MB 
+memory regions.
+
+============================================
+Enabling Various MPIs
+============================================
+
+For OpenMPI, Intel MPI, HP MPI, and Scali MPI: you must set the iw_cxgb3
+module option peer2peer=1 on all systems.  This can be done by writing
+to the /sys/module file system during boot.  EG:
+
+# echo 1 > /sys/module/iw_cxgb3/parameters/peer2peer
+
+Or you can add the following line to /etc/modprobe.conf to set the option
+at module load time:
+
+options iw_cxgb3 peer2peer=1
+
+For Intel MPI, HP MPI, and Scali MPI: Enable the chelsio device by adding
+an entry to /etc/dat.conf for the chelsio interface.  For instance,
+if your chelsio interface name is eth2, then the following line adds a
+DAT device named "chelsio" for that interface:
+
+chelsio u1.2 nonthreadsafe default libdaplcma.so.1 dapl.1.2 "eth2 0" ""
+
+=============
+Intel MPI:
+=============
+
+The following env vars enable Intel MPI version 3.1.038.  Place these
+in your user env after installing and setting up Intel MPI:
+
+export RSH=ssh
+export DAPL_MAX_INLINE=64
+export I_MPI_DEVICE=rdssm:chelsio
+export MPIEXEC_TIMEOUT=180
+export MPI_BIT_MODE=64
+
+Note: I_MPI_DEVICE=rdssm:chelsio assumes you have an entry in
+/etc/dat.conf named "chelsio".
+
+Contact Intel for obtaining their MPI with DAPL support.
+
+=============
+HP MPI:
+=============
+
+To run HP MPI applications, use these mpirun options:
+
+-prot -e DAPL_MAX_INLINE=64 -UDAPL
+
+EG:
+
+$ mpirun -prot -e DAPL_MAX_INLINE=64 -UDAPL -hostlist r1-iw,r2-iw ~/tests/presta-1.4.0/glob
+
+Where r1-iw and r2-iw are hostnames mapping to the chelsio interfaces.
+
+Also this assumes your first entry in /etc/dat.conf is for the chelsio
+device.
+
+Contact HP for obtaining their MPI with DAPL support.
+
+=============
+Scali MPI:
+=============
+
+The following env vars enable Scali MPI.  Place these in your user env
+after installing and setting up Scali MPI for running over Infiniband:
+
+export DAPL_MAX_INLINE=64
+export SCAMPI_NETWORKS=chelsio
+export SCAMPI_CHANNEL_ENTRY_COUNT="chelsio:128"
+
+Note: SCAMPI_NETWORKS=chelsio assumes you have an entry in /etc/dat.conf
+named "chelsio".
+
+Contact Scali for obtaining their MPI with DAPL support.
+
+=============
+OpenMPI:
+=============
+
+OpenMPI iWARP support is only available in version 1.3 or greater.
+
+Open MPI will work without any specific configuration via the openib btl.
+Users wishing to performance tune the configurable options may wish to
+inspect the receive queue values.  Those can be found in the "Chelsio T3"
+section of mca-btl-openib-hca-params.ini.
 
 ============================================
 Loadable Module options:
@@ -17,15 +122,15 @@ Loadable Module options:
 The following options can be used when loading the iw_cxgb3 module to
 tune the iWARP driver:
 
-cong_flavor     - set the congestion congtrol algorithm.  Default is 1.
+cong_flavor     - set the congestion control algorithm.  Default is 1.
                   0 == Reno
                   1 == Tahoe
                   2 == NewReno
                   3 == HighSpeed
 
-snd_win         - set the TCP send window in bytes. Default is 32KB.
+snd_win         - set the TCP send window in bytes. Default is 32kB.
 
-rcv_win         - set the TCP receive window in bytes. Default is 256KB.
+rcv_win         - set the TCP receive window in bytes. Default is 256kB.
 
 crc_enabled     - set whether MPA CRC should be negotiated.  Default is 1.
 
@@ -42,7 +147,17 @@ mpa_rev         - set the MPA revision to be used.  Default is 1, which is
                   rnic.
 
 ep_timeout_secs - set the number of seconds for timing out MPA start up
-                  negotiation and normal close.  Default is 10.
+                  negotiation and normal close.  Default is 60.
+
+peer2peer	- Enables connection setup changes to allow peer2peer
+		  applications to work over chelsio rnics.  This enables
+		  the following applications:
+			Intel MPI
+			HP MPI
+			Open MPI
+			Scali MPI
+		  Set peer2peer=1 on all systems to enable these
+		  applications.
 
 The following options can be used when loading the cxgb3 module to
 tune the NIC driver:
@@ -139,7 +254,7 @@ the target ip address:
 3) If you are building OFED against a kernel.org kernel later than
 2.6.20, then make sure your kernel is configured with the cxgb3 and
 iw_cxgb3 modules enabled.  This forces the kernel to pull in the genalloc
-allocator, which is requried for the OFED iw_cxgb3 module.  Make sure
+allocator, which is required for the OFED iw_cxgb3 module.  Make sure
 these config options are included in your .config file:
 
 	CONFIG_CHELSIO_T3=m
