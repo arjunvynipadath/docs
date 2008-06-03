@@ -101,7 +101,7 @@ containing the bitmap on the socket.
 ===============================================================================
 - Fix a bug in RDMA signaling
 - Add 3 more stats counters
-- Fix kernel oops: swiotlb_unmap_sg+0x35/0x126
+- Fix a kernel crash that can occur when RDS/IB connection drops
 - Fixes for RDMA API
 			
 ===============================================================================
