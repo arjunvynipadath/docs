@@ -1,7 +1,7 @@
 	    Open Fabrics Enterprise Distribution (OFED)
-		    mlx4 in OFED 1.3 Release Notes
+		    mlx4 in OFED 1.3.1 Release Notes
 			  
-			   February 2008
+			   June 2008
 
 
 ===============================================================================
@@ -10,7 +10,8 @@ Table of Contents
 1. Overview
 2. Supported Firmware Versions
 3. Fixed Bugs and Enhancements
-4. Known Issues
+4. Bug Fixes and Enhancements Since OFED 1.3
+5. Known Issues
 
 ===============================================================================
 1. Overview
@@ -81,8 +82,16 @@ Bug fixes:
 - Can now create a QP using the value of max_qp_wr returned by ibv_query_device.
 - QP limits returned to caller of ibv_create_qp now always lie within device limits.
 
+==============================================================================
+4. Bug Fixes and Enhancements Since OFED 1.3
 ===============================================================================
-4. Known Issues
+- Fix race when detaching a QP from a MCG
+- FMRs: Use device minimum page size from the device capabilities, and not hard-coded.
+- FMRs: Avoid recycling old FMR R_Keys too soon
+- Change default value of enable_qos module param to 0.
+
+===============================================================================
+5. Known Issues
 ===============================================================================
 - The following commands and/or features are not supported:
   o Resize CQ

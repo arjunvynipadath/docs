@@ -1,7 +1,7 @@
 		Open Fabrics Enterprise Distribution (OFED)
-			MPI in OFED 1.3 README
+		         MPI in OFED 1.3.1 README
 
-			    February 2008
+			    June 2008
 
 
 ===============================================================================
@@ -17,9 +17,9 @@ Table of Contents
 1. Overview
 ===============================================================================
 Three MPI stacks are included in this release of OFED:
-- MVAPICH 1.0.0
-- Open MPI 1.2.5-1
-- MVAPICH2 1.0.2
+- MVAPICH 1.0.1-2533
+- Open MPI 1.2.6-1
+- MVAPICH2 1.0.3-1
 
 Setup, compilation and run information of MVAPICH, Open MPI and MVAPICH2 is
 provided below in sections 2, 3 and 4 respectively.

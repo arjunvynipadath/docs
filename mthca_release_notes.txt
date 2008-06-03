@@ -68,8 +68,8 @@ mthca parameters:
    member of the multicast group (in HCA).
    Workaround: Destroy the multicast group after detaching the QP from it.
 
-3. In mem-free devices, RC QPs can be created with a maximum of (max_sge - 3)
-   entries only.
+3. In mem-free devices, RC QPs can be created with a maximum of (max_sge - 1)
+   entries only; UD QPs can be created with a maximum of (max_sge - 3) entries.
 
 4. Performance can be degraded due to a wrong BIOS configuration:
    The PCI Express specification requires the BIOS to set the MaxReadReq

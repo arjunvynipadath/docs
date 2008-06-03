@@ -1,8 +1,8 @@
 
              Open Fabrics Enterprise Distribution (OFED)
-                    ehca in OFED 1.3 Release Notes
+                    ehca in OFED 1.3.1 Release Notes
 
-                           February 2008
+                           June 2008
 
 
 Overview

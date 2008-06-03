@@ -204,8 +204,8 @@ the tests.
 ========================
 1) Release Notes for OFED Distribution components are to be found under 
    OFED-1.3.1/docs and, after the package installation, under 
-   /usr/share/doc/ofed-docs-1.3 for RedHat
-   /usr/share/doc/packages/ofed-docs-1.3 for SuSE.
+   /usr/share/doc/ofed-docs-1.3.1 for RedHat
+   /usr/share/doc/packages/ofed-docs-1.3.1 for SuSE.
 2) For a detailed installation guide, see OFED_Installation_Guide.txt.
 3) For more information, please visit the OFED web-page http://www.openfabrics.org
 
