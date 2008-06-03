@@ -1,7 +1,7 @@
 	     Open Fabrics Enterprise Distribution (OFED)
-		    IPoIB in OFED 1.3 Release Notes
+		    IPoIB in OFED 1.3.1 Release Notes
 			  
-			   February 2008
+			   June 2008
 
 
 ===============================================================================
@@ -179,7 +179,8 @@ Usage and configuration:
    newer kernels. We recommend kernels from 2.6.18 and up for
    best IPoIB performance.
 
-10. IPv6 is not function in Ia64 hosts.
+10. Connectivity issues encountered when using IPv6 on ia64 systems.
+
 
 ===============================================================================
 4. DHCP Support of IPoIB
@@ -229,7 +230,7 @@ Using the ib-bonding driver
 The ib-bonding driver can be loaded manually or automatically.
 
 1. Manual operation:
-Use the utility ib-bond to stop, query, or stop the driver. For details on this
+Use the utility ib-bond to start, query, or stop the driver. For details on this
 utility, read the documentation for the ib-bonding package.
 
 2. Automatic operation:
@@ -248,7 +249,6 @@ to create a configuration that will come up with network restart. For details
 on this, read the documentation for the ib-bonding package.
 
 Notes:
-* The ib-bonding driver does not load when the HA service is configured to load
 * If the bondX name is defined but one of bondX_SLAVES or bondX_IPs is missing,
   then that specific bond will not be created.
 * The bondX name must not contain characters which are disallowed for bash
@@ -279,6 +279,8 @@ Notes:
 - Kernel Oops during "port up/down test" (bug 1040)
 - Restart the stack during iperf 2.0.4 ver2.0.4 in client side cause to kernel 
   panic (bug 985)
+- Set max CM MTU when moving to CM mode, instead of setting it in openibd script 
+- Fix CQ size calculations for ipoib
 - Bonding: Enable build for SLES10 SP2
 - Bonding: Fix  issue in using the bonding module for Ethernet slaves (see
   documentation for details)
