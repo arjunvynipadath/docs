@@ -76,7 +76,7 @@ Notes:
         - RedHat EL4 up6: 	2.6.9-67.ELsmp 
         - RedHat EL5: 		2.6.18-8.el5
 	- RedHat EL5 up1: 	2.6.18-53.el5
-	- RedHat EL5 up2 beta: 	2.6.18-84.el5       *
+	- RedHat EL5 up2: 	2.6.18-92.el5       *
         - Fedora C6: 		2.6.18-8.fc6        *
         - SLES10: 		2.6.16.21-0.8-smp
         - SLES10 SP1: 		2.6.16.46-0.12-smp
