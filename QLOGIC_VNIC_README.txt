@@ -1,49 +1,69 @@
-This is a technology preview release of the QLogic VNIC driver on OFED 1.3.
-This driver is currently supported on Intel x86 32 and 64 bit machines with
-Mellanox HCAs. Supported OS are RHEL 4 Update 3, RHEL 4 Update 4, SLES 10
-and the vanilla 2.6.19 kernel.
+This is a release of the QLogic VNIC driver on OFED 1.4.  This driver is 
+currently supported on Intel x86 32 and 64 bit machines. 
+Supported OS are: 
+-  RHEL 4 Update 4.
+-  RHEL 4 Update 5.
+-  RHEL 4 Update 6.
+-  SLES 10.
+-  SLES 10 Service Pack 1.
+-  SLES 10 Service Pack 1 Update 1.
+-  SLES 10 Service Pack 2.
+-  RHEL 5.
+-  RHEL 5 Update 1.
+-  RHEL 5 Update 2.
+-  vanilla 2.6.27 kernel.
 
-The VNIC driver in conjunction with the QLogic Virtual Ethernet I/O gateway
-(VEx) provides Ethernet interfaces on a host with IB HCA(s) without the need
+The VNIC driver in conjunction with the QLogic Ethernet Virtual I/O Controller
+(EVIC) provides Ethernet interfaces on a host with IB HCA(s) without the need
 for any physical Ethernet NIC.
 
-This file describes the use of the VNIC ULP service on an OFED stack
+This file describes the use of the QLogic VNIC ULP service on an OFED stack
 and covers the following points:
 
-A) Creating VNIC interfaces
-B) Discovering VEx IOCs present on the fabric using ibvexdm
-C) Starting the VNIC driver and the VNIC interfaces
-D) Assigning IP addresses etc for the VNIC interfaces
-E) Information about the VNIC interfaces
-F) Deleting a specific VNIC interface
+A) Creating QLogic VNIC interfaces
+B) Discovering VEx/EVIC IOCs present on the fabric using ib_qlgc_vnic_query
+C) Starting the QLogic VNIC driver and the VNIC interfaces
+D) Assigning IP addresses etc for the QLogic VNIC interfaces
+E) Information about the QLogic VNIC interfaces
+F) Deleting a specific QLogic VNIC interface
+G) QLogic VNIC Dynamic Update Daemon Tool and Hot Swap support
+H) Information about creating VLAN interfaces
+I) Information about enabling IB Multicast for QLogic VNIC interface
+J) Basic Troubleshooting
 
-A) Creating VNIC interfaces
+A) Creating QLogic VNIC interfaces
 
 The VNIC interfaces can be created with the help of
-a configuration file which must be placed at /etc/infiniband/qlogic_vnic.cfg.
+the configuration file which must be placed at /etc/infiniband/qlgc_vnic.cfg.
 
-Please take a look at qlogic_vnic.cfg.sample file (available as part of the
-documentation) to see how VNIC configuration files are written. You can use
-this configuration file as the basis for creating a VNIC configuration file by 
-copying it to /etc/infiniband/qlogic_vnic.cfg. Of course you will have to
+Please take a look at /etc/infiniband/qlgc_vnic.cfg.sample file (available also
+as part of the documentation) to see how VNIC configuration files are written.
+You can use this configuration file as the basis for creating a VNIC configuration
+file by copying it to /etc/infiniband/qlgc_vnic.cfg. Of course you will have to
 replace the IOCGUID, IOCSTRING values etc in the sample configuration file
-with those of the VEx IOCs present on your fabric.
+with those of the EVIC IOCs present on your fabric.
 
-[As back ward compatibility for the QLogic Infiniserv stack, if the
-/etc/infiniband/qlogic_vnic.cfg file is not present, the VNIC service will
-look for the /etc/sysconfig/ics_inic.cfg configuration file]
+(For backward compatibilty, if this file is missing, 
+/etc/infiniband/qlogic_vnic.cfg or /etc/sysconfig/ics_inic.cfg
+will be used for configuration)
 
-B) Discovering VEx IOCs present on the fabric using ibvexdm
+Please note that using DGID of the EVIC/VEx IOC is
+recommended as it will ensure the quickest startup of the
+VNIC service. If DGID is specified then you must also
+specify the IOCGUID. More details can be found in
+the qlgc_vnic.cfg.sample file.
+
+B) Discovering EVIC/VEx IOCs present on the fabric using ib_qlgc_vnic_query
 
 For writing the configuration file, you will need information
-about the VEx IOCs present on the fabric like their IOCGUID,
-IOCSTRING etc. The ibvexdm tool should be used to get this
+about the EVIC/VEx IOCs present on the fabric like their IOCGUID,
+IOCSTRING etc. The ib_qlgc_vnic_query tool should be used to get this
 information. 
 
-When ibvexdm is executed without any options, it displays
-detailed information about all the VEx IOCs present on the fabric:
+When ib_qlgc_vnic_query is executed without any options, it displays
+detailed information about all the EVIC/VEx IOCs present on the fabric:
 
-# ibvexdm
+# ib_qlgc_vnic_query
 IO Unit Info:
     port LID:        0003
     port GID:        fe8000000000000000066a0258000001
@@ -82,75 +102,294 @@ IO Unit Info:
             service[  1]: 1000066a00000103 / InfiniNIC.InfiniConSys.Data:03
 
 
-When ibvexdm is run with -e option, it reports the IOCGUID information 
+When ib_qlgc_vnic_query is run with -e option, it reports the IOCGUID information 
 and with -s option it reports the IOCSTRING information for the VEx IOCs
 present on the fabric.
 
-# ibvexdm -e
+# ib_qlgc_vnic_query -e
 ioc_guid=00066a0130000001,dgid=fe8000000000000000066a0258000001,pkey=ffff
 ioc_guid=00066a0230000001,dgid=fe8000000000000000066a0258000001,pkey=ffff
 ioc_guid=00066a0330000001,dgid=fe8000000000000000066a0258000001,pkey=ffff
 
-#ibvexdm -s
+#ib_qlgc_vnic_query -s
 "Chassis 0x00066A00010003F2, Slot 1, IOC 1"
 "Chassis 0x00066A00010003F2, Slot 1, IOC 2"
 "Chassis 0x00066A00010003F2, Slot 1, IOC 3"
 
-#ibvexdm -es
+#ib_qlgc_vnic_query -es
 ioc_guid=00066a0130000001,dgid=fe8000000000000000066a0258000001,pkey=ffff,"Chassis 0x00066A00010003F2, Slot 1, IOC 1"
 ioc_guid=00066a0230000001,dgid=fe8000000000000000066a0258000001,pkey=ffff,"Chassis 0x00066A00010003F2, Slot 1, IOC 2"
 ioc_guid=00066a0330000001,dgid=fe8000000000000000066a0258000001,pkey=ffff,"Chassis 0x00066A00010003F2, Slot 1, IOC 3"
 
-C) Starting the VNIC driver and the VNIC interfaces
+ib_qlgc_vnic_query uses Port 1 of HCA on host as a default port to obtain the information
+about EVIC/VEx IOCs. But, the default port can be overridden by using a -d 
+option and then specifying "umad" device name corresponding to desired HCA port.
+
+Typically, Port 1 of HCA corresponds to umad device "umad0" and Port 2 of HCA
+corresponds to umad device "umad1". Thus, 
+
+# ib_qlgc_vnic_query -es
+
+is same as :
+
+# ib_qlgc_vnic_query -es -d /dev/infiniband/umad0
+
+and to collect the information about EVIC/VEx IOCs accessible through port 2,
+use "umad1" device : 
+
+# ib_qlgc_vnic_query -es -d /dev/infiniband/umad1
+
+C) Starting the QLogic VNIC driver and the QLogic VNIC interfaces
+
+To start the QLogic VNIC service as a part of startup of OFED stack, set
+
+QLGC_VNIC_LOAD=yes
+
+in /etc/infiniband/openib.conf file. With this actually, the QLogic VNIC
+service will also be stopped when the OFED stack is stopped.  Also, if OFED
+stack has been marked to start on boot, QLogic VNIC service will also start
+on boot.
+
+The rest of the discussion in this subsection C) is valid only if
+
+QLGC_VNIC_LOAD=no
+
+is set into /etc/infiniband/openib.conf.
 
 Once you have created a configuration file, you can start the VNIC driver
 and create the VNIC interfaces specified in the configuration file with:
-#/etc/init.d/openibd start
+
+#/sbin/service qlgc_vnic start
+
+You can stop the VNIC driver and bring down the VNIC interfaces with
+
+#/sbin/service qlgc_vnic stop
+
+To restart the QLogic VNIC driver, you can use
+
+#/sbin/service qlgc_vnic restart
+
+If you have not started the Infiniband network stack (Infinipath or OFED),
+then running "/sbin/service qlgc_vnic start" command will also cause the
+Infiniband network stack to be started since the QLogic VNIC service requires
+the Infiniband stack.
+
+On the other hand if you start the Infiniband network stack separately, then
+the correct order of starting is:
+
+-  Start the Infiniband stack
+-  Start QLogic VNIC service
+
+For example, if you use OFED, correct order of starting is:
+
+/sbin/service openibd start
+/sbin/service qlgc_vnic start
+
+Correct order of stopping is:
+
+- Stop QLogic VNIC service
+- Stop the Infiniband stack
+
+For example, if you use OFED, correct order of stopping is:
+
+/sbin/service qlgc_vnic stop
+/sbin/service openibd stop
+
+If you try to stop the Infiniband stack when the QLogic VNIC service is
+running,
+you will get an error message that some of the modules of the Infiniband stack
+are in use by the QLogic VNIC service. Also, any QLogic VNIC interfaces that
+you
+created are removed (because stopping the Infiniband network stack causes the
+HCA
+driver to be unloaded which is required for the VNIC interfaces to be
+present).
+In this case, do the following:
+
+  1. Stop the QLogic VNIC service with "/sbin/service qlgc_vnic stop"
+
+  2. Stop the Infiniband stack again.
+
+  3. If you want to restart the QLogic VNIC interfaces, use
+    "/sbin/service qlgc_vnic start".
 
 
-The VNIC driver is started by default as a part of openibd service.
-(If openibd is configured to start on boot VNIC driver will also start on boot)
-If you do not want to start the VNIC driver as a part of openibd service, set
-VNIC_LOAD=no in /etc/infiniband/openib.conf
-
-You can stop the VNIC driver and openibd services with
-#/etc/init.d/openibd stop
-
-You can restart the VNIC driver and openibd service using
-#/etc/init.d/openibd restart
-
-After starting openibd service you can independently control the VNIC driver using ql_vnic service
-To stop the VNIC driver you  can use
-#/etc/init.d/ql_vnic stop
-
-If you make changes to the VNIC configuration file and want the changes to be
-reflected, you can restart the VNIC service independently, using
-#/etc/init.d/ql_vnic restart
-
-Note that it is required to start openibd service before using ql_vnic service
-
-D) Assigning IP addresses etc for the VNIC interfaces
+D) Assigning IP addresses etc for the QLogic VNIC interfaces
 
 This can be done with ifconfig or by setting up the ifcfg-XXX (ifcfg-veth0 for
 an interface named veth0 etc) network files for the corresponding VNIC interfaces.
 
-E) Information about the VNIC interfaces
+E) Information about the QLogic VNIC interfaces
 
-Information about the created VNIC interfaces can be obtained from
-/sys/class/infiniband_vnic/interfaces/. A directory is created
-for each interface under this directory.
+Information about VNIC interfaces on a given host can be obtained using a 
+script "ib_qlgc_vnic_info" :-
 
-The directory for each interface contains information about the interface
-and the primary and secondary connections.
+# ib_qlgc_vnic_info
 
-F) Deleting a specific VNIC interface
+VNIC Interface : eioc0
+    VNIC State        : VNIC_REGISTERED
+    Current Path      : primary path
+    Receive Checksum  : true
+    Transmit checksum : true
+ 
+    Primary Path : 
+        VIPORT State  : VIPORT_CONNECTED
+        Link State    : LINK_IDLING
+        HCA Info.     : vnic-mthca0-1
+        Heartbeat     : 100
+        IOC String    : EVIC in Chassis 0x00066a00db000010, Slot 4, Ioc 1
+        IOC GUID      : 66a01de000037
+        DGID          : fe8000000000000000066a11de000037
+        P Key         : ffff
+ 
+    Secondary Path : 
+        VIPORT State  : VIPORT_DISCONNECTED
+        Link State    : INVALID STATE
+        HCA Info.     : vnic-mthca0-2
+        Heartbeat     : 100
+        IOC String    : 
+        IOC GUID      : 66a01de000037
+        DGID          : 00000000000000000000000000000000
+        P Key         : 0
+
+This information is collected from /sys/class/infiniband_qlgc_vnic/interfaces/
+directory under which there is a separate directory corresponding to each
+VNIC interface.
+
+F) Deleting a specific QLogic VNIC interface
 
 VNIC interfaces can be deleted by writing the name of the interface to 
-the /sys/class/infiniband_vnic/interfaces/delete_vnic file.
+the /sys/class/infiniband_qlgc_vnic/interfaces/delete_vnic file.
 
 For example to delete interface veth0
 
-echo -n veth0 > /sys/class/infiniband_vnic/interfaces/delete_vnic
+echo -n veth0 > /sys/class/infiniband_qlgc_vnic/interfaces/delete_vnic
 
+G) QLogic VNIC Dynamic Update Daemon Tool and Hot Swap support:-
 
- 
+This tool is started and stopped as part of the QLogic VNIC service 
+(refer to C above) and provides the following features:
+
+1. Dynamic update of disconnected interfaces (which have been configured
+WITHOUT using the DGID option in the configuration file) : 
+
+At the start up of VNIC driver, if the HCA port through which a particular VNIC
+interface path (primary or secondary) connects to target is down or the 
+EVIC/VEx IOC is not available then all the required parameters (DGID etc) for connecting
+with the EVIC/VEx cannot be determined. Hence the corresponding VNIC interface
+path is not available at the start of the VNIC service. This daemon constantly
+monitors the configured VNIC interfaces to check if any of them are disconnected.
+If any of the interfaces are disconnected, it scans for available EVIC/VEx targets using
+"ib_qlgc_vnic_query" tool. When daemon sees that for a given path of a VNIC interface, 
+the configured EVIC/VEx IOC has become available, it dynamically updates the 
+VNIC kernel driver with the required information to establish connection for 
+that path of the interface. In this way, the interface gets connected with
+the configured EVIC/VEx whenever it becomes available without any manual 
+intervention.
+
+2. Hot Swap support :
+
+Hot swap is an operation in which an existing EVIC/VEx is replaced by another
+EVIC/VEx (in the same slot of the switch chassis as the older one). In such a 
+case, the current connection for the corresponding VNIC interface will have to
+be re-established. The daemon detects this hot swap case and re-establishes
+the connection automatically. To make use of this feature of the daemon, it is
+recommended that IOCSTRING be used in the configuration file to configure the
+VNIC interfaces.
+
+This is because, after a hot swap though all other parameters like DGID, IOCGUID etc
+of the EVIC/VEx change, the IOCSTRING remains the same. Thus the daemon monitors
+for changes in IOCGUID and DGID of disconnected interfaces based on the IOCSTRING.
+If these values have changed it updates the kernel driver so that the VNIC
+interface can start using the new EVIC/VEx.
+
+If in addition to IOCSTRING, DGID and IOCGUID have been used to configure
+a VNIC interface, then on a hotswap the daemon will update the parameters as required.
+But to have that VNIC interface available immediately on the next restart of the
+QLogic VNIC service, please make sure to update the configuration file with the
+new DGID and IOCGUID values. Otherwise, the creation of such interfaces will be
+delayed till the daemon runs and updates the parameters.
+
+H) Information about creating VLAN interfaces
+
+The EVIC/VEx supports VLAN tagging without having to explicitly create VLAN
+interfaces for the VNIC interface on the host. This is done by enabling
+Egress/Ingress tagging on the EVIC/VEx and setting the "Host ignores VLAN"
+option for the VNIC interface. The "Host ignores VLAN" option is enabled
+by default due to which VLAN tags are ignored on the host by the QLogic
+VNIC driver. Thus explicitly created VLAN interfaces (using vconfig command)
+for a given VNIC interface will not be operational.
+
+If you want to explicitly create a VLAN interface for a given VNIC interface,
+then you will have to disable the "Host ignores VLAN" option for the
+VNIC interface on the EVIC/VEx. The qlgc_vnic service must be restarted
+on the host after disabling (or enabling) the "Host ignores VLAN" option.
+
+Please refer to the EVIC/VEx documentation for more information on Egress/Ingress
+port tagging feature and disabling the "Host ignores VLAN" option.
+
+I) Information about enabling IB Multicast for QLogic VNIC interface
+
+QLogic VNIC driver has been upgraded to support the IB Multicasting feature of 
+EVIC/VEx. This feature enables the QLogic VNIC host driver to support the IP 
+multicasting more efficiently. With this feature enabled, infiniband multicast 
+group acts as a carrier of IP multicast traffic. EVIC will make use of such IB 
+multicast groups for forwarding IP multicast traffic to VNIC interfaces which 
+are member of given IP multicast group. In the older QLogic VNIC host driver, 
+IB multicasting was not being used to carry IP multicast traffic.
+
+By default, IB multicasting is disabled on EVIC/VEx; but it is enabled by
+default at the QLogic VNIC host driver.
+
+To disable IB multicast feature on the host driver, VNIC configuration file
+needs to be modified by setting the parameter IB_MULTICAST=FALSE in the 
+interface configuration. Please refer to the qlgc_vnic.cfg.sample for more 
+details on configuration of VNIC interfaces for IB multicasting. 
+IB multicasting also needs to be enabled over EVIC/VEx. Please refer to the 
+EVIC/VEx documentation for more information on enabling IB multicast 
+feature over EVIC/VEx.
+
+J) Basic Troubleshooting
+
+1. In case of any problems, make sure that:
+
+   a) The HCA ports you are trying to use have IB cables connected and are in an
+      active state. You can use the "ibv_devinfo" tool to check the state of
+      your HCA ports.
+
+   b) If your HCA ports are not active, check if an SM is running on the fabric
+      where the HCA ports are connected. If you have done a full install of
+      OFED, you can use the "sminfo" command ("sminfo -P 2" for port 2) to
+      check SM information.
+
+   c) Make sure that the EVIC/VEx is powered up and its Ethernet cables are connected
+      properly.
+
+   d) Check /var/log/messages for any error messages.
+
+2. If some of your VNIC interfaces are not available:
+
+   a) Use "ifconfig" tool  with -a option to see if all interfaces are created.
+      It is possible that the interfaces are created but do not have an
+      IP address. Make sure that you have setup a correct ifcfg-XXX file for your
+      VNIC interfaces for automatic assignment of IP addresses.
+
+      If the VNIC interface is created and the ifcfg file is also correct
+      but the VNIC interface is not UP, make sure that the target EVIC/VEx
+      IOC has an Ethernet cable properly connected.
+
+   b) Make sure that the VNIC configuration file has been setup properly
+      with correct EVIC/VEx target DGID/IOCGUID/IOCSTRING information and 
+      instance numbers.
+
+   c) Make sure that the EVIC/VEx target IOC specified for that interface is
+      available. You can use the "ib_qlgc_vnic_query" tool to verify this. If it is not
+      available when you started  the service, but it becomes available later
+      on, then the QLogic VNIC dynamic update daemon  will  bring up the
+      interface when the target becomes available. You will see messages in
+      /var/log/messages when the corresponding interface is created.
+
+   d) Make sure that you have not exceeded the total number of Virtual interfaces
+      supported by the EVIC/VEx. You can check the total number of Virtual interfaces
+      currently in use on the HTTP interface of the EVIC/VEx.
+
