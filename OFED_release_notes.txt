@@ -1,21 +1,20 @@
 	    Open Fabrics Enterprise Distribution (OFED)
-	                Version 1.3.1
+	                Version 1.4-alpha
 		        Release Notes
-			  June 2008
+			  July 2008
 
 
 ===============================================================================
 Table of Contents
 ===============================================================================
 1. Overview, which includes:
-	- OFED Distribution Rev 1.3.1 Contents
+	- OFED Distribution Rev 1.4 Contents
 	- Supported Platforms and Operating Systems
 	- Supported HCA and RNIC Adapter Cards and Firmware Versions
 	- Tested Switch Platforms
 	- Third party Test Packages
 	- OFED sources
-2. Main Changes from OFED 1.2.5
-3. Changes and Fixed Bugs since OFED 1.3
+2. Main Changes from OFED 1.3
 4. Known Issues
 
 
@@ -23,7 +22,7 @@ Table of Contents
 1. Overview
 ===============================================================================
 These are the release notes of OpenFabrics Enterprise Distribution (OFED)
-release 1.3.1 The OFED software package is composed of several software modules,
+release 1.4 The OFED software package is composed of several software modules,
 and is intended for use on a computer cluster constructed as an InfiniBand
 subnet or iWARP network. 
 
@@ -31,7 +30,7 @@ Note: If you plan to upgrade the OFED package on your cluster, please upgrade
 all of its nodes to this new version.
 
 
-1.1 OFED 1.3.1 Contents
+1.1 OFED 1.4 Contents
 -----------------------
 The OFED package contains the following components:
  - OpenFabrics core and ULPs:
@@ -39,7 +38,7 @@ The OFED package contains the following components:
 	- iWARP RNIC driver (cxgb3, nes)
         - core
         - Upper Layer Protocols: IPoIB, SDP, SRP Initiator and target, iSER 
-	  Initiator, RDS, uDAPL and qlgc_vnic
+	  Initiator and target, RDS, uDAPL, qlgc_vnic and NFS-RDMA.
  - OpenFabrics utilities:
         - OpenSM (OSM): InfiniBand Subnet Manager
         - Diagnostic tools
@@ -57,7 +56,7 @@ The OFED package contains the following components:
  - Documentation
 
 Notes:
-1. SRP target is of Beta quality.
+1. iSER target is of Beta quality.
 2. All other OFED components are of production quality.
 3. See release notes for each package in the docs directory.
 4. Any Topspin copyright belongs to Cisco Systems, Inc.
@@ -76,14 +75,14 @@ Notes:
         - RedHat EL4 up6: 	2.6.9-67.ELsmp 
         - RedHat EL5: 		2.6.18-8.el5
 	- RedHat EL5 up1: 	2.6.18-53.el5
-	- RedHat EL5 up2: 	2.6.18-92.el5       *
-        - Fedora C6: 		2.6.18-8.fc6        *
+	- RedHat EL5 up2: 	2.6.18-92.el5       
+        - Fedora C9: 		2.6.25-14.fc9       *
         - SLES10: 		2.6.16.21-0.8-smp
         - SLES10 SP1: 		2.6.16.46-0.12-smp
 	- SLES10 SP1 up1: 	2.6.16.53-0.16-smp
-	- SLES10 SP2: 		2.6.16.60-0.21-smp  *
-	- OpenSuSE 10.3: 	2.6.22-*-*          *
-	- kernel.org:     	2.6.23 and 2.6.24
+	- SLES10 SP2: 		2.6.16.60-0.21-smp  
+	- OpenSuSE 10.3: 	2.6.22.5-31         *
+	- kernel.org:     	2.6.26 and 2.6.27 (when it will be available)
 
       * OSes that are partially tested
 	
@@ -97,7 +96,7 @@ well as iWARP RNICs by Chelsio Communications.
 	- InfiniHost III Ex (MemFree: fw-25218 Rev 5.3.000 
 	                     with memory: fw-25208 Rev 4.8.200)
 	- InfiniHost III Lx (fw-25204 Rev 1.2.000)
-	- ConnectX IB (fw-25408 Rev 2.3.000)
+	- ConnectX IB (fw-25408 Rev 2.5.000)
 
 	For official firmware versions please see:
 	http://www.mellanox.com/support/firmware_table.php
@@ -140,156 +139,97 @@ The following third party packages have been tested with OFED 1.3:
 1.6 OFED Sources
 ----------------
 All sources are located under git://git.openfabrics.org/
-Kernel sources: git://git.openfabrics.org/ofed_1_3/linux-2.6.git ofed_kernel
+Kernel sources: git://git.openfabrics.org/ofed_1_4/linux-2.6.git ofed_kernel
 User level Sources are located in all git trees as written in the BUILD_ID
 
-The kernel sources are based on Linux 2.6.24 mainline kernel. Its patches
+The kernel sources are based on Linux 2.6.26 mainline kernel. Its patches
 are included in the OFED sources directory.
 For details see HOWTO.build_ofed.
 
 ===============================================================================
-2. Main Changes from OFED 1.2.5
+2. Main Changes from OFED 1.3
 ===============================================================================
 Note: For details regarding the various changes,  please see the release notes
 for each package in the docs directory.
 
     2.1 General changes
-	o Kernel code based on 2.6.24
-	o Quality of Service support in OpenSM, CMA, IPoIB, SRP, SDP and RDS.
-	o Added Neteffect driver (nes)
-	o Added SRP target package: Based on Mellanox IBGD SRPT and interfaces
-	  with SCST scsi target
-        o New verbs to support Extended RC (XRC).
-	o Updated SA cache Integrated with sa_query module; use of SA events 
-	  (GID up/down) to provide additional synchronization; User-space 
-	  control for dynamic enable/disable and update
+	o Kernel code based on 2.6.26
+	o Added iSER target package
+        o Added NFS-RDMA support
+        o New verbs to support BMME (when move to 2.6.27): 
+          - Fast memory thru send queue, 
+          - Local invalidate send work requests
+          - Read with invalidate.
+        o Multi-Protocol (Virtual Protocol Interconnect) support, Eth and IB for ConnectX
 
     2.2 Package and install
-        o There is a new install script. See OFED_Installation_Guide.txt for
-	  more details on the new installation and build procedures.
-	o User space packages are now in different source RPMs (as opposed to 
-	  one source RPM in previous OFED releases).
-	o The option for a build without installing is not supported any more.
-	o Added the script make-dist to generate tarball with kernel sources 
-	  for each kernel.
   
     2.3 IPoIB
-        o Stateless offloads - for Datagram mode
-	o IGMP for user-space multicast IB
-	o NAPI is enabled default
-	o High availability is supported via the bonding module only (ipoib
-	  tool scripts have been removed)
+        o LRO support - when we move to 2.6.27
 
     2.4 SDP
-	o Keep-alive
-	o Asynch IO
-	o Send Zero Copy (enabled for 64K and above sends by default)
+	o GA level
 
     2.5 qlgc_vnic
-    	o Update for PathScale HCA
+    	o 
 
     2.6 RDS
-	o RDMA API (using FMRs) - RDS API version 3
-	o GA quality with Oracle 11
+	o GA of RDMA API (using FMRs) - RDS API version 3
+	o iWARP support
 
     2.7 uDAPL
-	o Add DAT 2.0 API run-time library and development support.
-	  uDAPL 2.0 will include IB extensions for IB rdma write with immediate
-	  data and IB atomic operations. 
-	o Both uDAPL 1.2 and 2.0 packages are provided and co-exist
 
-    2.9 iSER
-        o open-iscsi is based on r865.12. 
+    2.8 iSER
+        o 
 
     2.9 Management 
 	o OpenSM
-	  - Quality of Service manager
-	  - QoS implementation of the IBTA annex
-	  - QoS policy parser and support for SA (PR, MPR)
-	  - Scalability/stability improvements
-	  - Performance improvements of the routing algorithms (min-hops, up/down,  lash)
-	  - Optimized port and switch tables update policy
-	  - "Native" daemon mode
-	o Performance manager
-	  - Fetches and stores performance counters
-	  - OpenSM integrated, work in any OpenSM state (standby, disabled)
-	  - Plug-in interface
-	o Diagnostic tools enhancements
-	o IBSIM: IB fabric simulator (new)
-	  - Emulates user_mad layer
-	  - useful for OpenSM and management tools testing
+	  - Incremental routing for fast routing when one switch fails
+	  - APM - disjoint paths
+	  - Path balancing for LMC + console diagnostics
+	  - OpenSM configuration unification
+	  - MGID compression (MGID to MLID mapping)
+	  - Routing engines chain
+	  - IBA 1.2.1 additions
+	  - Failover/Handover improvements
+	o ibutils:
+	  - Congestion Control
+	  - Report created in CSV format
+	o Diagnostic tools:
+	  - ibnetdiscover library - to accelerate another tools
 
     2.10 MPI: 
-	a. OSU MVAPICH 1.0
-	   - Asynchronous progress
-	   - Flexible message coalescing
+	a. OSU MVAPICH 1.1
+	   - XRC support
+	   - Hybrid UD-XRC support
+	   - Enhanced Asynchronous Progress
+	   - Network Reliability
+	   - Enhanced collectives
+
+	b. Open MPI 1.3
+	   - Connection Manager support
+	   - IB CM, RDMA CM
+	   - XRC support
 	   - APM support
-	   - Enhanced mpirun_rsh for scalable launching
-	   - UD-based design
-	   - Optimized and tuned collectives
-	   - Support for ConnectX
-	   - Support for QLogic/PSM
-	b. Open MPI 1.2.5
-	   - ConnectX support
-	c. OSU MVAPICH2 1.0
-	   - Message Coalescing
-	   - Hot-spot avoidance
-	   - Application-initiated systems-level check-pointing
-	   - APM support
-	   - Multi-rail support for iWARP
-	   - On-demand connection management for iWARP and uDAPL
-	   - RDMA Read
-	   - Blocking
+	   - Message coalescing
+	   - BSRQ (including XRC integration)
+	   - iWARP verbs support
+	   - Open Grid Computing / Chelsio
+	   - Major job launch scalability improvements
+	   - Tighter integration with parallel tools
+
+	c. OSU MVAPICH2 1.2
+	   - Scalable Job startup
+	   - One-sided Operations with Passive Synchronization
+	   - Checkpoint-Restart with Shared Memory Support
+	   - Multi-core optimized Collectives
+	   - PLPA Support for affinity
 
 ===============================================================================
-3. Changes and Fixed Bugs since OFED 1.3
-===============================================================================
-Note: For details regarding the various fixed bugs, please see the
-      release notes for each component in the docs directory.
-
-New OS support:
-  - SLES 10 SP2 
-  - RHEL 5 up2
-  
-Install scripts:
-  - There is no default configuration for IPoIB interfaces: One should manually
-    specify the full IP configuration or use the ofed_net.conf file.
-  - A new option was added to the ofed_uninstall.sh script: --unload-modules.
-    This option executes 'openibd stop' before removing the OFED RPMs.
-
-Libraries:  
-  - uDAPL v1 (1.2.7-1) and v2 (2.0.9-1)
-  - librdmacm 1.0.7
-
-Kernel changes:  
-  - IPoIB bug fixes
-  - SRP bug fixes
-  - RDS bug fixes
-  - Bonding fixes and support for SM failover.
-  - Core: SA module fix
-
-Utilities:
-  - opensm version 3.1.11
-  - mstflint
-  - ibutils
-
-Low level drivers: 
-  - cxgb3 (Chelsio)
-  - ehca (IBM)
-  - mlx4 (Mellanox)
-  - nes (NetEffect)
-  - ipath (Qlogic)
-
-MPI packages:
-  - MVAPICH 1.0.1
-  - Open MPI 1.2.6
-  - MVAPICH2 1.0.3
-
-===============================================================================
-4. Known Issues
+3. Known Issues
 ===============================================================================
 The following is a list of general limitations and known issues of the various
-components of the OFED 1.3.1 release.
+components of the OFED 1.4 release.
 
 1. When upgrading from an earlier OFED version, the installation script does not
    stop the earlier OFED version prior to uninstalling it. 
