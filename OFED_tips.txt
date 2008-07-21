@@ -1,5 +1,5 @@
 		Open Fabrics Enterprise Distribution (OFED)
-		      Tips for Working with OFED 1.3.1
+		      Tips for Working with OFED 1.4
 
 		 	     June 2008
 
@@ -9,7 +9,7 @@ Table of Contents
 1. OFED Utilities
 2. Debug HOWTOs
 3. Pinning (Locking) User Memory Pages
-4. External Module Compilation Over OFED-1.3.1
+4. External Module Compilation Over OFED-1.4
 5. Adding/Deleting a patch to OFED package
 6. Adding vendor specific actions to the installation of OFED
 7. How to compile OFED sources manually
@@ -28,7 +28,7 @@ Notes:
    To learn about other utilities, use their --help flag.
 
 2. The sources for all utilities are not part of the RPM installation. However,
-   all sources exist in the openib-1.3.1.tgz tarball.
+   all sources exist in the openib-1.4.tgz tarball.
 
 
 1.1 Device Information
@@ -167,14 +167,14 @@ c. Using sysfs file system
 -------------------------------------------
 The text file BUILD_ID provides data on all OFED components (whether installed
 or not). This file is a part of the ofed-docs RPM and installed under 
-/usr/share/doc/ofed-docs-1.3.1 on RedHat, and under 
-/usr/share/doc/packages/ofed-docs-1.3.1 on SuSE.
+/usr/share/doc/ofed-docs-1.4 on RedHat, and under 
+/usr/share/doc/packages/ofed-docs-1.4 on SuSE.
 
 The same information can be obtained by executing the 'ofed_info' command. For
 example:
 
 > ofed_info
-OFED-1.3.1
+OFED-1.4
 libibverbs:
 git://git.openfabrics.org/ofed_1_3/libibverbs.git ofed_1_3
 commit 40b771aa6a9c0ad092b2e20775b4723d3b173792
@@ -242,7 +242,7 @@ ibsim:
 git://git.openfabrics.org/ofed_1_3/ibsim.git ofed_1_3
 commit 55113d9f919709c7c97ea41d29991941b9c8be70
 
-ofa_kernel-1.3.1:
+ofa_kernel-1.4:
 Git:
 git://git.openfabrics.org/ofed_1_3/linux-2.6.git ofed_kernel
 commit 39e1dc833f98e5134f91fcf7f33df402adf4bc0c
@@ -310,7 +310,7 @@ Note: The file /etc/security/limits.conf contains further documentation.
 
 
 ===============================================================================
-4. External Module Compilation Over OFED-1.3.1
+4. External Module Compilation Over OFED-1.4
 ===============================================================================
 
 To build kernel modules depending on OFED's modules, take the Modules.symvers
@@ -347,9 +347,9 @@ ofed_patch.sh  --remove
                --type|-t <kernel|backport <kernel tag>|addons <kernel tag>>
 
 Examples:
-ofed_patch.sh --add --ofed /tmp/OFED-1.3.1/ --patch /tmp/cma_fix.patch --type kernel
+ofed_patch.sh --add --ofed /tmp/OFED-1.4/ --patch /tmp/cma_fix.patch --type kernel
 
-ofed_patch.sh --remove --ofed /tmp/OFED-1.3.1/ --patch cma_fix.patch --type kernel
+ofed_patch.sh --remove --ofed /tmp/OFED-1.4/ --patch cma_fix.patch --type kernel
 
 ===============================================================================
 6. Adding vendor specific actions to the installation of OFED
@@ -436,11 +436,11 @@ meaning without building the RPMs and without using the install.pl script.
 
 7.1 Compiling the kernel modules
 --------------------------------
-1. tar xzf OFED-1.3.1.tgz
-2. rpm -ihv OFED-1.3.1/SRPMS/ofa_kernel-1.3.1-ofed1.3.1.src.rpm
+1. tar xzf OFED-1.4.tgz
+2. rpm -ihv OFED-1.4/SRPMS/ofa_kernel-1.4-ofed1.4.src.rpm
 3. cd /usr/src/redhat/SOURCES
-4. tar xzvf ofa_kernel-1.3.1.tgz
-5. cd ofa_kernel-1.3.1
+4. tar xzvf ofa_kernel-1.4.tgz
+5. cd ofa_kernel-1.4
 6. configure: 
    run ./configure --help for a list of options.
    basic invocation is:
@@ -458,13 +458,13 @@ NOTES:
 
 7.2 Compiling the user space libraries
 --------------------------------------
-To install user space library from the source RPM provided by OFED-1.3.1 manually,
+To install user space library from the source RPM provided by OFED-1.4 manually,
 do the following:
 
 Example for libibverbs:
  
-1. tar xzf OFED-1.3.1.tgz
-2. rpm -ihv OFED-1.3.1/SRPMS/libibverbs-1.1.1-0.10.ofed20080205.src.rpm
+1. tar xzf OFED-1.4.tgz
+2. rpm -ihv OFED-1.4/SRPMS/libibverbs-1.1.1-0.10.ofed20080205.src.rpm
 3. cd /usr/src/redhat/SOURCES (for RedHat)
    or
    cd /usr/src/packages/SOURCES (for SuSE)
