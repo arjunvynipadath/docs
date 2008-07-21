@@ -160,7 +160,8 @@ for each package in the docs directory.
           - Fast memory thru send queue, 
           - Local invalidate send work requests
           - Read with invalidate.
-        o Multi-Protocol (Virtual Protocol Interconnect) support, Eth and IB for ConnectX
+        o Multi-Protocol (Virtual Protocol Interconnect) support, Eth and IB 
+	  for ConnectX
 
     2.2 Package and install
   
@@ -171,13 +172,18 @@ for each package in the docs directory.
 	o GA level
 
     2.5 qlgc_vnic
-    	o 
+        o Support for hotswap of EVIC and dynamic update of existing connections
+          with the addition of QLogic dynamic update daemon.
+        o Performance improvements in handling of Ethernet broadcast/multicast
+          traffic.
 
     2.6 RDS
 	o GA of RDMA API (using FMRs) - RDS API version 3
 	o iWARP support
 
     2.7 uDAPL
+	o Added socket based CM - for both scalability and interop with Windows
+	o Added UD extensions - for version 2.0 only
 
     2.8 iSER
         o 
@@ -212,7 +218,7 @@ for each package in the docs directory.
 	   - XRC support
 	   - APM support
 	   - Message coalescing
-	   - BSRQ (including XRC integration)
+	   - B-SRQ / X-SRQ
 	   - iWARP verbs support
 	   - Open Grid Computing / Chelsio
 	   - Major job launch scalability improvements
