@@ -184,6 +184,7 @@ for each package in the docs directory.
     2.7 uDAPL
 	o Added socket based CM - for both scalability and interop with Windows
 	o Added UD extensions - for version 2.0 only
+	o v1 library package has been renamed to compat-dapl-1.2.8-1
 
     2.8 iSER
         o 
