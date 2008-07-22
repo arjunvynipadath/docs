@@ -207,28 +207,30 @@ for each package in the docs directory.
     2.10 MPI: 
 	a. OSU MVAPICH 1.1
 	   - XRC support
-	   - Hybrid UD-XRC support
+	   - Hybrid UD-RC-XRC support
 	   - Enhanced Asynchronous Progress
-	   - Network Reliability
-	   - Enhanced collectives
+	   - Tuned collectives
 
 	b. Open MPI 1.3
 	   - Connection Manager support
-	   - IB CM, RDMA CM
 	   - XRC support
 	   - APM support
 	   - Message coalescing
 	   - B-SRQ / X-SRQ
-	   - iWARP verbs support
-	   - Open Grid Computing / Chelsio
+	   - iWARP verbs support with RDMA CM
 	   - Major job launch scalability improvements
 	   - Tighter integration with parallel tools
 
 	c. OSU MVAPICH2 1.2
-	   - Scalable Job startup
-	   - One-sided Operations with Passive Synchronization
-	   - Checkpoint-Restart with Shared Memory Support
+	   - Scalable and robust daemon-less job startup
+	   - Enhanced scalability for RDMA-based Direct One-sided communication
+	     with less resources
+	   - Checkpoint-Restart with Intra-node Shared Memory Support
 	   - Multi-core optimized Collectives
+	     - Shared memory optimized MPI_Bcast
+	     - Optimized and tuned MPI_Alltoall
+           - Enhancement to Software Installation with Full Autoconf-based 
+	     Configuration
 	   - PLPA Support for affinity
 
 ===============================================================================
