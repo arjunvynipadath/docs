@@ -5,11 +5,11 @@
 
 The iw_cxgb3 and cxgb3 modules provide RDMA and NIC support for the
 Chelsio S310/320 and R310/320 series adapters.  Make sure you choose the
-'cxgb3' and 'libcxgb3' options when generating your ofed-1.3.1 rpms.
+'cxgb3' and 'libcxgb3' options when generating your ofed-1.4 rpms.
 
 
 ============================================
-New enhancements for OFED-1.3.1:
+New enhancements for OFED-1.4:
 ============================================
 
 - Various MPI libraries are enabled via a new iw_cxgb3 module option
@@ -18,7 +18,7 @@ MPI version 3.1.038, HP MPI version 2.02.05.01, OpenMPI (will be released
 with OMPI-3.1), and Scali MPI (will be available in version 3.13.7).
 This option must be set on all systems in your cluster.  See more info
 below on running these MPIs.  NOTE: None of these MPIs are included in
-the ofed-1.3.1 release.  Contact the specific vendors for obtaining the
+the ofed-1.4 release.  Contact the specific vendors for obtaining the
 MPI code.  Open MPI can be pulled from www.open-mpi.org.
 
 - New 6.0 firmware required.  Download this firmware from

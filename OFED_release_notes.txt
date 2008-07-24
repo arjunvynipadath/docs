@@ -191,11 +191,11 @@ for each package in the docs directory.
 
     2.9 Management 
 	o OpenSM
-	  - Incremental routing for fast routing when one switch fails
+	  - Cashed routing
 	  - APM - disjoint paths
 	  - Path balancing for LMC + console diagnostics
 	  - OpenSM configuration unification
-	  - MGID compression (MGID to MLID mapping)
+	  - MGID to MLID mapping for IPv6 SNM
 	  - Routing engines chain
 	  - IBA 1.2.1 additions
 	  - Failover/Handover improvements
