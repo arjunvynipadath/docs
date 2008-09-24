@@ -46,8 +46,8 @@ mlx4_core parameters:
    log_num_qp:		log maximum number of QPs per HCA (default is 17; max is 20)
    log_num_srq:		log maximum number of SRQs per HCA (default is 16; max is 20)
    log_rdmarc_per_qp:	log number of RDMARC buffers per QP (default is 4; max is 7)
-   log_num_cq:		log maximum number of CQs per HCA (default is 16 max is 20)
-   log_num_mcg:		log maximum number of multicast groups per HCA (default is 13; max is 26)
+   log_num_cq:		log maximum number of CQs per HCA (default is 16 max is 19)
+   log_num_mcg:		log maximum number of multicast groups per HCA (default is 13; max is 21)
    log_num_mpt:		log maximum number of memory protection table entries per HCA (default is 17; max is 20)
    log_num_mtt:		log maximum number of memory translation table segments per HCA (default is 20; max is 20)
 
