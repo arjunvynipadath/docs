@@ -1,7 +1,7 @@
 	    Open Fabrics Enterprise Distribution (OFED)
-	                Version 1.4-RC2
+	                Version 1.4-RC3
 		        Release Notes
-			September 2008
+			October 2008
 
 
 ===============================================================================
@@ -254,5 +254,8 @@ components of the OFED 1.4 release.
 	2. Install tcsh RPM (required by mpi-selector)
 	3. Create the file '.rpmmacros' (required by mvapich): 
 	   echo "%__arch_install_post %{nil}" >> /root/.rpmmacros 
-     
+7. IPoIB: brctl utilities do not work on IPoIB interfaces. The reason for that i
+   is that these utilities support devices of type Ethernet only.
+
+
 Note: See the release notes of each component for additional issues.
