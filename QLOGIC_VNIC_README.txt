@@ -26,10 +26,12 @@ C) Starting the QLogic VNIC driver and the VNIC interfaces
 D) Assigning IP addresses etc for the QLogic VNIC interfaces
 E) Information about the QLogic VNIC interfaces
 F) Deleting a specific QLogic VNIC interface
-G) QLogic VNIC Dynamic Update Daemon Tool and Hot Swap support
-H) Information about creating VLAN interfaces
-I) Information about enabling IB Multicast for QLogic VNIC interface
-J) Basic Troubleshooting
+G) Forced Failover feature for QLogic VNIC.
+H) Infiniband Quality of Service for VNIC.
+I) QLogic VNIC Dynamic Update Daemon Tool and Hot Swap support
+J) Information about creating VLAN interfaces
+K) Information about enabling IB Multicast for QLogic VNIC interface
+L) Basic Troubleshooting
 
 A) Creating QLogic VNIC interfaces
 
@@ -53,6 +55,9 @@ VNIC service. If DGID is specified then you must also
 specify the IOCGUID. More details can be found in
 the qlgc_vnic.cfg.sample file.
 
+In case of a host consisting of more than 1 HCAs plugged in, VNIC
+interfaces can be configured based on HCA no and Port No or PORTGUID.
+
 B) Discovering EVIC/VEx IOCs present on the fabric using ib_qlgc_vnic_query
 
 For writing the configuration file, you will need information
@@ -60,84 +65,236 @@ about the EVIC/VEx IOCs present on the fabric like their IOCGUID,
 IOCSTRING etc. The ib_qlgc_vnic_query tool should be used to get this
 information. 
 
-When ib_qlgc_vnic_query is executed without any options, it displays
-detailed information about all the EVIC/VEx IOCs present on the fabric:
+When ib_qlgc_vnic_query is executed without any options, it scans through ALL
+active IB ports on the host and obtains the detailed information about all the
+EVIC/VEx IOCs reachable through each active IB port:
 
 # ib_qlgc_vnic_query
-IO Unit Info:
-    port LID:        0003
-    port GID:        fe8000000000000000066a0258000001
-    change ID:       0009
-    max controllers: 0x03
+
+HCA No = 0, HCA = mlx4_0, Port = 1, Port GUID = 0x0002c903000010f5, State = Active
+
+        IO Unit Info:
+            port LID:        0008
+            port GID:        fe8000000000000000066a11de000070
+            change ID:       0003
+            max controllers: 0x02
 
 
-    controller[  1]
-        GUID:      00066a0130000001
-        vendor ID: 00066a
-        device ID: 000030
-        IO class : 2000
-        ID:        Chassis 0x00066A00010003F2, Slot 1, IOC 1
-        service entries: 2
-            service[  0]: 1000066a00000001 / InfiniNIC.InfiniConSys.Control:01
-            service[  1]: 1000066a00000101 / InfiniNIC.InfiniConSys.Data:01
+            controller[  1]
+                GUID:      00066a01de000070
+                vendor ID: 00066a
+                device ID: 000030
+                IO class : 2000
+                ID:        EVIC in Chassis 0x00066a00db00001e, Slot 1, Ioc 1
+                service entries: 2
+                    service[  0]: 1000066a00000001 / InfiniNIC.InfiniConSys.Control:01
+                    service[  1]: 1000066a00000101 / InfiniNIC.InfiniConSys.Data:01
 
-    controller[  2]
-        GUID:      00066a0230000001
-        vendor ID: 00066a
-        device ID: 000030
-        IO class : 2000
-        ID:        Chassis 0x00066A00010003F2, Slot 1, IOC 2
-        service entries: 2
-            service[  0]: 1000066a00000002 / InfiniNIC.InfiniConSys.Control:02
-            service[  1]: 1000066a00000102 / InfiniNIC.InfiniConSys.Data:02
-
-    controller[  3]
-        GUID:      00066a0330000001
-        vendor ID: 00066a
-        device ID: 000030
-        IO class : 2000
-        ID:        Chassis 0x00066A00010003F2, Slot 1, IOC 3
-        service entries: 2
-            service[  0]: 1000066a00000003 / InfiniNIC.InfiniConSys.Control:03
-            service[  1]: 1000066a00000103 / InfiniNIC.InfiniConSys.Data:03
+        IO Unit Info:
+            port LID:        0009
+            port GID:        fe8000000000000000066a21de000070
+            change ID:       0003
+            max controllers: 0x02
 
 
-When ib_qlgc_vnic_query is run with -e option, it reports the IOCGUID information 
-and with -s option it reports the IOCSTRING information for the VEx IOCs
-present on the fabric.
+            controller[  2]
+                GUID:      00066a02de000070
+                vendor ID: 00066a
+                device ID: 000030
+                IO class : 2000
+                ID:        EVIC in Chassis 0x00066a00db00001e, Slot 1, Ioc 2
+                service entries: 2
+                    service[  0]: 1000066a00000002 / InfiniNIC.InfiniConSys.Control:02
+                    service[  1]: 1000066a00000102 / InfiniNIC.InfiniConSys.Data:02
+
+HCA No = 0, HCA = mlx4_0, Port = 2, Port GUID = 0x0002c903000010f6, State = Active
+
+        IO Unit Info:
+            port LID:        0008
+            port GID:        fe8000000000000000066a11de000070
+            change ID:       0003
+            max controllers: 0x02
+
+
+            controller[  1]
+                GUID:      00066a01de000070
+                vendor ID: 00066a
+                device ID: 000030
+                IO class : 2000
+                ID:        EVIC in Chassis 0x00066a00db00001e, Slot 1, Ioc 1
+                service entries: 2
+                    service[  0]: 1000066a00000001 / InfiniNIC.InfiniConSys.Control:01
+                    service[  1]: 1000066a00000101 / InfiniNIC.InfiniConSys.Data:01
+
+        IO Unit Info:
+            port LID:        0009
+            port GID:        fe8000000000000000066a21de000070
+            change ID:       0003
+            max controllers: 0x02
+
+
+            controller[  2]
+                GUID:      00066a02de000070
+                vendor ID: 00066a
+                device ID: 000030
+                IO class : 2000
+                ID:        EVIC in Chassis 0x00066a00db00001e, Slot 1, Ioc 2
+                service entries: 2
+                    service[  0]: 1000066a00000002 / InfiniNIC.InfiniConSys.Control:02
+                    service[  1]: 1000066a00000102 / InfiniNIC.InfiniConSys.Data:02
+
+HCA No = 1, HCA = mlx4_1, Port = 1, Port GUID = 0x0002c90300000785, State = Down
+
+        Port State is Down. Skipping search of DM nodes on this port.
+
+HCA No = 1, HCA = mlx4_1, Port = 2, Port GUID = 0x0002c90300000786, State = Active
+
+        IO Unit Info:
+            port LID:        0008
+            port GID:        fe8000000000000000066a11de000070
+            change ID:       0003
+            max controllers: 0x02
+
+
+            controller[  1]
+                GUID:      00066a01de000070
+                vendor ID: 00066a
+                device ID: 000030
+                IO class : 2000
+                ID:        EVIC in Chassis 0x00066a00db00001e, Slot 1, Ioc 1
+                service entries: 2
+                    service[  0]: 1000066a00000001 / InfiniNIC.InfiniConSys.Control:01
+                    service[  1]: 1000066a00000101 / InfiniNIC.InfiniConSys.Data:01
+
+        IO Unit Info:
+            port LID:        0009
+            port GID:        fe8000000000000000066a21de000070
+            change ID:       0003
+            max controllers: 0x02
+
+
+            controller[  2]
+                GUID:      00066a02de000070
+                vendor ID: 00066a
+                device ID: 000030
+                IO class : 2000
+                ID:        EVIC in Chassis 0x00066a00db00001e, Slot 1, Ioc 2
+                service entries: 2
+                    service[  0]: 1000066a00000002 / InfiniNIC.InfiniConSys.Control:02
+                    service[  1]: 1000066a00000102 / InfiniNIC.InfiniConSys.Data:02
+
+This is meant to help the network administrator to know about HCA/Port information 
+on host along with EVIC IOCs reachable through given IB ports on fabric.  When 
+ib_qlgc_vnic_query is run with -e option, it reports the IOCGUID information 
+and with -s option it reports the IOCSTRING information for the EVIC/VEx IOCs
+present on the fabric:
 
 # ib_qlgc_vnic_query -e
-ioc_guid=00066a0130000001,dgid=fe8000000000000000066a0258000001,pkey=ffff
-ioc_guid=00066a0230000001,dgid=fe8000000000000000066a0258000001,pkey=ffff
-ioc_guid=00066a0330000001,dgid=fe8000000000000000066a0258000001,pkey=ffff
 
-#ib_qlgc_vnic_query -s
-"Chassis 0x00066A00010003F2, Slot 1, IOC 1"
-"Chassis 0x00066A00010003F2, Slot 1, IOC 2"
-"Chassis 0x00066A00010003F2, Slot 1, IOC 3"
+HCA No = 0, HCA = mlx4_0, Port = 1, Port GUID = 0x0002c903000010f5, State = Active
 
-#ib_qlgc_vnic_query -es
-ioc_guid=00066a0130000001,dgid=fe8000000000000000066a0258000001,pkey=ffff,"Chassis 0x00066A00010003F2, Slot 1, IOC 1"
-ioc_guid=00066a0230000001,dgid=fe8000000000000000066a0258000001,pkey=ffff,"Chassis 0x00066A00010003F2, Slot 1, IOC 2"
-ioc_guid=00066a0330000001,dgid=fe8000000000000000066a0258000001,pkey=ffff,"Chassis 0x00066A00010003F2, Slot 1, IOC 3"
+        ioc_guid=00066a01de000070,dgid=fe8000000000000000066a11de000070,pkey=ffff
+        ioc_guid=00066a02de000070,dgid=fe8000000000000000066a21de000070,pkey=ffff
+HCA No = 0, HCA = mlx4_0, Port = 2, Port GUID = 0x0002c903000010f6, State = Active
 
-ib_qlgc_vnic_query uses Port 1 of HCA on host as a default port to obtain the information
-about EVIC/VEx IOCs. But, the default port can be overridden by using a -d 
-option and then specifying "umad" device name corresponding to desired HCA port.
+        ioc_guid=00066a01de000070,dgid=fe8000000000000000066a11de000070,pkey=ffff
+        ioc_guid=00066a02de000070,dgid=fe8000000000000000066a21de000070,pkey=ffff
+HCA No = 1, HCA = mlx4_1, Port = 1, Port GUID = 0x0002c90300000785, State = Down
 
-Typically, Port 1 of HCA corresponds to umad device "umad0" and Port 2 of HCA
-corresponds to umad device "umad1". Thus, 
+        Port State is Down. Skipping search of DM nodes on this port.
+
+HCA No = 1, HCA = mlx4_1, Port = 2, Port GUID = 0x0002c90300000786, State = Active
+
+        ioc_guid=00066a01de000070,dgid=fe8000000000000000066a11de000070,pkey=ffff
+        ioc_guid=00066a02de000070,dgid=fe8000000000000000066a21de000070,pkey=ffff
+
+# ib_qlgc_vnic_query -s
+
+HCA No = 0, HCA = mlx4_0, Port = 1, Port GUID = 0x0002c903000010f5, State = Active
+
+"EVIC in Chassis 0x00066a00db00001e, Slot 1, Ioc 1"
+"EVIC in Chassis 0x00066a00db00001e, Slot 1, Ioc 2"
+HCA No = 0, HCA = mlx4_0, Port = 2, Port GUID = 0x0002c903000010f6, State = Active
+
+"EVIC in Chassis 0x00066a00db00001e, Slot 1, Ioc 1"
+"EVIC in Chassis 0x00066a00db00001e, Slot 1, Ioc 2"
+HCA No = 1, HCA = mlx4_1, Port = 1, Port GUID = 0x0002c90300000785, State = Down
+
+        Port State is Down. Skipping search of DM nodes on this port.
+
+HCA No = 1, HCA = mlx4_1, Port = 2, Port GUID = 0x0002c90300000786, State = Active
+
+"EVIC in Chassis 0x00066a00db00001e, Slot 1, Ioc 1"
+"EVIC in Chassis 0x00066a00db00001e, Slot 1, Ioc 2"
 
 # ib_qlgc_vnic_query -es
 
-is same as :
+HCA No = 0, HCA = mlx4_0, Port = 1, Port GUID = 0x0002c903000010f5, State = Active
+
+        ioc_guid=00066a01de000070,dgid=fe8000000000000000066a11de000070,pkey=ffff,"EVIC in Chassis 0x00066a00db00001e, Slot 1, Ioc 1"
+        ioc_guid=00066a02de000070,dgid=fe8000000000000000066a21de000070,pkey=ffff,"EVIC in Chassis 0x00066a00db00001e, Slot 1, Ioc 2"
+HCA No = 0, HCA = mlx4_0, Port = 2, Port GUID = 0x0002c903000010f6, State = Active
+
+        ioc_guid=00066a01de000070,dgid=fe8000000000000000066a11de000070,pkey=ffff,"EVIC in Chassis 0x00066a00db00001e, Slot 1, Ioc 1"
+        ioc_guid=00066a02de000070,dgid=fe8000000000000000066a21de000070,pkey=ffff,"EVIC in Chassis 0x00066a00db00001e, Slot 1, Ioc 2"
+HCA No = 1, HCA = mlx4_1, Port = 1, Port GUID = 0x0002c90300000785, State = Down
+
+        Port State is Down. Skipping search of DM nodes on this port.
+
+HCA No = 1, HCA = mlx4_1, Port = 2, Port GUID = 0x0002c90300000786, State = Active
+
+        ioc_guid=00066a01de000070,dgid=fe8000000000000000066a11de000070,pkey=ffff,"EVIC in Chassis 0x00066a00db00001e, Slot 1, Ioc 1"
+        ioc_guid=00066a02de000070,dgid=fe8000000000000000066a21de000070,pkey=ffff,"EVIC in Chassis 0x00066a00db00001e, Slot 1, Ioc 2"
+
+ib_qlgc_vnic_query can be used to discover EVIC IOCs on the fabric based on 
+umad device, HCA no/Port no and PORTGUID as follows:
+
+For umad devices, it takes the name of the umad device mentioned with '-d'
+option:
 
 # ib_qlgc_vnic_query -es -d /dev/infiniband/umad0
 
-and to collect the information about EVIC/VEx IOCs accessible through port 2,
-use "umad1" device : 
+HCA No = 0, HCA = mlx4_0, Port = 1
 
-# ib_qlgc_vnic_query -es -d /dev/infiniband/umad1
+        ioc_guid=00066a01de000070,dgid=fe8000000000000000066a11de000070,pkey=ffff,"EVIC in Chassis 0x00066a00db00001e, Slot 1, Ioc 1"
+        ioc_guid=00066a02de000070,dgid=fe8000000000000000066a21de000070,pkey=ffff,"EVIC in Chassis 0x00066a00db00001e, Slot 1, Ioc 2"
+
+If the name of the HCA and its port no is known, then ib_qlgc_vnic_query can
+make use of this information to discover EVIC IOCs on the fabric.  HCA name 
+and port no is specified with '-C' and '-P' options respectively.
+
+# ib_qlgc_vnic_query -es -C mlx4_1 -P 2
+
+	ioc_guid=00066a01de000070,dgid=fe8000000000000000066a11de000070,pkey=ffff,"EVIC in Chassis 0x00066a00db00001e, Slot 1, Ioc 1"
+	ioc_guid=00066a02de000070,dgid=fe8000000000000000066a21de000070,pkey=ffff,"EVIC in Chassis 0x00066a00db00001e, Slot 1, Ioc 2"
+
+In case, if HCA name is not specified but port no is specified, HCA 0 is 
+selected as default HCA to discover IOCs and if Port no is missing then,
+Port 1 of HCA name mentioned is used to discover the IOCs.  If both are
+missing, the behaviour is default and ib_qlgc_vnic_query will scan all the
+IB ports on the host to discover IOCs reachable through each one of them.
+
+PORTGUID information about the IB ports on given host can be obtained using
+the option '-L':
+
+# ib_qlgc_vnic_query -L
+
+0,mlx4_0,1,0x0002c903000010f5
+0,mlx4_0,2,0x0002c903000010f6
+1,mlx4_1,1,0x0002c90300000785
+1,mlx4_1,2,0x0002c90300000786
+
+This actually lists different configurable parameters of IB ports present on
+given host in the order: HCA No, HCA Name, Port No, PORTGUID separated by
+commas. PORTGUID value obtained thus, can be used to discover EVIC IOCs
+reachable through it using '-G' option as follows:
+
+# ib_qlgc_vnic_query -es -G 0x0002c903000010f5
+
+HCA No = 0, HCA = mlx4_0, Port = 1, Port GUID = 0x0002c903000010f5, State = Active
+
+        ioc_guid=00066a01de000070,dgid=fe8000000000000000066a11de000070,pkey=ffff,"EVIC in Chassis 0x00066a00db00001e, Slot 1, Ioc 1"
+        ioc_guid=00066a02de000070,dgid=fe8000000000000000066a21de000070,pkey=ffff,"EVIC in Chassis 0x00066a00db00001e, Slot 1, Ioc 2"
 
 C) Starting the QLogic VNIC driver and the QLogic VNIC interfaces
 
@@ -265,7 +422,97 @@ For example to delete interface veth0
 
 echo -n veth0 > /sys/class/infiniband_qlgc_vnic/interfaces/delete_vnic
 
-G) QLogic VNIC Dynamic Update Daemon Tool and Hot Swap support:-
+G) Forced Failover feature for QLogic VNIC.
+
+VNIC interfaces, when configured with failover configuration, can be 
+forced to failover to use other active path.  For example, if VNIC interface
+"veth1" is configured with failover configuration, then to switch to other
+path, use command:
+
+echo -n veth1 > /sys/class/infiniband_qlgc_vnic/interfaces/force_failover
+
+This will make VNIC interface veth1 to switch to other active path, even though
+the path of VNIC interface, before the forced failover operation, is not in
+disconnected state.
+
+This feature allows the network administrator to control the path of the
+VNIC traffic at run time and reconfiguration as well as restart of VNIC 
+service is not required to achieve the same.
+
+Once enabled as mentioned above, forced failover can be cleared with
+the unfailover command:
+
+echo -n veth1 > /sys/class/infiniband_qlgc_vnic/interfaces/unfailover
+
+This clears the forced failover on VNIC interface "veth1".  Once cleared,
+if module parameter "default_prefer_primary" is set to 1, then VNIC 
+interface switches back to primary path.  If module parameter 
+"default_prefer_primary" is set to 0, then VNIC interface continues to
+use its current active path.
+
+Forced failover, thus, takes priority over default_prefer_primary and the
+default_prefer_primary feature will not be active unless the forced
+failover is cleared through "unfailover".
+
+Besides this forced failover, QLogic VNIC service does retain its 
+original failover feature which gets triggered when current active
+path gets disconnected.
+
+H) Infiniband Quality of Service for VNIC:-
+
+To enforce infiniband Quality of Service(QoS) for VNIC protocol, there
+is no configuration required on host side.  The service level for the
+VNIC protocol can be configured using service ID or target port guid
+in the "qos-ulps" section of /etc/opensm/qos-policy.conf on the host
+running OpenSM.
+
+Service IDs for the EVIC IO controllers can be obtained from the output
+of ib_qlgc_vnic_query:  
+
+HCA No = 1, HCA = mlx4_1, Port = 2, Port GUID = 0x0002c90300000786, State = Active
+
+        IO Unit Info:
+            port LID:        0008
+            port GID:        fe8000000000000000066a11de000070
+            change ID:       0003
+            max controllers: 0x02
+
+
+            controller[  1]
+                GUID:      00066a01de000070
+                vendor ID: 00066a
+                device ID: 000030
+                IO class : 2000
+                ID:        EVIC in Chassis 0x00066a00db00001e, Slot 1, Ioc 1
+                service entries: 2
+------>             service[  0]: 1000066a00000001 / InfiniNIC.InfiniConSys.Control:01
+------>             service[  1]: 1000066a00000101 / InfiniNIC.InfiniConSys.Data:01
+
+        IO Unit Info:
+            port LID:        0009
+            port GID:        fe8000000000000000066a21de000070
+            change ID:       0003
+            max controllers: 0x02
+
+
+            controller[  2]
+                GUID:      00066a02de000070
+                vendor ID: 00066a
+                device ID: 000030
+                IO class : 2000
+                ID:        EVIC in Chassis 0x00066a00db00001e, Slot 1, Ioc 2
+                service entries: 2
+------>             service[  0]: 1000066a00000002 / InfiniNIC.InfiniConSys.Control:02
+------>             service[  1]: 1000066a00000102 / InfiniNIC.InfiniConSys.Data:02
+
+Numbers 1000066a00000002, 1000066a00000102 are the required service IDs.
+
+Finer control on quality of service for the VNIC protocol can be achieved by
+configuring the service level using target port guid values of the EVIC IO
+controllers.  Target port guid values for the EVIC IO controllers can be
+obtained using "saquery" command supplied by OFED package.
+
+I) QLogic VNIC Dynamic Update Daemon Tool and Hot Swap support:-
 
 This tool is started and stopped as part of the QLogic VNIC service 
 (refer to C above) and provides the following features:
@@ -310,7 +557,7 @@ QLogic VNIC service, please make sure to update the configuration file with the
 new DGID and IOCGUID values. Otherwise, the creation of such interfaces will be
 delayed till the daemon runs and updates the parameters.
 
-H) Information about creating VLAN interfaces
+J) Information about creating VLAN interfaces
 
 The EVIC/VEx supports VLAN tagging without having to explicitly create VLAN
 interfaces for the VNIC interface on the host. This is done by enabling
@@ -328,7 +575,7 @@ on the host after disabling (or enabling) the "Host ignores VLAN" option.
 Please refer to the EVIC/VEx documentation for more information on Egress/Ingress
 port tagging feature and disabling the "Host ignores VLAN" option.
 
-I) Information about enabling IB Multicast for QLogic VNIC interface
+K) Information about enabling IB Multicast for QLogic VNIC interface
 
 QLogic VNIC driver has been upgraded to support the IB Multicasting feature of 
 EVIC/VEx. This feature enables the QLogic VNIC host driver to support the IP 
@@ -349,7 +596,7 @@ IB multicasting also needs to be enabled over EVIC/VEx. Please refer to the
 EVIC/VEx documentation for more information on enabling IB multicast 
 feature over EVIC/VEx.
 
-J) Basic Troubleshooting
+L) Basic Troubleshooting
 
 1. In case of any problems, make sure that:
 
