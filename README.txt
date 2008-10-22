@@ -152,10 +152,10 @@ Notes:
     Example:
     sminfo: sm lid 0x1 sm guid 0x2c9010b7c2ae1, activity count 20 priority 1
 
-    To check if OpenSM is running on the management node, enter: /etc/init.d/opensm status
-    To start OpenSM, enter: /etc/init.d/opensm start
+    To check if OpenSM is running on the management node, enter: /etc/init.d/opensmd status
+    To start OpenSM, enter: /etc/init.d/opensmd start
 
-    Note: OpenSM parameters can be set via the file /etc/sysconfig/opensm.
+    Note: OpenSM parameters can be set via the file /etc/opensm/opensm.conf
 
 4)  Verify the status of ports by using ibv_devinfo: all connected ports should
     report a "PORT_ACTIVE" state.
