@@ -1,30 +1,39 @@
             Open Fabrics Enterprise Distribution (OFED)
                 CHELSIO T3 RNIC RELEASE NOTES
-			June 2008
+			November 2008
 
 
 The iw_cxgb3 and cxgb3 modules provide RDMA and NIC support for the
 Chelsio S310/320 and R310/320 series adapters.  Make sure you choose the
 'cxgb3' and 'libcxgb3' options when generating your ofed-1.4 rpms.
 
+============================================
+New for ofed-1.4
+============================================
+
+- 7.0 Firmware support.  See below for more information on updating
+your RNIC to the latest firmware.
+
+- Memory Managment Extensions including:
+	- Fast register memory regions
+	- Invalidate local memory region work request
+	- Zero stag support via the local DMA lkey field
+	- Read with invalidate local stag work request
+
+- RDS bcopy mode enabled for iWARP devices
 
 ============================================
-New enhancements for OFED-1.4:
+Recent Enhancements
 ============================================
 
 - Various MPI libraries are enabled via a new iw_cxgb3 module option
 called peer2peer.  When loading iw_cxgb3, set peer2peer=1 to enable Intel
 MPI version 3.1.038, HP MPI version 2.02.05.01, OpenMPI (will be released
-with OMPI-3.1), and Scali MPI (will be available in version 3.13.7).
+with OpenMPI-1.3), and Scali MPI (will be available in version 3.13.7).
 This option must be set on all systems in your cluster.  See more info
 below on running these MPIs.  NOTE: None of these MPIs are included in
 the ofed-1.4 release.  Contact the specific vendors for obtaining the
 MPI code.  Open MPI can be pulled from www.open-mpi.org.
-
-- New 6.0 firmware required.  Download this firmware from
-service.chelsio.com and put the t3fw-6.0.0.bin file in /lib/firmware.
-Then reload the cxgb3 module and reconfigure the interface to flash this
-new firmware.
 
 - Large memory registration.  User applications can now register > 30MB 
 memory regions.
@@ -108,7 +117,7 @@ Contact Scali for obtaining their MPI with DAPL support.
 OpenMPI:
 =============
 
-OpenMPI iWARP support is only available in version 1.3 or greater.
+OpenMPI iWARP support is only available in OpenMPI version 1.3 or greater.
 
 Open MPI will work without any specific configuration via the openib btl.
 Users wishing to performance tune the configurable options may wish to
@@ -171,7 +180,7 @@ msi             - whether to use MSI or MSI-X.  Default is 2.
 Updating Firmware:
 ============================================
 
-This release requires firmware version 5.x, and Protocol SRAM version
+This release requires firmware version 7.x, and Protocol SRAM version
 1.1.x.  This firmware can be downloaded from http://service.chelsio.com.
 
 If your distro/kernel supports firmware loading, you can place the
