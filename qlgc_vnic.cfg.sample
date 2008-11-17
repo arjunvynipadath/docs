@@ -75,6 +75,16 @@
 #
 #HCA - Optional HCA specification for use with PORT specification. First HCA is 0.
 #
+#PORTGUID - The PORTGUID of the IB port to use.
+#
+#		Use of PORTGUID for configuring the VNIC interface has an 
+#		advantage on hosts having more than 1 HCAs plugged in. As
+#		PORTGUID is persistent for given IB port, VNIC configurations
+#		would be consistent and reliable - unaffected by restarts of
+#		OFED IB stack on host having more than 1 HCAs plugged in.
+#
+#		On the downside, if HCA on the host is changed, VNIC interfaces
+#		configured with PORTGUID needs reconfiguration.
 #
 #IB_MULTICAST - Controls enabling or disabling of IB multicast feature on VNIC.
 #               Defaults to TRUE implying IB multicast is enabled for 
@@ -151,4 +161,26 @@
 #   SECONDARY = {IOCGUID=0x66A013000010C; INSTANCE=0; PORT=2; IB_MULTICAST=FALSE; }
 #  }
 #
-
+# Example of HCA/PORT and PORTGUID configurations:
+#	{
+#	CREATE; NAME="veth1";
+#		PRIMARY={IOCGUID=00066a02de000070; INSTANCE=1; PORTGUID=0x0002c903000010f5; }
+#		SECONDARY={IOCGUID=00066a02de000070; INSTANCE=2; PORTGUID=0x0002c903000010f6; }
+#	}
+#
+#	{
+#	CREATE; NAME="veth2";
+#		PRIMARY={IOCGUID=00066a02de000070; DGID=fe8000000000000000066a21de000070; INSTANCE=3; HCA=1; PORT=2; }
+#		SECONDARY={IOCGUID=00066a02de000070; DGID=fe8000000000000000066a21de000070; INSTANCE=4; HCA=0; PORT=1; }
+#	}
+#
+#	{
+#	    CREATE; NAME="veth3";
+#		IOCSTRING="EVIC in Chassis 0x00066a00db00001e, Slot 1, Ioc 2";
+#		INSTANCE=5 PORTGUID=0x0002c90300000786;
+#	}
+#	{
+#		CREATE; NAME="veth4;
+#			IOCGUID=00066a02de000070;
+#			INSTANCE=6; HCA=1; PORT=2;
+#	}
