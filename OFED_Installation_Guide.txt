@@ -2,7 +2,7 @@
                           Version 1.4
                        Installation Guide
 
-                             July 2008
+                             December 2008
 
 ==============================================================================
 Table of contents
@@ -98,7 +98,6 @@ o  Common to all        gcc, glib, glib-devel, glibc, glibc-devel,
                         glibc-devel-32bit (to build 32-bit libraries on x86_86
                         and ppc64), zlib-devel
 o  RedHat, Fedora       kernel-devel, rpm-build
-o  SLES 9.0             kernel-source, udev, rpm
 o  SLES 10.0            kernel-source, rpm
 
 Note:   To build 32-bit libraries on x86_64 and ppc64 platforms, the 32-bit
@@ -183,9 +182,9 @@ Note:   The installer will warn you if you attempt to compile any of the
                      [-n|--net <network config_file>]
 
            -c|--config <packages config_file>. Example of the config file can
-                                         be found under docs (ofed.conf-example)
-	   -n|--net <network config_file>      Example of the config file can be
-	                                found under docs (ofed_net.conf-example)
+                                be found under docs (ofed.conf-example)
+           -n|--net <network config_file>      Example of the config file can be
+                                found under docs (ofed_net.conf-example)
            -l|--prefix          Set installation prefix.
            -p|--print-available Print available packages for current platform.
                                 And create corresponding ofed.conf file.
@@ -255,7 +254,6 @@ o The file /etc/modprobe.conf is updated to include the following:
   - "alias ib<n> ib_ipoib" for each ib<n> interface.
   - "alias net-pf-27 ib_sdp" for sdp.
 o If opensm is installed, the daemon opensmd is installed under /etc/init.d/
-  and opensm.conf is installed under /etc/ofa/ (for RedHat).
 o All verbs tests and examples are installed under <prefix>/bin and management 
   utilities under <prefix>/sbin
 e ofed_info script provides information on the OFED version and git repository.
