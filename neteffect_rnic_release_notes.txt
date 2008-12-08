@@ -1,11 +1,11 @@
             Open Fabrics Enterprise Distribution (OFED)
-                NetEffect RNIC RELEASE NOTES
-                       February 2008
+                Intel-NE RNIC RELEASE NOTES
+                       November 2008
 
 
 
 The iw_nes and libnes modules provide RDMA and NIC support for the
-NetEffect NE020 series of adapters.  
+Intel-NE NE020 series of adapters.  
 
 ============================================
 Loadable Module options:
@@ -34,6 +34,12 @@ nes_drv_opt = 0;
 
 nes_debug_level = 0;
     "Enable debug output level"
+
+wqm_quanta = 65536
+    "Size of data to be transmitted at a time"
+
+limit_maxrdreqsz = 0
+    "Limit PCI read request size to 256 bytes"
 
 
 ============================================
