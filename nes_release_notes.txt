@@ -1,0 +1,108 @@
+            Open Fabrics Enterprise Distribution (OFED)
+                Intel-NE RNIC RELEASE NOTES
+                       November 2008
+
+
+
+The iw_nes and libnes modules provide RDMA and NIC support for the
+Intel-NE NE020 series of adapters.  
+
+============================================
+Loadable Module options
+============================================
+The following options can be used when loading the iw_nes module:
+
+mpa_version = 1;  
+    "MPA version to be used int MPA Req/Resp (0 or 1)"
+
+disable_mpa_crc = 0; 
+    "Disable checking of MPA CRC"
+
+send_first = 0;
+    "Send RDMA Message First on Active Connection"
+
+nes_drv_opt = 0;
+    "Driver option parameters"
+
+    NES_DRV_OPT_ENABLE_MSI           0x00000010
+    NES_DRV_OPT_DUAL_LOGICAL_PORT    0x00000020
+    NES_DRV_OPT_SUPRESS_OPTION_BC    0x00000040
+    NES_DRV_OPT_NO_INLINE_DATA       0x00000080
+    NES_DRV_OPT_DISABLE_INT_MOD      0x00000100
+    NES_DRV_OPT_DISABLE_VIRT_WQ      0x00000200
+    NES_DRV_OPT_DISABLE_LRO          0x00000400
+
+nes_debug_level = 0;
+    "Enable debug output level"
+
+wqm_quanta = 65536
+    "Size of data to be transmitted at a time"
+
+limit_maxrdreqsz = 0
+    "Limit PCI read request size to 256 bytes"
+
+
+============================================
+Runtime Module options
+============================================
+The following options can be used to alter the behavior of the iw_nes module:
+
+tso 
+    ethtool -K eth2 tso on  == enables tso
+    ethtool -K eth2 tso off == disables tso
+                  
+jumbo
+    ifconfig eth2 mtu 9000  == largest mtu supported
+
+static interrupt moderation
+    ethtool -C eth2 rx-usecs-irq 128    
+                  
+dynamic interrupt moderation 
+    ethtool -C eth2 adaptive-rx on == enable
+    ethtool -C eth2 adaptive-rx off == disable
+    
+dynamic interrupt moderation 
+    ethtool -C eth2 rx-frames-low 12    == low watermark of rx queue
+    ethtool -C eth2 rx-frames-high 255  == high watermark of rx queue
+    ethtool -C eth2 rx-usecs-low 40     == smallest interrupt moderation timer
+    ethtool -C eth2 rx-usecs-high 1500  == largest interrupt moderation timer
+
+
+============================================
+Recommended setting
+============================================
+RDMA connections use the same TCP port space as the host stack.  To avoid
+conflicts, set rdma_cm module option unify_tcp_port_sapce to 1 by adding 
+the following to /etc/modprobe.conf:
+
+    options rdma_cm unify_tcp_port_space=1
+
+
+============================================
+Known issues
+============================================
+On RHEL4 update 4, we have observed /dev/infiniband/uverbs0 does not
+always get created.  This device file is used for user-mode access to
+accelerated interface.  Current workaround is to change the start order
+for openibd(S05openibd) to after network(S10network).  For systems that
+start at runlevel 3 do the following:
+
+    mv /etc/rc.d/rc3.d/S05openibd /etc/rc.d/rc3.d/S11openibd
+
+For runlevel 5 do:
+
+    mv /etc/rc.d/rc5.d/S05openibd /etc/rc.d/rc5.d/S11openibd
+
+
+Some MPIs require the node that initiated the RDMA connection to send
+the first RDMA message.  Enable this feature by adding the following 
+to /etc/modprobe.conf:
+
+    options iw_nes send_first=1
+
+
+For Intel MPI, iw_nes currently does not support dynamic connection 
+establishment feature.  Turn it off by setting/exporting the 
+I_MPI_USE_DYNAMIC_CONNECTIONS variable to 0:
+
+    export I_MPI_USE_DYNAMIC_CONNECTIONS=0
