@@ -1,7 +1,7 @@
              Open Fabrics Enterprise Distribution (OFED)
-                      How To Build OFED 1.3
+                      How To Build OFED 1.4
 
-                          February 2008
+                          December 2008
 
 
 ==============================================================================
@@ -39,69 +39,86 @@ Name: build_ofed.sh
 
 Example:
 
-    ./build_ofed.sh --ver 1.3-rc6
+    ./build_ofed.sh --ver 1.4-rc7
 
-    This command will create a package (i.e., subtree) called OFED-1.3-rc6
+    This command will create a package (i.e., subtree) called OFED-1.4-rc7
     in the current working directory.
 
 Sources are extracted by default from the following locations:
-    libibverbs:
-        git://git.openfabrics.org/ofed_1_3/libibverbs.git ofed_1_3
-    libmthca:
-        git://git.openfabrics.org/ofed_1_3/libmthca.git ofed_1_3
-    libehca:
-        git://git.openfabrics.org/ofed_1_3/libehca.git ofed_1_3
-    libipathverbs:
-        git://git.openfabrics.org/ofed_1_3/libipathverbs.git ofed_1_3
-    tvflash:
-        git://git.openfabrics.org/ofed_1_3/tvflash.git ofed_1_3
-    libibcm:
-        git://git.openfabrics.org/ofed_1_3/libibcm.git ofed_1_3
-    libsdp:
-        git://git.openfabrics.org/ofed_1_3/libsdp.git ofed_1_3
-    libnes:
-        git://git.openfabrics.org/ofed_1_3/libnes.git ofed_1_3
-    mstflint:
-        git://git.openfabrics.org/ofed_1_3/mstflint.git ofed_1_3
-    perftest:
-        git://git.openfabrics.org/ofed_1_3/perftest.git ofed_1_3
-    srptools:
-        git://git.openfabrics.org/ofed_1_3/srptools.git ofed_1_3
-    ipoibtools:
-        git://git.openfabrics.org/ofed_1_3/ipoibtools.git ofed_1_3
-    librdmacm:
-        git://git.openfabrics.org/ofed_1_3/librdmacm.git ofed_1_3
-    dapl:
-        git://git.openfabrics.org/ofed_1_3/dapl1.git ofed_1_3
-        git://git.openfabrics.org/ofed_1_3/dapl2.git ofed_1_3
-    management:
-        git://git.openfabrics.org/ofed_1_3/management.git ofed_1_3
-    ibsim:
-        git://git.openfabrics.org/ofed_1_3/ibsim.git ofed_1_3
-    ibutils:
-        git://git.openfabrics.org/ofed_1_3/ibutils.git ofed_1_3
-    libcxgb3:
-        git://git.openfabrics.org/ofed_1_3/libcxgb3.git ofed_1_3
-    qlvnictools:
-        git://git.openfabrics.org/ofed_1_3/qlvnictools.git ofed_1_3
-    sdpnetstat:
-        git://git.openfabrics.org/ofed_1_3/sdpnetstat.git ofed_1_3
-    qperf:
-        git://git.openfabrics.org/ofed_1_3/qperf.git ofed_1_3
-    mpi-selector:
-        git://git.openfabrics.org/~jsquyres/mpi-selector.git ofed_1_2
+libibverbs:
+git://git.openfabrics.org/ofed_1_4/libibverbs.git ofed_1_4
+commit b00dc7d2f79e0660ac40160607c9c4937a895433
+libmthca:
+git://git.kernel.org/pub/scm/libs/infiniband/libmthca.git master
+commit be5eef3895eb7864db6395b885a19f770fde7234
+libmlx4:
+git://git.openfabrics.org/ofed_1_4/libmlx4.git ofed_1_4
+commit fd418d6ee049afe76bb769aff87c303b96848495
+libehca:
+git://git.openfabrics.org/ofed_1_4/libehca.git ofed_1_4
+commit e0c2d7e8ee2aa5dd3f3511270521fb0c206167c6
+libipathverbs:  
+git://git.openfabrics.org/~ralphc/libipathverbs ofed_1_4
+commit 65e5701dbe7b511f796cb0026b0cd51831a62318
+libcxgb3:
+git://git.openfabrics.org/~swise/libcxgb3.git ofed_1_4
+commit f685c8fe7e77e64614d825e563dd9f02a0b1ae16
+libnes:
+git://git.openfabrics.org/~glenn/libnes.git master
+commit 07fb9dfbbb36b28b5ea6caa14a1a5e215386b3e8
+libibcm:
+git://git.openfabrics.org/~shefty/libibcm.git master
+commit 7fb57e005b3eae2feb83b3fd369aeba700a5bcf8
+librdmacm:
+git://git.openfabrics.org/~shefty/librdmacm.git master
+commit e0b1ece1dc0518b2a5232872e0c48d3e2e354e47
+libsdp:
+git://git.openfabrics.org/ofed_1_4/libsdp.git ofed_1_4
+commit 02404fb0266082f5b64412c3c25a71cb9d39442d
+sdpnetstat:
+git://git.openfabrics.org/~amirv/sdpnetstat.git ofed_1_4
+commit 75a033a9512127449f141411b0b7516f72351f95
+srptools:
+git://git.openfabrics.org/ofed_1_3/srptools.git ofed_1_3
+commit d3025d0771317584e51490a419a79ab55650ebc9
+perftest:
+git://git.openfabrics.org/~orenmeron/perftest.git master
+commit ca629627c7a26005a1a4c8775cc01f483524f1c4
+qlvnictools:
+git://git.openfabrics.org/~ramachandrak/qlvnictools.git ofed_1_4
+commit 1dc6e51a728cbfbdd2018260602b8bebde618da9
+tvflash:
+git://git.openfabrics.org/ofed_1_4/tvflash.git ofed_1_4
+commit e1b50b3b8af52b0bc55b2825bb4d6ce699d5c43b
+mstflint:
+git://git.openfabrics.org/~orenk/mstflint.git master
+commit 9ddeea464e946cd425e05b0d1fdd9ec003fca824
+qperf:
+git://git.openfabrics.org/~johann/qperf.git/.git master
+commit bee05d35b09b0349cf4734ae43fc9c2e970ada8c
+ibutils:
+git://git.openfabrics.org/~orenk/ibutils.git master
+commit 6516d16e815c68fa405562ea773b0c5215c1b70c
+ibsim:
+git://git.openfabrics.org/~sashak/ibsim.git master
+commit a76132ae36dde8302552d896e35bd29608ac9524
+
+ofa_kernel-1.4: 
+Git:
+git://git.openfabrics.org/ofed_1_4/linux-2.6.git ofed_kernel
+commit 7055de9adefaaa409856d7ee0b8a986485fbfb06
 
 SRPMS:
     rds-tools:
-        http://www.openfabrics.org/~vlad/ofed_1_3/rds-tools
+        http://www.openfabrics.org/~vlad/ofed_1_4/rds-tools
     mvapich:
-        http://www.openfabrics.org/~pasha/ofed_1_3/mvapich
+        http://www.openfabrics.org/~pasha/ofed_1_4/mvapich
     openmpi:
-        http://www.openfabrics.org/~jsquyres/ofed_1_3
+        http://www.openfabrics.org/~jsquyres/ofed_1_4
     mvapich2:
-        http://www.openfabrics.org/~perkinjo/ofed_1_3
+        http://www.openfabrics.org/~perkinjo/ofed_1_4
     mpitests:
-        http://www.openfabrics.org/~pasha/ofed_1_3/mpitests
+        http://www.openfabrics.org/~pasha/ofed_1_4/mpitests
     
 
 ==============================================================================
