@@ -166,7 +166,7 @@ holding the remote TCP/IP Port Number to connect to.
 7. RDS
 ==============================================================================
 
-RDS uses CMA and thus it is very close to SDP. The Service-ID for RDS is 
+RDS uses CMA and thus it is very close to SDP. The Service-ID for RDS is
 0x000000000106PPPP, where PPPP are 4 hex digits holding the TCP/IP Port
 Number that the protocol connects to.
 Default port number for RDS is 0x48CA, which makes a default Service-ID
