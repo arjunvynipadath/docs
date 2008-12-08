@@ -1,16 +1,16 @@
 ========================================================================
 
              Open Fabrics Enterprise Distribution (OFED)
-              MVAPICH2-1.0.2 in OFED 1.3 Release Notes
+              MVAPICH2-1.2p1 in OFED 1.4 Release Notes
 
-                          February 2008
+                          December 2008
 
 
 Overview
 --------
 
-These are the release notes for MVAPICH2-1.0.2.  This is OFED's edition of
-the MVAPICH2-1.0.2 release. MVAPICH2 is an MPI-2 implementation over
+These are the release notes for MVAPICH2-1.2p1.  This is OFED's edition of
+the MVAPICH2-1.2p1 release. MVAPICH2 is an MPI-2 implementation over
 InfiniBand and iWARP from the Ohio State University
 (http://mvapich.cse.ohio-state.edu/).
 
@@ -18,7 +18,7 @@ InfiniBand and iWARP from the Ohio State University
 User Guide
 ----------
 
-For more information on using MVAPICH2-1.0.2, please visit the user guide at
+For more information on using MVAPICH2-1.2p1, please visit the user guide at
 http://mvapich.cse.ohio-state.edu/support/.
 
 
@@ -35,29 +35,99 @@ New Features
 ------------
 
 MVAPICH2 (MPI-2 over InfiniBand and iWARP) is an MPI-2 implementation based on
-MPICH2.  MVAPICH2 1.0.2 is available as a single integrated package (with
-MPICH2 1.0.5p4).  This version of MVAPICH2-1.0.2 for OFED has the following
-changes from MVAPICH2-1.0.1:
+MPICH2.  MVAPICH2 1.2p1 is available as a single integrated package (with
+MPICH2 1.0.7).  This version of MVAPICH2-1.2p1 for OFED has the following
+changes from MVAPICH2-1.0.3:
 
-- Explicitly name unions in struct ibv_wr_descriptor and reference the
-  members in the code properly.
-- Change "inline" functions to "static inline" properly.
-- Increase the maximum number of buffer allocations for communication
-  intensive applications.
-- Corrections for warnings from the Sun Studio 12 compiler.
-- If malloc hook initialization fails, then turn off registration
-  cache.
-- Add MV_R3_THESHOLD and MV_R3_NOCACHE_THRESHOLD which allows
-  R3 to be used for smaller messages instead of registering the
-  buffer and using a zero-copy protocol.
-- Fixed an error in message coalescing.
-- Setting application initiated checkpoint as default if CR is turned on.
+MVAPICH2-1.2p1 (11/11/2008)
+- Fix shared-memory communication issue for AMD Barcelona systems.
+
+MVAPICH2-1.2 (11/06/2008)
+
+* Bugs fixed since MVAPICH2-1.2-rc2
+  - Ignore the last bit of the pkey and remove the pkey_ix option since the
+    index can be different on different machines. Thanks for Pasha@Mellanox 
+    for the patch.
+  - Fix data types for memory allocations. Thanks for Dr. Bill Barth 
+    from TACC for the patches.
+  - Fix a bug when MV2_NUM_HCAS is larger than the number of active HCAs.
+  - Allow builds on architectures for which tuning parameters do not exist.
+
+* Efficient support for intra-node shared memory communication on 
+  diskless clusters
+
+* Changes related to the mpirun_rsh framework
+  - Always build and install mpirun_rsh in addition to the process 
+    manager(s) selected through the --with-pm mechanism.
+  - Cleaner job abort handling
+  - Ability to detect the path to mpispawn if the Linux proc filesystem is
+    available.
+  - Added Totalview debugger support
+  - Stdin is only available to rank 0.  Other ranks get /dev/null.
+
+* Other miscellaneous changes
+  - Add sequence numbers for RPUT and RGET finish packets.
+  - Increase the number of allowed nodes for shared memory broadcast to 4K.
+  - Use /dev/shm on Linux as the default temporary file path for shared 
+    memory communication. Thanks for Doug Johnson@OSC for the patch.
+  - MV2_DEFAULT_MAX_WQE has been replaced with MV2_DEFAULT_MAX_SEND_WQE and
+    MV2_DEFAULT_MAX_RECV_WQE for send and recv wqes, respectively.
+  - Fix compilation warnings.
+
+MVAPICH2-1.2-RC2 (08/20/2008)
+
+* Following bugs are fixed in RC2
+    - Properly handle the scenario in shared memory broadcast code when the
+      datatypes of different processes taking part in broadcast are different.
+    - Fix a bug in Checkpoint-Restart code to determine whether a connection
+      is a shared memory connection or a network connection.
+    - Support non-standard path for BLCR header files.
+    - Increase the maximum heap size to avoid race condition in realloc().
+    - Use int32_t for rank for larger jobs with 32k processes or more.
+    - Improve mvapich2-1.2 bandwidth to the same level of mvapich2-1.0.3.
+    - An error handling patch for uDAPL interface. Thanks for Nilesh Awate
+      for the patch.
+    - Explicitly set some of the EP attributes when on demand connection
+      is used in uDAPL interface.
+
+
+MVAPICH2-1.2RC1 (07/02/08)
+
+* Based on MPICH2 1.0.7
+
+* Scalable and robust daemon-less job startup
+
+   - Enhanced and robust mpirun_rsh framework (non-MPD-based) to
+     provide scalable job launching on multi-thousand core clusters
+
+   - Available for OpenFabrics (IB and iWARP) and uDAPL interfaces
+     (including Solaris)
+
+* Checkpoint-restart with intra-node shared memory support
+
+   - Allows best performance and scalability with fault-tolerance
+     support
+
+* Enhancement to software installation
+   - Full autoconf-based configuration
+   - An application (mpiname) for querying the MVAPICH2
+     library version and configuration information
+
+* Enhanced processor affinity using PLPA for multi-core architectures
+   - Allows user-defined flexible processor affinity
+
+* Enhanced scalability for RDMA-based direct one-sided communication
+  with less communication resource
+
+* Shared memory optimized MPI_Bcast operations
+
+* Optimized and tuned MPI_Alltoall
 
 
 Main Verification Flows
 -----------------------
 
-In order to verify the correctness of MVAPICH2-1.0.2, the following tests
+In order to verify the correctness of MVAPICH2-1.2p1, the following tests
 and parameters were run.
 
 Test                            Description
