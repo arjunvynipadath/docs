@@ -65,9 +65,9 @@ matching rules (see below). Port group lists ports by:
 II) QoS Setup (denoted by qos-setup).
 This section describes how to set up SL2VL and VL Arbitration tables on
 various nodes in the fabric.
-However, this is not supported in OFED 1.3.1.
+However, this is not supported in OpenSM currently.
 SL2VL and VLArb tables should be configured in the OpenSM options file
-(default location - /var/cache/opensm/opensm.opts).
+(default location - /usr/local/etc/opensm/opensm.conf).
 
 III) QoS Levels (denoted by qos-levels).
 Each QoS Level defines Service Level (SL) and a few optional fields:
@@ -203,9 +203,9 @@ policy file and their syntax:
     qos-setup
         # This section of the policy file describes how to set up SL2VL and VL
         # Arbitration tables on various nodes in the fabric.
-        # However, this is not supported in OFED 1.3.1 - the section is parsed
-        # and ignored. SL2VL and VLArb tables should be configured in the
-        # OpenSM options file (by default - /var/cache/opensm/opensm.opts).
+        # However, this is not supported in OpenSM currently - the section is
+        # parsed and ignored. SL2VL and VLArb tables should be configured in the
+        # OpenSM options file (by default - /usr/local/etc/opensm/opensm.conf).
     end-qos-setup
 
     qos-levels
@@ -378,12 +378,12 @@ equivalent:
 
 6.4  iSER
 Similar to RDS, iSER query is matched by Service ID, where the the Service ID
-is also 0x000000000106PPPP. Default port number for iSER is 0x035C, which makes
-a default Service-ID 0x000000000106035C. The following two match rules are
+is also 0x000000000106PPPP. Default port number for iSER is 0x0CBC, which makes
+a default Service-ID 0x0000000001060CBC. The following two match rules are
 equivalent:
 
     iser                               : <SL>
-    any, service-id 0x000000000106035C : <SL>
+    any, service-id 0x0000000001060CBC : <SL>
 
 6.5  SRP
 Service ID for SRP varies from storage vendor to vendor, thus SRP query is
@@ -432,17 +432,17 @@ of the currently supported sets:
 Here's the example of typical default values for CAs and switches' external
 ports (hard-coded in OpenSM initialization):
 
-    qos_ca_max_vls=15
-    qos_ca_high_limit=0
-    qos_ca_vlarb_high=0:4,1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0,9:0,10:0,11:0,12:0,13:0,14:0
-    qos_ca_vlarb_low=0:0,1:4,2:4,3:4,4:4,5:4,6:4,7:4,8:4,9:4,10:4,11:4,12:4,13:4,14:4
-    qos_ca_sl2vl=0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,7
+    qos_ca_max_vls 15
+    qos_ca_high_limit 0
+    qos_ca_vlarb_high 0:4,1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0,9:0,10:0,11:0,12:0,13:0,14:0
+    qos_ca_vlarb_low 0:0,1:4,2:4,3:4,4:4,5:4,6:4,7:4,8:4,9:4,10:4,11:4,12:4,13:4,14:4
+    qos_ca_sl2vl 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,7
 
-    qos_swe_max_vls=15
-    qos_swe_high_limit=0
-    qos_swe_vlarb_high=0:4,1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0,9:0,10:0,11:0,12:0,13:0,14:0
-    qos_swe_vlarb_low=0:0,1:4,2:4,3:4,4:4,5:4,6:4,7:4,8:4,9:4,10:4,11:4,12:4,13:4,14:4
-    qos_swe_sl2vl=0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,7
+    qos_swe_max_vls 15
+    qos_swe_high_limit 0
+    qos_swe_vlarb_high 0:4,1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0,9:0,10:0,11:0,12:0,13:0,14:0
+    qos_swe_vlarb_low 0:0,1:4,2:4,3:4,4:4,5:4,6:4,7:4,8:4,9:4,10:4,11:4,12:4,13:4,14:4
+    qos_swe_sl2vl 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,7
 
 VL arbitration tables (both high and low) are lists of VL/Weight pairs.
 Each list entry contains a VL number (values from 0-14), and a weighting value
@@ -473,17 +473,17 @@ values for each VL should be multiples of 64.
 
 Below is an example of SL2VL and VL Arbitration configuration on subnet:
 
-    qos_ca_max_vls=15
-    qos_ca_high_limit=6
-    qos_ca_vlarb_high=0:4
-    qos_ca_vlarb_low=0:0,1:64,2:128,3:192,4:0,5:64,6:64,7:64
-    qos_ca_sl2vl=0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,7
+    qos_ca_max_vls 15
+    qos_ca_high_limit 6
+    qos_ca_vlarb_high 0:4
+    qos_ca_vlarb_low 0:0,1:64,2:128,3:192,4:0,5:64,6:64,7:64
+    qos_ca_sl2vl 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,7
 
-    qos_swe_max_vls=15
-    qos_swe_high_limit=6
-    qos_swe_vlarb_high=0:4
-    qos_swe_vlarb_low=0:0,1:64,2:128,3:192,4:0,5:64,6:64,7:64
-    qos_swe_sl2vl=0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,7
+    qos_swe_max_vls 15
+    qos_swe_high_limit 6
+    qos_swe_vlarb_high 0:4
+    qos_swe_vlarb_low 0:0,1:64,2:128,3:192,4:0,5:64,6:64,7:64
+    qos_swe_sl2vl 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,7
 
 In this example, there are 8 VLs configured on subnet: VL0 to VL7. VL0 is
 defined as a high priority VL, and it is limited to 6 x 4KB = 24KB in a single
