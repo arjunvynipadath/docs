@@ -176,82 +176,73 @@ example:
 > ofed_info
 OFED-1.4
 libibverbs:
-git://git.openfabrics.org/ofed_1_3/libibverbs.git ofed_1_3
-commit 40b771aa6a9c0ad092b2e20775b4723d3b173792
+git://git.openfabrics.org/ofed_1_4/libibverbs.git ofed_1_4
+commit b00dc7d2f79e0660ac40160607c9c4937a895433
 libmthca:
-git://git.openfabrics.org/ofed_1_3/libmthca.git ofed_1_3
-commit 9501e698d257949acfab2edc90812602966dbcc9
+git://git.kernel.org/pub/scm/libs/infiniband/libmthca.git master
+commit be5eef3895eb7864db6395b885a19f770fde7234
 libmlx4:
-git://git.openfabrics.org/ofed_1_3/libmlx4.git ofed_1_3
-commit 3869d6dab7e12fe452270ca641f7dd7082b42482
+git://git.openfabrics.org/ofed_1_4/libmlx4.git ofed_1_4
+commit fd418d6ee049afe76bb769aff87c303b96848495
 libehca:
-git://git.openfabrics.org/ofed_1_3/libehca.git ofed_1_3
-commit fd898180cfa3b737f893f432a80b91bac3396325
+git://git.openfabrics.org/ofed_1_4/libehca.git ofed_1_4
+commit e0c2d7e8ee2aa5dd3f3511270521fb0c206167c6
 libipathverbs:
-git://git.openfabrics.org/ofed_1_3/libipathverbs.git ofed_1_3
-commit 82be4d81859d1fd2edf830220fe65a9923b80a46
+git://git.openfabrics.org/~ralphc/libipathverbs ofed_1_4
+commit 65e5701dbe7b511f796cb0026b0cd51831a62318
 libcxgb3:
-git://git.openfabrics.org/ofed_1_3/libcxgb3.git ofed_1_3
-commit 6f7485feb244d8571fcab2292ef92c97bea48df0
+git://git.openfabrics.org/~swise/libcxgb3.git ofed_1_4
+commit f685c8fe7e77e64614d825e563dd9f02a0b1ae16
 libnes:
-git://git.openfabrics.org/ofed_1_3/libnes.git ofed_1_3
-commit 471fa2e5a7bb2f8946119396358c31adcc6c2fb3
+git://git.openfabrics.org/~glenn/libnes.git master
+commit 07fb9dfbbb36b28b5ea6caa14a1a5e215386b3e8
 libibcm:
-git://git.openfabrics.org/ofed_1_3/libibcm.git ofed_1_3
-commit 53ec35f544bbc1838bbadc2210909c25a954a5e2
+git://git.openfabrics.org/~shefty/libibcm.git master
+commit 7fb57e005b3eae2feb83b3fd369aeba700a5bcf8
 librdmacm:
-git://git.openfabrics.org/ofed_1_3/librdmacm.git ofed_1_3
-commit a0ef80a1e0d5debdae48a844fbc8d09aec5b24b1
-dapl1:
-git://git.openfabrics.org/ofed_1_3/dapl1.git ofed_1_3
-commit 7a9b58d6c50fc0a357de540ec3eb2ab2e07f8779
-dapl2:
-git://git.openfabrics.org/ofed_1_3/dapl2.git ofed_1_3
-commit 2583f07d9d0f55eee14e0b0e6074bc6fd0712177
+git://git.openfabrics.org/~shefty/librdmacm.git master
+commit e0b1ece1dc0518b2a5232872e0c48d3e2e354e47
 libsdp:
-git://git.openfabrics.org/ofed_1_3/libsdp.git ofed_1_3
-commit c8102dccc502930442b23de658674d386456b350
+git://git.openfabrics.org/ofed_1_4/libsdp.git ofed_1_4
+commit 02404fb0266082f5b64412c3c25a71cb9d39442d
 sdpnetstat:
-git://git.openfabrics.org/ofed_1_3/sdpnetstat.git ofed_1_3
-commit 3341620a7259c4f7bdd4180864b98e260c3dc223
+git://git.openfabrics.org/~amirv/sdpnetstat.git ofed_1_4
+commit 75a033a9512127449f141411b0b7516f72351f95
 srptools:
 git://git.openfabrics.org/ofed_1_3/srptools.git ofed_1_3
-commit e0ce2d42eeb25f8e89b8f6daaa32a630c9b64f0d
+commit d3025d0771317584e51490a419a79ab55650ebc9
 perftest:
-git://git.openfabrics.org/ofed_1_3/perftest.git ofed_1_3
-commit 6321b5468f7293088cc003809049c02b176130d8
+git://git.openfabrics.org/~orenmeron/perftest.git master
+commit ca629627c7a26005a1a4c8775cc01f483524f1c4
 qlvnictools:
-git://git.openfabrics.org/ofed_1_3/qlvnictools.git ofed_1_3
-commit 086f9cb80ee790d61bddaf201ecbae32a2ff21dd
+git://git.openfabrics.org/~ramachandrak/qlvnictools.git ofed_1_4
+commit 1dc6e51a728cbfbdd2018260602b8bebde618da9
 tvflash:
-git://git.openfabrics.org/ofed_1_3/tvflash.git ofed_1_3
-commit f5e7407a7f2058448df5e5320d9843f944427429
+git://git.openfabrics.org/ofed_1_4/tvflash.git ofed_1_4
+commit e1b50b3b8af52b0bc55b2825bb4d6ce699d5c43b
 mstflint:
-git://git.openfabrics.org/ofed_1_3/mstflint.git ofed_1_3
-commit 78bbd3d521a9078553a991111ffb6f76665b9ee9
+git://git.openfabrics.org/~orenk/mstflint.git master
+commit 9ddeea464e946cd425e05b0d1fdd9ec003fca824
 qperf:
-git://git.openfabrics.org/ofed_1_3/qperf.git ofed_1_3
-commit 6221aabd038df0b7033e035378ca190641ed2295
-management:
-git://git.openfabrics.org/ofed_1_3/management.git ofed_1_3
-commit d9c852406dae14e8284f9cfb1c7f495bbb55fddf
+git://git.openfabrics.org/~johann/qperf.git/.git master
+commit bee05d35b09b0349cf4734ae43fc9c2e970ada8c
 ibutils:
-git://git.openfabrics.org/ofed_1_3/ibutils.git ofed_1_3
-commit 7daf94fab6eaf307316326f3f49704e6080a1508
+git://git.openfabrics.org/~orenk/ibutils.git master
+commit 6516d16e815c68fa405562ea773b0c5215c1b70c
 ibsim:
-git://git.openfabrics.org/ofed_1_3/ibsim.git ofed_1_3
-commit 55113d9f919709c7c97ea41d29991941b9c8be70
+git://git.openfabrics.org/~sashak/ibsim.git master
+commit eff83c7a522dea41c21e15746b1c58ff21fdecaa
 
 ofa_kernel-1.4:
 Git:
-git://git.openfabrics.org/ofed_1_3/linux-2.6.git ofed_kernel
-commit 39e1dc833f98e5134f91fcf7f33df402adf4bc0c
+git://git.openfabrics.org/ofed_1_4/linux-2.6.git ofed_kernel
+commit 60ca4b0e03aa5acccb01a3e0430ba240ad521547
 
 # MPI
-mvapich-1.0.1-2533.src.rpm
-mvapich2-1.0.3-1.src.rpm
-openmpi-1.2.6-1.src.rpm
-mpitests-3.0-773.src.rpm
+mvapich-1.1.0-3143.src.rpm
+mvapich2-1.2p1-1.src.rpm
+openmpi-1.2.8-1.src.rpm
+mpitests-3.1-891.src.rpm
 
 
 2.2 Installed OFED Components
@@ -263,15 +254,15 @@ For example:
 
  > /etc/infiniband/info
    prefix=/usr
-   Kernel=2.6.9-22.ELsmp
+   Kernel=2.6.9-78.ELsmp
 
    MODULES:  CONFIG_INFINIBAND=m CONFIG_INFINIBAND_USER_MAD=m
    CONFIG_INFINIBAND_USER_ACCESS=m CONFIG_INFINIBAND_ADDR_TRANS=y
    CONFIG_INFINIBAND_MTHCA=m CONFIG_IPATH_CORE=m CONFIG_INFINIBAND_IPATH=m
    CONFIG_INFINIBAND_IPOIB=m
 
-   User level:  --kernel-version 2.6.9-22.ELsmp --kernel-sources
-   /lib/modules/2.6.9-22.ELsmp/build --with-libibcm --with-libibverbs
+   User level:  --kernel-version 2.6.9-78.ELsmp --kernel-sources
+   /lib/modules/2.6.9-78.ELsmp/build --with-libibcm --with-libibverbs
    --with-libipathverbs --with-libmthca --with-mstflint --with-perftest
 
 2.3 Building/Installing InfiniBand (IB) Modules With Debug Information
@@ -464,12 +455,12 @@ do the following:
 Example for libibverbs:
  
 1. tar xzf OFED-1.4.tgz
-2. rpm -ihv OFED-1.4/SRPMS/libibverbs-1.1.1-0.10.ofed20080205.src.rpm
+2. rpm -ihv SRPMS/libibverbs-1.1.2-1.ofed1.4.src.rpm
 3. cd /usr/src/redhat/SOURCES (for RedHat)
    or
    cd /usr/src/packages/SOURCES (for SuSE)
-4. tar xzf libibverbs-1.1.1.tgz
-5. cd libibverbs-1.1.1
+4. tar xzf libibverbs-1.1.2.tgz
+5. cd libibverbs-1.1.2
 6. ./configure (specify parameters, if required)
 7. make
 8. make install
