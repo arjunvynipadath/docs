@@ -114,14 +114,14 @@ I) Port Group: a set of CAs, Routers or Switches that share the same settings.
    list of GUIDs, or list of port names based on NodeDescription.
 
 II) Fabric Setup: Defines how the SL2VL and VLArb tables should be setup.
-    NOTE: In OFED 1.3 this part of the policy is ignored. SL2VL and VLArb
+    NOTE: Currently this part of the policy is ignored. SL2VL and VLArb
           tables should be configured in the OpenSM options file
           (opensm.opts).
 
 III) QoS-Levels Definition: This section defines the possible sets of
      parameters for QoS that a client might be mapped to. Each set holds
      SL and optionally: Max MTU, Max Rate, Packet Lifetime and Path Bits.
-     NOTE: Path Bits are not implemented in OFED 1.3
+     NOTE: Currently, Path Bits are not implemented.
 
 IV) Matching Rules: A list of rules that match an incoming PR/MPR request
     to a QoS-Level. The rules are processed in order such as the first match
@@ -191,8 +191,8 @@ SA reports its ability to handle QoS PR/MPRs.
 ==============================================================================
 
 Similar to RDS, iSER also uses CMA. The Service-ID for iSER is similar to RDS
-(0x000000000106PPPP), with default port number 0x035C, which makes a default
-Service-ID 0x000000000106035C.
+(0x000000000106PPPP), with default port number 0x0CBC, which makes a default
+Service-ID 0x0000000001060CBC.
 
 
 ==============================================================================

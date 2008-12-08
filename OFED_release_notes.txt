@@ -1,7 +1,7 @@
 	    Open Fabrics Enterprise Distribution (OFED)
 	                Version 1.4-RC6
 	                 Release Notes
-	                 November 2008
+	                 December 2008
 
 
 ===============================================================================

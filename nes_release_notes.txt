@@ -1,6 +1,6 @@
             Open Fabrics Enterprise Distribution (OFED)
                 Intel-NE RNIC RELEASE NOTES
-                       November 2008
+                       December 2008
 
 
 

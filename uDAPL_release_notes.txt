@@ -1,6 +1,6 @@
 		   Release Notes for 
 		OFED 1.4 DAPL Release
-		    November 2008
+		    December 2008
 
 
       OFED 1.4 RELEASE NOTES

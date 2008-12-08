@@ -1,7 +1,7 @@
 	     Open Fabrics Enterprise Distribution (OFED)
 		    IPoIB in OFED 1.4 Release Notes
 			  
-			   November 2008
+			   December 2008
 
 
 ===============================================================================
