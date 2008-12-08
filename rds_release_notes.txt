@@ -1,7 +1,6 @@
-	  Open Fabrics Enterprise Distribution (OFED)
-               RDS in OFED 1.3.1 Release Notes
-			  
-		      June 2008
+          Open Fabrics Enterprise Distribution (OFED)
+               RDS in OFED 1.4 Release Notes
+                       December 2008
 
 
 ===============================================================================
@@ -107,5 +106,11 @@ containing the bitmap on the socket.
 ===============================================================================
 7. Known Issues
 ===============================================================================
-1. RDS is not supported on ppc64 platforms
-2. RDS is not supported on 2.6.24 kernel
+1. RDS is not stable when using flow control feature over ConnectX.
+   Disable flow control to workaround this issue:
+
+   Run
+   sysctl -w net.rds.ib.flow_control=0
+
+   Update /etc/sysctl.conf to disable flow controle after reboot:
+   net.rds.ib.flow_control = 0
