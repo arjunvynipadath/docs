@@ -83,7 +83,9 @@ Notes:
 	- SLES10 SP1 up1: 	2.6.16.53-0.16-smp
 	- SLES10 SP2: 		2.6.16.60-0.21-smp  
 	- OpenSuSE 10.3: 	2.6.22.5-31         *
-	- kernel.org:     	2.6.26 and 2.6.27-rc5
+	- OEL 4 up7		2.6.9-78.ELsmp
+	- OEL 5 up2		2.6.18-92.el5
+	- kernel.org:     	2.6.26 and 2.6.27
 
       * Minimal QA for these versions
 	
