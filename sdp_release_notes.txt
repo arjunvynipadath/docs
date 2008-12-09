@@ -53,6 +53,7 @@ SDP in OFED is at GA level for OFED 1.4.
 
 - BUG1256 - libsdp does not support epoll
 
+- BUG1087 - sometimes libsdp does not recover well when host is running out of QPs.
 
 - Each SDP socket currently consumes up to 2 MBytes of memory. If this value
   is high for your installation, it is possible to trade off performance
