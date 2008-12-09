@@ -1,7 +1,7 @@
              Open Fabrics Enterprise Distribution (OFED)
-          OSU MPI MVAPICH-1.0.1, in OFED 1.3.1 Release Notes
+          OSU MPI MVAPICH-1.1.0, in OFED 1.4.0 Release Notes
 
-                          June 2008
+                          December 2008
 
 
 ===============================================================================
@@ -10,16 +10,15 @@ Table of Contents
 1. Overview
 2. Software Dependencies
 3. New Features
-4. Bug Fixes from version 0.9.9
-5. Bug Fixes from version 1.0.0
-6. Known Issues
-7. Main Verification Flows
+4. Bug Fixes
+5. Known Issues
+6. Main Verification Flows
 
 
 ===============================================================================
 1. Overview
 ===============================================================================
-These are the release notes for OSU MPI MVAPICH-1.0.0.
+These are the release notes for OSU MPI MVAPICH-1.1.0.
 OSU MPI is an MPI channel implementation over InfiniBand 
 by Ohio State University (OSU).
 
@@ -35,47 +34,43 @@ InfiniBand IPoIB or Ethernet).
 
 
 ===============================================================================
-3. New Features ( Compared to mvapich 0.9.9 )
+3. New Features ( Compared to mvapich 1.0.0 )
 ===============================================================================
-MVAPICH-1.0.0 has the following additional features:
-- ConnectX support
-- Enhanced coalescing support with varying degrees of coalescing
-- Enhanced mpirun_rsh to provide scalable launching on multi-thousand node
-  clusters
-- Network-level fault tolerance with Automatic Path Migration (APM) for
-  tolerating intermittent network failures over InfiniBand
-- Improved automatic HCA detection
-- Self tunable SRQ
-- Optimized, high-performance shared-memory-aware collective operations for
-  multi-core platforms
+MVAPICH-1.1.0 has the following additional features:
+- eXtended Reliable Connection (XRC) support
+- Lock-free design to provide support for asynchronous
+  progress at both sender and receiver to overlap
+  computation and communication
+- Optimized MPI_allgather collective
+- Efficient intra-node shared memory communication
+  support for diskless clusters
+- Enhanced Totalview Support with the new mpirun_rsh framework
 
 ===============================================================================
-4. Bug Fixes
+4. Bug Fixes  ( Compared to mvapich 1.0.0 )
 ===============================================================================
-- Fixed process cleanup after mpi kill or CTRL-C
-- Fixed multi-core collective operations support for machines with more that 8
-  cores
+- Fixes for MPI_Query_thread and MPI_Is_thread_main
+- Fixes for PGI compiler support
+- Compilation warnings cleanup
+- Fixes for optimized colletives
+- Fix data types for memory allocations
+- Multiple fixes for mpirun_rsh launcher
 
 ===============================================================================
-5. Bug Fixes from version 1.0.0
+5. Known Issues
 ===============================================================================
-- Fixes for Sun Studio 12 compiler.
-- Avoid falling back to gcc if selected compiler fails. 
-- Fix race condition in on-demand startup.
-- Fixes for process clean up on MPI_Abort.
-- Startup fixes. Try to find mpispawn in the same directory where we found 
-  mpirun_rsh.
-- Fixing error messages
-- Fix for the BLACS problem.
+- MVAPICH MPI compiled on AMD x86_64 does not work with MVAPICH MPI compiled
+  on Intel X86_64 (EM64t).
+  Workaround:
+  Use "VIADEV_USE_COMPAT_MODE=1" run time option in order to enable compatibility
+  mode that works for AMD and Intel platform.
 
-===============================================================================
-6. Known Issues
-===============================================================================
-- A process running MPI cannot fork after MPI_Init. Using fork might cause a
-  segmentation fault.
+- A process running MPI cannot fork after MPI_Init unless the environment 
+  variable IBV_FORK_SAFE=1 is set to enable fork support. This support also 
+  requires a kernel version of 2.6.16 or higher.
 
 - For users of Mellanox Technologies firmware fw-23108 or fw-25208 only:
-  OSU MPI might fail in its default configuration if your HCA is burnt with an
+  MVAPICH might fail in its default configuration if your HCA is burnt with an
   fw-23108 version that is earlier than 3.4.000, or with an fw-25208 version
   4.7.400 or earlier.
 
@@ -94,16 +89,16 @@ MVAPICH-1.0.0 has the following additional features:
 
 
 ===============================================================================
-7. Main Verification Flows
+6. Main Verification Flows
 ===============================================================================
-In order to verify the correctness of OSU MPI, the following tests and
+In order to verify the correctness of MVAPICH, the following tests and
 parameters were run.
 
 Test 				Description
 -------------------------------------------------------------------
 Intel's 			Test suite - 1400 Intel tests
 BW/LT 				OSU's test for bandwidth latency
-IMB 		        	Intel's MPI Benchmark test
+IMB 		       	Intel's MPI Benchmark test
 mpitest 			b_eff test
 Presta 				Presta multicast test
 Linpack 			Linpack benchmark

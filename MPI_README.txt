@@ -1,7 +1,7 @@
 		Open Fabrics Enterprise Distribution (OFED)
-		         MPI in OFED 1.3.1 README
+		         MPI in OFED 1.4.0 README
 
-			    June 2008
+			           December 2008
 
 
 ===============================================================================
@@ -17,9 +17,9 @@ Table of Contents
 1. Overview
 ===============================================================================
 Three MPI stacks are included in this release of OFED:
-- MVAPICH 1.0.1-2533
-- Open MPI 1.2.6-1
-- MVAPICH2 1.0.3-1
+- MVAPICH 1.1.0-3143
+- Open MPI 1.2.8
+- MVAPICH2 1.2p1
 
 Setup, compilation and run information of MVAPICH, Open MPI and MVAPICH2 is
 provided below in sections 2, 3 and 4 respectively.
@@ -41,7 +41,7 @@ bandwidth (bw), latency (lt), Intel MPI Benchmark, and Presta. The tests
 are located under: <prefix>/mpi/<compiler>/<mpi stack>/tests/, 
 where <prefix> is /usr by default.
 
-1.3 Selecting Which MPI to Use: mpi-selector
+1.4 Selecting Which MPI to Use: mpi-selector
 --------------------------------------------
 Depending on how the OFED installer was run, multiple different MPI
 implementations may be installed on your system.  The OFED installer
@@ -96,7 +96,7 @@ convenient set of command line tools and menus.
 1.4 Updating MPI Installations
 ------------------------------
 Note that all of the MPI implementations included in the OFED software
-package are the versions that were available when OFED v1.3 was
+package are the versions that were available when OFED v1.4 was
 released.  They have been QA tested with this version of OFED and are
 fully supported.
 
@@ -106,7 +106,7 @@ been successfully installed.  There is nothing specific about the
 OFED-included MPI software packages that prohibit installing
 newer/other MPI implementations.
 
-It should be also noted that versions of MPI released after OFED v1.3
+It should be also noted that versions of MPI released after OFED v1.4
 are not supported by OFED.  But since each MPI has its own release
 schedule and QA process (each of which involves testing with the OFED
 stack), it may sometimes be desirable -- or even advisable, depending
@@ -123,7 +123,7 @@ The web sites of each MPI implementation are listed below:
 2. MVAPICH MPI
 ===============================================================================
 
-This package is a 1.0.0 version of the MVAPICH software package,
+This package is a 1.1.0 version of the MVAPICH software package,
 and is the officially supported MPI stack for this release of OFED. 
 See http://mvapich.cse.ohio-state.edu for more details.
  
@@ -173,20 +173,20 @@ rsh, add to the mpirun_rsh command the parameter: -rsh
 
 *** Running OSU tests ***
 
-/usr/mpi/gcc/mvapich-1.0.0/bin/mpirun_rsh -np 2 -hostfile /root/cluster /usr/mpi/gcc/mvapich-1.0.0/tests/osu_benchmarks-3.0/osu_bw
-/usr/mpi/gcc/mvapich-1.0.0/bin/mpirun_rsh -np 2 -hostfile /root/cluster /usr/mpi/gcc/mvapich-1.0.0/tests/osu_benchmarks-3.0/osu_latency
-/usr/mpi/gcc/mvapich-1.0.0/bin/mpirun_rsh -np 2 -hostfile /root/cluster /usr/mpi/gcc/mvapich-1.0.0/tests/osu_benchmarks-3.0/osu_bibw
-/usr/mpi/gcc/mvapich-1.0.0/bin/mpirun_rsh -np 2 -hostfile /root/cluster /usr/mpi/gcc/mvapich-1.0.0/tests/osu_benchmarks-3.0/osu_bcast
+/usr/mpi/gcc/mvapich-1.1.0/bin/mpirun_rsh -np 2 -hostfile /root/cluster /usr/mpi/gcc/mvapich-1.1.0/tests/osu_benchmarks-3.0/osu_bw
+/usr/mpi/gcc/mvapich-1.1.0/bin/mpirun_rsh -np 2 -hostfile /root/cluster /usr/mpi/gcc/mvapich-1.1.0/tests/osu_benchmarks-3.0/osu_latency
+/usr/mpi/gcc/mvapich-1.1.0/bin/mpirun_rsh -np 2 -hostfile /root/cluster /usr/mpi/gcc/mvapich-1.1.0/tests/osu_benchmarks-3.0/osu_bibw
+/usr/mpi/gcc/mvapich-1.1.0/bin/mpirun_rsh -np 2 -hostfile /root/cluster /usr/mpi/gcc/mvapich-1.1.0/tests/osu_benchmarks-3.0/osu_bcast
 
 *** Running Intel MPI Benchmark test (Full test) ***
 
-/usr/mpi/gcc/mvapich-1.0.0/bin/mpirun_rsh -np 2 -hostfile /root/cluster /usr/mpi/gcc/mvapich-1.0.0/tests/IMB-3.0/IMB-MPI1
+/usr/mpi/gcc/mvapich-1.1.0/bin/mpirun_rsh -np 2 -hostfile /root/cluster /usr/mpi/gcc/mvapich-1.1.0/tests/IMB-3.1/IMB-MPI1
  
 *** Running Presta test ***
 
-/usr/mpi/gcc/mvapich-1.0.0/bin/mpirun_rsh -np 2 -hostfile /root/cluster /usr/mpi/gcc/mvapich-1.0.0/tests/presta-1.4.0/com -o 100
-/usr/mpi/gcc/mvapich-1.0.0/bin/mpirun_rsh -np 2 -hostfile /root/cluster /usr/mpi/gcc/mvapich-1.0.0/tests/presta-1.4.0/glob -o 100
-/usr/mpi/gcc/mvapich-1.0.0/bin/mpirun_rsh -np 2 -hostfile /root/cluster /usr/mpi/gcc/mvapich-1.0.0/tests/presta-1.4.0/globalop
+/usr/mpi/gcc/mvapich-1.1.0/bin/mpirun_rsh -np 2 -hostfile /root/cluster /usr/mpi/gcc/mvapich-1.1.0/tests/presta-1.4.0/com -o 100
+/usr/mpi/gcc/mvapich-1.1.0/bin/mpirun_rsh -np 2 -hostfile /root/cluster /usr/mpi/gcc/mvapich-1.1.0/tests/presta-1.4.0/glob -o 100
+/usr/mpi/gcc/mvapich-1.1.0/bin/mpirun_rsh -np 2 -hostfile /root/cluster /usr/mpi/gcc/mvapich-1.1.0/tests/presta-1.4.0/globalop
 
 
 ===============================================================================
@@ -194,7 +194,7 @@ rsh, add to the mpirun_rsh command the parameter: -rsh
 ===============================================================================
 
 Open MPI is a next-generation MPI implementation from the Open MPI
-Project (http://www.open-mpi.org/).  Version 1.2.5-1 of Open MPI is
+Project (http://www.open-mpi.org/).  Version 1.2.8 of Open MPI is
 included in this release, which is also available directly from the
 main Open MPI web site.
 
@@ -347,17 +347,17 @@ to see maximum performance (*).
 
 Example 1: Running the OSU bandwidth:
 
-    > cd /usr/mpi/gcc/openmpi-1.2.5-1/tests/osu_benchmarks-3.0
+    > cd /usr/mpi/gcc/openmpi-1.2.8/tests/osu_benchmarks-3.0
     > mpirun -np <N> --mca mpi_leave_pinned 1 -hostfile <HOSTFILE> osu_bw
 
 Example 2: Running the Intel MPI Benchmark benchmarks:
 
-    > cd /usr/mpi/gcc/openmpi-1.2.5-1/tests/IMB-3.0
+    > cd /usr/mpi/gcc/openmpi-1.2.8/tests/IMB-3.1
     > mpirun -np <N> --mca mpi_leave_pinned 1 -hostfile <HOSTFILE> IMB-MPI1
 
 Example 3: Running the Presta benchmarks:
 
-    > cd /usr/mpi/gcc/openmpi-1.2.5-1/tests/presta-1.4.0
+    > cd /usr/mpi/gcc/openmpi-1.2.8/tests/presta-1.4.0
     > mpirun -np <N> --mca mpi_leave_pinned 1 -hostfile <HOSTFILE> com -o 100
 
 (*) The "mpi_leave_pinned" option can increase bandwidth and decrease
@@ -415,20 +415,17 @@ below:
      - OFA (IB and iWARP) Options:
           - ROMIO Support                  [default Y]
           - Shared Library Support         [default Y]
-          - Multithread Support            [default N]
           - Checkpoint-Restart Support     [default N]
-            Note:
-               * only an option of multithread support is "N"
                * requires an installation of BLCR and prompts for the
                  BLCR installation directory location
      - uDAPL Options:
           - ROMIO Support                  [default Y]
           - Shared Library Support         [default Y]
-          - Multithread Support            [default N]
           - Cluster Size                   [default "Small"]
           - I/O Bus                        [default "PCI-Express"]
           - Link Speed                     [default "SDR"]
-          - Default DAPL Provider          [default "ib0"]
+          - Default DAPL Provider          [default ""]
+              * the default provider is determined based on detected OS
 
 For non-interactive builds where no MVAPICH2 build options are stored in
 the OFED configuration file, the default settings are:
@@ -436,7 +433,6 @@ the OFED configuration file, the default settings are:
 Implementation:             OFA
 ROMIO Support:              Y
 Shared Library Support:     Y
-Multithread Support:        N
 Checkpoint-Restart Support: N
 
 
@@ -522,6 +518,44 @@ build process.
 
 4.3 Running MVAPICH2 Applications
 ---------------------------------
+4.3.1 Running MVAPICH2 Applications with mpirun_rsh
+---------------------------------------------------
+>From release 1.2, MVAPICH2 comes with a faster and more scalable startup based 
+on mpirun_rsh. To launch a MPI job with mpirun_rsh, password-less ssh needs to
+be enabled across all nodes. 
+
+Note: ssh will be used by default. In order to use rsh, use the -rsh option on 
+the mpirun_rsh commandline. For more options, see mpirun_rsh -help or the 
+MVAPICH2 user guide.
+
+*** Running 4 processes on 4 nodes ***
+
+$ cat > hostfile
+node1
+node2
+node3
+node4
+$ mpirun_rsh -np 4 -hostfile hostfile /path/to/my_mpi_app
+
+*** Running OSU tests ***
+
+/usr/mpi/gcc/mvapich2-1.2p1/bin/mpirun_rsh -np 2 -hostfile /root/cluster /usr/mpi/gcc/mvapich2-1.2p1/tests/osu_benchmarks-3.0/osu_bw
+/usr/mpi/gcc/mvapich2-1.2p1/bin/mpirun_rsh -np 2 -hostfile /root/cluster /usr/mpi/gcc/mvapich2-1.2p1/tests/osu_benchmarks-3.0/osu_latency
+/usr/mpi/gcc/mvapich2-1.2p1/bin/mpirun_rsh -np 2 -hostfile /root/cluster /usr/mpi/gcc/mvapich2-1.2p1/tests/osu_benchmarks-3.0/osu_bibw
+/usr/mpi/gcc/mvapich2-1.2p1/bin/mpirun_rsh -np 2 -hostfile /root/cluster /usr/mpi/gcc/mvapich2-1.2p1/tests/osu_benchmarks-3.0/osu_bcast
+
+*** Running Intel MPI Benchmark test (Full test) ***
+
+/usr/mpi/gcc/mvapich2-1.2p1/bin/mpirun_rsh -np 2 -hostfile /root/cluster /usr/mpi/gcc/mvapich2-1.2p1/tests/IMB-3.1/IMB-MPI1
+ 
+*** Running Presta test ***
+
+/usr/mpi/gcc/mvapich2-1.2p1/bin/mpirun_rsh -np 2 -hostfile /root/cluster /usr/mpi/gcc/mvapich2-1.2p1/tests/presta-1.4.0/com -o 100
+/usr/mpi/gcc/mvapich2-1.2p1/bin/mpirun_rsh -np 2 -hostfile /root/cluster /usr/mpi/gcc/mvapich2-1.2p1/tests/presta-1.4.0/glob -o 100
+/usr/mpi/gcc/mvapich2-1.2p1/bin/mpirun_rsh -np 2 -hostfile /root/cluster /usr/mpi/gcc/mvapich2-1.2p1/tests/presta-1.4.0/globalop
+
+4.3.2 Running MVAPICH2 Applications with mpd and mpiexec
+--------------------------------------------------------
 Launching processes in MVAPICH2 is a two step process.  First, mpdboot must
 be used to launch MPD daemons on the desired hosts.  Second, the mpiexec
 command is used to launch the processes.  MVAPICH2 requires bidirectional
@@ -556,7 +590,7 @@ file has been created in the specific directory with two hosts.
 
 OSU Tests Example:
 
-$ cd /usr/mpi/gcc/mvapich2-0.9.8-11/tests/osu_benchmarks-2.2
+$ cd /usr/mpi/gcc/mvapich2-1.2p1/tests/osu_benchmarks-3.0
 $ mpdboot -n 2 -f ./hosts
 $ mpiexec -n 2 ./osu_bcast
 $ mpiexec -n 2 ./osu_bibw
@@ -566,14 +600,14 @@ $ mpdallexit
 
 Intel MPI Benchmark Example:
 
-$ cd /usr/mpi/gcc/mvapich2-0.9.8-11/tests/IMB-2.3
+$ cd /usr/mpi/gcc/mvapich2-1.2p1/tests/IMB-3.1
 $ mpdboot -n 2 -f ./hosts
 $ mpiexec -n 2 ./IMB-MPI1
 $ mpdallexit
 
 Presta Benchmarks Example:
 
-$ cd /usr/mpi/gcc/mvapich2-0.9.8-11/tests/presta-1.4.0
+$ cd /usr/mpi/gcc/mvapich2-1.2p1/tests/presta-1.4.0
 $ mpdboot -n 2 -f ./hosts
 $ mpiexec -n 2 ./com -o 100
 $ mpiexec -n 2 ./glob -o 100

@@ -12,8 +12,7 @@ Table of Contents
 3. Known Issues
 4. DHCP Support of IPoIB
 5. The ib-bonding driver
-6. Bug Fixes and Enhancements Since OFED 1.2
-7. Bug Fixes and Enhancements Since OFED 1.3
+6. Bug Fixes and Enhancements Since OFED 1.3
 
 ===============================================================================
 1. Overview
@@ -26,33 +25,22 @@ the relevant IETF working group's RFCs (http://www.ietf.org).
 ===============================================================================
 2. New Features
 ===============================================================================
-IPoIB now supports "connected mode" (RFC 4755). IPOIB CM is enabled by default
-on hardware that supports the SRQ optional feature (mthca, ipath).
-The maximum MTU for connected mode has been increased to 65520. By default, MTU
-will be configured to this maximum value.
-
-1. IPoIB will accept incoming connected mode connections unless connected mode
-   is disabled at compile time.
-2. IPoIB will use connected mode for all outgoing traffic to unicast destina-
-   tions that support connected mode if and only if connected mode is enabled
-   at run time.
-3. For destinations that do not support connected mode, IPoIB will fall back on
-   datagram mode.
-4. For multicast traffic, IPoIB always uses datagram mode.
-5. This version adds support for CM mode for HCAs which do not support Infiniband
-   Shared Receive Queues (SRQ). The detection is done automatically at run time. In
-   this case, the driver uses RC connections between the peers for transferring IPOIB
-   traffic.
-
-   Even if the HCA does support SRQ, the administrator can force the driver to not
-   use SRQs. This can be done by setting the module parameter "set_nonsrq".
-6. This version of ofed introduces improvements to IPOIB by cutting the CPU
+1. This version of ofed introduces improvements to IPOIB by cutting the CPU
    overhead in handling receive packets. This will improve operation
    in datagram mode:
+   Large Receive Offload (LRO) - aggregating multiple incoming packets from a 
+   single stream into a larger buffer before they are passed higher up the 
+   networking stack, thus reducing the number of packets that have to be 
+   processed.
+   This feature is enabled on HCAs that can support LRO, e.g. ConnectX.
+2. Datagram mode: LSO (large send offload) allows the networking stack to pass 
+   SKBs with data size larger than the MTU to the IPoIB driver and have the HCA
+   HW fragment the data to multiple MSS-sized packets. Add a device capability
+   flag IB_DEVICE_UD_TSO for devices that can perform TCP segmentation offload,
+   a new send work request opcode IB_WR_LSO, header, hlen and mss fields for 
+   the work request structure, and a new IB_WC_LSO completion type.
+   This feature is enabled on HCAs that can support LSO, e.g. ConnectX.
 
-   Large Receive Offload (LRO) - aggregating multiple incoming packets from a single
-   stream into a larger buffer before they are passed higher up the networking
-   stack, thus reducing the number of packets that have to be processed.
 
 Usage and configuration:
 ========================
@@ -236,33 +224,27 @@ Notes:
 
 
 ===============================================================================
-6. Bug Fixes and Enhancements Since OFED 1.2
-===============================================================================
-- Add interrupt moderation support for ipoib
-- NAPI is available using a module parameter
-- Fixed a leak in ipoib_transport_dev_init
-- Fixed kernel oops in IPoIB download
-- Fix a crasher bug in IPoIB CM by initializing RX before moving QP to RTR. 
-
-
-===============================================================================
-7. Bug Fixes and Enhancements Since OFED 1.3
+6. Bug Fixes and Enhancements Since OFED 1.3
 ===============================================================================
 - There is no default configuration for IPoIB interfaces: One should manually
   specify the full IP configuration or use the ofed_net.conf file. See
   OFED_Installation_Guide.txt for details on ipoib configuration.
 - Don't drop multicast sends when they can be queued
-- IPoIB panics with RHEL5U1, RHEL4U6 and RHEL4U5: Bug fix when copying small 
-  SKBs (bug 989) 	
+- IPoIB panics with RHEL5U1, RHEL4U6 and RHEL4U5: Bug fix when copying small
+  SKBs (bug 989)
 - IPoIB failed on stress testing (bug 1004)
 - Kernel Oops during "port up/down test" (bug 1040)
-- Restart the stack during iperf 2.0.4 in client side cause to kernel 
+- Restart the stack during iperf 2.0.4 ver2.0.4 in client side cause to kernel
   panic (bug 985)
 - Fix neigh destructor oops on kernel versions between 2.6.17 and 2.6.20
-- Set max CM MTU when moving to CM mode, instead of setting it in openibd script 
+- Set max CM MTU when moving to CM mode, instead of setting it in openibd script
 - Fix CQ size calculations for ipoib
-- IPoIB: add LRO support
-- IPoIB: Refresh paths instead of flushing them on SM change events
 - Bonding: Enable build for SLES10 SP2
 - Bonding: Fix  issue in using the bonding module for Ethernet slaves (see
   documentation for details)
+
+===============================================================================
+6. Bug Fixes and Enhancements Since OFED 1.3.1
+===============================================================================
+- Refresh paths instead of flushing them on SM change events to improve 
+  failover respond
