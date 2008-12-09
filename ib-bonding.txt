@@ -5,7 +5,7 @@ IB Bonding
 2. How to work with ib-bond
 3. How to work with interface configuration scripts
 3.1 Configuration with initscripts support
-3.1.1 Writing network scripts under Redhat-AS4 (Update 4, 5 or 6)
+3.1.1 Writing network scripts under Redhat-AS4 (Update 4, 5, 6 or 7)
 3.1.2 Writing network scripts under Redhhat-EL5
 3.2 Configuration with sysconfig support
 3.2.1 Writing network scripts under SLES-10
@@ -63,10 +63,10 @@ create the bonding configuration (depending on your OS).
 
 3.1 Configuration with initscripts support
 ------------------------------------------
-Note: This feature is available only for Redhat-AS4 (Update 4, Update 5 or
-Update 6) and for Redhat-EL5 and above.
+Note: This feature is available only for Redhat-AS4 (Update 4, Update 5,
+Update 6 or Update 7) and for Redhat-EL5 and above.
 
-3.1.1 Writing network scripts under Redhat-AS4 (Update 4, 5 or 6)
+3.1.1 Writing network scripts under Redhat-AS4 (Update 4, 5, 6 or 7)
 -----------------------------------------------------------------
 * In the master (bond) interface script add the line:
 TYPE=Bonding
@@ -108,7 +108,11 @@ After the configuration is saved, restart the network service by running:
 Follow the instructions in 3.1.1 (Writing network scripts under Redhat-AS4)
 with the following changes:
 * In the bondX (master) script - the line TYPE=Bonding is not needed.
-* in the ibX (slave) script - the line TYPE=InfiniBand is not needed.
+* in the ibX (slave) script - the line TYPE=InfiniBand necessary when using 
+  bonding over devices configured with partitions ( p_key)
+Example:
+  ifcfg-ibX.8003 and ifcfg-ibY.8003 must include TYPE=InfiniBand line in 
+  their configuration files, when using as slaves for bondX device
 * in /etc/modprobe.conf add the following lines
 alias bond0 bonding
 options bond0 miimon=100 mode=1 max_bonds=1
@@ -118,14 +122,14 @@ just add the necessary lines in /etc/modprobe.conf and change max_bonds=1 to
 max_bonds=N where N=number_of_bonding_interfaces
 
 Note: restarting OFED doesn't keep the bonding configuration via initscripts.
-You have to restart the netowork service in order to recreate the bonding
+You have to restart the network service in order to recreate the bonding
 interface.
 
 3.2 Configuration with sysconfig support
 ----------------------------------------
 Note: This feature is available only for SLES-10 and above.
 
-3.2.1 Writing network scripts under SLES-10 SP1
+3.2.1 Writing network scripts under SLES-10 
 -----------------------------------------------
 * In the master (bond) interface script add the lins:
 
@@ -172,4 +176,9 @@ Ethernet slaves
 SLAVEDEV=1
 - In the slave configuration file leave the line
 TYPE=InfiniBand
+
+When using both type of bonding under  SLES-10, it is neccessary to update the
+MANDATORY_DEVICES  environment variable in /etc/sysconfig/network/config with the names
+of the InfiniBand devices ( ib0, ib1, etc. ). Otherwise, bonding devices will be created 
+before InfiniBand devices at boot time.
 
