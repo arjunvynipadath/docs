@@ -13,6 +13,7 @@ Table of Contents
 4. DHCP Support of IPoIB
 5. The ib-bonding driver
 6. Bug Fixes and Enhancements Since OFED 1.3
+7. Bug Fixes and Enhancements Since OFED 1.3.1
 
 ===============================================================================
 1. Overview
@@ -228,7 +229,7 @@ Notes:
   documentation for details)
 
 ===============================================================================
-6. Bug Fixes and Enhancements Since OFED 1.3.1
+7. Bug Fixes and Enhancements Since OFED 1.3.1
 ===============================================================================
 - IPoIB: Refresh paths instead of flushing them on SM change events to improve 
   failover respond
