@@ -80,3 +80,6 @@ ibdiag:   This package provides 3 tools which provide the user interface
 - Ibdiagnet "-wt" option may generate a bad topology file when running on a
   cluster that contains complex switch systems.
 
+- When a subnet manager is not running, ibdiagnet IPoIB check may take a long 
+  time to complete.
+
