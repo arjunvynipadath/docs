@@ -198,29 +198,13 @@ Use the utility ib-bond to start, query, or stop the driver. For details on this
 utility, read the documentation for the ib-bonding package.
 
 2. Automatic operation:
-	a. Edit the file '/etc/infiniband/openib.conf' as follows:
-			# Enable the bonding driver on startup.
-			IPOIBBOND_ENABLE=yes
-			# # Set bond interface names
-			IPOIB_BONDS=bond0,bond8007
-			# Set specific bond params; address and slaves
-			bond0_IP=10.10.10.1/24
-			bond0_SLAVES=ib0,ib1
-			bond8007_IP=20.10.10.1
-			bond1_SLAVES=ib0.8007,ib1.8007
-	b. Use standard OS tools (sysconfig in SuSE and sysconfig in Redhat)
-to create a configuration that will come up with network restart. For details
-on this, read the documentation for the ib-bonding package.
+   Use standard OS tools (sysconfig in SuSE and initscripts in Redhat)
+   to create a configuration that will come up with network restart. For details
+   on this, read the documentation for the ib-bonding package.
 
 Notes:
-* If the bondX name is defined but one of bondX_SLAVES or bondX_IPs is missing,
-  then that specific bond will not be created.
-* The bondX name must not contain characters which are disallowed for bash
-  variable names such as '.' and '-'
 * Using /etc/infiniband/openib.conf to create a persistent configuration is
-  deprecated and not recommended. Use it unless you have no other option and
-  prefer the standard way. It is not guaranteed that the first method will be
-  supported in future versions of OFED.
+  no longer supported
 
 
 ===============================================================================
@@ -246,5 +230,11 @@ Notes:
 ===============================================================================
 6. Bug Fixes and Enhancements Since OFED 1.3.1
 ===============================================================================
-- Refresh paths instead of flushing them on SM change events to improve 
+- IPoIB: Refresh paths instead of flushing them on SM change events to improve 
   failover respond
+- IPoIB: Fix loss of connectivity after bonding failover on both sides
+- Bonding: Fix link state detection under RHEL4
+- Bonding: Avoid annoying messages from initscripts when starting bond
+- Bonding: Set default number of grat. ARP after failover to three (was one)
+
+
