@@ -50,7 +50,7 @@ will be configured to this maximum value.
    overhead in handling receive packets. This will improve operation
    in datagram mode:
 
-   Large Receive Offload - aggregating multiple incoming packets from a single
+   Large Receive Offload (LRO) - aggregating multiple incoming packets from a single
    stream into a larger buffer before they are passed higher up the networking
    stack, thus reducing the number of packets that have to be processed.
 
@@ -256,11 +256,13 @@ Notes:
   SKBs (bug 989) 	
 - IPoIB failed on stress testing (bug 1004)
 - Kernel Oops during "port up/down test" (bug 1040)
-- Restart the stack during iperf 2.0.4 ver2.0.4 in client side cause to kernel 
+- Restart the stack during iperf 2.0.4 in client side cause to kernel 
   panic (bug 985)
 - Fix neigh destructor oops on kernel versions between 2.6.17 and 2.6.20
 - Set max CM MTU when moving to CM mode, instead of setting it in openibd script 
 - Fix CQ size calculations for ipoib
+- IPoIB: add LRO support
+- IPoIB: Refresh paths instead of flushing them on SM change events
 - Bonding: Enable build for SLES10 SP2
 - Bonding: Fix  issue in using the bonding module for Ethernet slaves (see
   documentation for details)
