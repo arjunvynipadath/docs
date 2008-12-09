@@ -1,0 +1,222 @@
+################################################################################
+#									       #
+#				NFS/RDMA README				       #
+#									       #
+################################################################################
+
+ Author: NetApp and Open Grid Computing
+ 
+ Adapted for OFED 1.4 (from linux-2.6.27.8/Documentation/filesystems/nfs-rdma.txt)
+ by Jeff Becker
+
+Table of Contents
+~~~~~~~~~~~~~~~~~
+ - Overview
+ - Getting Help
+ - Installation
+ - Check RDMA and NFS Setup
+ - NFS/RDMA Setup
+
+Overview
+~~~~~~~~
+
+  This document describes how to install and setup the Linux NFS/RDMA client
+  and server software.
+
+  The NFS/RDMA client was first included in Linux 2.6.24. The NFS/RDMA server
+  was first included in the following release, Linux 2.6.25.
+
+  In our testing, we have obtained excellent performance results (full 10Gbit
+  wire bandwidth at minimal client CPU) under many workloads. The code passes
+  the full Connectathon test suite and operates over both Infiniband and iWARP
+  RDMA adapters.
+
+Getting Help
+~~~~~~~~~~~~
+
+  If you get stuck, you can ask questions on the
+
+                nfs-rdma-devel@lists.sourceforge.net, or general@lists.openfabrics.org
+
+  mailing lists.
+
+Installation
+~~~~~~~~~~~~
+
+  These instructions are a step by step guide to building a machine for
+  use with NFS/RDMA.
+
+  - Install an RDMA device
+
+    Any device supported by the drivers in drivers/infiniband/hw is acceptable.
+
+    Testing has been performed using several Mellanox-based IB cards, the
+    Ammasso AMS1100 iWARP adapter, and the Chelsio cxgb3 iWARP adapter.
+
+  - Install OFED 1.4
+
+    OFED 1.4 comes with NFS/RDMA as a technology preview. It has been tested on 
+    linux 2.6.26 and 2.6.27. If you would like to try it, please select "custom" 
+    from the install.pl Install menu, and select NFS/RDMA as well as IP over IB.
+    Note that NFS/RDMA is NOT installed if you simply select "install all."
+
+    In addition, the install script will check the installed version of mount.nfs to 
+    ensure that it is from nfs-utils 1.1 or later, as that is required for NFS/RDMA.
+
+    Upon successful installation, the nfs kernel modules will be placed in the 
+    directory /lib/modules/'uname -a'/updates. It is recommended that you reboot to 
+    ensure that the correct modules are loaded.
+
+  - Install nfs-utils-1.1.2 or greater on the client
+
+    An NFS/RDMA mount point can be obtained by using the mount.nfs command in
+    nfs-utils-1.1.2 or greater (nfs-utils-1.1.1 was the first nfs-utils
+    version with support for NFS/RDMA mounts, but for various reasons we
+    recommend using nfs-utils-1.1.2 or greater). To see which version of
+    mount.nfs you are using, type:
+
+    $ /sbin/mount.nfs -V
+
+    If the version is less than 1.1.2 or the command does not exist,
+    you should install the latest version of nfs-utils.
+
+    Download the latest package from:
+
+    http://www.kernel.org/pub/linux/utils/nfs
+
+    Uncompress the package and follow the installation instructions.
+
+    If you will not need the idmapper and gssd executables (you do not need
+    these to create an NFS/RDMA enabled mount command), the installation
+    process can be simplified by disabling these features when running
+    configure:
+
+    $ ./configure --disable-gss --disable-nfsv4
+
+    To build nfs-utils you will need the tcp_wrappers package installed. For
+    more information on this see the package's README and INSTALL files.
+
+    After building the nfs-utils package, there will be a mount.nfs binary in
+    the utils/mount directory. This binary can be used to initiate NFS v2, v3,
+    or v4 mounts. To initiate a v4 mount, the binary must be called
+    mount.nfs4.  The standard technique is to create a symlink called
+    mount.nfs4 to mount.nfs.
+
+    This mount.nfs binary should be installed at /sbin/mount.nfs as follows:
+
+    $ sudo cp utils/mount/mount.nfs /sbin/mount.nfs
+
+    In this location, mount.nfs will be invoked automatically for NFS mounts
+    by the system mount command.
+
+Check RDMA and NFS Setup
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+    Before configuring the NFS/RDMA software, it is a good idea to test
+    your new kernel to ensure that the kernel is working correctly.
+    In particular, it is a good idea to verify that the RDMA stack
+    is functioning as expected and standard NFS over TCP/IP and/or UDP/IP
+    is working properly.
+
+  - Check RDMA Setup
+
+    If you built the RDMA components as modules, load them at
+    this time. For example, if you are using a Mellanox Tavor/Sinai/Arbel
+    card:
+
+    $ modprobe ib_mthca
+    $ modprobe ib_ipoib
+
+    If you are using InfiniBand, make sure there is a Subnet Manager (SM)
+    running on the network. If your IB switch has an embedded SM, you can
+    use it. Otherwise, you will need to run an SM, such as OpenSM, on one
+    of your end nodes.
+
+    If an SM is running on your network, you should see the following:
+
+    $ cat /sys/class/infiniband/driverX/ports/1/state
+    4: ACTIVE
+
+    where driverX is mthca0, ipath5, ehca3, etc.
+
+    To further test the InfiniBand software stack, use IPoIB (this
+    assumes you have two IB hosts named host1 and host2):
+
+    host1$ ifconfig ib0 a.b.c.x
+    host2$ ifconfig ib0 a.b.c.y
+    host1$ ping a.b.c.y
+    host2$ ping a.b.c.x
+
+    For other device types, follow the appropriate procedures.
+
+  - Check NFS Setup
+
+    For the NFS components enabled above (client and/or server),
+    test their functionality over standard Ethernet using TCP/IP or UDP/IP.
+
+NFS/RDMA Setup
+~~~~~~~~~~~~~~
+
+  We recommend that you use two machines, one to act as the client and
+  one to act as the server.
+
+  One time configuration:
+
+  - On the server system, configure the /etc/exports file and
+    start the NFS/RDMA server.
+
+    Exports entries with the following formats have been tested:
+
+    /vol0   192.168.0.47(fsid=0,rw,async,insecure,no_root_squash)
+    /vol0   192.168.0.0/255.255.255.0(fsid=0,rw,async,insecure,no_root_squash)
+
+    The IP address(es) is(are) the client's IPoIB address for an InfiniBand
+    HCA or the client's iWARP address(es) for an RNIC.
+
+    NOTE: The "insecure" option must be used because the NFS/RDMA client does
+    not use a reserved port.
+
+ Each time a machine boots:
+
+  - Load and configure the RDMA drivers
+
+    For InfiniBand using a Mellanox adapter:
+
+    $ modprobe ib_mthca
+    $ modprobe ib_ipoib
+    $ ifconfig ib0 a.b.c.d
+
+    NOTE: use unique addresses for the client and server
+
+  - Start the NFS server
+
+    Load the RDMA transport module:
+
+    $ modprobe svcrdma
+
+    Start the server:
+
+    $ /etc/init.d/nfsserver start
+
+    or
+
+    $ service nfs start
+
+    Instruct the server to listen on the RDMA transport:
+
+    $ echo rdma 2050 > /proc/fs/nfsd/portlist
+
+  - On the client system
+
+    Load the RDMA client module:
+
+    $ modprobe xprtrdma.ko
+
+    Mount the NFS/RDMA server:
+
+    $ mount -o rdma,port=2050 <IPoIB-server-name-or-address>:/<export> /mnt
+
+    To verify that the mount is using RDMA, run "cat /proc/mounts" and check
+    the "proto" field for the given mount.
+
+  Congratulations! You're using NFS/RDMA!
