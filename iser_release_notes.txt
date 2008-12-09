@@ -1,7 +1,8 @@
+
 	     Open Fabrics Enterprise Distribution (OFED)
-              iSER initiator in OFED 1.3.1 Release Notes
-			  
-			   June 2008
+              iSER initiator in OFED 1.4 Release Notes
+
+			   December 2008
 
 
 * Background
@@ -20,14 +21,18 @@
 
 	SLES 10
 	SLES 10 sp1
+	SLES 10 sp2
 	RHAS 4 up4
 	RHAS 4 up5
 	RHAS 4 up6
+	RHAS 4 up7
 	RHEL 5
 	RHEL 5.1
+	RHEL 5.2
 
 	The release has been tested against Voltaire iSCSI over iSER target
-	running in Voltaire's IB/Fibre-Channel router (SR4G).
+	running in Voltaire's IB/Fibre-Channel router (SR4G) and the STGT
+	target.
 
 * Fixed Bugs and Enhancements since OFED 1.3
 	iSER:
@@ -40,8 +45,8 @@
 	- Move high-volume debug output to higher debug level
 	- Count FMR alignment violations per session
 	Open-iSCSI:
-	- Update open-iscsi rpm minor version from
-	  2.0-754 to 2.0-754.1 and from 2.0-865.15 to 2.0-865.15.1
+	- Update open-iscsi rpm versions from
+	  2.0-754 to 2.0-754.1 and from 2.0-865.15 to 2.0-869.2
 	- Change open-iscsi defaults
 	- iscsi_discovery: fixed printing debug information
 	- iscsi_discovery: check if iscsid is running
@@ -89,5 +94,6 @@
 
 	"About" page
 
-	general and detailed information on iSCSI and iSER 
+	general and detailed information on iSCSI and iSER
 	http://www.voltaire.com/Products/Server_Products/iSER_iSCSI_RDMA
+
