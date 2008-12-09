@@ -1,7 +1,7 @@
 	    Open Fabrics Enterprise Distribution (OFED)
-		    mlx4 in OFED 1.4 Release Notes
+          ConnectX driver (mlx4) in OFED 1.4 Release Notes
 			  
-			   December 2008
+  		   	December 2008
 
 
 ===============================================================================
@@ -9,8 +9,8 @@ Table of Contents
 ===============================================================================
 1. Overview
 2. Supported Firmware Versions
-3. New features -- VPI (Virtual Process Interconnect)
-4. Additional new features and bug fixes
+3. VPI (Virtual Process Interconnect)
+4. Infiniband new features and bug fixes
 5. Known Issues
 
 ===============================================================================
@@ -18,7 +18,7 @@ Table of Contents
 ===============================================================================
 mlx4 is the low level driver implementation for the ConnectX adapters designed
 by Mellanox Technologies. The ConnectX can operate as an InfiniBand adapter,
-as an Ethernet NIC, or as a Fibre Channel HBA. The driver currently supports
+as an Ethernet NIC, or as a Fibre Channel HBA. The driver in OFED 1.4 supports
 Infiniband and Ethernet NIC configurations. To accommodate the supported
 configurations, the driver is split into three modules:
     
@@ -31,125 +31,99 @@ configurations, the driver is split into three modules:
 	Handles InfiniBand-specific functions and plugs into the InfiniBand
 	midlayer
 - mlx4_en
-	Handles Ethernet specific functions and plugs into the netdev mid-layer.
-
-mlx4 Available Parameters
---------------------------
-In order to set mlx4 parameters, add the following line(s) to /etc/modpobe.conf:
-   options mlx4_core parameter=<value>
-      and/or   
-   options mlx4_ib   parameter=<value>
-      and/or   
-   options mlx4_en   parameter=<value>
-
-mlx4_core parameters:
-   msi_x:		attempt to use MSI-X if nonzero (default 1)
-   enable_qos:		Enable Quality of Service support in the HCA if > 0, (default 0) 
-   block_loopback	Block multicast loopback packets if > 0  (default: 1)
-   internal_err_reset:	Reset device on internal errors if non-zero (default 1)
-   debug_level:		Enable debug tracing if > 0 (default 0)
-   log_num_qp:		log maximum number of QPs per HCA (default is 17; max is 20)
-   log_num_srq:		log maximum number of SRQs per HCA (default is 16; max is 20)
-   log_rdmarc_per_qp:	log number of RDMARC buffers per QP (default is 4; max is 7)
-   log_num_cq:		log maximum number of CQs per HCA (default is 16 max is 19)
-   log_num_mcg:		log maximum number of multicast groups per HCA (default is 13; max is 21)
-   log_num_mpt:		log maximum number of memory protection table entries per HCA (default is 17; max is 20)
-   log_num_mtt:		log maximum number of memory translation table segments per HCA (default is 20; max is 20)
-   log_num_mac:		log maximum number of MACs per ETH port (1-7) (int)
-   log_num_vlan:	log maximum number of VLANs per ETH port (0-7) (int)
-   use_prio:		Enable steering by VLAN priority on ETH ports (0/1, default 0) (bool)
-
-mlx4_ib parameters:
-   debug_level: Enable debug tracing if > 0 (default 0)
-
-mlx4_en parameters:
-   rss_xor:Use XOR hash function for RSS (uint)
-   rss_mask:RSS hash type bitmask (uint)
-   num_lro:Number of LRO sessions per ring or disabled (0) (uint)
-   pptx:Pause policy on TX: 0 never generate pause frames 1 generate pause frames according to RX buffer threshold (uint)
-   pprx:Pause policy on RX: 0 ignore received pause frames 1 respect received pause frames (uint)
-   pfctx:Priority based Flow Control policy on TX[7:0]. Per priority bit mask (uint)
-   pfcrx:Priority based Flow Control policy on RX[7:0]. Per priority bit mask (uint)
-   rx_moder_cnt:Max coalesced descriptors for Rx interrupt moderation (uint)
-   rx_moder_time:Timeout following last packet for Rx interrupt moderation (uint)
-   auto_moder:Enable dynamic interrupt moderation (uint)
-   rx_ring_num1:Number or Rx rings for port 1 (0 = #cores) (uint)
-   rx_ring_num2:Number or Rx rings for port 2 (0 = #cores) (uint)
-   tx_ring_size1:Tx ring size for port 1 (uint)
-   tx_ring_size2:Tx ring size for port 2 (uint)
-   rx_ring_size1:Rx ring size for port 1 (uint)
-   rx_ring_size2:Rx ring size for port 2 (uint)
-   inline_thold:treshold for using inline data (int)
+	A new 10G driver named mlx4_en was added to drivers/net/mlx4.
+	It handles Ethernet specific functions and plugs into the netdev mid-layer.
 
 ===============================================================================
 2. Supported Firmware Versions
 ===============================================================================
-- This release was tested with FW 2.5.000.
-- The minimal version to use is 2.2.000. 
-- For QoS need to use version 2.4.928, until a GA release will be available.
+- This release was tested with FW 2.6.000.
+- The minimal version to use is 2.3.000. 
+- To use both IB and Ethernet use FW version 2.6.0
 
 ===============================================================================
-3. New features - VPI (Virtual Protocol Interconnect)
+3. VPI (Virtual Protocol Interconnect) 
 ===============================================================================
-- mlx4_en driver
-- VPI (Virtual Protocol Interconnect)
-  o Overview:  
-      The VPI driver is a combination of the
-      Mellanox ConnectX HCA Ethernet and Infiniband drivers.
-      It supplies the user with the ability to run Infiniband and Ethernet protocols
-      on the same HCA (separately or at the same time).
-  o Firmware:
-      The VPI driver works with FW 25408 version 2.5.0 or higher.
-      One needs to use INI files that allow different protocols over same HCA.
-  o Loading drivers:
-      To enable loading of the Ethernet driver one should set "MLX4_EN_LOAD=yes" in file
-      /etc/infiniband/openib.conf. In this case, running "/etc/init.d/openibd start"
-      will load the Infiniband and Ethernet stacks.
-      If "MLX4_EN_LOAD" is not marked as "yes", the Ethernet driver can be loaded
-      by running "/sbin/modprobe mlx4_en".
-  o Port type management:
-      VPI senses the link type the port is connected to. If no link
-      is sensed, the device remains with the last configured port type.
-      Possible port types are:
-        "eth"   - Always Ethernet.
-        "ib"    - Always Infiniband.
-        "auto"  - Link sensing mode as described above. When no link is detected,
-                  the driver retries link sensing every several seconds. If a link is found,
-                  the driver sets the port configuration per the detected link.
-      Initial configuration is "ib" for both ports.
-      Port link type can be configured for each device in the system at run time using the
-      "connectx_port_config" script.
-      Upon installation the script is placed under /sbin/. This utility allows
-      modifying the port type configuration per PCI device when the mlx4_core module is loaded.
-      The utility will prompt for the PCI device to be modified
-      (if there is only one it will be selected automatically).
-      At the next stage the user will be prompted for the required mode for each port.
-      The required port configuration will be set for the selected device.
-      This utility also has a non interactive mode; usage is:
-         "/sbin/connectx_port_config [[-d|--device <PCI device ID>] -c|--conf <port1,port2>]".
-      Running "/sbin/connectx_port_config -s" will show current port configuration for all
-      ConnectX devices.
-      Port configuration is restored at driver restart (if done via "/etc/init.d/openibd restart").
+VPI enables ConnectX to be configured as an Ethernet NIC and/or an Infiniband
+adapter.
+o Overview:  
+  The VPI driver is a combination of the Mellanox ConnectX HCA Ethernet and 
+  Infiniband drivers.
+  It supplies the user with the ability to run Infiniband and Ethernet 
+  protocols on the same HCA (separately or at the same time).
+  For more details on the Ethernet driver see MLNX_EN_README.txt.
+o Firmware:
+  The VPI driver works with FW 25408 version 2.6.000 or higher.
+  One needs to use INI files that allow different protocols over same HCA.
+o Installing the mlnx_en driver:
+  To install the OFED 1.4 with the Ethernet driver make sure that "mlx4_en=y" 
+  in file ofed.conf
+o Loading drivers:
+  To load the Ethernet driver one should set "MLX4_EN_LOAD=yes"
+  in file /etc/infiniband/openib.conf. 
+  If "MLX4_EN_LOAD" is not marked as "yes", the Ethernet driver can be loaded
+  by running "/sbin/modprobe mlx4_en".
+o Port type management:
+  By default both ConnectX ports are initialized as Infiniband ports.
+  If you wish to change the port type use the connectx_port_config script after
+  the driver is loaded.
+  Running "/sbin/connectx_port_config -s" will show current port configuration 
+  for all ConnectX devices.
+  Port configuration is saved in file: /etc/infiniband/connectx.conf.
+  This saved configuration is restored at driver restart only if done via
+  "/etc/init.d/openibd restart".
+  
+  Possible port types are:
+    "eth"   - Always Ethernet.
+    "ib"    - Always Infiniband.
+    "auto"  - Link sensing mode - detect port type based on the attached 
+              network type. If no link is detected, the driver retries link
+	      sensing every few seconds.
+    
+  Port link type can be configured for each device in the system at run time
+  using the "/sbin/connectx_port_config" script.
+  
+  This utility will prompt for the PCI device to be modified (if there is only
+  one it will be selected automatically).
+  At the next stage the user will be prompted for the desired mode for each port. 
+  The desired port configuration will then be set for the selected device.
+  Note: This utility also has a non interactive mode:
+  "/sbin/connectx_port_config [[-d|--device <PCI device ID>] -c|--conf <port1,port2>]".
 
+- The following configurations are supported by VPI:
+	Port1 = eth   Port2 = eth
+	Port1 = ib    Port2 = ib
+	Port1 = auto  Port2 = auto
+	Port1 = ib    Port2 = eth
+	Port1 = ib    Port2 = auto
+	Port1 = auto  Port2 = eth
+
+  Note: the following options are not supported:
+	Port1 = eth   Port2 = ib
+	Port1 = eth   Port2 = auto
+	Port1 = auto  Port2 = ib
+  
+	
 ===============================================================================
-4. Additional new features and bug fixes
+4. Infiniband new features and bug fixes
 ===============================================================================
-New Features:
-- Send with invalidate and local invalidate send queue work requests.
-- Allocate/free fast register MRs.
-- Allocate/free fast register MR page lists.
+Features that are enabled with FW 2.5.0 only:
+- Send with invalidate and Local invalidate send queue work requests.
+- Resize CQ support (increase CQ size only).
+
+Features that are enabled with FW 2.6.0 only:
 - Fast register MR send queue work requests.
 - Local DMA L_Key.
-- Allow 4K messages for UD QPs.
 - Raw Ethertype QP support (one QP per port) -- receive only.
-- Resize CQ support (increase CQ size only).
+
+Non FW dependent features:
+- Allow 4K messages for UD QPs.
+- Allocate/free fast register MR page lists.
 - More efficient MTT allocator.
 - RESET->ERR QP state transition no longer supported (IB Spec 1.2.1).
 - Pass congestion management class MADs to the HCA.
-- make firmware diagnostic counters available via sysfs.
-
-Bug Fixes:
-- LSO sometimes failed with QP protection violation -- fixed.
+- Enable firmware diagnostic counters available via sysfs.
+- Enable LSO support for IPOIB.
 - IB_EVENT_LID_CHANGE is generated more appropriately.
 
 ===============================================================================
@@ -168,7 +142,57 @@ Bug Fixes:
   2. Burn a modified firmware image with the changed INI file.
   3. Reboot the system.
 
-- The following configurations are currently not supported by VPI:
-	Port1 = eth, Port2 != eth
-	Port1 != ib, Port2 = ib.
      
+===============================================================================
+6. mlx4 Available Parameters
+===============================================================================
+In order to set mlx4 parameters, add the following line(s) to /etc/modpobe.conf:
+   options mlx4_core parameter=<value>
+      and/or   
+   options mlx4_ib   parameter=<value>
+      and/or   
+   options mlx4_en   parameter=<value>
+
+mlx4_core parameters:
+   msi_x:		attempt to use MSI-X if nonzero (default 1)
+   enable_qos:		Enable Quality of Service support in the HCA if > 0, (default 0) 
+   block_loopback	Block multicast loopback packets if > 0  (default: 1)
+   internal_err_reset:	Reset device on internal errors if non-zero (default 1)
+   debug_level:		Enable debug tracing if > 0 (default 0)
+   log_num_qp:		log maximum number of QPs per HCA (default is 17; max is 20)
+   log_num_srq:		log maximum number of SRQs per HCA (default is 16; max is 20)
+   log_rdmarc_per_qp:	log number of RDMARC buffers per QP (default is 4; max is 7)
+   log_num_cq:		log maximum number of CQs per HCA (default is 16 max is 19)
+   log_num_mcg:		log maximum number of multicast groups per HCA (default is 13; max is 21)
+   log_num_mpt:		log maximum number of memory protection table entries per HCA 
+   			(default is 17; max is 20)
+   log_num_mtt:		log maximum number of memory translation table segments per HCA
+   			(default is 20; max is 20)
+   log_num_mac:		log maximum number of MACs per ETH port (1-7) (int)
+   log_num_vlan:	log maximum number of VLANs per ETH port (0-7) (int)
+   use_prio:		Enable steering by VLAN priority on ETH ports (0/1, default 0) (bool)
+
+mlx4_ib parameters:
+   debug_level: 	Enable debug tracing if > 0 (default 0)
+
+mlx4_en parameters:
+   rss_xor:		Use XOR hash function for RSS 
+   rss_mask:		RSS hash type bitmask 
+   num_lro:		Number of LRO sessions per ring or disabled (0)
+   pptx:		Pause policy on TX: 0 never generate pause frames 1 generate pause 
+   			frames according to RX buffer threshold 
+   pprx:		Pause policy on RX: 0 ignore received pause frames 1 respect received
+   			pause frames
+   pfctx:		Priority based Flow Control policy on TX[7:0]. Per priority bit mask
+   pfcrx:		Priority based Flow Control policy on RX[7:0]. Per priority bit mask
+   rx_moder_cnt:	Max coalesced descriptors for Rx interrupt moderation
+   rx_moder_time:	Timeout following last packet for Rx interrupt moderation
+   auto_moder:		Enable dynamic interrupt moderation
+   rx_ring_num1:	Number or Rx rings for port 1 (0 = #cores)
+   rx_ring_num2:	Number or Rx rings for port 2 (0 = #cores)
+   tx_ring_size1:	Tx ring size for port 1 
+   tx_ring_size2:	Tx ring size for port 2
+   rx_ring_size1:	Rx ring size for port 1
+   rx_ring_size2:	Rx ring size for port 2
+   inline_thold:	treshold for using inline data
+
