@@ -2,7 +2,7 @@
                         Version 1.4
                          README
                        
-                       July 2008
+                       December 2008
 
 This is the OpenFabrics Enterprise Distribution (OFED) version 1.4
 software package supporting InfiniBand and iWARP fabrics. It is composed
@@ -189,8 +189,8 @@ simultaneously -- they will not conflict with each other.
 
 Three MPI stacks are included in this release of OFED:
 - MVAPICH 1.1.0
-- Open MPI 1.3.0
-- MVAPICH2 1.0.2
+- Open MPI 1.2.8
+- MVAPICH2 1.2p1
 
 OFED also includes 4 basic tests that can be run against each MPI
 stack: bandwidth (bw), latency (lt), Intel MPI Benchmark and Presta. The tests

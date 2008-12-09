@@ -1,7 +1,7 @@
 	     Open Fabrics Enterprise Distribution (OFED)
-		    RDMA CM in OFED 1.3.1 Release Notes
+		    RDMA CM in OFED 1.4 Release Notes
 			  
-			   June 2008
+			   December 2008
 
 
 ===============================================================================
@@ -90,3 +90,7 @@ following:
 ===============================================================================
 - The reject status fix has been inserted for DAPL.
 
+===============================================================================
+5. Fixed bugs since OFED 1.3.1
+===============================================================================
+- Non
