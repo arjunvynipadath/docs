@@ -2,8 +2,8 @@
                      --------------------------------------------
 
 *******************************************************************************
-RELEASE: OFED 1.3
-DATE: Feb 2008
+RELEASE: OFED 1.4
+DATE:    Dec 2008
 
 ===============================================================================
 Table of Contents
@@ -17,124 +17,66 @@ Table of Contents
 1. Overview
 ===============================================================================
 
-The ibdiag package was enhanced to check more aspects of the network setup,
-including partitions, IPoIB and QoS. Additional major feature is its ability
-to write a topology file of the discovered network. A summary table is provided
-with a list of the executed checks and their results.
+The ibutils package provides a set of diagnostic tools that check the health
+of an InfiniBand fabric.
+Package components:
+ibis:     IB interface - A TCL shell that provides interface for sending various
+          MADs on the IB fabric. This is the component that actually accesses
+          the IB Hardware.
+
+ibdm:     IB Data Model - A library that provides IB fabric analysis.
+
+ibmgtsim: An IB fabric simulator. Useful for developing IB tools.
+
+ibdiag:   This package provides 3 tools which provide the user interface
+          to activate the above functionality:
+            - ibdiagnet:  Performs various quality and health checks on the IB
+                          fabric.
+            - ibdiagpath: Performs various fabric quality and health checks on
+                          the given links and nodes in a specific path.
+            - ibdiagui:   A GUI wrapper for the above tools. 
 
 ===============================================================================
 2. New Features
 ===============================================================================
 
-The following new checks were added to the tools:
 
-ibdiagnet new features:
------------------------
-+ Partitions Check: 
-  - Validate all leaf switch ports (connected to a host) which enforce
-    partitions are not blocking partitions set on the host ports they
-    are connected to.
-  - Report for each partition the member hosts and their membership status.
-    Full membership allows hosts to communicate to any other member.
-    Partial membership allows communication with full members only.
-    The new report file is named ibdiagnet.pkey.
+* Mellanox InfiniScaleIV support:
+  - Support switches with port count > 32
+  - Added ibnl (IB network) files for MTS3600 and MTS3610 InfiniScaleIV based switch systems.
 
-+ IPoIB Subnets Check:
-  - The IPoIB subnets and their properties are reported.
-  - For each group all the host ports that are part of the partition are
-    checked to have a high enough communication rate to be part of the group
-     (warn if not).
-  - If all the group members can use a communication rate higher then the group
-    rate a warning is produced as the subnet uses a suboptimal rate.
+* IBDM QoS Credit Loop check: 
+  This check now considers SL/VL when looking for credit loops. 
+  This check can be activated by running "ibdiagnet -r"
 
-Other changes:
-+ The multicast groups report was enhanced to provide the details of each
-  group and the members list is provided in a new report file: ibdiagnet.mcgs.
+* ibdiagnet: Added -csv flag, which generated a set of Comma Separated Values
+             files, which contains data about the fabric. Generated files:
+               inv_csv   - Lists the ports found in the fabric
+               links_csv - Lists the ports connections in the fabric
+               pm_csv    - Lists port counters in csv format 
+               err_csv   - Lists errors found during the run
 
-+ A new flag, -wt <file-name>, was added. ibdiagnet, with the new option, 
-  writes out a discovered topology file by the provided file-name and
-  the required new IBNL files into an output directory named ibdiag_ibnl.
-  This new feature allows you to capture the current state of the fabric
-  and later compare to it. Such the features provided by the "Topology
-  Matching" check becomes available. These feature include recognizing 
-  changes in connections, speed and width. 
-
-+ Load subnet database from file:
-  Ibdiagnet dumps its internal database, which contains the subnet structure, 
-  to a file (/tmp/ibdiagnet.db by default). This file can be loaded in later
-  ibdiagnet runs (using the -load_db <db file> option). When this option is set, 
-  ibdiagnet loads the subnet data from the file and skips the discovery stage.
-  Using this option can save the subnet discovery time for large cluster.
-  Note: Some if ibdiagnet checks would not be performed when the -load_db
-        option is set. These checks are:
-        - Duplicated guids.
-        - Zero guids.
-        - Links in INIT state.
-        - SMs status.
-  
- + A new flag, -skip <skip-option(s)>, was added. When this flag is specified, 
-   ibdiagnet skips the given check. One or more space separated values can be
-   specified.
-   Available skip options: dup_guids, zero_guids, pm, logical_state, part, 
-   ipoib. The -skip flag can be used in order to run only specific checks, or 
-   to reduce ibdiagnet run time.
-
-ibdiagpath new features:
-------------------------
-+ Partitions Check: 
-  - The list of partitions of source and destination ports is reported.
-  - A check for which partitions are common to the source, destination and
-    every port on the path (if enforcing partitions) is calculated and
-    reported. A warning is provided if a source partition is blocked by 
-    a port on the path.
-    An error is provided in there are no common partitions for the path.
-
-+ IPoIB Subnets Check:
-  - The IPoIB subnets available for the path and reported.
-  - If the source or destination ports are members in partitions which have
-    an IPoIB group and for some reason can not join the group a warning is
-    provided.
-
-+ QoS Check:
-  With the introduction of QoS, the following new issues might arise from 
-  improper setup of the fabric:
-  - VL Arbitration Tables might use VLs which are higher then the currently 
-    supported maximal VL on the port. A warning is provided for such cases.
-  - VL Arbitration Tables might "block" a VL by setting its weight to zero.
-    A warning is provided for these cases
-  - SLs (service levels) might be mapped to VLs which are blocked by the 
-    two above rules. In such case these SLs can not be used by the path.
-    A report including the set of "valid" SLs for the path is provided.
-  - If there are no "valid" SLs an error is provided since the source and
-    destination ports can not communicate.
-
-Common changes to all tools:
-----------------------------
-A summary table of all the checks performed and their total number of errors and
-warnings was added to the tools standard output.
+* ibmgtsim: Add basic M_Key mechanism simulation
 
 ===============================================================================
 3. Major Bugs Fixed 
 ===============================================================================
 
-+ Fabrics Qualities report is now available in the main log file (and not only 
-  in the standard output
+* ibdm: Support 2 port switches in a loaded LST file.
+
+* ibis: fix some buffer overrun bugs with long node description.
+
+* Installation: Ibdiagui requires tcl/tk 8.4 or 8.5 (was only 8.4). This allows
+                installation on Fedora Core 9.
+
+* ibdiagnet: Fixed -pm flag caused a crash on back to back (no switch) setup.
+
+* ibdiagnet: Do not query port counters when local port is in INIT state.
 
 ===============================================================================
 4. Known Issues
 ===============================================================================
 
-- Ibdiagnet tries to query port counters for ports in INIT state. In this
-  case, run time would be longer and an error message for each port would be
-  printed to screen.
-  Workaround: 
-  * Use "-skip pm" option if links in INIT state are found.
-  * Run opensm to activate the links.
-
-- A failure in IPoIB check may cause ibdiagnet to exit, without printing the 
-  summary report.
-
 - Ibdiagnet "-wt" option may generate a bad topology file when running on a
   cluster that contains complex switch systems.
-
 
