@@ -1,5 +1,5 @@
 	    Open Fabrics Enterprise Distribution (OFED)
-	                Version 1.4-RC6
+	                 Version 1.4
 	                 Release Notes
 	                 December 2008
 
@@ -57,6 +57,7 @@ The OFED package contains the following components:
 
 Notes:
 1. iSER target is of Beta quality.
+2. NFS-RDMA is at technology preview state, thus it is not installed by default.
 2. All other OFED components are of production quality.
 3. See release notes for each package in the docs directory.
 4. Any Topspin copyright belongs to Cisco Systems, Inc.
@@ -80,11 +81,11 @@ Notes:
         - Fedora C9: 		2.6.25-14.fc9       *
         - SLES10: 		2.6.16.21-0.8-smp
         - SLES10 SP1: 		2.6.16.46-0.12-smp
-	- SLES10 SP1 up1: 	2.6.16.53-0.16-smp
 	- SLES10 SP2: 		2.6.16.60-0.21-smp  
 	- OpenSuSE 10.3: 	2.6.22.5-31         *
 	- OEL 4 up7		2.6.9-78.ELsmp
 	- OEL 5 up2		2.6.18-92.el5
+	- CentOS5.2             2.6.18-92.el5
 	- kernel.org:     	2.6.26 and 2.6.27
 
       * Minimal QA for these versions
@@ -92,17 +93,17 @@ Notes:
 1.3 HCAs and RNICs Supported
 ----------------------------
 This release supports IB HCAs by Mellanox Technologies, Qlogic and IBM as
-well as iWARP RNICs by Chelsio Communications.
+well as iWARP RNICs by Chelsio Communications and Intel.
 
-  o   Mellanox Technologies HCAs (SDR and DDR Modes are Supported):
+  o   Mellanox Technologies HCAs (SDR, DDR and QDR Modes are Supported):
 	- InfiniHost (fw-23108 Rev 3.5.000)
 	- InfiniHost III Ex (MemFree: fw-25218 Rev 5.3.000 
 	                     with memory: fw-25208 Rev 4.8.200)
 	- InfiniHost III Lx (fw-25204 Rev 1.2.000)
-	- ConnectX IB (fw-25408 Rev 2.5.000)
+	- ConnectX IB (fw-25408 Rev 2.6.000)
 
 	For official firmware versions please see:
-	http://www.mellanox.com/support/firmware_table.php
+	http://www.mellanox.com/content/pages.php?pg=firmware_download
 
   o   Qlogic HCAs:
 	- QHT6040 (PathScale InfiniPath HT-460)
@@ -119,7 +120,7 @@ well as iWARP RNICs by Chelsio Communications.
 	- S310/S320 10GbE Storage Accelerators
 	- R310/R320 10GbE iWARP Adapters
 
-  o   NetEffect RNICs:
+  o   Intel RNICs:
         - NE020 10Gb iWARP Adapter
 
 
@@ -131,10 +132,11 @@ companies:
 	- Voltaire
 	- Qlogic
 	- Flextronics
+	- Sun
 
 1.5 Third Party Packages
 ------------------------
-The following third party packages have been tested with OFED 1.3:
+The following third party packages have been tested with OFED 1.4:
 1. Intel MPI, Version 3.0 - Package ID: l_mpi_p_3.0.043
 2. HP-MPI 2.2.5.1 (without XRC support)
 3. HP-MPI 2.2.7 (with XRC support)
@@ -145,7 +147,7 @@ All sources are located under git://git.openfabrics.org/
 Kernel sources: git://git.openfabrics.org/ofed_1_4/linux-2.6.git ofed_kernel
 User level Sources are located in all git trees as written in the BUILD_ID
 
-The kernel sources are based on Linux 2.6.26 mainline kernel. Its patches
+The kernel sources are based on Linux 2.6.27 mainline kernel. Its patches
 are included in the OFED sources directory.
 For details see HOWTO.build_ofed.
 
@@ -158,66 +160,63 @@ for each package in the docs directory.
     2.1 General changes
 	o Kernel code based on 2.6.27
 	o Added iSER target package
-        o Added NFS-RDMA support
-        o New verbs to support BMME (when move to 2.6.27): 
-          - Fast memory thru send queue, 
+        o Added NFS-RDMA support - in technology preview state
+        o New verbs to support BMME: 
+          - Fast memory thru send queue
           - Local invalidate send work requests
-          - Read with invalidate.
+          - Read with invalidate
         o Multi-Protocol (Virtual Protocol Interconnect) support, Eth and IB 
-	  for ConnectX
+	  for ConnectX. See mlx4_release note for the usage model.
 
-    2.2 Package and install
-  
-    2.3 IPoIB
-        o LRO support
+    2.2 IPoIB
+        o Datagram mode: Added LRO and LSO support
 
-    2.4 SDP
+    2.3 SDP
 	o GA level
 
-    2.5 qlgc_vnic
+    2.4 qlgc_vnic
         o Support for hotswap of EVIC and dynamic update of existing connections
           with the addition of QLogic dynamic update daemon.
         o Performance improvements in handling of Ethernet broadcast/multicast
           traffic.
 
-    2.6 RDS
+    2.5 RDS
 	o GA of RDMA API (using FMRs) - RDS API version 3
-	o iWARP support
 
-    2.7 uDAPL
+    2.6 uDAPL
 	o Added socket based CM - for both scalability and interop with Windows
 	o Added UD extensions - for version 2.0 only
 	o v1 library package has been renamed to compat-dapl-1.2.8-1
 
-    2.8 iSER
-        o 
-
-    2.9 Management 
+    2.7 Management 
 	o OpenSM
 	  - Cashed routing
-	  - APM - disjoint paths
-	  - Path balancing for LMC + console diagnostics
+	  - Multi lid routing balancing for updn/minhop routing algorithms
+	  - Preserve base lid routes when LMC > 0
 	  - OpenSM configuration unification
-	  - MGID to MLID mapping for IPv6 SNM
-	  - Routing engines chain
-	  - IBA 1.2.1 additions
-	  - Failover/Handover improvements
+	  - IPv6 Solicited Node Multicast addresses consolidation
+	  - Routing Chaining
+	  - Failover/Handover improvements: Query remote SMs during light sweep
+	  - Ordered routing paths balancing
 	o ibutils:
-	  - Congestion Control
 	  - Report created in CSV format
 	o Diagnostic tools:
 	  - ibnetdiscover library - to accelerate another tools
 
-    2.10 MPI: 
-	a. OSU MVAPICH 1.1
-	   - XRC support
-	   - Hybrid UD-RC-XRC support
-	   - Enhanced Asynchronous Progress
-	   - Tuned collectives
+    2.9 MPI: 
+	a. OSU MVAPICH 1.1.0
+	   - eXtended Reliable Connection (XRC) support
+	   - Lock-free design to provide support for asynchronous progress at 
+	     both sender and receiver to overlap computation and communication
+	   - Optimized MPI_allgather collective
+	   - Efficient intra-node shared memory communication support for 
+	     diskless clusters
+	   - Enhanced Totalview Support with the new mpirun_rsh framework
 
-	b. Open MPI 1.2.7
+	b. Open MPI 1.2.8
+	   - Bug fixes
 
-	c. OSU MVAPICH2 1.2
+	c. OSU MVAPICH2 1.2p1
 	   - Scalable and robust daemon-less job startup
 	   - Enhanced scalability for RDMA-based Direct One-sided communication
 	     with less resources
@@ -229,6 +228,9 @@ for each package in the docs directory.
 	     Configuration
 	   - PLPA Support for affinity
 
+	d. MPI tests:
+	   - Updated IMB 3.1
+
 ===============================================================================
 3. Known Issues
 ===============================================================================
@@ -238,7 +240,7 @@ components of the OFED 1.4 release.
 1. When upgrading from an earlier OFED version, the installation script does not
    stop the earlier OFED version prior to uninstalling it. 
    Workaround: Stop the old OFED stack (/etc/init.d/openibd stop) before 
-   upgrading to OFED 1.3.
+   upgrading to OFED 1.4.
 2. Memory registration by the user is limited according to administrator
    setting. See "Pinning (Locking) User Memory Pages" in OFED_tips.txt for
    system configuration.
@@ -251,12 +253,12 @@ components of the OFED 1.4 release.
 4. The ipath driver is supported only on 64-bit platforms.
 5. When installing OFED on OpenSuse or Ubuntu one should use the 
    --without-depcheck option of the install.pl script
-6. To install OFED 1.3 on Fedora Core 8 one should:
+6. To install OFED 1.4 on Fedora Core 8 one should:
 	1. Install libtool RPM (required by libibcommon)
 	2. Install tcsh RPM (required by mpi-selector)
 	3. Create the file '.rpmmacros' (required by mvapich): 
 	   echo "%__arch_install_post %{nil}" >> /root/.rpmmacros 
-7. IPoIB: brctl utilities do not work on IPoIB interfaces. The reason for that i
+7. IPoIB: brctl utilities do not work on IPoIB interfaces. The reason for that
    is that these utilities support devices of type Ethernet only.
 
 
