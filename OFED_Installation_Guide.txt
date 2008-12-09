@@ -2,7 +2,7 @@
                           Version 1.4
                        Installation Guide
 
-                             December 2008
+                          December 2008
 
 ==============================================================================
 Table of contents
@@ -55,8 +55,8 @@ The OFED Distribution package generates RPMs for installing the following:
         - HCA drivers (mthca, mlx4, ipath, ehca)
         - iWARP driver (cxgb3, nes)
         - core
-        - Upper Layer Protocols: IPoIB, SDP, SRP Initiator, iSER Initiator
-          RDS, qlgc_vnic and uDAPL
+        - Upper Layer Protocols: IPoIB, SDP, SRP Initiator and target, iSER
+	  Initiator and target, RDS, qlgc_vnic, uDAPL and NFS-RDMA
   o   OpenFabrics utilities
         - OpenSM: InfiniBand Subnet Manager
         - Diagnostic tools
@@ -256,7 +256,7 @@ o The file /etc/modprobe.conf is updated to include the following:
 o If opensm is installed, the daemon opensmd is installed under /etc/init.d/
 o All verbs tests and examples are installed under <prefix>/bin and management 
   utilities under <prefix>/sbin
-e ofed_info script provides information on the OFED version and git repository.
+o ofed_info script provides information on the OFED version and git repository.
 o If IPoIB configuration files are included, ifcfg-ib<n> files will be
   installed at:
   - RedHat: /etc/sysconfig/network-scripts/
