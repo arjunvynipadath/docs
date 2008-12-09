@@ -1,7 +1,7 @@
 	     Open Fabrics Enterprise Distribution (OFED)
-		    mthca in OFED 1.3 Release Notes
+		    mthca in OFED 1.4 Release Notes
 			  
-			   February 2008
+			   December 2008
 
 
 ===============================================================================
@@ -49,11 +49,11 @@ mthca parameters:
 ===============================================================================
 2. Fixed Bugs
 ===============================================================================
-1.  Remove eliminated fields from QUERY_ADAPTER. Get rev_id from MAD_IFC.
-    As a result, ibstat now prints out correct revision ID for mthca.
-2.  Return proper error codes from mthca_fmr_alloc().
-3.  Fix and simplify page size calculation in mthca_reg_phys_mr().
-4.  Pre link receive WQEs in Tavor mode.
+- IB_EVENT_LID_CHANGE is generated more appropriately.
+- Improved MTT buddy allocator (free count per order).
+- Fix check of max_send_sge for special QPs.
+- RESET->ERR QP state transition no longer supported (IB Spec 1.2.1).
+- Clear ICM pages before handing to FW.
 
 ===============================================================================
 3. Known Issues
