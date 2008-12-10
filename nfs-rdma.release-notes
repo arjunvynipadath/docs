@@ -12,6 +12,7 @@
 Table of Contents
 ~~~~~~~~~~~~~~~~~
  - Overview
+ - OFED 1.4 limitations
  - Getting Help
  - Installation
  - Check RDMA and NFS Setup
@@ -28,8 +29,17 @@ Overview
 
   In our testing, we have obtained excellent performance results (full 10Gbit
   wire bandwidth at minimal client CPU) under many workloads. The code passes
-  the full Connectathon test suite and operates over both Infiniband and iWARP
+  the full Connection test suite and operates over both Infiniband and iWARP
   RDMA adapters.
+
+OFED 1.4 limitations:
+~~~~~~~~~~~~~~~~~~~~~
+- NFS/RDMA is at technology preview state. 
+- NFS/RDMA supported only kernel 2.6.26 and 2.6.27.
+- NFS/RDMA is not installed by default; to install is use custom install or add 
+  nfsrdma=y to ofed.conf
+
+  
 
 Getting Help
 ~~~~~~~~~~~~
