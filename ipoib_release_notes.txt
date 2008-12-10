@@ -150,7 +150,10 @@ Usage and configuration:
 
 10. Connectivity issues encountered when using IPv6 on ia64 systems.
 
-
+11. The IPoIB module uses a Linux implementation for Large Receive Offload
+   (LRO) in kernel 2.6.24 and later. These kernels require installing the
+    "inet_lro" module.
+    
 ===============================================================================
 4. DHCP Support of IPoIB
 ===============================================================================

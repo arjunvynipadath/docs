@@ -131,9 +131,11 @@ Non FW dependent features:
 ===============================================================================
 5. Known Issues
 ===============================================================================
-- The following commands and/or features are not supported:
-  o SQD
-
+- mlx4_en driver is not supported on PPC64 and IA64
+- The mlx4_en module uses a Linux implementation for Large Receive Offload
+  (LRO) in kernel 2.6.24 and later. These kernels require installing the
+  "inet_lro" module.
+- The SQD feature is not supported:
 - To load the driver on machines with 64KB default page size UAR bar must be
   enlarged. 64KB page size is the default of PPC with RHEL5 and Itanium with
   64KB page size enabled.
