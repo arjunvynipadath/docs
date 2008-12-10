@@ -120,6 +120,7 @@ Values of all parameters can be observed in /sys/module/mlx4_en/parameters/.
 - iperf with multiple (> 100) streams may fail on kernel.org 2.6.25 versions
   earlier than 2.6.25.9.
 
+- mlx4_en driver is not supported on PPC64 and IA64
 
 5. Troubleshooting
 ==================
