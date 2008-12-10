@@ -109,7 +109,7 @@ o Port type management:
 ===============================================================================
 Features that are enabled with FW 2.5.0 only:
 - Send with invalidate and Local invalidate send queue work requests.
-- Resize CQ support (increase CQ size only).
+- Resize CQ support.
 
 Features that are enabled with FW 2.6.0 only:
 - Fast register MR send queue work requests.
@@ -176,23 +176,24 @@ mlx4_ib parameters:
    debug_level: 	Enable debug tracing if > 0 (default 0)
 
 mlx4_en parameters:
-   rss_xor:		Use XOR hash function for RSS 
-   rss_mask:		RSS hash type bitmask 
-   num_lro:		Number of LRO sessions per ring or disabled (0)
-   pptx:		Pause policy on TX: 0 never generate pause frames 1 generate pause 
-   			frames according to RX buffer threshold 
-   pprx:		Pause policy on RX: 0 ignore received pause frames 1 respect received
-   			pause frames
-   pfctx:		Priority based Flow Control policy on TX[7:0]. Per priority bit mask
-   pfcrx:		Priority based Flow Control policy on RX[7:0]. Per priority bit mask
-   rx_moder_cnt:	Max coalesced descriptors for Rx interrupt moderation
-   rx_moder_time:	Timeout following last packet for Rx interrupt moderation
-   auto_moder:		Enable dynamic interrupt moderation
-   rx_ring_num1:	Number or Rx rings for port 1 (0 = #cores)
-   rx_ring_num2:	Number or Rx rings for port 2 (0 = #cores)
-   tx_ring_size1:	Tx ring size for port 1 
-   tx_ring_size2:	Tx ring size for port 2
-   rx_ring_size1:	Rx ring size for port 1
-   rx_ring_size2:	Rx ring size for port 2
-   inline_thold:	treshold for using inline data
-
+   rss_xor:             Use XOR hash function for RSS 0 (default is xor)
+   rss_mask:            RSS hash type bitmask (default is 0xf)
+   num_lro:             Number of LRO sessions per ring or disabled (0) (default is 32)
+   pptx:                Pause policy on TX: 0 never generate pause frames 1 generate pause
+                        frames according to RX buffer threshold (default is 1)
+   pprx:                Pause policy on RX: 0 ignore received pause frames 1 respect received
+                        pause frames (default is 1)
+   pfctx:               Priority based Flow Control policy on TX[7:0]. 
+   			Per priority bit mask (default is 0)
+   pfcrx:               Priority based Flow Control policy on RX[7:0]. 
+   			Per priority bit mask (default is 0)
+   rx_moder_cnt:        Max coalesced descriptors for Rx interrupt moderation 
+   rx_moder_time:       Timeout following last packet for Rx interrupt moderation
+   auto_moder:          Enable dynamic interrupt moderation (default is 1)
+   rx_ring_num1:        Number or Rx rings for port 1 (0 = #cores) (default is 0)
+   rx_ring_num2:        Number or Rx rings for port 2 (0 = #cores) (default is 0)
+   tx_ring_size1:       Tx ring size for port 1 (default is 1024)
+   tx_ring_size2:       Tx ring size for port 2 (default is 1024)
+   rx_ring_size1:       Rx ring size for port 1 (default is 1024)
+   rx_ring_size2:       Rx ring size for port 2 (default is 1024)
+   inline_thold:        treshold for using inline data (default is 218B)
