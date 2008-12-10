@@ -125,6 +125,8 @@ Non FW dependent features:
 - Enable firmware diagnostic counters available via sysfs.
 - Enable LSO support for IPOIB.
 - IB_EVENT_LID_CHANGE is generated more appropriately.
+- Fixed race condition between create QP and destroy QP (bugzilla 1389)
+
 
 ===============================================================================
 5. Known Issues
@@ -196,4 +198,4 @@ mlx4_en parameters:
    tx_ring_size2:       Tx ring size for port 2 (default is 1024)
    rx_ring_size1:       Rx ring size for port 1 (default is 1024)
    rx_ring_size2:       Rx ring size for port 2 (default is 1024)
-   inline_thold:        treshold for using inline data (default is 218B)
+   inline_thold:        treshold for using inline data (default is 128)

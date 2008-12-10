@@ -54,6 +54,8 @@ mthca parameters:
 - Fix check of max_send_sge for special QPs.
 - RESET->ERR QP state transition no longer supported (IB Spec 1.2.1).
 - Clear ICM pages before handing to FW.
+- Fixed race condition between create QP and destroy QP (bugzilla 1389)
+
 
 ===============================================================================
 3. Known Issues

@@ -59,10 +59,10 @@ The MLNX_EN driver release exposes the following capabilities:
 
   Example:
   #> ethtool -i eth2
-  driver: mlx4_en (MT_04A0140005)
-  version: 1.3.0 (Sep 2008)
-  firmware-version: 2.5.400
-  bus-info: 0000:13:00.0 
+  driver: mlx4_en (MT_0BD0110004)
+  version: 1.4.0 (Dec 2008)
+  firmware-version: 2.5.952
+  bus-info: 0000:0e:00.0
 
 - To query stateless offload status run:
   #> ethtool -k eth<x>
