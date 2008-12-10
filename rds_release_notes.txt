@@ -10,9 +10,10 @@ Table of Contents
 2. Supported Platforms
 3. Installation & Configuration
 4. New Features
-5. Bug fixes and Enhancements since OFED 1.2 
-6. Bug fixes and Enhancements since OFED 1.3 
-7. Known Issues
+5. Bug fixes and Enhancements since OFED 1.3.1
+6. Bug fixes and Enhancements since OFED 1.3
+7. Bug fixes and Enhancements since OFED 1.2
+8. Known Issues
 
 ===============================================================================
 1. Overview
@@ -26,7 +27,7 @@ For details see RDS_README.txt and man 7 rds.
 ===============================================================================
 
         RHEL4.0 Update 4,5,6
-        RHEL5.0
+        RHEL5.0 Update 1,2
         SLES 10
 
 ===============================================================================
@@ -45,46 +46,49 @@ RDS_LOAD=yes
 4. New Features
 ===============================================================================
 
-RDS V3 adds support for RDMA operations. 
+RDS protocol version 3.1.
 
-The principal mode of operation for RDS zerocopy is like this: 
+RDS v3.1 is backwards compatible with v3.0 via protocol negotiation.
 
-One participant (the client) wishes to initiate a 
-direct transfer to or from some area of memory in its process address space.
-This memory does not have to be aligned.
+Support for iWARP (bcopy mode only).
 
-The client obtains a handle for this region of memory, and
-passes it to the other participant (the server). This is called
-the RDMA cookie.
+Locking and scalability improvements.
 
-The client sends this handle to the server application, along with other 
-details of the RDMA request (such as which data to transfer to that memory area).
-Throughout the following discussion, we will refer to this
-message as the RDMA request.
+Credit-based flow control for RDS/IB. This will allow RDS to avoid relying on
+RNR retries.
 
-The server uses this RDMA cookie to initiate the requested RDMA
-transfer. The RDMA transfer is combined atomically with a
-normal RDS message, which is delivered to the client. This
-message is called the RDMA ACK throughout the following.  Atomic
-in this context means that if the RDMA ACK succeeds, then the RDMA 
-has completed. If the RDMA ACK is not delivered, the client can not 
-assume anything about the success of the RDMA.
-
-Thus, when the client receives the RDMA ACK, it knows that
-the RDMA has completed successfully. It can then release the
-RDMA cookie for this memory region, if it wishes to.
-
-See the rds(7) and rds-rdma(7) man pages included in rds-tools
+TCP transport removed.
 
 ===============================================================================
-5. Bug fixes and Enhancements since OFED 1.2 
+5. Bug fixes and Enhancements since OFED 1.3.1
+===============================================================================
+- RDMA completion notifications are signalled when the IB stack gives us the
+  completion event for the accompanying RDS message. This is a change from the
+  1.3.x behavior, which signalled completion notifications when the RDS message
+  was ACKed.
+- Fixed bugs associated with congestion monitoring.
+- FMR pool size increased from 2K to 4K
+- Added support for RDMA_CM_EVENT_ADDR_CHANGE event.
+- RDS should now work on Qlogic HCAs.
+
+===============================================================================
+6. Bug fixes and Enhancements since OFED 1.3 
+===============================================================================
+- Fix a bug in RDMA signaling
+- Add 3 more stats counters
+- Fix a kernel crash that can occur when RDS/IB connection drops
+- Fixes for RDMA API
+
+===============================================================================
+7. Bug fixes and Enhancements since OFED 1.2 
 ===============================================================================
 
 1) Wire protocol for RDS v3 and RDS v2 are not compatible. 
 
 2) RDS over TCP is disabled in OFED 1.3. We will re-enable in future release.
 
-3) Congestion monitoring support gives the application more fine-grained control.
+3) Congestion monitoring support gives the application more fine-grained
+   control.
 
 With explicit monitoring, the application polls for POLLIN as before, and 
 additionally uses the RDS_CONG_MONITOR socket option to install a 64bit mask 
@@ -96,15 +100,7 @@ When application calls recvmsg (2), it will be given the control message
 containing the bitmap on the socket.
  
 ===============================================================================
-6. Bug fixes and Enhancements since OFED 1.3 
-===============================================================================
-- Fix a bug in RDMA signaling
-- Add 3 more stats counters
-- Fix a kernel crash that can occur when RDS/IB connection drops
-- Fixes for RDMA API
-			
-===============================================================================
-7. Known Issues
+8. Known Issues
 ===============================================================================
 1. RDS is not stable when using flow control feature over ConnectX.
    Disable flow control to workaround this issue:
@@ -114,3 +110,4 @@ containing the bitmap on the socket.
 
    Update /etc/sysctl.conf to disable flow controle after reboot:
    net.rds.ib.flow_control = 0
+

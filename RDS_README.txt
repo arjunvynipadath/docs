@@ -14,8 +14,8 @@ DESCRIPTION
        in-order datagram delivery between sockets over	a  variety  of	trans‐
        ports.
 
-       Currently,  RDS	can be transported over Infiniband, and loopback.  RDS
-       over TCP is disabled, but will be re-enabled in the near future.
+       Currently,  RDS	can be transported over Infiniband, and loopback.
+       iWARP bcopy is supported, but not RDMA operations.
 
        RDS uses standard AF_INET addresses as described in ip(7)  to  identify
        end points.
