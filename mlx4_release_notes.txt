@@ -192,7 +192,9 @@ mlx4_en parameters:
    pfcrx:               Priority based Flow Control policy on RX[7:0]. 
    			Per priority bit mask (default is 0)
    rx_moder_cnt:        Max coalesced descriptors for Rx interrupt moderation 
+   			(default is 0x20000 / mtu)
    rx_moder_time:       Timeout following last packet for Rx interrupt moderation
+   			(default is 0x10)
    auto_moder:          Enable dynamic interrupt moderation (default is 1)
    rx_ring_num1:        Number or Rx rings for port 1 (0 = #cores) (default is 0)
    rx_ring_num2:        Number or Rx rings for port 2 (0 = #cores) (default is 0)
