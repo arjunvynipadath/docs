@@ -1,8 +1,8 @@
 ===============================================================================
 	MLNX_EN driver for Mellanox Adapter Cards with 10GigE Support 
-			README for OFED 1.4
+		       README for MLNX_OFED 1.4
 			   
-			December 2008
+			    March 2009
 ===============================================================================
 
 Contents:
@@ -29,6 +29,7 @@ The MLNX_EN driver release exposes the following capabilities:
 - HW Tx/Rx checksum calculation
 - Large Send Offload (i.e., TCP Segmentation Offload)
 - Large Receive Offload
+- IP reassembly offload for fragmented IP packets
 - Multi-core NAPI support
 - VLAN Tx/Rx acceleration (HW VLAN stripping/insertion)
 - HW VLAN filtering
@@ -61,7 +62,7 @@ The MLNX_EN driver release exposes the following capabilities:
   #> ethtool -i eth2
   driver: mlx4_en (MT_0BD0110004)
   version: 1.4.0 (Dec 2008)
-  firmware-version: 2.5.952
+  firmware-version: 2.6.0
   bus-info: 0000:0e:00.0
 
 - To query stateless offload status run:
