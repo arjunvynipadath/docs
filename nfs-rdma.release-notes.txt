@@ -195,3 +195,12 @@ NFS/RDMA Setup
     the "proto" field for the given mount.
 
   Congratulations! You're using NFS/RDMA!
+
+Known Issues
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+If you're running NFSRDMA over Chelsio's T3 RNIC and your cients are using
+a 64KB page size (like PPC64 and IA64 systems) and your server is using a
+4KB page size (like i386 and X86_64), then you need to mount the server
+using rsize=32768,wsize=32768 to avoid overrunning the Chelsio RNIC fast
+register limits.  This is a known firmware limitation in the Chelsio RNIC.
