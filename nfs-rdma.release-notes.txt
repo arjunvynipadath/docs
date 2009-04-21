@@ -29,25 +29,30 @@ Overview
 
   In our testing, we have obtained excellent performance results (full 10Gbit
   wire bandwidth at minimal client CPU) under many workloads. The code passes
-  the full Connection test suite and operates over both Infiniband and iWARP
+  the full Connectathon test suite and operates over both Infiniband and iWARP
   RDMA adapters.
 
-OFED 1.4 limitations:
+OFED 1.4.1 limitations:
 ~~~~~~~~~~~~~~~~~~~~~
-- NFS/RDMA is at technology preview state. 
-- NFS/RDMA supported only kernel 2.6.26 and 2.6.27.
-- NFS/RDMA is not installed by default; to install is use custom install or add 
-  nfsrdma=y to ofed.conf
+  NFS-RDMA is supported for the following releases:
+  - Redhat Enterprise Linux (RHEL) version 5.1
+  - Redhat Enterprise Linux (RHEL) version 5.2
+  - Redhat Enterprise Linux (RHEL) version 5.3
+  - SUSE Linux Enterprise Server (SLES) version 10, Service Pack 2
+  - SUSE Linux Enterprise Server (SLES) version 11
 
-  
+  And the following kernel.org kernels:
+  - 2.6.22
+  - 2.6.26
+  - 2.6.27
+
+  All other Linux Distrubutions and kernel versions are NOT supported on OFED 1.4.1
 
 Getting Help
 ~~~~~~~~~~~~
 
   If you get stuck, you can ask questions on the
-
-                nfs-rdma-devel@lists.sourceforge.net, or general@lists.openfabrics.org
-
+  nfs-rdma-devel@lists.sourceforge.net, or general@lists.openfabrics.org
   mailing lists.
 
 Installation
@@ -60,64 +65,24 @@ Installation
 
     Any device supported by the drivers in drivers/infiniband/hw is acceptable.
 
-    Testing has been performed using several Mellanox-based IB cards, the
-    Ammasso AMS1100 iWARP adapter, and the Chelsio cxgb3 iWARP adapter.
+    Testing has been performed using several Mellanox-based IB cards and 
+    the Chelsio cxgb3 iWARP adapter.
 
-  - Install OFED 1.4
+  - Install OFED 1.4.1
 
-    OFED 1.4 comes with NFS/RDMA as a technology preview. It has been tested on 
-    linux 2.6.26 and 2.6.27. If you would like to try it, please select "custom" 
-    from the install.pl Install menu, and select NFS/RDMA as well as IP over IB.
-    Note that NFS/RDMA is NOT installed if you simply select "install all."
+    NFS/RDMA has been tested on RHEL5.1, RHEL5.2, RHEL 5.3, SLES10SP2, SLES11,
+    kernels 2.6.22, 2.6.26, and 2.6.27.  On these kernels, NFS-RDMA will be
+    installed by default if you simply select "install all", and can be
+    specifically included by a "custom" install.
 
-    In addition, the install script will check the installed version of mount.nfs to 
-    ensure that it is from nfs-utils 1.1 or later, as that is required for NFS/RDMA.
+    In addition, the install script will install a version of the nfs-utils that
+    is required for NFS/RDMA.  The binary installed will be named "mount.rnfs".
+    This version is not necessary for Linux Distributions with nfs-utils 1.1 or
+    later.
 
-    Upon successful installation, the nfs kernel modules will be placed in the 
-    directory /lib/modules/'uname -a'/updates. It is recommended that you reboot to 
+    Upon successful installation, the nfs kernel modules will be placed in the
+    directory /lib/modules/'uname -a'/updates. It is recommended that you reboot to
     ensure that the correct modules are loaded.
-
-  - Install nfs-utils-1.1.2 or greater on the client
-
-    An NFS/RDMA mount point can be obtained by using the mount.nfs command in
-    nfs-utils-1.1.2 or greater (nfs-utils-1.1.1 was the first nfs-utils
-    version with support for NFS/RDMA mounts, but for various reasons we
-    recommend using nfs-utils-1.1.2 or greater). To see which version of
-    mount.nfs you are using, type:
-
-    $ /sbin/mount.nfs -V
-
-    If the version is less than 1.1.2 or the command does not exist,
-    you should install the latest version of nfs-utils.
-
-    Download the latest package from:
-
-    http://www.kernel.org/pub/linux/utils/nfs
-
-    Uncompress the package and follow the installation instructions.
-
-    If you will not need the idmapper and gssd executables (you do not need
-    these to create an NFS/RDMA enabled mount command), the installation
-    process can be simplified by disabling these features when running
-    configure:
-
-    $ ./configure --disable-gss --disable-nfsv4
-
-    To build nfs-utils you will need the tcp_wrappers package installed. For
-    more information on this see the package's README and INSTALL files.
-
-    After building the nfs-utils package, there will be a mount.nfs binary in
-    the utils/mount directory. This binary can be used to initiate NFS v2, v3,
-    or v4 mounts. To initiate a v4 mount, the binary must be called
-    mount.nfs4.  The standard technique is to create a symlink called
-    mount.nfs4 to mount.nfs.
-
-    This mount.nfs binary should be installed at /sbin/mount.nfs as follows:
-
-    $ sudo cp utils/mount/mount.nfs /sbin/mount.nfs
-
-    In this location, mount.nfs will be invoked automatically for NFS mounts
-    by the system mount command.
 
 Check RDMA and NFS Setup
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -214,17 +179,17 @@ NFS/RDMA Setup
 
     Instruct the server to listen on the RDMA transport:
 
-    $ echo rdma 2050 > /proc/fs/nfsd/portlist
+    $ echo rdma 20049 > /proc/fs/nfsd/portlist
 
   - On the client system
 
     Load the RDMA client module:
 
-    $ modprobe xprtrdma.ko
+    $ modprobe xprtrdma
 
     Mount the NFS/RDMA server:
 
-    $ mount -o rdma,port=2050 <IPoIB-server-name-or-address>:/<export> /mnt
+    $ mount -o rdma,port=20049 <IPoIB-server-name-or-address>:/<export> /mnt
 
     To verify that the mount is using RDMA, run "cat /proc/mounts" and check
     the "proto" field for the given mount.
