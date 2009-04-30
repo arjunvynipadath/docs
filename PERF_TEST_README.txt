@@ -90,25 +90,6 @@ Server:		./<test name> <options>
 Client:		./<test name> <options> <server IP address>
 
 		o  <server address> is IPv4 or IPv6 address. You can use the IPoIB
-diags_release_notes.txt     
-mpi-selector_release_notes.txt    
-rdma_cm_release_notes.txt
-MSTFLINT_README.txt               
-open_mpi_release_notes.txt    RDS_README.txt
-ib-bonding.txt              
-mthca_release_notes.txt          
-opensm_release_notes.txt      
-rds_release_notes.txt
-ibutils_release_notes.txt*  
-mvapich_release_notes.txt         
-PERF_TEST_README.txt          
-sdp_release_notes.txt
-ipoib_release_notes.txt     
-srp_release_notes.txt
-QoS_in_OFED.txt               
-SRPT_README.txt
-mlx4_release_notes.txt      
-QoS_management_in_OpenSM.
                    address if IPoIB is configured.
 		o  --help lists the available <options>
 

@@ -1,5 +1,5 @@
 	    Open Fabrics Enterprise Distribution (OFED)
-	              Version 1.4.1-rc3
+	              Version 1.4.1-rc4
 	               Release Notes
 	                April 2009
 
