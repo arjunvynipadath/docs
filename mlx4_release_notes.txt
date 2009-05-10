@@ -133,7 +133,7 @@ Non FW dependent features:
 ===============================================================================
 5. Infiniband new features and bug fixes since OFED 1.4
 ===============================================================================
-- Enable setting 4K MTU for ConnectX ports.
+- Enable setting via module param (set_4k_mtu) 4K MTU for ConnectX ports.
 - Support optimized registration of huge pages backed memory.
   With this optimization, the number of MTT entries used is significantly
   lower than for regular memory, so the HCA will access registered memory with
@@ -145,6 +145,9 @@ Non FW dependent features:
 - Unregister IB device before executing CLOSE_PORT.
 - Notify and exit if the kernel module used does not support XRC. This is done 
   to avoid libmlx4 compatibility problem.
+- Added a module parameter (log_mtts_per_seg) for number of MTTs per segment.
+  This enable to register more memory with the same number of segments.
+
 
 ===============================================================================
 6. Eth (mlx4_en) new features and bug fixes since OFED 1.4
@@ -217,6 +220,7 @@ mlx4_core parameters:
    			(default is 20; max is 20)
    log_num_mac:		log maximum number of MACs per ETH port (1-7) (int)
    log_num_vlan:	log maximum number of VLANs per ETH port (0-7) (int)
+   log_mtts_per_seg     Log2 number of MTT entries per segment (1-5; default is 3)
    use_prio:		Enable steering by VLAN priority on ETH ports (0/1, default 0) (bool)
 
 mlx4_ib parameters:
