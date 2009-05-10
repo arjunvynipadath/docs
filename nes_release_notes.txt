@@ -1,108 +1,301 @@
             Open Fabrics Enterprise Distribution (OFED)
-                Intel-NE RNIC RELEASE NOTES
-                       December 2008
+      NetEffect Ethernet Cluster Server Adapter Release Notes
+                           May 2009
 
 
 
-The iw_nes and libnes modules provide RDMA and NIC support for the
-Intel-NE NE020 series of adapters.  
-
-============================================
-Loadable Module options
-============================================
-The following options can be used when loading the iw_nes module:
-
-mpa_version = 1;  
-    "MPA version to be used int MPA Req/Resp (0 or 1)"
-
-disable_mpa_crc = 0; 
-    "Disable checking of MPA CRC"
-
-send_first = 0;
-    "Send RDMA Message First on Active Connection"
-
-nes_drv_opt = 0;
-    "Driver option parameters"
-
-    NES_DRV_OPT_ENABLE_MSI           0x00000010
-    NES_DRV_OPT_DUAL_LOGICAL_PORT    0x00000020
-    NES_DRV_OPT_SUPRESS_OPTION_BC    0x00000040
-    NES_DRV_OPT_NO_INLINE_DATA       0x00000080
-    NES_DRV_OPT_DISABLE_INT_MOD      0x00000100
-    NES_DRV_OPT_DISABLE_VIRT_WQ      0x00000200
-    NES_DRV_OPT_DISABLE_LRO          0x00000400
-
-nes_debug_level = 0;
-    "Enable debug output level"
-
-wqm_quanta = 65536
-    "Size of data to be transmitted at a time"
-
-limit_maxrdreqsz = 0
-    "Limit PCI read request size to 256 bytes"
+The iw_nes module and libnes user library provide RDMA and L2IF
+support for the NetEffect Ethernet Cluster Server Adapters.
 
 
 ============================================
-Runtime Module options
-============================================
-The following options can be used to alter the behavior of the iw_nes module:
-
-tso 
-    ethtool -K eth2 tso on  == enables tso
-    ethtool -K eth2 tso off == disables tso
-                  
-jumbo
-    ifconfig eth2 mtu 9000  == largest mtu supported
-
-static interrupt moderation
-    ethtool -C eth2 rx-usecs-irq 128    
-                  
-dynamic interrupt moderation 
-    ethtool -C eth2 adaptive-rx on == enable
-    ethtool -C eth2 adaptive-rx off == disable
-    
-dynamic interrupt moderation 
-    ethtool -C eth2 rx-frames-low 12    == low watermark of rx queue
-    ethtool -C eth2 rx-frames-high 255  == high watermark of rx queue
-    ethtool -C eth2 rx-usecs-low 40     == smallest interrupt moderation timer
-    ethtool -C eth2 rx-usecs-high 1500  == largest interrupt moderation timer
-
-
-============================================
-Recommended setting
+Required Setting - RDMA Unify TCP port space
 ============================================
 RDMA connections use the same TCP port space as the host stack.  To avoid
-conflicts, set rdma_cm module option unify_tcp_port_sapce to 1 by adding 
+conflicts, set rdma_cm module option unify_tcp_port_sapce to 1 by adding
 the following to /etc/modprobe.conf:
 
     options rdma_cm unify_tcp_port_space=1
 
 
-============================================
-Known issues
-============================================
-On RHEL4 update 4, we have observed /dev/infiniband/uverbs0 does not
-always get created.  This device file is used for user-mode access to
-accelerated interface.  Current workaround is to change the start order
-for openibd(S05openibd) to after network(S10network).  For systems that
-start at runlevel 3 do the following:
+=======================
+Loadable Module Options
+=======================
+The following options can be used when loading the iw_nes module by modifying
+modprobe.conf file:
 
-    mv /etc/rc.d/rc3.d/S05openibd /etc/rc.d/rc3.d/S11openibd
+wide_ppm_offset = 0
+    Set to 1 will increase CX4 interface clock ppm offset to 300ppm.
+    Default setting 0 is 100ppm.
 
-For runlevel 5 do:
+mpa_version = 1
+    MPA version to be used int MPA Req/Resp (0 or 1).
 
-    mv /etc/rc.d/rc5.d/S05openibd /etc/rc.d/rc5.d/S11openibd
+disable_mpa_crc = 0
+    Disable checking of MPA CRC.
+
+send_first = 0
+    Send RDMA Message First on Active Connection.
+
+nes_drv_opt = 0x00000100
+    Following options are supported:
+
+    Enable MSI - 0x00000010
+    No Inline Data - 0x00000080
+    Disable Interrupt Moderation - 0x00000100
+    Disable Virtual Work Queue - 0x00000200
+
+nes_debug_level = 0
+    Enable debug output level.
+
+wqm_quanta = 65536
+    Set size of data to be transmitted at a time.
+
+limit_maxrdreqsz = 0
+    Limit PCI read request size to 256 bytes.
 
 
-Some MPIs require the node that initiated the RDMA connection to send
-the first RDMA message.  Enable this feature by adding the following 
-to /etc/modprobe.conf:
+===============
+Runtime Options
+===============
+The following options can be used to alter the behavior of the iw_nes module:
+NOTE: Assuming NetEffect Ethernet Cluster Server Adapter is assigned eth2.
 
-    options iw_nes send_first=1
+    ifconfig eth2 mtu 9000  - largest mtu supported
+
+    ethtool -K eth2 tso on  - enables TSO
+    ethtool -K eth2 tso off - disables TSO
+
+    ethtool -C eth2 rx-usecs-irq 128 - set static interrupt moderation
+
+    ethtool -C eth2 adaptive-rx on  - enable dynamic interrupt moderation
+    ethtool -C eth2 adaptive-rx off - disable dynamic interrupt moderation 
+    ethtool -C eth2 rx-frames-low 16 - low watermark of rx queue for dynamic
+                                       interrupt moderation
+    ethtool -C eth2 rx-frames-high 256 - high watermark of rx queue for
+                                         dynamic interrupt moderation
+    ethtool -C eth2 rx-usecs-low 40 - smallest interrupt moderation timer
+                                      for dynamic interrupt moderation
+    ethtool -C eth2 rx-usecs-high 1000 - largest interrupt moderation timer
+                                         for dynamic interrupt moderation
 
 
-For Intel MPI, iw_nes currently does not support dynamic connection 
-establishment feature.  Turn it off by setting/exporting the 
-I_MPI_USE_DYNAMIC_CONNECTIONS variable to 0:
+===================
+uDAPL Configuration
+===================
+Rest of the document assumes the following uDAPL settings in dat.conf:
 
-    export I_MPI_USE_DYNAMIC_CONNECTIONS=0
+    OpenIB-cma-nes u1.2 nonthreadsafe default libdaplcma.so.1 dapl.1.2 "eth2 0" ""
+    ofa-v2-nes u2.0 nonthreadsafe default libdaplofa.so.2 dapl.2.0 "eth2 0" ""
+
+
+=======================================
+Recommended Settings for HP MPI 2.2.7
+=======================================
+Add the following to mpirun command:
+
+    -1sided
+
+Example mpirun command with uDAPL-2.0:
+
+    mpirun -UDAPL -prot -intra=shm 
+           -e MPI_ICLIB_UDAPL=libdaplofa.so.1
+           -e MPI_HASIC_UDAPL=ofa-v2-nes
+           -1sided
+           -f /opt/hpmpi/appfile
+
+Example mpirun command with uDAPL-1.2:
+
+    mpirun -UDAPL -prot -intra=shm 
+           -e MPI_ICLIB_UDAPL=libdaplcma.so.1
+           -e MPI_HASIC_UDAPL=OpenIB-cma-nes
+           -1sided 
+           -f /opt/hpmpi/appfile
+
+
+=======================================
+Recommended Settings for Intel MPI 3.2
+=======================================
+Add the following to mpiexec command:
+
+    -genv I_MPI_FALLBACK_DEVICE 0
+    -genv I_MPI_DEVICE rdma:OpenIB-cma-nes
+    -genv I_MPI_RENDEZVOUS_RDMA_WRITE
+
+Example mpiexec command line for uDAPL-2.0:
+
+    mpiexec -genv I_MPI_FALLBACK_DEVICE 0
+            -genv I_MPI_DEVICE rdma:ofa-v2-nes
+            -genv I_MPI_RENDEZVOUS_RDMA_WRITE
+            -ppn 1 -n 2
+            /opt/intel/impi/3.2.0.011/bin64/IMB-MPI1
+
+Example mpiexec command line for uDAPL-1.2:
+
+    mpiexec -genv I_MPI_FALLBACK_DEVICE 0
+            -genv I_MPI_DEVICE rdma:OpenIB-cma-nes
+            -genv I_MPI_RENDEZVOUS_RDMA_WRITE
+            -ppn 1 -n 2
+            /opt/intel/impi/3.2.0.011/bin64/IMB-MPI1
+
+
+========================================
+Recommended Setting for MVAPICH2 and OFA
+========================================
+Add the following to the mpirun command:
+
+    -env MV2_USE_RDMA_CM 1
+    -env MV2_USE_IWARP_MODE 1
+
+For larger number of processes, it is also recommended to set the following:
+
+    -env MV2_MAX_INLINE_SIZE 64
+    -env MV2_USE_SRQ 0
+
+Example mpiexec command line:
+
+    mpiexec -l -n 2
+            -env MV2_USE_RDMA_CM 1
+            -env MV2_USE_IWARP_MODE 1 
+            /usr/mpi/gcc/mvapich2-1.2p1/tests/osu_benchmarks-3.0/osu_latency
+
+
+==========================================
+Recommended Setting for MVAPICH2 and uDAPL
+==========================================
+Add the following to the mpirun command:
+
+    -env MV2_PREPOST_DEPTH 59
+
+Example mpiexec command line:
+
+    mpiexec -l -n 2
+            -env MV2_DAPL_PROVIDER ofa-v2-nes
+            -env MV2_PREPOST_DEPTH 59 
+            /usr/mpi/gcc/mvapich2-1.2p1/tests/osu_benchmarks-3.0/osu_latency
+
+    mpiexec -l -n 2
+            -env MV2_DAPL_PROVIDER OpenIB-cma-nes
+            -env MV2_PREPOST_DEPTH 59 
+            /usr/mpi/gcc/mvapich2-1.2p1/tests/osu_benchmarks-3.0/osu_latency
+
+
+===========================
+Modify Settings in Open MPI
+===========================
+There is more than one way to specify MCA parameters in
+Open MPI.  Please visit this link and use the best method
+for your environment:
+
+http://www.open-mpi.org/faq/?category=tuning#setting-mca-params
+
+
+=======================================
+Recommended Settings for Open MPI 1.3.2
+=======================================
+Caching pinned memory is enabled by default but it may be necessary
+to limit the size of the cache to prevent running out of memory by
+adding the following parameter:
+
+    mpool_rdma_rcache_size_limit = <cache size>
+
+The cache size depends on the number of processes and nodes, e.g. for
+64 processes with 8 nodes, limit the pinned cache size to
+104857600 (100 MBytes).
+
+Example mpirun command line:
+
+    mpirun -np 2 -hostfile /opt/mpd.hosts
+           -mca btl openib,self,sm
+           -mca mpool_rdma_rcache_size_limit 104857600 
+           /usr/mpi/gcc/openmpi-1.3.2/tests/IMB-3.1/IMB-MPI1
+
+
+=======================================
+Recommended Settings for Open MPI 1.3.1
+=======================================
+There is a known problem with cached pinned memory.  It is recommended
+that pinned memory caching be disabled.  For more information, see
+https://svn.open-mpi.org/trac/ompi/ticket/1853
+
+To disable pinned memory caching, add the following parameter:
+
+    mpi_leave_pinned = 0
+
+Example mpirun command line:
+
+    mpirun -np 2 -hostfile /opt/mpd.hosts
+           -mca btl openib,self,sm
+           -mca btl_mpi_leave_pinned 0
+           /usr/mpi/gcc/openmpi-1.3.1/tests/IMB-3.1/IMB-MPI1
+
+
+=====================================
+Recommended Settings for Open MPI 1.3
+=====================================
+There is a known problem with cached pinned memory.  It is recommended
+that pinned memory caching be disabled.  For more information, see
+https://svn.open-mpi.org/trac/ompi/ticket/1853
+
+To disable pinned memory caching, add the following parameter:
+
+    mpi_leave_pinned = 0
+
+Receive Queue setting:
+
+    btl_openib_receive_queues = P,65536,256,192,128
+
+Set maximum size of inline data segment to 64:
+
+    btl_openib_max_inline_data = 64
+
+Example mpirun command:
+
+    mpirun -np 2 -hostfile /root/mpd.hosts
+           -mca btl openib,self,sm
+           -mca btl_mpi_leave_pinned 0
+           -mca btl_openib_receive_queues P,65536,256,192,128
+           -mca btl_openib_max_inline_data 64
+           /usr/mpi/gcc/openmpi-1.3/tests/IMB-3.1/IMB-MPI1
+
+
+============
+Known Issues
+============
+The following is a list of known issues with Linux kernel and
+OFED 1.4.1 release.
+
+1. We have observed "__qdisc_run" softlockup crash running UDP
+   traffic on RHEL5.1 systems with more than 8 cores.  The issue
+   is in Linux network stack. The fix for this is available from
+   the following link:
+
+http://git.kernel.org/?p=linux/kernel/git/torvalds/linux-2.6.git
+;a=commitdiff;h=2ba2506ca7ca62c56edaa334b0fe61eb5eab6ab0
+;hp=32aced7509cb20ef3ec67c9b56f5b55c41dd4f8d
+
+
+2. Running Pallas test suite and MVAPICH2 (OFA/uDAPL) for more
+   than 64 processes will abnormally terminate.  The workaround is
+   add the following to mpirun command:
+
+   -env MV2_ON_DEMAND_THRESHOLD <total processes>
+
+   e.g. For 72 total processes, -env MV2_ON_DEMAND_THRESHOLD 72
+
+
+3. For MVAPICH2 (OFA/uDAPL) IMB-EXT (part of Pallas suite) "Window" test 
+   may show high latency numbers.  It is recommended to turn off one sided
+   communication by adding following to the mpirun command:
+
+   -env MV2_USE_RDMA_ONE_SIDED 0
+
+
+4. IMB-EXT does not run with Open MPI 1.3.1 or 1.3.  The workaround is
+   to turn off message coalescing by adding the following to mpirun
+   command:
+
+    -mca btl_openib_use_message_coalescing 0
+
+
+NetEffect is a trademark of Intel Corporation in the U.S. and other countries.
