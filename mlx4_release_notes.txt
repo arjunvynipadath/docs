@@ -143,6 +143,8 @@ Non FW dependent features:
 - Do not enable blueflame sends if write combining is not available  
 - Add write combining support for for PPC64, and thus enable blueflame sends.
 - Unregister IB device before executing CLOSE_PORT.
+- Notify and exit if the kernel module used does not support XRC. This is done 
+  to avoid libmlx4 compatibility problem.
 
 ===============================================================================
 6. Eth (mlx4_en) new features and bug fixes since OFED 1.4
@@ -166,6 +168,25 @@ Non FW dependent features:
        log2_uar_bar_megabytes = 5
   2. Burn a modified firmware image with the changed INI file.
   3. Reboot the system.
+- Ethernet in MLNX_OFED 1.4 is not supported for the following OPNs:
+    MHQH29-XTC
+    MHGH29-XTC
+    MHGH29-XSC
+    MHGH28-XTC
+    MHGH28-XTC
+    MHGH28-XSC
+    MHGH28-XSC
+    MHEH28-XTC
+    MHEH28-XSC
+    MHQH19-XTC
+
+    Attempting to use these cards as NICs will yield the following error
+    in /var/log/messages:
+    mlx4_core 0000:0d:00.0: command 0x9 failed: fw status = 0x8
+    <date & time> mtlx008 kernel: mlx4_en 0000:0d:00.0: Failed Initializing port
+    <date & time> mtlx008 kernel: mlx4_en 0000:0d:00.0: Failed starting port:1
+
+    As a workaround, use the MLNX_EN driver instead of OFED for Linux.
 
      
 ===============================================================================

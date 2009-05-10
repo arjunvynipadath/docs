@@ -163,36 +163,82 @@ Usage and configuration:
     connected mode). This is because there is a bug in older kernels which causes
     a kernel panic.
 
+14. IPoIB datagram mode initial packet loss (bug #1287): When the datagram test
+    gets to packet size 8192 and larger it always loose the first packet in the 
+    sequence. 
+    Workaround: Increase the number of pending skb's before a neighbor is
+    resolved (default is 3). This value can be changed with:
+    sysctl net.ipv4.neigh.ib0.unres_qlen.
 
     
 ===============================================================================
-4. DHCP Support of IPoIB
+4. IPoIB Configuration Based on DHCP
 ===============================================================================
-Note: To use DHCP the user must apply a special patch (see "DHCP Notes" below).
 
-DHCP Supported Operating Systems
---------------------------------
-1. SLES 10
-2. RHEL 5
-3. All kernels from 2.6.14 and up
+Setting an IPoIB interface configuration based on DHCP (v3.1.2 which is available 
+via www.isc.org) is performed similarly to the configuration of Ethernet 
+interfaces. In other words, you need to make sure that IPoIB configuration files 
+include the following line:
+	For RedHat:
+	BOOTPROTO=dhcp
+	For SLES:
+	BOOTPROTO=dchp
+Note: If IPoIB configuration files are included, ifcfg-ib<n> files will be 
+installed under:
+/etc/sysconfig/network-scripts/ on a RedHat machine
+/etc/sysconfig/network/ on a SuSE machine
 
-DHCP Unsupported Operating Systems
-----------------------------------
-RedHat EL 4 distributions are supported.
+Note: A patch for DHCP is required for supporting IPoIB. The patch file for 
+DHCP v3.1.2, dhcp.patch, is available under the docs/ directory.
 
+Standard DHCP fields holding MAC addresses are not large enough to contain an 
+IPoIB hardware address. To overcome this problem, DHCP over InfiniBand messages 
+convey a client identifier field used to identify the DHCP session. This client
+identifier field can be used to associate an IP address with a client identifier 
+value, such that the DHCP server will grant the same IP address to any client 
+that conveys this client identifier.
 
-DHCP Notes
-----------
-1. It may be required to run over different UDP ports than the well known ports
-   (67 and 68). Free port numbers greater than 0x8000 must be chosen. To
-   specify a server or a client port number, use the option -p <port number>.
-   The client's port number must be the chosen server's port number plus one.
+Note: Refer to the DHCP documentation for more details how to make this 
+association.
 
-2. For IPoIB to use DHCP, you must patch ISC's DHCP. The patch file can be
-   found under OFED-1.3/docs/dhcp after extracting the distribution file.
-   (After installation it can also be found under <prefix>/docs/dhcp.) The
-   patch should be applied for the server and for each client. Tests were run
-   on version 3.0.4 of the DHCP package.
+The length of the client identifier field is not fixed in the specification. 
+
+4.1 DHCP Server
+In order for the DHCP server to provide configuration records for clients, an 
+appropriate configuration file needs to be created. By default, the DHCP server 
+looks for a configuration file called dhcpd.conf under /etc. You can either edit
+this file or create a new one and provide its full path to the DHCP server using
+the -cf flag. See a file example at docs/dhcpd.conf of this package.
+The DHCP server must run on a machine which has loaded the IPoIB module.
+
+To run the DHCP server from the command line, enter:
+dhcpd <IB network interface name> -d
+Example:
+host1# dhcpd ib0 -d
+
+4.2 DHCP Client (Optional)
+
+Note: A DHCP client can be used if you need to prepare a diskless machine with 
+an IB driver. 
+In order to use a DHCP client identifier, you need to first create a 
+configuration file that defines the DHCP client identifier. Then run the DHCP 
+client with this file using the following command:
+dhclient cf <client conf file> <IB network interface name>
+Example of a configuration file for the ConnectX (PCI Device ID 25418), called 
+dhclient.conf:
+# The value indicates a hexadecimal number
+interface "ib1" {
+send dhcp-client-identifier 00:02:c9:03:00:00:10:39;
+}
+Example of a configuration file for InfiniHost III Ex (PCI Device ID 25218), called
+dhclient.conf:
+# The value indicates a hexadecimal number
+interface "ib1" {
+send dhcp-client-identifier 20:00:55:04:01:fe:80:00:00:00:00:00:00:00:02:c9:02:00:23:13:92;
+}
+
+In order to use the configuration file, run:
+host1# dhclient cf dhclient.conf ib1
 
 
 ===============================================================================
