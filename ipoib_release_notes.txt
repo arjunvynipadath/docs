@@ -1,7 +1,7 @@
 	     Open Fabrics Enterprise Distribution (OFED)
-		    IPoIB in OFED 1.4 Release Notes
+		    IPoIB in OFED 1.4.1 Release Notes
 			  
-			   December 2008
+			   May 2009
 
 
 ===============================================================================
@@ -14,7 +14,8 @@ Table of Contents
 5. The ib-bonding driver
 6. Bug Fixes and Enhancements Since OFED 1.3
 7. Bug Fixes and Enhancements Since OFED 1.3.1
-8. Performance tuning
+8. Bug Fixes and Enhancements Since OFED 1.4
+9. Performance tuning
 
 ===============================================================================
 1. Overview
@@ -153,6 +154,16 @@ Usage and configuration:
 11. The IPoIB module uses a Linux implementation for Large Receive Offload
    (LRO) in kernel 2.6.24 and later. These kernels require installing the
     "inet_lro" module.
+
+12. ConnectX only: If you have a port configured as ETH, and are running IPoIB 
+    in connected mode -- and then change the port type to IB, the IPoIB mode 
+    changes to datagram mode.
+
+13. When working with ISCSI, you must disable LRO (even if you are working in
+    connected mode). This is because there is a bug in older kernels which causes
+    a kernel panic.
+
+
     
 ===============================================================================
 4. DHCP Support of IPoIB
@@ -210,6 +221,7 @@ utility, read the documentation for the ib-bonding package.
 Notes:
 * Using /etc/infiniband/openib.conf to create a persistent configuration is
   no longer supported
+* On RHEL4_U7, cannot set a slave interface as primary.
 
 
 ===============================================================================
@@ -243,21 +255,47 @@ Notes:
 - Bonding: Set default number of grat. ARP after failover to three (was one)
 
 ===============================================================================
-8. Performance tuning
+8. Bug Fixes and Enhancements Since OFED 1.4
 ===============================================================================
-- In IPoIB connected mode, the throughput of medium and large messages can be
-  increased by setting the following TCP parameters as follows:
+- Performance tuning is enabled by default for IPOIB CM.
+- Clear IPOIB_FLAG_ADMIN_UP if ipoib_open fails 
+- disable napi while cq is being drained (bugzilla #1587)
+- rdma_cm: Use rate from ipoib broadcast when joining ipoib multicast
+  When joining IPoIB multicast group, use the same rate as in the broadcast
+  group. Otherwise, if rdma_cm creates this group before IPoIB does, it might get
+  a different rate. This will cause IPoIB to fail joining to the same group later
+  on, because IPoIB has a strict rate selection.
+- fix unprotected use of priv->broadcast in ipoib_mcast_join_task.
+- Do not join broadcast group if interface is brought down
 
-        /sbin/sysctl -w net.ipv4.tcp_timestamps=0
-        /sbin/sysctl -w net.ipv4.tcp_sack=0
-        /sbin/sysctl -w net.core.netdev_max_backlog=250000
-        /sbin/sysctl -w net.core.rmem_max=16777216
-        /sbin/sysctl -w net.core.wmem_max=16777216
-        /sbin/sysctl -w net.core.rmem_default=16777216
-        /sbin/sysctl -w net.core.wmem_default=16777216
-        /sbin/sysctl -w net.core.optmem_max=16777216
-        /sbin/sysctl -w net.ipv4.tcp_mem="16777216 16777216 16777216"
-        /sbin/sysctl -w net.ipv4.tcp_rmem="4096 87380 16777216"
-        /sbin/sysctl -w net.ipv4.tcp_wmem="4096 65536 16777216"
+	  
+===============================================================================
+9. Performance tuning
+===============================================================================
+When IPoIB is configured to run in connected mode, tcp parameter tuning is
+performed at driver startup -- to improve the throughput of medium and large
+messages.
+The driver startup scripts set the following TCP parameters as follows:
+
+      net.ipv4.tcp_timestamps=0
+      net.ipv4.tcp_sack=0
+      net.core.netdev_max_backlog=250000
+      net.core.rmem_max=16777216
+      net.core.wmem_max=16777216
+      net.core.rmem_default=16777216
+      net.core.wmem_default=16777216
+      net.core.optmem_max=16777216
+      net.ipv4.tcp_mem="16777216 16777216 16777216"
+      net.ipv4.tcp_rmem="4096 87380 16777216"
+      net.ipv4.tcp_wmem="4096 65536 16777216"
+
+This tuning is effective only for connected mode.  If you run in datagram mode,
+it actually reduces performance.
+
+If you change the IPoIB run mode to "datagram" while the driver is running,
+the tuned parameters do not get reset to their default values.  We therefore
+recommend that you change the IPoIB mode only while the driver is down
+(by setting line "SET_IPOIB_CM=yes" to "SET_IPOIB_CM=no" in file
+/etc/infiniband/openib.conf, and then restarting the driver).
 
 

@@ -57,4 +57,11 @@ Table of Contents
 4. Known Issues
 ===============================================================================
 
+* In the very unlikely event that you get the following error message when
+  running mstflint:
+      Warning: memory access to device 0a:00.0 failed: Input/output error.
+      Warning: Fallback on IO: much slower, and unsafe if device in use.
+      *** buffer overflow detected ***: mstflint terminated
+
+  simply run "mst start" and then re-run mstflint.
 

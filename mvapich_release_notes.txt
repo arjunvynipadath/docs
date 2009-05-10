@@ -1,7 +1,7 @@
              Open Fabrics Enterprise Distribution (OFED)
-          OSU MPI MVAPICH-1.1.0, in OFED 1.4.0 Release Notes
+          OSU MPI MVAPICH-1.1.0, in OFED 1.4.r10 Release Notes
 
-                          December 2008
+                          May 2009
 
 
 ===============================================================================
@@ -59,6 +59,8 @@ MVAPICH-1.1.0 has the following additional features:
 ===============================================================================
 5. Known Issues
 ===============================================================================
+- Shared memory broadcast optimization is disabled by default.
+
 - MVAPICH MPI compiled on AMD x86_64 does not work with MVAPICH MPI compiled
   on Intel X86_64 (EM64t).
   Workaround:

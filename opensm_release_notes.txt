@@ -3,7 +3,7 @@
 
 Version: OpenSM 3.2.x
 Repo:    git://git.openfabrics.org/~sashak/management.git
-Date:    Dec 2008
+Date:    May 2009
 
 1 Overview
 ----------
@@ -239,6 +239,8 @@ are listed in Table 3.
   OpenSM prints list of "Invalid Cached Option" error messages.
   This does not affect OpenSM functionality.
 
+* SMs do not hand-over when running on ConnectX in a switch-based topology.
+
 3 Unsupported IB Compliance Statements
 --------------------------------------
 The following section lists all the IB compliance statements which
@@ -319,6 +321,8 @@ information regarding each compliance statement.
   66,67)
 
 * Don't startup automatically on SuSE based systems
+
+* Discovery bug, where some ports were leaved unlinked (without remote side).
 
 4.2 Other Bug Fixes
 
@@ -401,6 +405,13 @@ information regarding each compliance statement.
 * opensm: don't reassign zeroed params from config file
 
 * Other less critical or visible bugs were also fixed.
+
+* opensm: update LFTs when entering master
+
+* opensm: invalidate routing cache when entering master state
+
+* opensm/osm_port_info_rcv.c: don't clear sw->need_update if port 0 is active
+
 
 5 Main Verification Flows
 -------------------------

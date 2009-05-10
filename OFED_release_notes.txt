@@ -1,7 +1,7 @@
 	    Open Fabrics Enterprise Distribution (OFED)
-	              Version 1.4.1-rc4
+	              Version 1.4.1-rc5
 	               Release Notes
-	                April 2009
+	                May 2009
 
 
 ===============================================================================
@@ -31,7 +31,7 @@ Note: If you plan to upgrade the OFED package on your cluster, please upgrade
 all of its nodes to this new version.
 
 
-1.1 OFED 1.4 Contents
+1.1 OFED 1.4.1 Contents
 -----------------------
 The OFED package contains the following components:
  - OpenFabrics core and ULPs:
@@ -136,6 +136,7 @@ companies:
 	- Qlogic
 	- Flextronics
 	- Sun
+	- Mellanox
 
 1.5 Third Party Packages
 ------------------------
@@ -241,9 +242,9 @@ for each package in the docs directory.
 - NFS/RDMA: In beta qaulity with backports for RHEL 5.2, 5.3 and SLES 10 SP2
 - Updated MPI packages:
         mvapich-1.1.0-3143
-	Open MPI 1.3.1
-- Updated bonding package: ib-bonding-0.9.0-38
-- Updated DAPL: compat-dapl-1.2.13 and dapl-2.0.16
+	Open MPI 1.3.2
+- Updated bonding package: ib-bonding-0.9.0-40
+- Updated DAPL: compat-dapl-1.2.14 and dapl-2.0.19
 - Updated opensm version to include critical bug fixes
 - Fixed RDS iWARP support
 - Low level drivers updated: ehca, mlx4, cxgb3, nes, ipath

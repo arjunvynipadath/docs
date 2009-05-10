@@ -1,7 +1,7 @@
 	    Open Fabrics Enterprise Distribution (OFED)
           ConnectX driver (mlx4) in OFED 1.4 Release Notes
 			  
-  		   	December 2008
+  		   	May 2009
 
 
 ===============================================================================
@@ -10,8 +10,10 @@ Table of Contents
 1. Overview
 2. Supported Firmware Versions
 3. VPI (Virtual Process Interconnect)
-4. Infiniband new features and bug fixes
-5. Known Issues
+4. Infiniband new features and bug fixes since OFED 1.3.1
+5. Infiniband (mlx4_ib) new features and bug fixes since OFED 1.4
+6. Eth (mlx4_en) new features and bug fixes since OFED 1.4
+7. Known Issues
 
 ===============================================================================
 1. Overview
@@ -39,7 +41,7 @@ configurations, the driver is split into three modules:
 ===============================================================================
 - This release was tested with FW 2.6.000.
 - The minimal version to use is 2.3.000. 
-- To use both IB and Ethernet use FW version 2.6.0
+- To use both IB and Ethernet (VPI) use FW version 2.6.0
 
 ===============================================================================
 3. VPI (Virtual Protocol Interconnect) 
@@ -105,7 +107,7 @@ o Port type management:
   
 	
 ===============================================================================
-4. Infiniband new features and bug fixes
+4. Infiniband new features and bug fixes since OFED 1.3.1
 ===============================================================================
 Features that are enabled with FW 2.5.0 only:
 - Send with invalidate and Local invalidate send queue work requests.
@@ -129,7 +131,26 @@ Non FW dependent features:
 
 
 ===============================================================================
-5. Known Issues
+5. Infiniband new features and bug fixes since OFED 1.4
+===============================================================================
+- Enable setting 4K MTU for ConnectX ports.
+- Support optimized registration of huge pages backed memory.
+  With this optimization, the number of MTT entries used is significantly
+  lower than for regular memory, so the HCA will access registered memory with
+  fewer cache misses and improved performance.
+  For more information on this topic, please refer to Linux documentation file:
+  Documentation/vm/hugetlbpage.txt
+- Do not enable blueflame sends if write combining is not available  
+- Add write combining support for for PPC64, and thus enable blueflame sends.
+- Unregister IB device before executing CLOSE_PORT.
+
+===============================================================================
+6. Eth (mlx4_en) new features and bug fixes since OFED 1.4
+===============================================================================
+- Yevgeni - ...
+
+===============================================================================
+7. Known Issues
 ===============================================================================
 - mlx4_en driver is not supported on PPC64 and IA64
 - The mlx4_en module uses a Linux implementation for Large Receive Offload
@@ -158,6 +179,7 @@ In order to set mlx4 parameters, add the following line(s) to /etc/modpobe.conf:
    options mlx4_en   parameter=<value>
 
 mlx4_core parameters:
+   set_4k_mtu:          attempt to set 4K MTU to all ConnectX ports (default 0)
    msi_x:		attempt to use MSI-X if nonzero (default 1)
    enable_qos:		Enable Quality of Service support in the HCA if > 0, (default 0) 
    block_loopback	Block multicast loopback packets if > 0  (default: 1)
