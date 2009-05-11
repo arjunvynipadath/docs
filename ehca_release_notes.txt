@@ -1,8 +1,8 @@
 
              Open Fabrics Enterprise Distribution (OFED)
-                    ehca in OFED 1.4 Release Notes
+                    ehca in OFED 1.4.1 Release Notes
 
-                           December 2008
+                               May 2009
 
 
 Overview
@@ -38,7 +38,11 @@ whereby <parameter> is one of the following items:
 
 New Features
 ------------
-- Flush error completion support
+- none
+
+Fixed Bugs ofed-1.4.1
+---------------------
+- none
 
 Fixed Bugs ofed-1.4
 ---------------------
@@ -77,8 +81,9 @@ Fixed Bugs ofed-1.3
 
 Available backports
 -------------------
-- RedHat EL5 up1: 2.6.18-53.ELsmp
 - RedHat EL5 up2: 2.6.18-92.ELsmp
+- RedHat EL5 up3: 2.6.18-128.ELsmp
+- SLES11: 2.6.27.19-5.1-smp
 - SLES10SP1: 2.6.16-53-0.16-smp
 - SLES10SP2: 2.6.16-60
 - kernel.org: 2.6.24-27
@@ -93,4 +98,6 @@ strongly recommended to set option nr_ports=-1 to enable autodetect mode:
 loading the ehca device driver.
 
 3. Dynamic memory operations are not supported with ehca
-   
+
+4. Allocating a large number of queue pairs might be time consuming. This will
+be fixed in next OFED release.
