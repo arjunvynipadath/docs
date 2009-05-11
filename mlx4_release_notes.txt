@@ -152,7 +152,27 @@ Non FW dependent features:
 ===============================================================================
 6. Eth (mlx4_en) new features and bug fixes since OFED 1.4
 ===============================================================================
-- Yevgeni - ...
+6.1 Changes and New Features
+----------------------------
+- Added Tx Multi-queue support which Improves multi-stream and bi-directional
+  TCP performance.
+- Added IP Reassembly to improve RX bandwidth for IP fragmented packets.
+- Added linear skb support which improves UDP performance.
+- Removed the following module parameters:
+   - rx/tx_ring_size
+   - rx_ring_num - number of RX rings
+   - pprx/pptx - global pause frames
+   The parameters above are controlled through the standard Ethtool interface.
+
+Bug Fixes
+---------
+- Memory leak when driver is unloaded without configuring interfaces first.
+- Setting flow control parameters for one ConnectX port through Ethtool
+  impacts the other port as well.
+- Adaptive interrupt moderation malfunctions after receiving/transmitting
+  around 7 Tera-bytes of data.
+- Firmware commands fail with bad flow messages when bringing an interface up.
+- Unexpected behavior in case of memory allocation failures.
 
 ===============================================================================
 7. Known Issues
@@ -164,7 +184,7 @@ Non FW dependent features:
 - The SQD feature is not supported:
 - To load the driver on machines with 64KB default page size UAR bar must be
   enlarged. 64KB page size is the default of PPC with RHEL5 and Itanium with
-  64KB page size enabled.
+  SLES 11 or when 64KB page size enabled.
   Perform the following three steps:
   1. Add the following line in the firmware configuration (INI) file under the
      [HCA] section:
@@ -234,4 +254,4 @@ mlx4_en parameters:
    			Per priority bit mask (default is 0)
    pfcrx:               Priority based Flow Control policy on RX[7:0]. 
    			Per priority bit mask (default is 0)
-   inline_thold:        treshold for using inline data (default is 128)
+   inline_thold:        threshold for using inline data (default is 128)
