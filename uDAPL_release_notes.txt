@@ -1,73 +1,165 @@
-		   Release Notes for 
-		OFED 1.4 DAPL Release
-		    December 2008
+			   Release Notes for 
+			OFED 1.4.1 DAPL Release
+			    May 2009
 
+        OFED 1.4.1 RELEASE NOTES
 
-      OFED 1.4 RELEASE NOTES
+	This release of the uDAPL reference implementation package for both
+	DAT 1.2 and 2.0 specification is timed to coincide with OFED release
+	of the Open Fabrics (www.openfabrics.org) software stack.
 
-	This release of the DAPL reference implementation 
-	is timed to coincide with OFED release 1.3.1 of the 
-	Open Fabrics (www.openfabrics.org) software stack.
+        NEW SINCE OFED 1.4 - new versions of uDAPL v1 (1.2.14-1) and v2 (2.0.19-1)
 
-	NEW SINCE OFED 1.3.1
+        * New Features - optional counters, must be configured/built with -DDAPL_COUNTERS
+
+        * Bug Fixes
+
+	v2 - scm, cma: dat max_lmr_block_size is 32 bit, verbs max_mr_size is 64 bit 
+	v2 - scm, cma: use direct SGE mappings from dat_lmr_triplet to ibv_sge 
+	v2 - dtest: add flush EVD call after data transfer errors 
+	v2 - scm: increase default MTU size from 1024 to 2048 
+	v2 - dapltest: reset server listen ports to avoid collisions during long runs 
+	v2 - dapltest: avoid duplicating ports, increment based on ep/thread count 
+	v2 - dapltest: fix assumptions that multiple EP's will connect in order 
+	v2 - common: sync missing with when removing items off of EVD pending queue 
+	v2 - scm: reduce open time with thread start up 
+	v2 - scm: getsockopt optlen needs initialized to size of optval 
+	v2 - scm: cr_thread cleanup 
+	v2 - OFED and WinOF code sync 
+	v2 - scm: remove unnecessary query gid/lid from connection phase code. 
+	v2 - scm: add optional 64-bit counters, build with -DDAPL_COUNTERS. 
+	v1,v2 - spec files missing Requires(post) statements for sed/coreutils 
+	v1,v2 - dtest/dapltest: use $(top_builddir) for .la files during test builds 
+	v1,v2 - scm: remove unecessary thread when using direct objects 
+	v1,v2 - Fix SuSE 11 build issues, asm/atomic.h no longer exists 
+
+	* Build Notes:
+
+	# NON_DEBUG build/install example for x86_64, OFED targets
+	./configure --prefix /usr --sysconf=/etc --libdir /usr/lib64 LDFLAGS=-L/usr/lib64 CPPFLAGS="-I/usr/include"
+	make install
+
+	# DEBUG build/install example for x86_64, using OFED targets
+	./configure --enable-debug --prefix /usr --sysconf=/etc --libdir /usr/lib64 LDFLAGS=-L/usr/lib64 CPPFLAGS="-I/usr/include"
+	make install
+
+	# COUNTERS build/install example for x86_64, using OFED targets
+	./configure --prefix /usr --sysconf=/etc --libdir /usr/lib64 LDFLAGS=-L/usr/lib64 CPPFLAGS="-I/usr/include -DDAPL_COUNTERS"
+	make install
+
+	* BKM for running new DAPL library on your cluster without any impact on existing OFED installation:
+
+	Note: example for user /home/ardavis, (assumes /home/ardavis is exported) and MLX4 adapter, port 1
+
+	Download latest 2.x package: http://www.openfabrics.org/downloads/dapl/dapl-2.0.19.tar.gz
+
+	untar in /home/ardavis 
+	cd /home/ardavis/dapl-2.0.19
+	./configure && make (build on node with OFED 1.3 or higher installed, dependency on verb/rdma_cm libraries)
+
+	create /home/ardavis/dat.conf with following 2 lines. (entries with path to new libraries):
+
+	  ofa-v2-ib0 u2.0 nonthreadsafe default /home/ardavis/dapl-2.0.19/dapl/udapl/.libs/libdaplcma.so.1 dapl.2.0 "ib0 0" ""
+	  ofa-v2-mlx4_0-1 u2.0 nonthreadsafe default /home/ardavis/dapl-2.0.19/dapl/udapl/.libs/libdaploscm.so.2 dapl.2.0 "mlx4_0 1" ""
+
+	Run uDAPL application or an MPI that uses uDAPL, with (assuming MLX4 connectx adapters) following:
+
+	  setenv DAT_OVERRIDE=/home/ardavis/dat.conf
+
+	If running Intel MPI and uDAPL socket cm, set the following:
+
+  	  setenv I_MPI_DEVICE=rdssm:ofa-v2-mlx4_0-1
+
+	or if running Intel MPI and uDAPL rdma_cm, set the following:
+
+	  setenv I_MPI_DEVICE=rdssm:ofa-v2-ib0
+
+-------------------------
+
+        OFED 1.4 RELEASE NOTES
+
+        NEW SINCE OFED 1.3.1 - new versions of uDAPL v1 (1.2.12-1) and v2 (2.0.15-1)
+
+        * New Features 
+
+	1. The new socket CM provider, introduced in 1.2.8 and 2.0.11 packages,
+	assumes homogeneous cluster and will setup the QP's based on local HCA port
+	attributes and exchanges QP information via socket's using the hostname of
+	each node. IPoIB and rdma_cm are NOT required for this provider. QP attributes
+	can be adjusted via the following environment parameters: 
+
+	DAPL_ACK_TIMER (default=16 5 bits, 4.096us*2^ack_timer. 16 == 268ms) 
+	DAPL_ACK_RETRY (default=7 3 bits, 7 * 268ms = 1.8 seconds) 
+	DAPL_RNR_TIMER (default=12 5 bits, 12 == 64ms, 28 == 163ms, 31 == 491ms) 
+	DAPL_RNR_RETRY (default=7 3 bits, 7 == infinite) 
+	DAPL_IB_MTU (default=1024 limited to active MTU max) 
+
+	The new socket cm entries in /etc/dat.conf provide a link to the actual HCA
+	device and port. Example v1 and v2 entries for a Mellanox connectx device, port 1: 
+
+	OpenIB-mlx4_0-1 u1.2 nonthreadsafe default libdaplscm.so.1 dapl.1.2 "mlx4_0 1" "" 
+	ofa-v2-mlx4_0-1 u2.0 nonthreadsafe default libdaploscm.so.2 dapl.2.0 "mlx4_0 1" "" 
+
+	This new socket cm provider, was successfully tested on the TATA CRL cluster
+	(#8 on Top500) with Intel MPI, achieving a HPLinpack score of 132.8TFlops on
+	1798 nodes, 14384 cores at ~76.9% of peak. DAPL_ACK_TIMER was increased to 21
+	for this scale. 
+
+	2. New v2 definitions for IB unreliable datagram extension (only supported in
+	scm provider, libdaploscm.so.2) 
+
+	Extended EP dat_service_type, with DAT_IB_SERVICE_TYPE_UD 
+	Add IB extension call dat_ib_post_send_ud(). 
+	Add address handle definition for UD calls. 
+	Add IB event definitions to provide remote AH via connect and connect requests 
+	See dtestx (-d) source for example usage model 
+
+        * Bug Fixes
+
+	v1,v2 - dapltest: trans test moves to cleanup stage before rdma_read processing is complete
+	v1,v2 - Fix static registration (dat.conf) to include sysconfdir override
+	v1,v2 - dat.conf: add default iwarp entry for eth2
+	v1,v2 - dapl: adjust max_rdma_read_iov to 1 for iWARP devices
+	v1,v2 - dtest: reduce default IOV's for ep_create to support iWARP
+	v1,v2 - dtest: fix 32-bit build issues
+	v1,v2 - build: $(DESTDIR) prepend needed on install hooks for dat.conf
+	v2 - scm: UD shares EP;s which requires serialization
+	v2 - dapl: fixes for IB UD extensions in common code and socket cm provider.
+	v2 - dapl: add provider specific attribute query option for IB UD MTU size
+	v2 - dapl build: add correct CFLAGS, set non-debug build by default for v2
+	v2 - dtestx: fix stack corruption problem with hostname strcpy
+	v2 - dapl extension: dapli_post_ext should always allocate cookie for requests.
+	v2 - dapltest: manpage - rdma write example incorrect
+	v1,v2 - dat, dapl, dtest, dapltest, providers: fix compiler warnings in dat common code
+	v1,v2 - dapl cma: debug message during query needs definition for inet_ntoa
+	v1,v2 - dapl scm: fix corner case that delivers duplicate disconnect events
+	v1,v2 - dat: include stddef.h for NULL definition in dat_platform_specific.h
+	v1,v2 - dapl: add debug messages during async and overflow events
+	v1,v2 - dapltest: add check for duplicate disconnect events in transaction test
+	v1,v2 - dapl scm: use correct device attribute for max_rdma_read_out, max_qp_init_rd_atom
+	v1,v2 - dapl scm: change IB RC qp inline and timer defaults.
+	v1,v2 - dapl scm: add mtu adjustments via environment, default = 1024.
+	v1,v2 - dapl scm: change connect and accept to non-blocking to avoid blocking user thread.
+	v1,v2 - dapl scm: update max_rdma_read_iov, max_rdma_write_iov EP attributes during query
+	v1,v2 - dat: allow TYPE_ERR messages to be turned off with DAT_DBG_TYPE
+	v1,v2 - dapl: remove needless terminating 0 in dto_op_str functions.
+	v1,v2 - dat: remove reference to doc/dat.conf in makefile.am
+	v1,v2 - dapl scm: fix ibv_destroy_cq busy error condition during dat_evd_free.
+	v1,v2 - dapl scm: add stdout logging for uname and gethostbyname errors during open.
+	v1,v2 - dapl scm: support global routing and set mtu based on active_mtu
+	v1,v2 - dapl: add opcode to string function to report opcode during failures.
+	v1,v2 - dapl: remove unused iov buffer allocation on the endpoint
+	v1,v2 - dapl: endpoint pending request count is wrong
 	
-        OFED 1.4 includes new versions compat-dapl-1.2.12-1, dapl-2.0.15-1
+-------------------------
 
-	Summary of changes since OFED 1.3.1 release:
+        OFED 1.3.1 RELEASE NOTES
 
-	* New Features (scalability improvements - socket cm and UD support)
-
-	1. The new socket CM provider, introduced in 1.2.8 and 2.0.11 packages, 
-	   assumes homogeneous cluster and will setup the QP's based on local 
-	   HCA port attributes and exchanges QP information via socket's using 
-	   the hostname of each node. IPoIB and rdma_cm are NOT required for 
-	   this provider. QP attributes can be adjusted via the following 
-	   environment parameters: 
-
-		DAPL_ACK_TIMER (default=16 5 bits, 4.096us*2^ack_timer. 16 =268ms) 
-		DAPL_ACK_RETRY (default=7 3 bits, 7 * 268ms = 1.8 seconds) 
-		DAPL_RNR_TIMER (default=12 5 bits, 12 = 64ms, 28 = 163ms, 31 = 491ms) 
-		DAPL_RNR_RETRY (default=7 3 bits, 7 = infinite) 
-		DAPL_IB_MTU (default=1024, limited to active MTU max) 
-
-	 The new socket cm entries in /etc/dat.conf provide a link to the actual 
-         HCA device and port. Example v1 and v2 entries for a Mellanox connectx 
-         device, port 1: 
-	 - OpenIB-mlx4_0-1 u1.2 nonthreadsafe default libdaplscm.so.1 dapl.1.2 "mlx4_0 1" "" 
-	 - ofa-v2-mlx4_0-1 u2.0 nonthreadsafe default libdaploscm.so.2 dapl.2.0 "mlx4_0 1" "" 
+        NEW SINCE OFED 1.3 - new versions of uDAPL v1 (1.2.7-1) and v2 (2.0.9-1)
 	
-	2. New v2 definitions for IB unreliable datagram extension 
-	   (only supported in v2 scm provider, libdaploscm.so.2) 
-		- Extended EP dat_service_type, with DAT_IB_SERVICE_TYPE_UD 
-		- Add IB extension call dat_ib_post_send_ud(). 
-		- Add address handle definition for UD calls. 
-		- Add IB event definitions to provide remote AH via connect 
-		  and connect requests 
-		- See dtestx (-d) source for example usage model
-	
-	* Bug Fixes
+        * New Features - None
 
-	v1,v2 - allow override of /etc/dat.conf via syscondir option 
-	v1,v2 - fix dapltest transaction test to avoid cleanup before rdma complete 
-	v1    - add ipath, ehca socket cm provider entries for v1.2, sync with v2.0 
-	v1,v2 - iWarp, 1 iov on rdma_reads, reduce iov's in dtest, add dat.conf entry 
-	v1,v2 - add $(DESTDIR) on install/uninstall hooks 
-	v2    - add new options to dtestx for UD testing 
-	v2    - IB UD fixes in common code/socket cm provider to allow multiple EP support 
-	v1,v2 - iWarp, 1 iov on rdma_reads, reduce iov's in dtest, add dat.conf entry 
-	v1,v2 - add $(DESTDIR) on install/uninstall hooks
-	v2    - add new options to dtestx for UD testing 
- 	v2    - IB UD fixes in common code/socket cm provider to allow multiple	EP support 
-	v2	- fix dtest and dtestx build warnings
-	v1,v2 - socket cm fixes, added DAPL_IB_MTU, 
-		  changed default QP timers, include NULL definition.
-	v1,v2 - Fix compiler warnings: dat, dapl, dtest, and dapltest 
-
-      NEW SINCE OFED 1.3
-
-	OFED 1.3.1 includes new versions of uDAPL v1 (1.2.7-1) and v2 (2.0.9-1)
-	
-	Summary of changes since OFED 1.3 release:
+        * Bug Fixes
 	v2 - add private data exchange with reject 
 	v1,v2 - better error reporting in non-debug builds 
 	v1,v2 - update only OFA entries in dat.conf, cooperate with non-ofa providers 
@@ -78,9 +170,14 @@
 	v1,v2 - long delay during dat_ia_open when DNS not configured 
 	v1,v2 - use rdma_read_in/out from ep_attr per consumer instead of HCA max 
         
-      NEW SINCE OFED 1.2
+-------------------------
+
+        OFED 1.3 RELEASE NOTES
+
+        NEW SINCE OFED 1.2
 
         * New Features
+
           1. Add v2.0 library support for new 2.0 API Specification
           2. Separate v1.2 library release to co-exist with v2.0 libraries.
           3. New dat.conf with both 1.2 and 2.0 support
@@ -117,10 +214,10 @@
           - dtest: typo in memset
   
 
-      BUILD: v1 and v2 uDAPL source install/build instructions (redhat example):
+        BUILD: v1 and v2 uDAPL source install/build instructions (redhat example):
 
-      # cd to distribution SRPMS directory
-	  cd /tmp/OFED-1.3/SRPMS
+        # cd to distribution SRPMS directory
+	cd /tmp/OFED-1.3/SRPMS
         rpm -i dapl-1.2*.rpm
         rpm -i dapl-2.0*.rpm
         cd /usr/src/redhat/SOURCES
@@ -164,8 +261,11 @@
 	DAPL_DBG_TYPE_SRQ       = 0x0800,
 	DAPL_DBG_TYPE_CNTR      = 0x1000
 
+-------------------------
 
-      NEW SINCE Gamma 3.2 and OFED 1.1
+        OFED 1.2 RELEASE NOTES
+
+        NEW SINCE Gamma 3.2 and OFED 1.1
 
         * New Features
 
