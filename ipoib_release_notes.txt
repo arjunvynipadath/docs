@@ -125,13 +125,7 @@ Usage and configuration:
    and SuSE: /etc/sysconfig/network/), the option IPOIB_LOAD=no in openib.conf
    does not prevent the loading of IPoIB on boot.
 
-6. On RedHat EL 4 up4, the IPOIB implementation is not spec-compliant:
-   - ipoib multicast does not work
-   - ipoib cannot inter-operate between RHEL4U4 and other hosts. This is due to
-     missing code in the kernel which was available in U3 and U5 but removed in
-     U4. As a workaround, upgrade to RHEL4U5.
-
-7. If IPoIB connected mode is enabled, it uses a large MTU for connected mode
+6. If IPoIB connected mode is enabled, it uses a large MTU for connected mode
    messages and a small MTU for datagram (in particular, multicast) messages,
    and relies on path MTU discovery to adjust MTU appropriately. Packets sent
    in the window before MTU discovery automatically reduces the MTU for a
@@ -141,6 +135,13 @@ Usage and configuration:
 
    To warn about this, a message is produced in the system log each time MTU is
    set to a value higher than 2K.
+
+7. IPoIB IPv6 support is broken for between systems with kernels < 2.6.12 and
+   kernels >= 2.6.12.  The reason for that is that kernel 2.6.12 puts the link
+   layer address at an offset of two bytes with respect to older kernels. This
+   causes the other host to misinterpret the hardware address resulting in failure
+   to resolve path which are based on wrong GIDs. As an example, RH 4.x and RH
+   5.x cannot interoperate.
 
 8. In connected mode, TCP latency for short messages is larger by approx. 1usec
    (~5%) than in datagram mode. As a workaround, use datagram mode.
@@ -169,8 +170,10 @@ Usage and configuration:
     Workaround: Increase the number of pending skb's before a neighbor is
     resolved (default is 3). This value can be changed with:
     sysctl net.ipv4.neigh.ib0.unres_qlen.
-
     
+15. IPoIB multicast support is broken in RH4.x kernels. This is because
+    ndisc_mc_map() does not handle IPOIB hardware addresses.
+
 ===============================================================================
 4. IPoIB Configuration Based on DHCP
 ===============================================================================
