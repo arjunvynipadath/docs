@@ -1,7 +1,7 @@
 		Open Fabrics Enterprise Distribution (OFED)
-		         MPI in OFED 1.4.0 README
+		         MPI in OFED 1.4.1 README
 
-			           December 2008
+			           May 2009
 
 
 ===============================================================================
@@ -18,7 +18,7 @@ Table of Contents
 ===============================================================================
 Three MPI stacks are included in this release of OFED:
 - MVAPICH 1.1.0-3143
-- Open MPI 1.2.8
+- Open MPI 1.3.2
 - MVAPICH2 1.2p1
 
 Setup, compilation and run information of MVAPICH, Open MPI and MVAPICH2 is
@@ -194,7 +194,7 @@ rsh, add to the mpirun_rsh command the parameter: -rsh
 ===============================================================================
 
 Open MPI is a next-generation MPI implementation from the Open MPI
-Project (http://www.open-mpi.org/).  Version 1.2.8 of Open MPI is
+Project (http://www.open-mpi.org/).  Version 1.3.2 of Open MPI is
 included in this release, which is also available directly from the
 main Open MPI web site.
 
@@ -208,8 +208,8 @@ for the compiler with which to build the Open MPI RPM.  Note that more
 than one compiler can be selected simultaneously, if desired.
 
 Users should check the main Open MPI web site for additional
-documentation and support. (Note: The FAQ file considers 
-InfiniBand tuning among other issues.)
+documentation and support. (Note: The FAQ file considers OpenFabrics
+tuning among other issues.)
 
 3.1 Setting up for Open MPI
 ---------------------------
@@ -338,33 +338,27 @@ options that can be tuned to obtain optimal performance of your MPI
 applications (see the Open MPI web site / FAQ for more information:
 http://www.open-mpi.org/faq/).
 
-It is worth noting that the "mpi_leave_pinned" run-time tunable
-parameter is usually *very* good for running benchmarks, but can
-actually be detrimental to real-world MPI applications -- and is
-therefore disabled by default.  When running the benchmarks listed
-below, it is advistable enable the "mpi_leave_pinned" option in order
-to see maximum performance (*).
+ - <N> is an integer indicating how many MPI processes to run (e.g., 2)
+ - <HOSTFILE> is the filename of a hostfile, as described above
 
 Example 1: Running the OSU bandwidth:
 
-    > cd /usr/mpi/gcc/openmpi-1.2.8/tests/osu_benchmarks-3.0
-    > mpirun -np <N> --mca mpi_leave_pinned 1 -hostfile <HOSTFILE> osu_bw
+    > cd /usr/mpi/gcc/openmpi-1.3.2/tests/osu_benchmarks-3.0
+    > mpirun -np <N> -hostfile <HOSTFILE> osu_bw
 
 Example 2: Running the Intel MPI Benchmark benchmarks:
 
-    > cd /usr/mpi/gcc/openmpi-1.2.8/tests/IMB-3.1
-    > mpirun -np <N> --mca mpi_leave_pinned 1 -hostfile <HOSTFILE> IMB-MPI1
+    > cd /usr/mpi/gcc/openmpi-1.3.2/tests/IMB-3.1
+    > mpirun -np <N> -hostfile <HOSTFILE> IMB-MPI1
+
+    --> Note that the version of IMB-EXT that ships in this version of
+        OFED contains a bug that will cause it to immediately error
+        out when run with Open MPI.
 
 Example 3: Running the Presta benchmarks:
 
-    > cd /usr/mpi/gcc/openmpi-1.2.8/tests/presta-1.4.0
-    > mpirun -np <N> --mca mpi_leave_pinned 1 -hostfile <HOSTFILE> com -o 100
-
-(*) The "mpi_leave_pinned" option can increase bandwidth and decrease
-    latency for applications that repeatedly send and/or receive from
-    the same buffers.  If your application does not repeatedly
-    send/receive from the same buffers, mpi_leave_pinned will likely
-    have little effect on your performance.
+    > cd /usr/mpi/gcc/openmpi-1.3.2/tests/presta-1.4.0
+    > mpirun -np <N> -hostfile <HOSTFILE> com -o 100
 
 3.5 More Open MPI Information
 -----------------------------
@@ -379,8 +373,6 @@ experiencing specific problems should consult the "how to get help" web
 page for more information:
 
     http://www.open-mpi.org/community/help/
-
-
 
 
 ===============================================================================
