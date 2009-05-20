@@ -188,8 +188,8 @@ install one or more MPI stacks.  Multiple MPI stacks can be installed
 simultaneously -- they will not conflict with each other.
 
 Three MPI stacks are included in this release of OFED:
-- MVAPICH 1.1.0
-- Open MPI 1.2.8
+- MVAPICH 1.1.0-3355
+- Open MPI 1.3.2
 - MVAPICH2 1.2p1
 
 OFED also includes 4 basic tests that can be run against each MPI
