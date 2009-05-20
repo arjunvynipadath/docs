@@ -49,6 +49,8 @@ MVAPICH-1.1.0 has the following additional features:
 ===============================================================================
 4. Bug Fixes  ( Compared to mvapich 1.0.0 )
 ===============================================================================
+- De-register stale memory regions earlier to prevent 
+  excess allocations of physical memory
 - Fixes for MPI_Query_thread and MPI_Is_thread_main
 - Fixes for PGI compiler support
 - Compilation warnings cleanup

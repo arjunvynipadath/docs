@@ -17,7 +17,7 @@ Table of Contents
 1. Overview
 ===============================================================================
 Three MPI stacks are included in this release of OFED:
-- MVAPICH 1.1.0-3143
+- MVAPICH 1.1.0-3355
 - Open MPI 1.3.2
 - MVAPICH2 1.2p1
 
