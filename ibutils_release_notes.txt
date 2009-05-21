@@ -2,8 +2,8 @@
                      --------------------------------------------
 
 *******************************************************************************
-RELEASE: OFED 1.4
-DATE:    Dec 2008
+RELEASE: OFED 1.4.1
+DATE:    May 2009
 
 ===============================================================================
 Table of Contents
@@ -11,6 +11,7 @@ Table of Contents
 1. Overview
 2. New features
 3. Major Bugs Fixed 
+3.1 Changes since OFED 1.4
 4. Known Issues
 
 ===============================================================================
@@ -72,6 +73,25 @@ ibdiag:   This package provides 3 tools which provide the user interface
 * ibdiagnet: Fixed -pm flag caused a crash on back to back (no switch) setup.
 
 * ibdiagnet: Do not query port counters when local port is in INIT state.
+
+===============================================================================
+3.1 Changes since OFED 1.4
+===============================================================================
+
+* PM csv files format fix
+
+* Fixed generating and parsing IBNL files
+
+* Fixed CC packet format to meet IBTA approved format
+
+* Set of changes to sync with OpenSM changes
+
+* Regenerated wrappers - fixed compilation errors on some distros
+
+* Fixed printing SM and mcast info in ibdiagnet
+
+* Other minor fixes/improvements
+
 
 ===============================================================================
 4. Known Issues
