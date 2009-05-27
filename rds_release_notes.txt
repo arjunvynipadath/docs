@@ -1,6 +1,6 @@
           Open Fabrics Enterprise Distribution (OFED)
-               RDS in OFED 1.4 Release Notes
-                       December 2008
+               RDS in OFED 1.4.1 Release Notes
+                       May 2009
 
 
 ===============================================================================
@@ -54,8 +54,7 @@ Support for iWARP (bcopy mode only).
 
 Locking and scalability improvements.
 
-Credit-based flow control for RDS/IB. This will allow RDS to avoid relying on
-RNR retries.
+Credit-based flow control for iWARP transport.
 
 TCP transport removed.
 
@@ -102,12 +101,4 @@ containing the bitmap on the socket.
 ===============================================================================
 8. Known Issues
 ===============================================================================
-1. RDS is not stable when using flow control feature over ConnectX.
-   Disable flow control to workaround this issue:
-
-   Run
-   sysctl -w net.rds.ib.flow_control=0
-
-   Update /etc/sysctl.conf to disable flow controle after reboot:
-   net.rds.ib.flow_control = 0
-
+1. RDMAs over 1 MiB not supported.
