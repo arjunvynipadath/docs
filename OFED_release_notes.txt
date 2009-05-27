@@ -109,9 +109,10 @@ well as iWARP RNICs by Chelsio Communications and Intel.
 	http://www.mellanox.com/content/pages.php?pg=firmware_download
 
   o   Qlogic HCAs:
-	- QHT6040 (PathScale InfiniPath HT-460)
-	- QHT6140 (PathScale InfiniPath HT-465)
-	- QLE6140 (PathScale InfiniPath PE-880)
+	- QHT7140 QLogic InfiniPath SDR HTX HCA
+	- QLE7140 QLogic InfiniPath SDR PCIe HCA
+	- QLE7240 QLogic InfiniPath DDR x8 PCIe HCA
+	- QLE7280 QLogic IniniPath DDR x16 PCIe HCA
 
   o   IBM HCAs:
 	- GX Dual-port SDR 4x IB HCA

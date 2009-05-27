@@ -1,7 +1,7 @@
-              Open Fabrics Enterprise Distribution (OFED)
-                   ipath in OFED 1.4 Release Notes
-			  
-                        December 2008
+	      Open Fabrics Enterprise Distribution (OFED)
+		  ipath in OFED 1.4.1 Release Notes
+
+			     May 2009
 
 ======================================================================
 Table of Contents
@@ -20,65 +20,16 @@ DDR QLE7240, and the PCI-Express x16 DDR QLE7280.
 ======================================================================
 2. Fixed Bugs and Enhancements
 ======================================================================
-2.1 (Bug 1283) Intel MPI fails on Qlogc HCA
-
-Added memcpy_cachebypass support to IB/ipath
-----------------------------------
-2.2 (Bug 1117) ib_ipath module hangs on unload.
-
-This fix handles the case where posting a send is requested when the 
-link is down.
-----------------------------------
-2.3 (Bug 1093) Compile fails because definition of valid_dma_direction 
-is missing from file ipath_dma.c
-
-Marked as RESOLVED INVALID. XEN is not a supported kernel. It defines 
-its own dma-mapping.h file and any driver which uses DMA probably 
-needs to be modified to work specifically within XEN.
+2.1 (Bug 1369) No results when running Open MPI bandwidth with msg size
+bigger than 2200 with Qlogic HCA
+This was fixed by a change submitted to OpenMPI 1.3, which is part of OFED
+1.4.1.
 
 ======================================================================
 3. Known Issues
 ======================================================================
-3.1 MSI (Message Signalled Interrupt) support required with
-   QLogic InfiniPath HCAs
 
-The QLogic InfiniPath adapter requires MSI (Message Signalled
-Interrupts) to be enabled in the kernel.
-
-If the InfiniPath driver is intalled on a machine without
-CONFIG_PCI_MSI=y configured, a warning similar to this will appear in
-dmesg at boot:
-
-[root@sqa-00 ~]# dmesg | grep ipath
-  ib_ipath 0000:01:00.0: infinipath0: QLogic PCIE device 0x10 cannot 
-  work if CONFIG_PCI_MSI is not enabled
-----------------------------------
-3.2 (Bug 1369) No results when running Open MPI bandwidth with msg size 
-bigger than 2200 with Qlogic HCA
-
-OpenMPI defaults to the IB MTU size specified in a configuration file 
-found within the OpenMPI install directory at:
-
-  share/openmpi/mca-btl-openib-hca-params.ini 
-
-This file contains a mapping from adapter cards (identified by vendor 
-ID and adapter part ID) to MTU size. Note that this is a static 
-mapping and the available MTU on a particular fabric might not be the 
-same as the maximum supported by the adapter card. This could happen 
-due to switch MTU limitations, or use of different adapters. In this 
-case the value should be set to the largest value that works for 
-all HCAs and switches in the IB fabric (that will be part of the 
-OpenMPI job).  If the value specified is too large, the job will 
-typically hang at run-time without a diagnostic.
-
-Current workaround: The two ways to work around this would be to 
-either set your switch to run with a 4K MTU, or to edit the 
-mca-btl-openib-hca-params.ini file and hardcode the MTU for 
-InfiniPath (TrueScale) adapters to 2K.
-
-This will be resolved by joint effort between QLogic and OpenMPI.
-----------------------------------
-3.3 (Bug 1242) Kernel panic while running mpi2007 against 
+3.1 (Bug 1242) Kernel panic while running mpi2007 against
 ofed1.4 -- ib_ipath: ipath_sdma_verbs_send
 
 Found while running mpi2007 over OpenMPI on stock OFED1.4 RC1 RHEL4.X
