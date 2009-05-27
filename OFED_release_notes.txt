@@ -290,6 +290,7 @@ components of the OFED 1.4 release.
 9.  When working with ISCSI over IPoIB or mlx4_en, you must disable LRO (even
     if IPoIB is set to connected mode). This is because there is a bug in older
     kernels which causes a kernel panic.
-
+10. On SLES11 in case that uninstall is failing, need to look at the error log 
+    and remove the RPMs manually using 'rpm -e <rpms list>'
 
 Note: See the release notes of each component for additional issues.
