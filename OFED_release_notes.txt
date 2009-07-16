@@ -258,7 +258,35 @@ for each package in the docs directory.
 ===============================================================================
 4. Main Changes from OFED 1.4.1
 ===============================================================================
-Bug fixes only
+Bug fixes:
+----------
+SDP:
+- Fix memory leak in bzcopy (#1672)
+- Fix bad credits advertised when connection initiated (#1679)
+- Fix compilation on i386 with gcc 3.4 used in RedHat 4. (#1630)
+- Fix Data integrity error (#1672)
+
+backports: 
+- Fix clear-dirty-page accounting. This bug was hit in Lustre testing (#1650)
+- Fix NFS stale file handles (#1680)
+- Simple NFS file operations causes RHEL 5.3 server to hard hang. (#1676)
+- iozone direct write test causes OFED to hang/crash (#1675)
+- Module crash on server with multiple client simple load (#1677)
+
+mlx4 driver: 
+- Fix post send of local invalidate and fast registration packets.
+  This fixed nfsrdma server crash @test5 connectathon basic test. (#1571)
+nes driver:
+- fix qp refcount during disconnect
+
+Features:
+---------
+nes driver: 
+- Make LRO as default feature
+mlx4 driver:
+- Added a new device ID: 0x6764: MT26468 ConnectX EN 10GigE PCIe gen2
+
+
 
 ===============================================================================
 5. Known Issues
