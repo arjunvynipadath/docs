@@ -21,8 +21,8 @@ to *real* devices
 
 Prerequisites
 -------------
-0. Supported distributions: RHEL 5/5.1/5.2, SLES 10 sp1/sp2 and vanilla kernels >
-   2.6.16
+0. Supported distributions: RHEL 5.2/5.3/5.4, SLES 10 sp2, SLES 11 
+
 Note: On distribution default kernels you can run scst_vdisk blockio mode
       to have good performance. You can also run scst_disk ie. scsi pass-thru
       mode; however, you have to compile scst with -DSTRICT_SERIALIZING 
@@ -32,26 +32,26 @@ Note: On distribution default kernels you can run scst_vdisk blockio mode
 
 1. Download and install SCST driver.
 
-a. download scst-1.0.0.tar.gz from this URL
+a. download scst-1.0.1.tar.gz from this URL
    http://scst.sourceforge.net/downloads.html
-If your distribution is RHEL 5.2 please go to step <e>
 
-b. untar and install scst-1.0.0
-   $ tar zxvf scst-1.0.0.tar.gz
-   $ cd scst-1.0.0
+b. untar and install scst-1.0.1
+   $ tar zxvf scst-1.0.1.tar.gz
+   $ cd scst-1.0.1
   
-   For RedHat distributions:
+   For RedHat 5.2/5.3/5.4 and SLES 11:
    $ make && make install
 
-   For SuSE distributions:
-   . Save the following patch to /tmp/scst_sles_spX.patch
+   For SLES 10 sp2
+   . Save the following patch to /tmp/scst_sles10_sp2.patch
 
 /************************  Start scst_sless_spX.patch *********************/
-diff -Naur scst-1.0.0/src/scst_lib.c scst-1.0.0.wk/src/scst_lib.c
---- scst-1.0.0/src/scst_lib.c	2008-06-26 23:20:18.000000000 -0700
-+++ scst-1.0.0.wk/src/scst_lib.c	2008-12-08 15:28:46.000000000 -0800
-@@ -1071,7 +1071,7 @@
- 	return orig_cmd;
+
+diff -Naur scst-1.0.1/src/scst_lib.c scst-1.0.1.wk/src/scst_lib.c
+--- scst-1.0.1/src/scst_lib.c	2009-04-27 12:14:21.000000000 -0700
++++ scst-1.0.1.wk/src/scst_lib.c	2009-08-14 13:53:40.000000000 -0700
+@@ -1680,7 +1680,7 @@
+ 	return res;
  }
  
 -#if LINUX_VERSION_CODE < KERNEL_VERSION(2, 6, 18)
@@ -59,7 +59,7 @@ diff -Naur scst-1.0.0/src/scst_lib.c scst-1.0.0.wk/src/scst_lib.c
  static void scst_req_done(struct scsi_cmnd *scsi_cmd)
  {
  	struct scsi_request *req;
-@@ -1134,7 +1134,7 @@
+@@ -1743,7 +1743,7 @@
  	TRACE_EXIT();
  	return;
  }
@@ -68,7 +68,7 @@ diff -Naur scst-1.0.0/src/scst_lib.c scst-1.0.0.wk/src/scst_lib.c
  static void scst_send_release(struct scst_device *dev)
  {
  	struct scsi_device *scsi_dev;
-@@ -1183,7 +1183,7 @@
+@@ -1790,7 +1790,7 @@
  	TRACE_EXIT();
  	return;
  }
@@ -77,16 +77,16 @@ diff -Naur scst-1.0.0/src/scst_lib.c scst-1.0.0.wk/src/scst_lib.c
  
  /* scst_mutex supposed to be held */
  static void scst_clear_reservation(struct scst_tgt_dev *tgt_dev)
-@@ -1421,7 +1421,7 @@
+@@ -2038,7 +2038,7 @@
  	sBUG_ON(cmd->inc_blocking || cmd->needs_unblocking ||
  		cmd->dec_on_dev_needed);
  
 -#if LINUX_VERSION_CODE < KERNEL_VERSION(2, 6, 18)
 +#if LINUX_VERSION_CODE < KERNEL_VERSION(2, 6, 16)
- #if defined(EXTRACHECKS)
+ #if defined(CONFIG_SCST_EXTRACHECKS)
  	if (cmd->scsi_req) {
  		PRINT_ERROR("%s: %s", __func__, "Cmd with unfreed "
-@@ -1596,7 +1596,7 @@
+@@ -2212,7 +2212,7 @@
  	return;
  }
  
@@ -95,10 +95,10 @@ diff -Naur scst-1.0.0/src/scst_lib.c scst-1.0.0.wk/src/scst_lib.c
  int scst_alloc_request(struct scst_cmd *cmd)
  {
  	int res = 0;
-diff -Naur scst-1.0.0/src/scst_main.c scst-1.0.0.wk/src/scst_main.c
---- scst-1.0.0/src/scst_main.c	2008-07-07 12:04:00.000000000 -0700
-+++ scst-1.0.0.wk/src/scst_main.c	2008-12-08 15:25:05.000000000 -0800
-@@ -1593,7 +1593,7 @@
+diff -Naur scst-1.0.1/src/scst_main.c scst-1.0.1.wk/src/scst_main.c
+--- scst-1.0.1/src/scst_main.c	2009-04-27 12:13:59.000000000 -0700
++++ scst-1.0.1.wk/src/scst_main.c	2009-08-14 13:56:17.000000000 -0700
+@@ -1672,7 +1672,7 @@
  
  	TRACE_ENTRY();
  
@@ -107,9 +107,9 @@ diff -Naur scst-1.0.0/src/scst_main.c scst-1.0.0.wk/src/scst_main.c
  	{
  		struct scsi_request *req;
  		BUILD_BUG_ON(SCST_SENSE_BUFFERSIZE !=
-diff -Naur scst-1.0.0/src/scst_priv.h scst-1.0.0.wk/src/scst_priv.h
---- scst-1.0.0/src/scst_priv.h	2008-06-12 04:40:53.000000000 -0700
-+++ scst-1.0.0.wk/src/scst_priv.h	2008-12-08 15:25:43.000000000 -0800
+diff -Naur scst-1.0.1/src/scst_priv.h scst-1.0.1.wk/src/scst_priv.h
+--- scst-1.0.1/src/scst_priv.h	2009-04-27 12:14:12.000000000 -0700
++++ scst-1.0.1.wk/src/scst_priv.h	2009-08-14 16:29:11.000000000 -0700
 @@ -27,7 +27,7 @@
  #include <scsi/scsi_device.h>
  #include <scsi/scsi_host.h>
@@ -119,7 +119,7 @@ diff -Naur scst-1.0.0/src/scst_priv.h scst-1.0.0.wk/src/scst_priv.h
  #include <scsi/scsi_request.h>
  #endif
  
-@@ -320,7 +320,7 @@
+@@ -322,7 +322,7 @@
  void scst_check_retries(struct scst_tgt *tgt);
  void scst_tgt_retry_timer_fn(unsigned long arg);
  
@@ -128,10 +128,10 @@ diff -Naur scst-1.0.0/src/scst_priv.h scst-1.0.0.wk/src/scst_priv.h
  int scst_alloc_request(struct scst_cmd *cmd);
  void scst_release_request(struct scst_cmd *cmd);
  
-diff -Naur scst-1.0.0/src/scst_targ.c scst-1.0.0.wk/src/scst_targ.c
---- scst-1.0.0/src/scst_targ.c	2008-06-26 23:20:05.000000000 -0700
-+++ scst-1.0.0.wk/src/scst_targ.c	2008-12-08 15:26:45.000000000 -0800
-@@ -1132,7 +1132,7 @@
+diff -Naur scst-1.0.1/src/scst_targ.c scst-1.0.1.wk/src/scst_targ.c
+--- scst-1.0.1/src/scst_targ.c	2009-04-27 12:14:27.000000000 -0700
++++ scst-1.0.1.wk/src/scst_targ.c	2009-08-14 13:55:23.000000000 -0700
+@@ -1272,7 +1272,7 @@
  	return context;
  }
  
@@ -140,7 +140,7 @@ diff -Naur scst-1.0.0/src/scst_targ.c scst-1.0.0.wk/src/scst_targ.c
  static inline struct scst_cmd *scst_get_cmd(struct scsi_cmnd *scsi_cmd,
  					    struct scsi_request **req)
  {
-@@ -1183,7 +1183,7 @@
+@@ -1324,7 +1324,7 @@
  	TRACE_EXIT();
  	return;
  }
@@ -149,141 +149,83 @@ diff -Naur scst-1.0.0/src/scst_targ.c scst-1.0.0.wk/src/scst_targ.c
  static void scst_cmd_done(void *data, char *sense, int result, int resid)
  {
  	struct scst_cmd *cmd;
-@@ -1205,7 +1205,7 @@
+@@ -1346,7 +1346,7 @@
  	TRACE_EXIT();
  	return;
  }
 -#endif /* LINUX_VERSION_CODE < KERNEL_VERSION(2, 6, 18) */
 +#endif /* LINUX_VERSION_CODE < KERNEL_VERSION(2, 6, 16) */
  
- static void scst_cmd_done_local(struct scst_cmd *cmd, int next_state)
+ static void scst_cmd_done_local(struct scst_cmd *cmd, int next_state,
+ 	enum scst_exec_context pref_context)
+@@ -1875,7 +1875,7 @@
+ static int scst_do_real_exec(struct scst_cmd *cmd)
  {
-@@ -1771,7 +1771,7 @@
+ 	int res = SCST_EXEC_NOT_COMPLETED;
+-#if LINUX_VERSION_CODE >= KERNEL_VERSION(2, 6, 18)
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(2, 6, 16)
+ 	int rc;
+ #endif
+ 	bool atomic = scst_cmd_atomic(cmd);
+@@ -1942,7 +1942,7 @@
  	}
  #endif
  
 -#if LINUX_VERSION_CODE < KERNEL_VERSION(2, 6, 18)
 +#if LINUX_VERSION_CODE < KERNEL_VERSION(2, 6, 16)
  	if (unlikely(scst_alloc_request(cmd) != 0)) {
- 		if (scst_cmd_atomic(cmd)) {
- 			rc = SCST_EXEC_NEED_THREAD;
-@@ -1823,7 +1823,7 @@
- out_error:
+ 		if (atomic) {
+ 			res = SCST_EXEC_NEED_THREAD;
+@@ -1993,7 +1993,7 @@
  	scst_set_cmd_error(cmd, SCST_LOAD_SENSE(scst_sense_hardw_error));
+ 	goto out_done;
  
 -#if LINUX_VERSION_CODE < KERNEL_VERSION(2, 6, 18)
 +#if LINUX_VERSION_CODE < KERNEL_VERSION(2, 6, 16)
  out_busy:
  	scst_set_busy(cmd);
  	/* go through */
-/************************  End scst_sless_spX.patch ***********************/
+/************************  End scst_sless10_sp2.patch ***********************/
 
-   . patch -p1 < /tmp/scst_sles_spX.patch
+   . patch -p1 < /tmp/scst_sles10_sp2.patch
    . make && make install
 
-c. save the following patch into /tmp/scsi_tgt.patch
-
-/************************  Start scsi_tgt.patch *********************/
---- scsi_tgt.h	2008-07-20 14:25:30.000000000 -0700
-+++ scsi_tgt.h	2008-07-20 14:25:09.000000000 -0700
-@@ -42,7 +42,9 @@
- #endif
-
- #if LINUX_VERSION_CODE < KERNEL_VERSION(2, 6, 19)
-+/*
- typedef _Bool bool;
-+*/
- #define true  1
- #define false 0
- #endif
-@@ -2330,7 +2332,7 @@
- void scst_async_mcmd_completed(struct scst_mgmt_cmd *mcmd, int status);
-
- #if LINUX_VERSION_CODE < KERNEL_VERSION(2, 6, 24)
--
-+/*
- static inline struct page *sg_page(struct scatterlist *sg)
- {
-	return sg->page;
-@@ -2358,7 +2360,7 @@
-	sg->offset = offset;
-	sg->length = len;
- }
--
-+*/
- #endif /* LINUX_VERSION_CODE < KERNEL_VERSION(2, 6, 24) */
-
- static inline void sg_clear(struct scatterlist *sg)
-/************************  End scsi_tgt.patch *********************/
-
-d. patch scsi_tgt.h file with /tmp/scsi_tgt.patch
-   $ cd /usr/local/include/scst;
-   $ cp scst.h scsi_tgt.h
-   $ patch -p0 < /tmp/scsi_tgt.patch
-
-These steps (e-h) are for RHEL 5.2 distributions only
-Other versions (RHEL 5/5.1, SLES 10 sp1/sp2) should keep these steps (e-h)
-and continue with step (2) - OFED installation
-
-e. save the following patch into /tmp/scst.patch
+c. Save the following patch into /tmp/scst.patch.
+   If you run SLES 11 you can skip steps (c,d) and go directly to step (2)
 
 /************************  Start scst.patch *********************/
---- scst.h	2008-07-20 14:25:30.000000000 -0700
-+++ scst.h	2008-07-20 14:25:09.000000000 -0700
-@@ -42,7 +42,9 @@
- #endif
-
- #if LINUX_VERSION_CODE < KERNEL_VERSION(2, 6, 19)
-+/*
- typedef _Bool bool;
-+*/
- #define true  1
- #define false 0
- #endif
-/************************  End scst.patch *********************/
-
-f. untar, patch, and install scst-1.0.0
-   $ tar zxvf scst-1.0.0.tar.gz
-   $ cd scst-1.0.0/include
-   $ patch -p0 < /tmp/scst.patch
-   $ cd ..
-   $ make && make install
-
-g. save the following patch into /tmp/scsi_tgt.patch
-
-/************************  Start scsi_tgt.patch *********************/
---- scsi_tgt.h	2008-07-20 14:25:30.000000000 -0700
-+++ scsi_tgt.h	2008-07-20 14:25:09.000000000 -0700
-@@ -2330,7 +2332,7 @@
- void scst_async_mcmd_completed(struct scst_mgmt_cmd *mcmd, int status);
-
+diff -Naur scst/scst.h scst.wk/scst.h
+--- scst/scst.h	2009-08-14 17:09:47.000000000 -0700
++++ scst.wk/scst.h	2009-08-14 17:01:28.000000000 -0700
+@@ -2581,7 +2581,7 @@
+ void scst_aen_done(struct scst_aen *aen);
+ 
  #if LINUX_VERSION_CODE < KERNEL_VERSION(2, 6, 24)
 -
-+/*
++#ifndef RHEL_RELEASE_CODE
  static inline struct page *sg_page(struct scatterlist *sg)
  {
-	return sg->page;
-@@ -2358,7 +2360,7 @@
-	sg->offset = offset;
-	sg->length = len;
+ 	return sg->page;
+@@ -2610,6 +2610,7 @@
+ 	sg->length = len;
  }
--
-+*/
+ 
++#endif
  #endif /* LINUX_VERSION_CODE < KERNEL_VERSION(2, 6, 24) */
-static inline void sg_clear(struct scatterlist *sg)
-/************************  End scsi_tgt.patch *********************/
+ 
+ static inline void sg_clear(struct scatterlist *sg)
+/************************  End scst.patch *********************/
 
-h. patch scsi_tgt.h file with /tmp/scsi_tgt.patch
-   $ cd /usr/local/include/scst
-   $ cp scst.h scsi_tgt.h
-   $ patch -p0 < /tmp/scsi_tgt.patch
+d. patch scst.h file with /tmp/scsi_tgt.patch
+   $ cd /usr/local/include/scst;
+   $ patch -p1 < /tmp/scst.patch
 
-2. Download/install OFED-1.3.1 or OFED-1.4 - SRP target is part of OFED
+2. Download/install OFED-1.5 - SRP target is part of OFED
 
 Note: if your system already have OFED stack installed, you need to remove
       all the previous built RPMs and reinstall
       
-   $ cd ~/OFED-1.4
+   $ cd ~/OFED-1.5
    $ rm RPMS/*
    $ ./install.pl -c ofed.conf
 
@@ -291,7 +233,7 @@ a. download OFED packages from this URL
    http://www.openfabrics.org/downloads/OFED/
 
 b. install OFED - remember to choose srpt=y
-   $ cd ~/OFED-1.4
+   $ cd ~/OFED-1.5
    $ ./install.pl
 
 
