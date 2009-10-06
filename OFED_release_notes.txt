@@ -34,7 +34,7 @@ all of its nodes to this new version.
 -----------------------
 The OFED package contains the following components:
  - OpenFabrics core and ULPs:
-        - IB HCA drivers (mthca, mlx4, ipath, ehca)
+        - IB HCA drivers (mthca, mlx4, qib, ehca)
 	- iWARP RNIC driver (cxgb3, nes)
         - core
         - Upper Layer Protocols: IPoIB, SDP, SRP Initiator and target, iSER 
@@ -206,7 +206,7 @@ components of the OFED 1.4 release.
    The former can be achieved by calling wait(childpid), and the latter can be
    achieved by application specific means.  The Posix system() call is
    supported.
-4. The ipath driver is supported only on 64-bit platforms.
+4. The qib driver is supported only on 64-bit platforms.
 5. When installing OFED on OpenSuse or Ubuntu one should use the 
    --without-depcheck option of the install.pl script
 6. To install OFED 1.4 on Fedora Core 8 one should:

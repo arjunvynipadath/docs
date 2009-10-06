@@ -85,7 +85,7 @@ Note:   The installer will warn you if you attempt to compile any of the
 The OFED Distribution package generates RPMs for installing the following:
 
   o   OpenFabrics core and ULPs
-        - HCA drivers (mthca, mlx4, mlx4_en, ipath, ehca)
+        - HCA drivers (mthca, mlx4, mlx4_en, qib, ehca)
         - iWARP driver (cxgb3, nes)
         - core
         - Upper Layer Protocols: IPoIB, SDP, SRP Initiator and target, iSER
