@@ -271,6 +271,11 @@ Notes:
 * Using /etc/infiniband/openib.conf to create a persistent configuration is
   no longer supported
 * On RHEL4_U7, cannot set a slave interface as primary.
+* ib-bonding will not be compiled and installed with OFED on OS with kernel
+  that is >= 2.6.27. The bonding driver that comes with those kernels already
+  supports enslaving of IPoIB interfaces. However, there still might be a issue
+  of OS configuration tools (like sysconfig or initscripts) that needs a fix 
+  but such issues were not observed yet.
 
 
 ===============================================================================
