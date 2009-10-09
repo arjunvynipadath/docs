@@ -6,13 +6,13 @@
 
  Author: NetApp and Open Grid Computing
  
- Adapted for OFED 1.4 (from linux-2.6.27.8/Documentation/filesystems/nfs-rdma.txt)
- by Jeff Becker
+ Adapted for OFED 1.5 (from linux-2.6.30/Documentation/filesystems/nfs-rdma.txt)
+ by Jon Mason
 
 Table of Contents
 ~~~~~~~~~~~~~~~~~
  - Overview
- - OFED 1.4 limitations
+ - OFED 1.5 limitations
  - Getting Help
  - Installation
  - Check RDMA and NFS Setup
@@ -32,27 +32,29 @@ Overview
   the full Connectathon test suite and operates over both Infiniband and iWARP
   RDMA adapters.
 
-OFED 1.4.1 limitations:
+OFED 1.5 limitations:
 ~~~~~~~~~~~~~~~~~~~~~
   NFS-RDMA is supported for the following releases:
-  - Redhat Enterprise Linux (RHEL) version 5.1
   - Redhat Enterprise Linux (RHEL) version 5.2
   - Redhat Enterprise Linux (RHEL) version 5.3
+  - Redhat Enterprise Linux (RHEL) version 5.4
   - SUSE Linux Enterprise Server (SLES) version 10, Service Pack 2
+  - SUSE Linux Enterprise Server (SLES) version 10, Service Pack 3 
   - SUSE Linux Enterprise Server (SLES) version 11
 
   And the following kernel.org kernels:
   - 2.6.22
-  - 2.6.26
-  - 2.6.27
+  - 2.6.25
+  - 2.6.30
 
-  All other Linux Distrubutions and kernel versions are NOT supported on OFED 1.4.1
+  All other Linux Distrubutions and kernel versions are NOT supported on OFED
+  1.5
 
 Getting Help
 ~~~~~~~~~~~~
 
   If you get stuck, you can ask questions on the
-  nfs-rdma-devel@lists.sourceforge.net, or general@lists.openfabrics.org
+  nfs-rdma-devel@lists.sourceforge.net, or linux-rdma@vger.kernel.org
   mailing lists.
 
 Installation
@@ -68,12 +70,12 @@ Installation
     Testing has been performed using several Mellanox-based IB cards and 
     the Chelsio cxgb3 iWARP adapter.
 
-  - Install OFED 1.4.1
+  - Install OFED 1.5
 
-    NFS/RDMA has been tested on RHEL5.1, RHEL5.2, RHEL 5.3, SLES10SP2, SLES11,
-    kernels 2.6.22, 2.6.26, and 2.6.27.  On these kernels, NFS-RDMA will be
-    installed by default if you simply select "install all", and can be
-    specifically included by a "custom" install.
+    NFS/RDMA has been tested on RHEL5.2, RHEL 5.3, RHEL5.4, SLES10SP2,
+    SLES10SP3, SLES11, kernels 2.6.22, 2.6.25, and 2.6.30.  On these kernels,
+    NFS-RDMA will be installed by default if you simply select "install all",
+    and can be specifically included by a "custom" install.
 
     In addition, the install script will install a version of the nfs-utils that
     is required for NFS/RDMA.  The binary installed will be named "mount.rnfs".
@@ -81,8 +83,8 @@ Installation
     later.
 
     Upon successful installation, the nfs kernel modules will be placed in the
-    directory /lib/modules/'uname -a'/updates. It is recommended that you reboot to
-    ensure that the correct modules are loaded.
+    directory /lib/modules/'uname -a'/updates. It is recommended that you reboot
+    to ensure that the correct modules are loaded.
 
 Check RDMA and NFS Setup
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -189,7 +191,7 @@ NFS/RDMA Setup
 
     Mount the NFS/RDMA server:
 
-    $ mount -o rdma,port=20049 <IPoIB-server-name-or-address>:/<export> /mnt
+    $ mount.rnfs <IPoIB-server-name-or-address>:/<export> /mnt -o proto=rdma,port=20049 
 
     To verify that the mount is using RDMA, run "cat /proc/mounts" and check
     the "proto" field for the given mount.
