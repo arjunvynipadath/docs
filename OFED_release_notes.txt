@@ -149,7 +149,7 @@ All sources are located under git://git.openfabrics.org/
 Kernel sources: git://git.openfabrics.org/ofed_1_5/linux-2.6.git ofed_kernel
 User level Sources are located in all git trees as written in the BUILD_ID
 
-The kernel sources are based on Linux 2.6.27 mainline kernel. Its patches
+The kernel sources are based on Linux 2.6.30 mainline kernel. Its patches
 are included in the OFED sources directory.
 For details see HOWTO.build_ofed.
 
