@@ -193,6 +193,11 @@ NFS/RDMA Setup
 
     $ mount.rnfs <IPoIB-server-name-or-address>:/<export> /mnt -o proto=rdma,port=20049 
 
+    NOTE: For kernels < 2.6.23, the "-i" flag must be passed into mount.rnfs.
+    This option allows the mount command to ignore the kernel version check.  If
+    not disabled, the check will prevent passing arguments to the kernel and not
+    allow the updated version of NFS to accept the "rdma" NFS option.
+
     To verify that the mount is using RDMA, run "cat /proc/mounts" and check
     the "proto" field for the given mount.
 
