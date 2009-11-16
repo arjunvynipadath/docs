@@ -183,6 +183,13 @@ NFS/RDMA Setup
 
     $ echo rdma 20049 > /proc/fs/nfsd/portlist
 
+    NOTE for SLES10 servers: The nfs start scripts on most distro's start
+    rpc.statd by default.  However, the in-kernel lockd that was in SLES10 has
+    been removed in the new kernels.  Since OFED is back-porting the new code to
+    the older distro's, there is no in-kernel lockd in SLES10 and the SLES10
+    nfsserver scripts do not know the need to start it.  Therefore, the user
+    MUST start rpc.statd.
+
   - On the client system
 
     Load the RDMA client module:
