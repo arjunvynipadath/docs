@@ -272,10 +272,13 @@ Notes:
   no longer supported
 * On RHEL4_U7, cannot set a slave interface as primary.
 * ib-bonding will not be compiled and installed with OFED on OS with kernel
-  that is >= 2.6.27. The bonding driver that comes with those kernels already
-  supports enslaving of IPoIB interfaces. However, there still might be a issue
-  of OS configuration tools (like sysconfig or initscripts) that needs a fix 
-  but such issues were not observed yet.
+  that is >= 2.6.27 (e.g. SLES11). The bonding driver that comes with those kernels 
+  already supports enslaving of IPoIB interfaces. In addition, an OS can come
+  with an older kernel but with a patched bonding driver that also doesn't
+  require modification (e.g. RHEL5.4). OFEED will not replace the bonding
+  module in such cases also.
+  However, there still might be a issue of OS configuration tools (like sysconfig or
+  initscripts) that needs a fix but such issues were not observed yet.
 
 
 ===============================================================================
