@@ -174,6 +174,11 @@ Usage and configuration:
 15. IPoIB multicast support is broken in RH4.x kernels. This is because
     ndisc_mc_map() does not handle IPOIB hardware addresses.
 
+16. If bonding uses IPoIB slave then unenslaving all slaves (or downing them
+     with ifdown) followed by unloading the module ib_ipoib might crash the
+     kernel. To avoid this leave the IPoIB interfaces enslaved when unloading
+     ib_ipoib.
+
 ===============================================================================
 4. IPoIB Configuration Based on DHCP
 ===============================================================================
