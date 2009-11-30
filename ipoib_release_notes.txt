@@ -179,6 +179,10 @@ Usage and configuration:
      kernel. To avoid this leave the IPoIB interfaces enslaved when unloading
      ib_ipoib.
 
+17. On SLES 11, sysconfig scripts overide the interface mode and set it to
+    datagram on each call to ifup, ifdown, etc. To avoid this, add the line
+    IPOIB_MODE=connected 
+    to the interface configuration file (e.g. ifcfg-ib0)
 ===============================================================================
 4. IPoIB Configuration Based on DHCP
 ===============================================================================
