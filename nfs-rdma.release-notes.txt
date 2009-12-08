@@ -187,8 +187,9 @@ NFS/RDMA Setup
     rpc.statd by default.  However, the in-kernel lockd that was in SLES10 has
     been removed in the new kernels.  Since OFED is back-porting the new code to
     the older distro's, there is no in-kernel lockd in SLES10 and the SLES10
-    nfsserver scripts do not know the need to start it.  Therefore, the user
-    MUST start rpc.statd.
+    nfsserver scripts do not know the need to start it.  Therefore, the
+    nfsserver scripts will be modified when the rnfs-utils rpm is installed to
+    start/stop rpc.statd.
 
   - On the client system
 
