@@ -219,3 +219,8 @@ a 64KB page size (like PPC64 and IA64 systems) and your server is using a
 4KB page size (like i386 and X86_64), then you need to mount the server
 using rsize=32768,wsize=32768 to avoid overrunning the Chelsio RNIC fast
 register limits.  This is a known firmware limitation in the Chelsio RNIC.
+
+Running NFSRDMA over Mellanox's ConnectX HCA requires that the adapter firmware
+be 2.7.0 or greater on all NFS clients and servers.  Firmware 2.6.0 has known
+issues that prevent the RDMA connection from being established.  Firmware 2.7.0
+has resolved these issues.
