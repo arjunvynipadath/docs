@@ -1,8 +1,8 @@
             Open Fabrics Enterprise Distribution (OFED)
-                          Version 1.4.1
+                          Version 1.5
                        Installation Guide
 
-                          May 2009
+                          December 2009
 
 ==============================================================================
 Table of contents
@@ -25,7 +25,7 @@ Table of contents
 1. Overview
 ==============================================================================
 
-This is the OpenFabrics Enterprise Distribution (OFED) version 1.4.1
+This is the OpenFabrics Enterprise Distribution (OFED) version 1.5
 software package supporting InfiniBand and iWARP fabrics. It is composed
 of several software modules intended for use on a computer cluster
 constructed as an InfiniBand subnet or an iWARP network.
@@ -42,7 +42,7 @@ General Notes:
  2) When installing OFED on an entire [homogeneous] cluster, a common
     strategy is to install the software on one of the cluster nodes
     (perhaps on a shared file system such as NFS). The resulting RPMs,
-    created under OFED-1.4.1/RPMS directory, can then be installed on all
+    created under OFED-X.X.X/RPMS directory, can then be installed on all
     nodes in the cluster using any cluster-aware tools (such as pdsh).
 
 ==============================================================================
@@ -96,21 +96,27 @@ OS Distribution         Required Packages
 General:
 o  Common to all        gcc, glib, glib-devel, glibc, glibc-devel,
                         glibc-devel-32bit (to build 32-bit libraries on x86_86
-                        and ppc64), zlib-devel
-o  RedHat, Fedora       kernel-devel, rpm-build
-o  SLES 10.0            kernel-source, rpm
+                        and ppc64), zlib-devel, libstdc++-devel
+o  RedHat, Fedora       kernel-devel, rpm-build, redhat-rpm-config
+o  SLES                 kernel-source, rpm
 
 Note:   To build 32-bit libraries on x86_64 and ppc64 platforms, the 32-bit
         glibc-devel should be installed.
 
 Specific Component Requirements:
 o  Mvapich              a Fortran Compiler (such as gcc-g77)
-o  Mvapich2             libstdc++-devel, sysfsutils (SuSE),
-                        libsysfs-devel (RedHat5.0, Fedora C6)
-o  Open MPI             libstdc++-devel
+o  Mvapich2             libsysfs-devel
+o  Open MPI             libsysfs-devel
 o  ibutils              tcl-8.4, tcl-devel-8.4, tk, libstdc++-devel
 o  tvflash              pciutils-devel
 o  mstflint             libstdc++-devel (32-bit on ppc64), gcc-c++
+o  rnfs-utils           krb5-devel, krb5-libs, libevent-devel,
+                        nfs-utils-lib-devel, openldap-devel,
+                        e2fsprogs-devel (on RedHat)
+                        krb5-devel, libevent-devel, nfsidmap-devel,
+                        libopenssl-devel, libblkid-devel (on SLES11)
+                        krb5-devel, libevent, nfsidmap, krb5, openldap2-devel,
+                        cyrus-sasl-devel, e2fsprogs-devel (on SLES10)
 
 Note:   The installer will warn you if you attempt to compile any of the
         above packages and do not have the prerequisites installed.
@@ -225,11 +231,18 @@ o The kernel modules are installed under:
   - open-iscsi:
     /lib/modules/`uname -r`/updates/kernel/drivers/scsi/
   - Chelsio driver:
-    /lib/modules/`uname -r`/updates/kernel/drivers/net/cxgb3/cxgb3.ko
+    /lib/modules/`uname -r`/updates/kernel/drivers/net/cxgb3/
   - ConnectX driver:
-    /lib/modules/`uname -r`/updates/kernel/drivers/net/mlx4/mlx4_core.ko
+    /lib/modules/`uname -r`/updates/kernel/drivers/net/mlx4/
   - RDS:
-    /lib/modules/`uname -r`/updates/kernel/net/rds/rds.ko
+    /lib/modules/`uname -r`/updates/kernel/net/rds/
+  - NFSoRDMA:
+    /lib/modules/`uname -r`/updates/kernel/fs/exportfs/
+    /lib/modules/`uname -r`/updates/kernel/fs/lockd/
+    /lib/modules/`uname -r`/updates/kernel/fs/nfs/
+    /lib/modules/`uname -r`/updates/kernel/fs/nfs_common/
+    /lib/modules/`uname -r`/updates/kernel/fs/nfsd/
+    /lib/modules/`uname -r`/updates/kernel/net/sunrpc/
   - Bonding module:
     /lib/modules/`uname -r`/updates/kernel/drivers/net/bonding/bonding.ko
 o The package kernel include files are placed under <prefix>/src/ofa_kernel/.
@@ -237,7 +250,7 @@ o The package kernel include files are placed under <prefix>/src/ofa_kernel/.
   the Openfabrics stack. (Note that these includes, if needed, are
   "backported" to your kernel).
 o The raw package (un-backported) source files are placed under
-  <prefix>/src/ofa_kernel-1.4.1
+  <prefix>/src/ofa_kernel-x.x.x
 o The script "openibd" is installed under /etc/init.d/. This script can
   be used to load and unload the software stack.
 o The directory /etc/infiniband is created with the files "info" and
@@ -257,10 +270,6 @@ o If opensm is installed, the daemon opensmd is installed under /etc/init.d/
 o All verbs tests and examples are installed under <prefix>/bin and management 
   utilities under <prefix>/sbin
 o ofed_info script provides information on the OFED version and git repository.
-o If IPoIB configuration files are included, ifcfg-ib<n> files will be
-  installed at:
-  - RedHat: /etc/sysconfig/network-scripts/
-  - SuSE: /etc/sysconfig/network/
 o If iSER is included, open-iscsi user-space files will be also installed:
   - Configuration files will be installed at /etc/iscsi
   - Startup script will be installed at:
@@ -401,8 +410,8 @@ Note: After the installer completes, information about the OFED
 
 OFED documentation is located in the ofed-docs RPM.  After
 installation the documents are located under the directory:
-/usr/share/doc/ofed-docs-1.4.1 for RedHat
-/usr/share/doc/packages/ofed-docs-1.4.1 for SuSE
+/usr/share/doc/ofed-docs-x.x.x for RedHat
+/usr/share/doc/packages/ofed-docs-x.x.x for SuSE
 
 Document list:
 
