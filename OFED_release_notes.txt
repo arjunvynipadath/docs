@@ -1,7 +1,7 @@
 	    Open Fabrics Enterprise Distribution (OFED)
-	              Version 1.5-rc3
+	              Version 1.5-rc4
 	               Release Notes
-	                Nov 2009
+	                December 2009
 
 
 ===============================================================================
@@ -87,7 +87,7 @@ Notes:
 	- CentOS5.4     	2.6.18-164.el5
 	- Fedora Core12 	2.6.29              *
 	- OpenSuSE 11		2.6.25.5-1.1        *
-	- kernel.org:   	2.6.29 and 2.6.30
+	- kernel.org:   	2.6.29, 2.6.30 and 2.6.31
 
       * Minimal QA for these versions
 	
@@ -180,11 +180,10 @@ for each package in the docs directory.
 	o Diagnostic tools:
 
     2.5 MPI: 
-        For now same versions as in 1.4.1
-	a. OSU MVAPICH 1.1.0
-	b. Open MPI 1.3.2
-	c. OSU MVAPICH2 1.2p1
-	d. MPI tests:
+	a. OSU MVAPICH 1.2.0
+	b. Open MPI 1.3.4
+	c. OSU MVAPICH2 1.4
+	d. MPI tests 3.2
 
 
 ===============================================================================
