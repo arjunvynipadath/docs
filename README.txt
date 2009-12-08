@@ -2,7 +2,7 @@
                         Version 1.5
                          README
                        
-                       October 2009
+                       December 2009
 
 This is the OpenFabrics Enterprise Distribution (OFED) version 1.5
 software package supporting InfiniBand and iWARP fabrics. It is composed
@@ -52,22 +52,27 @@ OS Distribution         Required Packages
 General:
 o  Common to all        gcc, glib, glib-devel, glibc, glibc-devel,
                         glibc-devel-32bit (to build 32-bit libraries on x86_86
-                        and ppc64), zlib-devel
-o  RedHat, Fedora       kernel-devel, rpm-build
-o  SLES 9.0             kernel-source, udev, rpm
-o  SLES 10.0            kernel-source, rpm
+                        and ppc64), zlib-devel, libstdc++-devel
+o  RedHat, Fedora       kernel-devel, rpm-build, redhat-rpm-config
+o  SLES                 kernel-source, rpm
 
 Note:   To build 32-bit libraries on x86_64 and ppc64 platforms, the 32-bit
         glibc-devel should be installed.
 
 Specific Component Requirements:
 o  Mvapich              a Fortran Compiler (such as gcc-g77)
-o  Mvapich2             libstdc++-devel, sysfsutils (SuSE),
-                        libsysfs-devel (RedHat5.0, Fedora C6)
-o  Open MPI             libstdc++-devel
+o  Mvapich2             libsysfs-devel
+o  Open MPI             libsysfs-devel
 o  ibutils              tcl-8.4, tcl-devel-8.4, tk, libstdc++-devel
 o  tvflash              pciutils-devel
 o  mstflint             libstdc++-devel (32-bit on ppc64), gcc-c++
+o  rnfs-utils           krb5-devel, krb5-libs, libevent-devel,
+                        nfs-utils-lib-devel, openldap-devel,
+                        e2fsprogs-devel (on RedHat)
+                        krb5-devel, libevent-devel, nfsidmap-devel,
+                        libopenssl-devel, libblkid-devel (on SLES11)
+                        krb5-devel, libevent, nfsidmap, krb5, openldap2-devel,
+                        cyrus-sasl-devel, e2fsprogs-devel (on SLES10)
 
 Note:   The installer will warn you if you attempt to compile any of the
         above packages and do not have the prerequisites installed.
@@ -188,9 +193,9 @@ install one or more MPI stacks.  Multiple MPI stacks can be installed
 simultaneously -- they will not conflict with each other.
 
 Three MPI stacks are included in this release of OFED:
-- MVAPICH 1.1.0-3355
-- Open MPI 1.3.2
-- MVAPICH2 1.2p1
+- MVAPICH 1.2.0
+- Open MPI 1.3.4
+- MVAPICH2 1.4
 
 OFED also includes 4 basic tests that can be run against each MPI
 stack: bandwidth (bw), latency (lt), Intel MPI Benchmark and Presta. The tests
