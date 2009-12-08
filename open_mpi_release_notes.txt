@@ -1,7 +1,7 @@
-             Open Fabrics Enterprise Distribution (OFED)
-     Open MPI in OFED 1.4.1 Copyrights, License, and Release Notes
+              Open Fabrics Enterprise Distribution (OFED)
+     Open MPI in OFED 1.5 Copyrights, License, and Release Notes
 			  
-                             May 2009
+                            December 2009
 
 Open MPI Copyrights
 -------------------
@@ -25,14 +25,17 @@ Copyright (c) 2006-2009 Los Alamos National Security, LLC.  All rights
                         reserved. 
 Copyright (c) 2006-2009 Cisco Systems, Inc.  All rights reserved.
 Copyright (c) 2006-2008 Voltaire, Inc. All rights reserved.
-Copyright (c) 2006-2008 Sandia National Laboratories. All rights reserved.
+Copyright (c) 2006-2008 Sandia National Laboratories. All rights
+                        reserved.
 Copyright (c) 2006-2009 Sun Microsystems, Inc.  All rights reserved.
                         Use is subject to license terms.
-Copyright (c) 2006-2009 The University of Houston. All rights reserved.
+Copyright (c) 2006-2009 The University of Houston. All rights
+                        reserved.
 Copyright (c) 2006-2008 Myricom, Inc.  All rights reserved.
 Copyright (c) 2007-2008 UT-Battelle, LLC. All rights reserved.
 Copyright (c) 2007-2008 IBM Corporation.  All rights reserved.
-Copyright (c) 1998-2005 Forschungszentrum Juelich, Juelich Supercomputing 
+Copyright (c) 1998-2005 Forschungszentrum Juelich, Juelich
+                        Supercomputing 
                         Centre, Federal Republic of Germany
 Copyright (c) 2005-2008 ZIH, TU Dresden, Federal Republic of Germany
 Copyright (c) 2007      Evergrid, Inc. All rights reserved.
@@ -161,8 +164,101 @@ line options and installation instructions.
 
 ** Changelog summary
 
-Showing versions 1.2.7 - 1.3.2; see the "NEWS" file in an Open MPI
+Showing versions 1.2.7 - 1.3.4; see the "NEWS" file in an Open MPI
 distribution for the full list.
+
+1.3.4
+-----
+
+- Fix some issues in OMPI's SRPM with regard to shell_scripts_basename
+  and its use with mpi-selector.  Thanks to Bill Johnstone for
+  pointing out the problem.
+- Added many new MPI job process affinity options to mpirun.  See the
+  newly-updated mpirun(1) man page for details.
+- Several updates to mpirun's XML output.
+- Update to fix a few Valgrind warnings with regards to the ptmalloc2
+  allocator and Open MPI's use of PLPA.
+- Many updates and fixes to the (non-default) "sm" collective
+  component (i.e., native shared memory MPI collective operations).
+- Updates and fixes to some MPI_COMM_SPAWN_MULTIPLE corner cases.
+- Fix some internal copying functions in Open MPI's use of PLPA.
+- Correct some SLURM nodelist parsing logic that may have interfered
+  with large jobs.  Additionally, per advice from the SLURM team,
+  change the environment variable that we use for obtaining the job's
+  allocation.
+- Revert to an older, safer (but slower) communicator ID allocation
+  algorithm. 
+- Fixed minimum distance finding for OpenFabrics devices in the openib
+  BTL.
+- Relax the parameter checking MPI_CART_CREATE a bit.
+- Fix MPI_COMM_SPAWN[_MULTIPLE] to only error-check the info arguments
+  on the root process.  Thanks to Federico Golfre Andreasi for
+  reporting the problem.
+- Fixed some BLCR configure issues.
+- Fixed a potential deadlock when the openib BTL was used with
+  MPI_THREAD_MULTIPLE.
+- Fixed dynamic rules selection for the "tuned" coll component.
+- Added a launch progress meter to mpirun (useful for large jobs; set
+  the orte_report_launch_progress MCA parameter to 1 to see it).
+- Reduced the number of file descriptors consumed by each MPI process.
+- Add new device IDs for Chelsio T3 RNICs to the openib BTL config file.
+- Fix some CRS self component issues.
+- Added some MCA parameters to the PSM MTL to tune its run-time
+  behavior.
+- Fix some VT issues with MPI_BOTTOM/MPI_IN_PLACE.
+- Man page updates from the Debain Open MPI package maintainers.
+- Add cycle counter support for the Alpha and Sparc platforms.
+- Pass visibility flags to libltdl's configure script, resulting in
+  those symbols being hidden.  This appears to mainly solve the
+  problem of applications attempting to use different versions of
+  libltdl from that used to build Open MPI.
+
+
+1.3.3
+-----
+
+- Fix a number of issues with the openib BTL (OpenFabrics) RDMA CM,
+  including a memory corruption bug, a shutdown deadlock, and a route
+  timeout.  Thanks to David McMillen and Hal Rosenstock for help in
+  tracking down the issues.
+- Change the behavior of the EXTRA_STATE parameter that is passed to
+  Fortran attribute callback functions: this value is now stored
+  internally in MPI -- it no longer references the original value
+  passed by MPI_*_CREATE_KEYVAL.
+- Allow the overriding RFC1918 and RFC3330 for the specification of
+  "private" networks, thereby influencing Open MPI's TCP
+  "reachability" computations.
+- Improve flow control issues in the sm btl, by both tweaking the
+  shared memory progression rules and by enabling the "sync" collective
+  to barrier every 1,000th collective.
+- Various fixes for the IBM XL C/C++ v10.1 compiler.
+- Allow explicit disabling of ptmalloc2 hooks at runtime (e.g., enable
+  support for Debian's builtroot system).  Thanks to Manuel Prinz and
+  the rest of the Debian crew for helping identify and fix this issue.
+- Various minor fixes for the I/O forwarding subsystem.
+- Big endian iWARP fixes in the Open Fabrics RDMA CM support.
+- Update support for various OpenFabrics devices in the openib BTL's
+  .ini file.
+- Fixed undefined symbol issue with Open MPI's parallel debugger
+  message queue support so it can be compiled by Sun Studio compilers.
+- Update MPI_SUBVERSION to 1 in the Fortran bindings.
+- Fix MPI_GRAPH_CREATE Fortran 90 binding.
+- Fix MPI_GROUP_COMPARE behavior with regards to MPI_IDENT.  Thanks to
+  Geoffrey Irving for identifying the problem and supplying the fix.
+- Silence gcc 4.1 compiler warnings about type punning.  Thanks to
+  Number Cruncher for the fix.
+- Added more Valgrind and other memory-cleanup fixes.  Thanks to
+  various Open MPI users for help with these issues.
+- Miscellaneous VampirTrace fixes.
+- More fixes for openib credits in heavy-congestion scenarios.
+- Slightly decrease the latency in the openib BTL in some conditions
+  (add "send immediate" support to the openib BTL).
+- Ensure to allow MPI_REQUEST_GET_STATUS to accept an
+  MPI_STATUS_IGNORE parameter.  Thanks to Shaun Jackman for the bug
+  report.
+- Added Microsoft Windows support.  See README.WINDOWS file for
+  details.
+
 
 1.3.2
 -----
@@ -560,7 +656,7 @@ Known issues
 ===========================================================================
 
 The following abbreviated list of release notes applies to this code
-base as of this writing (14 April 2009):
+base as of this writing (10 July 2009):
 
 General notes
 -------------
@@ -618,7 +714,7 @@ General notes
   - Other 64 bit platforms (e.g., Linux on PPC64)
   - Microsoft Windows CCP (Microsoft Windows server 2003 and 2008);
     more testing and support is expected later in the Open MPI v1.3.x
-    series.
+    series.  See the README.WINDOWS file.
 
 Compiler Notes
 --------------
@@ -909,7 +1005,7 @@ Network Support
   current MX MTL does not support message pipelining resulting in
   lower performances in case of non-contiguous data-types.
 
-The "ob1" PML and BTL components use Open MPI's internal on-node
+  The "ob1" PML and BTL components use Open MPI's internal on-node
   shared memory and process loopback devices for high performance.
   The BTL interface allows multiple devices to be used simultaneously.
   For the MX BTL it is recommended that the first segment (which is as
@@ -922,6 +1018,19 @@ The "ob1" PML and BTL components use Open MPI's internal on-node
   layouts.  The MX BTL is recommended in all other cases, such as when
   using multiple interconnects at the same time (including TCP), or
   transferring non contiguous data-types.
+
+
+Shared library versioning support
+---------------------------------
+
+Open MPI started using GNU-Libtool recommended shared library
+versioning with the v1.3.3 release (where all versions were set to
+0:0:0) for the main MPI libraries: libmpi, libmpi_cxx, libmpi_f77, and
+libmpi_f90.
+
+Open MPI's other internal libraries are not [yet] versioned for deep
+voodoo technical reasons.  Please see
+https://svn.open-mpi.org/trac/ompi/ticket/2092 for more details.
 
 ===========================================================================
 
@@ -1065,6 +1174,13 @@ for a full list); a summary of the more commonly used ones follows:
 
   LSF is a resource manager system, frequently used as a batch
   scheduler in HPC systems.
+
+  NOTE: If you are using LSF version 7.0.5, you will need to add
+        "LIBS=-ldl" to the configure command line.  For example:
+
+            ./configure LIBS=-ldl --with-lsf ...
+
+        This workaround should *only* be needed for LSF 7.0.5.
 
 --with-lsf-libdir=<directory>
   Look in directory for the LSF libraries.  By default, Open MPI will
@@ -1286,6 +1402,16 @@ shell$ ./configure CC=mycc CXX=myc++ F77=myf77 F90=myf90 ...
    then invoking "./configure").  The above form will save all
    variables and values in the config.log file, which makes
    post-mortem analysis easier when problems occur.
+
+Note that you may also want to ensure that the value of
+LD_LIBRARY_PATH is set appropriately (or not at all) for your build
+(or whatever environment variable is relevant for your operating
+system).  For example, some users have been tripped up by setting to
+use non-default Fortran compilers via FC / F77, but then failing to
+set LD_LIBRARY_PATH to include the directory containing that
+non-default Fortran compiler's support libraries.  This causes Open
+MPI's configure script to fail when it tries to compile / link / run
+simple Fortran programs.
 
 It is required that the compilers specified be compile and link
 compatible, meaning that object files created by one compiler must be

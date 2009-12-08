@@ -1,7 +1,7 @@
 		Open Fabrics Enterprise Distribution (OFED)
-		         MPI in OFED 1.4.1 README
+		         MPI in OFED 1.5 README
 
-			           May 2009
+			           December 2009
 
 
 ===============================================================================
@@ -17,8 +17,8 @@ Table of Contents
 1. Overview
 ===============================================================================
 Three MPI stacks are included in this release of OFED:
-- MVAPICH 1.1.0-3355
-- Open MPI 1.3.2
+- MVAPICH 1.1.0-3143
+- Open MPI 1.3.4
 - MVAPICH2 1.2p1
 
 Setup, compilation and run information of MVAPICH, Open MPI and MVAPICH2 is
@@ -194,7 +194,7 @@ rsh, add to the mpirun_rsh command the parameter: -rsh
 ===============================================================================
 
 Open MPI is a next-generation MPI implementation from the Open MPI
-Project (http://www.open-mpi.org/).  Version 1.3.2 of Open MPI is
+Project (http://www.open-mpi.org/).  Version 1.3.4 of Open MPI is
 included in this release, which is also available directly from the
 main Open MPI web site.
 
@@ -343,12 +343,12 @@ http://www.open-mpi.org/faq/).
 
 Example 1: Running the OSU bandwidth:
 
-    > cd /usr/mpi/gcc/openmpi-1.3.2/tests/osu_benchmarks-3.0
+    > cd /usr/mpi/gcc/openmpi-1.3.4/tests/osu_benchmarks-3.0
     > mpirun -np <N> -hostfile <HOSTFILE> osu_bw
 
 Example 2: Running the Intel MPI Benchmark benchmarks:
 
-    > cd /usr/mpi/gcc/openmpi-1.3.2/tests/IMB-3.1
+    > cd /usr/mpi/gcc/openmpi-1.3.4/tests/IMB-3.1
     > mpirun -np <N> -hostfile <HOSTFILE> IMB-MPI1
 
     --> Note that the version of IMB-EXT that ships in this version of
@@ -357,7 +357,7 @@ Example 2: Running the Intel MPI Benchmark benchmarks:
 
 Example 3: Running the Presta benchmarks:
 
-    > cd /usr/mpi/gcc/openmpi-1.3.2/tests/presta-1.4.0
+    > cd /usr/mpi/gcc/openmpi-1.3.4/tests/presta-1.4.0
     > mpirun -np <N> -hostfile <HOSTFILE> com -o 100
 
 3.5 More Open MPI Information
