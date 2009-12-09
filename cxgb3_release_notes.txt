@@ -1,20 +1,20 @@
             Open Fabrics Enterprise Distribution (OFED)
                 CHELSIO T3 RNIC RELEASE NOTES
-			May 2009
+			Dec 2009
 
 
 The iw_cxgb3 and cxgb3 modules provide RDMA and NIC support for the
 Chelsio S series adapters.  Make sure you choose the 'cxgb3' and
-'libcxgb3' options when generating your ofed-1.4.1 rpms.
+'libcxgb3' options when generating your ofed rpms.
 
 ============================================
-New for ofed-1.4.1
+New for ofed-1.5
 ============================================
 
-- NFSRDMA support.
+- 7.7 Firmware.  See below for more information on updating your RNIC
+to the latest firmware.
 
-- 7.4 Firmware support.  See below for more information on updating
-your RNIC to the latest firmware.
+- Version 1.1.2 cxgb3 driver.
 
 ============================================
 Enabling Various MPIs
@@ -33,10 +33,12 @@ options iw_cxgb3 peer2peer=1
 
 For Intel MPI, HP MPI, and Scali MPI: Enable the chelsio device by adding
 an entry to /etc/dat.conf for the chelsio interface.  For instance,
-if your chelsio interface name is eth2, then the following line adds a
-DAT device named "chelsio" for that interface:
+if your chelsio interface name is eth2, then the following line adds
+a DAT version 1.2 and 2.0 devices named "chelsio" and "chelsio2" for
+that interface:
 
 chelsio u1.2 nonthreadsafe default libdaplcma.so.1 dapl.1.2 "eth2 0" ""
+chelsio2 u2.0 nonthreadsafe default libdaplofa.so.2 dapl.2.0 "eth2 0" ""
 
 =============
 Intel MPI:
@@ -51,14 +53,37 @@ export I_MPI_DEVICE=rdssm:chelsio
 export MPIEXEC_TIMEOUT=180
 export MPI_BIT_MODE=64
 
+Logout & log back in.
+
+Populate mpd.hosts with node names.
+Note: The hosts in this file should be Chelsio interface IP addresses. 
+
 Note: I_MPI_DEVICE=rdssm:chelsio assumes you have an entry in
 /etc/dat.conf named "chelsio".
 
+Note: MPIEXEC_TIMEOUT value might be required to increase if heavy traffic 
+is going across the systems.
+
 Contact Intel for obtaining their MPI with DAPL support.
+
+To run Intel MPI applications:
+
+ mpdboot -n <num nodes> -r ssh --ncpus=<num cpus>
+ mpiexec -ppn <process per node> -n <num nodes> <MPI Application Path>
+
 
 =============
 HP MPI:
 =============
+
+The following env vars enable HP MPI version 2.03.01.00.  Place these
+in your user env after installing and setting up HP MPI:
+
+export MPI_ROOT=/opt/hpmpi
+export PATH=$MPI_ROOT/bin:/opt/bin:$PATH
+export MANPATH=$MANPATH:$MPI_ROOT/share/man
+
+Log out & log back in. 
 
 To run HP MPI applications, use these mpirun options:
 
@@ -80,16 +105,27 @@ Scali MPI:
 =============
 
 The following env vars enable Scali MPI.  Place these in your user env
-after installing and setting up Scali MPI for running over Infiniband:
+after installing and setting up Scali MPI for running over IWARP:
 
 export DAPL_MAX_INLINE=64
 export SCAMPI_NETWORKS=chelsio
 export SCAMPI_CHANNEL_ENTRY_COUNT="chelsio:128"
 
+Log out & log back in.
+
 Note: SCAMPI_NETWORKS=chelsio assumes you have an entry in /etc/dat.conf
 named "chelsio".
 
+Note: SCAMPI supports only dapl 1.2 library not dapl 2.0
+
 Contact Scali for obtaining their MPI with DAPL support.
+
+To run SCALI MPI applications:
+
+ mpimon <SCALI Application Path> -- <node1_IP> <procs> <node2_IP> <procs>
+
+Note: <procs> is the number of processes to run on the node Note:
+<node#_IP> should be the IP of Chelsio's interface
 
 =============
 OpenMPI:
@@ -101,6 +137,58 @@ Open MPI will work without any specific configuration via the openib btl.
 Users wishing to performance tune the configurable options may wish to
 inspect the receive queue values.  Those can be found in the "Chelsio T3"
 section of mca-btl-openib-hca-params.ini.
+
+Note: OpenMPI version 1.3 does not support newer Chelsio card with device
+ID 0x0035 and 0x0036. To use those cards add the device id of the cards 
+in the "Chelsio T3" section of mca-btl-openib-hca-params.ini file.
+
+To run OpenMPI applications:
+
+ mpirun --host <node1>,<node2> -mca btl openib,sm,self <OpenMPI Application Path>
+
+=============
+MVAPICH2:
+=============
+
+The following env vars enable MVAPICH2 version 1.4-2.  Place these
+in your user env after installing and setting up MVAPICH2 MPI:
+
+export MVAPICH2_HOME=/usr/mpi/gcc/mvapich2-1.4/
+export MV2_USE_IWARP_MODE=1
+export MV2_USE_RDMA_CM=1
+
+On each node, add this to the end of /etc/profile.
+
+ ulimit -l 999999
+
+On each node, add this to the end of /etc/init.d/sshd and restart sshd.
+
+ ulimit -l 999999
+ % service sshd restart
+
+Verify the ulimit changes worked. These should show '999999':
+
+ % ulimit -l
+ % ssh <peer> ulimit -l
+
+Note: You may have to restart sshd a few times to get it to work.
+
+Create mpd.hosts with list of hostname or ipaddrs in the cluster. They
+should be names/addresses that you can ssh to without passwords. (See
+Passwordless SSH Setup).
+
+On each node, create /etc/mv2.conf with a single line containing the
+IP address of the local T3 interface. This is how MVAPICH2 picks which
+interface to use for RDMA traffic.
+
+On each node, edit /etc/hosts file. Comment the entry if there is an
+entry with 127.0.0.1 IP Address and local host name. Add an entry for
+corporate IP address and local host name (name that you have given in
+mpd.hosts file) in /etc/hosts file.
+
+To run MVAPICH2 application:
+
+ mpirun_rsh -ssh -np 8 -hostfile mpd.hosts <MVAPICH2 Application Path>
 
 ============================================
 Loadable Module options:
@@ -143,6 +231,7 @@ peer2peer	- Enables connection setup changes to allow peer2peer
 			HP MPI
 			Open MPI
 			Scali MPI
+			MVAPICH2
 		  Set peer2peer=1 on all systems to enable these
 		  applications.
 
@@ -158,11 +247,11 @@ msi             - whether to use MSI or MSI-X.  Default is 2.
 Updating Firmware:
 ============================================
 
-This release requires firmware version 7.x, and Protocol SRAM version
-1.1.x.  This firmware can be downloaded from http://service.chelsio.com.
+This release requires firmware version 7.7.0, and Protocol SRAM version
+1.1.0.  This firmware can be downloaded from http://service.chelsio.com.
 
-If your distro/kernel supports firmware loading, you can place the
-chelsio firmware and psram images in /lib/firmware, then unload and reload
+If your distro/kernel supports firmware loading, you can place the chelsio
+firmware and psram images in /lib/firmware/cxgb3, then unload and reload
 the cxgb3 module to get the new images loaded.  If this does not work,
 then you can load the firmware images manually:
 
