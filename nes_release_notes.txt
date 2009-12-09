@@ -1,6 +1,6 @@
             Open Fabrics Enterprise Distribution (OFED)
       NetEffect Ethernet Cluster Server Adapter Release Notes
-                           May 2009
+                           December 2009
 
 
 
@@ -69,7 +69,7 @@ NOTE: Assuming NetEffect Ethernet Cluster Server Adapter is assigned eth2.
     ethtool -C eth2 rx-usecs-irq 128 - set static interrupt moderation
 
     ethtool -C eth2 adaptive-rx on  - enable dynamic interrupt moderation
-    ethtool -C eth2 adaptive-rx off - disable dynamic interrupt moderation 
+    ethtool -C eth2 adaptive-rx off - disable dynamic interrupt moderation
     ethtool -C eth2 rx-frames-low 16 - low watermark of rx queue for dynamic
                                        interrupt moderation
     ethtool -C eth2 rx-frames-high 256 - high watermark of rx queue for
@@ -85,8 +85,8 @@ uDAPL Configuration
 ===================
 Rest of the document assumes the following uDAPL settings in dat.conf:
 
-    OpenIB-cma-nes u1.2 nonthreadsafe default libdaplcma.so.1 dapl.1.2 "eth2 0" ""
-    ofa-v2-nes u2.0 nonthreadsafe default libdaplofa.so.2 dapl.2.0 "eth2 0" ""
+    OpenIB-iwarp u1.2 nonthreadsafe default libdaplcma.so.1 dapl.1.2 "eth2 0" ""
+    ofa-v2-iwarp u2.0 nonthreadsafe default libdaplofa.so.2 dapl.2.0 "eth2 0" ""
 
 
 =======================================
@@ -98,34 +98,34 @@ Add the following to mpirun command:
 
 Example mpirun command with uDAPL-2.0:
 
-    mpirun -UDAPL -prot -intra=shm 
-           -e MPI_ICLIB_UDAPL=libdaplofa.so.1
-           -e MPI_HASIC_UDAPL=ofa-v2-nes
+    mpirun -UDAPL -prot -intra=shm
+           -e MPI_ICLIB_UDAPL=libdaplofa.so.2
+           -e MPI_HASIC_UDAPL=ofa-v2-iwarp
            -1sided
            -f /opt/hpmpi/appfile
 
 Example mpirun command with uDAPL-1.2:
 
-    mpirun -UDAPL -prot -intra=shm 
+    mpirun -UDAPL -prot -intra=shm
            -e MPI_ICLIB_UDAPL=libdaplcma.so.1
-           -e MPI_HASIC_UDAPL=OpenIB-cma-nes
-           -1sided 
+           -e MPI_HASIC_UDAPL=OpenIB-iwarp
+           -1sided
            -f /opt/hpmpi/appfile
 
 
-=======================================
-Recommended Settings for Intel MPI 3.2
-=======================================
+========================================
+Recommended Settings for Intel MPI 3.2.x
+========================================
 Add the following to mpiexec command:
 
     -genv I_MPI_FALLBACK_DEVICE 0
-    -genv I_MPI_DEVICE rdma:OpenIB-cma-nes
+    -genv I_MPI_DEVICE rdma:OpenIB-iwarp
     -genv I_MPI_RENDEZVOUS_RDMA_WRITE
 
 Example mpiexec command line for uDAPL-2.0:
 
     mpiexec -genv I_MPI_FALLBACK_DEVICE 0
-            -genv I_MPI_DEVICE rdma:ofa-v2-nes
+            -genv I_MPI_DEVICE rdma:ofa-v2-iwarp
             -genv I_MPI_RENDEZVOUS_RDMA_WRITE
             -ppn 1 -n 2
             /opt/intel/impi/3.2.0.011/bin64/IMB-MPI1
@@ -133,7 +133,7 @@ Example mpiexec command line for uDAPL-2.0:
 Example mpiexec command line for uDAPL-1.2:
 
     mpiexec -genv I_MPI_FALLBACK_DEVICE 0
-            -genv I_MPI_DEVICE rdma:OpenIB-cma-nes
+            -genv I_MPI_DEVICE rdma:OpenIB-iwarp
             -genv I_MPI_RENDEZVOUS_RDMA_WRITE
             -ppn 1 -n 2
             /opt/intel/impi/3.2.0.011/bin64/IMB-MPI1
@@ -146,37 +146,42 @@ Add the following to the mpirun command:
 
     -env MV2_USE_RDMA_CM 1
     -env MV2_USE_IWARP_MODE 1
-
-For larger number of processes, it is also recommended to set the following:
-
     -env MV2_MAX_INLINE_SIZE 64
-    -env MV2_USE_SRQ 0
+    -env MV2_DEFAULT_MAX_CQ_SIZE 32766
+    -env MV2_RDMA_CM_MAX_PORT 65535
+    -env MV2_VBUF_TOTAL_SIZE 9216
 
 Example mpiexec command line:
 
     mpiexec -l -n 2
             -env MV2_USE_RDMA_CM 1
-            -env MV2_USE_IWARP_MODE 1 
+            -env MV2_USE_IWARP_MODE 1
+            -env MV2_MAX_INLINE_SIZE 64
+            -env MV2_DEFAULT_MAX_CQ_SIZE 32766
+            -env MV2_RDMA_CM_MAX_PORT 65535
+            -env MV2_VBUF_TOTAL_SIZE 9216
             /usr/mpi/gcc/mvapich2-1.2p1/tests/osu_benchmarks-3.0/osu_latency
 
 
 ==========================================
 Recommended Setting for MVAPICH2 and uDAPL
 ==========================================
-Add the following to the mpirun command:
+Add the following to the mpirun command for 64 or more processes:
 
-    -env MV2_PREPOST_DEPTH 59
+    -env MV2_ON_DEMAND_THRESHOLD <number of processes>
 
-Example mpiexec command line:
+Example mpirun command with uDAPL-2.0:
 
-    mpiexec -l -n 2
-            -env MV2_DAPL_PROVIDER ofa-v2-nes
-            -env MV2_PREPOST_DEPTH 59 
+    mpiexec -l -n 64
+            -env MV2_DAPL_PROVIDER ofa-v2-iwarp
+            -env MV2_ON_DEMAND_THRESHOLD 64
             /usr/mpi/gcc/mvapich2-1.2p1/tests/osu_benchmarks-3.0/osu_latency
 
-    mpiexec -l -n 2
-            -env MV2_DAPL_PROVIDER OpenIB-cma-nes
-            -env MV2_PREPOST_DEPTH 59 
+Example mpirun command with uDAPL-1.2:
+
+    mpiexec -l -n 64
+            -env MV2_DAPL_PROVIDER OpenIB-iwarp
+            -env MV2_ON_DEMAND_THRESHOLD 64
             /usr/mpi/gcc/mvapich2-1.2p1/tests/osu_benchmarks-3.0/osu_latency
 
 
@@ -207,7 +212,7 @@ Example mpirun command line:
 
     mpirun -np 2 -hostfile /opt/mpd.hosts
            -mca btl openib,self,sm
-           -mca mpool_rdma_rcache_size_limit 104857600 
+           -mca mpool_rdma_rcache_size_limit 104857600
            /usr/mpi/gcc/openmpi-1.3.2/tests/IMB-3.1/IMB-MPI1
 
 
@@ -251,7 +256,7 @@ Set maximum size of inline data segment to 64:
 
 Example mpirun command:
 
-    mpirun -np 2 -hostfile /root/mpd.hosts
+    mpirun -np 2 -hostfile /opt/mpd.hosts
            -mca btl openib,self,sm
            -mca btl_mpi_leave_pinned 0
            -mca btl_openib_receive_queues P,65536,256,192,128
@@ -263,7 +268,7 @@ Example mpirun command:
 Known Issues
 ============
 The following is a list of known issues with Linux kernel and
-OFED 1.4.1 release.
+OFED 1.5 release.
 
 1. We have observed "__qdisc_run" softlockup crash running UDP
    traffic on RHEL5.1 systems with more than 8 cores.  The issue
@@ -275,27 +280,28 @@ http://git.kernel.org/?p=linux/kernel/git/torvalds/linux-2.6.git
 ;hp=32aced7509cb20ef3ec67c9b56f5b55c41dd4f8d
 
 
-2. Running Pallas test suite and MVAPICH2 (OFA/uDAPL) for more
-   than 64 processes will abnormally terminate.  The workaround is
-   add the following to mpirun command:
-
-   -env MV2_ON_DEMAND_THRESHOLD <total processes>
-
-   e.g. For 72 total processes, -env MV2_ON_DEMAND_THRESHOLD 72
-
-
-3. For MVAPICH2 (OFA/uDAPL) IMB-EXT (part of Pallas suite) "Window" test 
-   may show high latency numbers.  It is recommended to turn off one sided
-   communication by adding following to the mpirun command:
+2. For MVAPICH2, IMB-EXT's Window and Accumulate test will error
+   out with "recv desc error, 128".  The workaround is to turn off one 
+   sided communication by adding following to the mpirun command:
 
    -env MV2_USE_RDMA_ONE_SIDED 0
 
-
-4. IMB-EXT does not run with Open MPI 1.3.1 or 1.3.  The workaround is
+   
+3. IMB-EXT does not run with Open MPI 1.3.1 or 1.3.  The workaround is
    to turn off message coalescing by adding the following to mpirun
    command:
 
     -mca btl_openib_use_message_coalescing 0
+
+4. On RHEL4u5, the file /dev/infiniband/uverbs0 does not get created.
+   Without this file, programs such as rping will display an "Unable
+   to open RDMA device" error.  To avoide this problem edit
+   /etc/init.d/network file and comment out the following two lines
+   by adding # to the beginning of the line:
+
+sysctl -w kernel.hotplug="/etc/hotplug/firmware.agent. > /dev/null 2>&1
+sysctl -w kernel.hotplug=$oldhotplug > /dev/null 2>&1
+
 
 
 NetEffect is a trademark of Intel Corporation in the U.S. and other countries.
