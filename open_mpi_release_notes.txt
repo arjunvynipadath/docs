@@ -164,8 +164,19 @@ line options and installation instructions.
 
 ** Changelog summary
 
-Showing versions 1.2.7 - 1.3.4; see the "NEWS" file in an Open MPI
+Showing versions 1.2.7 - 1.4; see the "NEWS" file in an Open MPI
 distribution for the full list.
+
+1.4
+---
+
+The *only* change in the Open MPI v1.4 release (as compared to v1.3.4)
+was to update the embedded version of Libtool's libltdl to address a
+potential security vulnerability.  Specifically: Open MPI v1.3.4 was
+created with GNU Libtool 2.2.6a; Open MPI v1.4 was created with GNU
+Libtool 2.2.6b.  There are no other changes between Open MPI v1.3.4
+and v1.4.
+
 
 1.3.4
 -----
