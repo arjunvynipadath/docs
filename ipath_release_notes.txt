@@ -1,37 +1,13 @@
 	      Open Fabrics Enterprise Distribution (OFED)
-		  ipath in OFED 1.4.1 Release Notes
+		  ipath in OFED 1.5 Release Notes
 
-			     May 2009
-
-======================================================================
-Table of Contents
-======================================================================
-1. Overview
-2. Fixed Bugs and Enhancements
-3. Known Issues
+			     December 2009
 
 ======================================================================
 1. Overview
 ======================================================================
-ipath is the low level driver implementation for all QLogic InfiniPath
-HCAs: the HTX QHT7140, the PCI-Express x8 QLE7140, the PCI-Express x8
-DDR QLE7240, and the PCI-Express x16 DDR QLE7280.
+ipath is the low level driver implementation for the
+QLogic HyperTransport HCA only (model QHT7140).
 
-======================================================================
-2. Fixed Bugs and Enhancements
-======================================================================
-2.1 (Bug 1369) No results when running Open MPI bandwidth with msg size
-bigger than 2200 with Qlogic HCA
-This was fixed by a change submitted to OpenMPI 1.3, which is part of OFED
-1.4.1.
-
-======================================================================
-3. Known Issues
-======================================================================
-
-3.1 (Bug 1242) Kernel panic while running mpi2007 against
-ofed1.4 -- ib_ipath: ipath_sdma_verbs_send
-
-Found while running mpi2007 over OpenMPI on stock OFED1.4 RC1 RHEL4.X
-machines. QLogic is working on it. Contact support@qlogic.com if you
-run into this problem.
+The qib driver is the currently supported driver for all
+PCI-Express based Infiniband HCAs.
