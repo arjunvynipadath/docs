@@ -97,6 +97,10 @@ c. Using sysfs file system
 	   - ib_read_bw: RDMA read
 	   - ib_write_bw: RDMA write
 	   - ib_send_bw: UD, UC and RC (default) send
+	   - ib_write_bw_postlist : RDMA write , posting a list of WQEs.
+
+	 3.Other:
+           - ib_clock_test : tests cpu clock samples.
 
 	Usage:
 	Server: <test name> <options>
@@ -113,24 +117,40 @@ c. Using sysfs file system
 	ib_send_bw 			start a server and wait for connection
 	ib_send_bw <host>		connect to server at <host>
 
-	options:
-	-p, --port=<port> 		listen on/connect to port <port>
-						(default: 18515)
-	-d, --ib-dev=<dev> 		use IB device <dev>
-						(default: first device found)
-	-i, --ib-port=<port> 		use port <port> of IB device
-						(default: 1)
-	-c, --connection=<RC/UC/UD> 	connection type RC/UC/UD (default: RC)
-	-m, --mtu=<mtu> 		mtu size (default: 1024)
-	-s, --size=<size> 		size of message to exchange
-						(default: 65536)
-	-a, --all 			run sizes from 2 up to 2^23
-	-t, --tx-depth=<dep> 		size of tx queue (default: 300)
-	-n, --iters=<iters> 		number of exchanges
-						(at least 2, default: 1000)
-	-b, --bidirectional 		measure bidirectional bandwidth
-						(default: unidirectional)
-	-V, --version display version number
+	Common Options to all tests::
+        -p, --port=<port>               Listen on/connect to port <port>
+                                        (default: 18515)
+        -d, --ib-dev=<dev>              Use IB device <dev>
+                                        (default: first device found)
+        -i, --ib-port=<port>            Use port <port> of IB device
+                                        (default: 1)
+        -c, --connection=<RC/UC/UD>     Connection type RC/UC/UD (default: RC)
+        -m, --mtu=<mtu>                 Mtu size (default: 1024)
+        -s, --size=<size>               Size of message to exchange
+                                        (default: 65536)
+        -a, --all                       Run sizes from 2 up to 2^23
+        -t, --tx-depth=<dep>            Size of tx queue (default: 300)
+        -r, --rx-depth=<dep>            Make rx queue bigger than tx
+                                        (default 600).
+        -I, --inline_size=<size>        Max size Message to be sent in inline
+                                        mode.On Bw tests default is  1,latency
+				        tests is 400.
+        -n, --iters=<iters>             number of exchanges
+                                        (at least 2, default: 1000)
+        -u, --qp-timeout=<timeout>      QP timeout, timeout value is 4 usec*2
+					^(timeout).
+        -b, --bidirectional             Measure bidirectional bandwidth
+                                        (default: unidirectional)
+        -V, --version                   Display version number
+        -S, --sl=<sl>                   SL (default 0).
+        -x, --gid-index=<index>         Test uses GID with GID index taken
+					from command Line 
+					(for RDMAoE index should be 0).
+        -e, --events                    Sleep on CQ events (default poll).
+        -N, --no peak-bw                Cancel peak-bw calculation
+                                        (default with peak-bw)
+         -F, --CPU-freq                 Do not fail even if cpufreq_ondemand
+					module.
 
 1.3 Ping-pong Example Tests
 ---------------------------
