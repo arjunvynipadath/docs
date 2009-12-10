@@ -1,7 +1,7 @@
 		Open Fabrics Enterprise Distribution (OFED)
-		      Tips for Working with OFED 1.4
+		      Tips for Working with OFED 1.5
 
-		 	     December 2008
+		 	     December 2009
 
 ===============================================================================
 Table of Contents
@@ -9,7 +9,7 @@ Table of Contents
 1. OFED Utilities
 2. Debug HOWTOs
 3. Pinning (Locking) User Memory Pages
-4. External Module Compilation Over OFED-1.4
+4. External Module Compilation Over OFED-1.5
 5. Adding/Deleting a patch to OFED package
 6. Adding vendor specific actions to the installation of OFED
 7. How to compile OFED sources manually
@@ -24,11 +24,8 @@ for the OFED installation path. To retrieve this path, run the script
 
 Notes:
 ------
-1. This document includes descriptions for a subset of the existing utilities.
+   This document includes descriptions for a subset of the existing utilities.
    To learn about other utilities, use their --help flag.
-
-2. The sources for all utilities are not part of the RPM installation. However,
-   all sources exist in the openib-1.4.tgz tarball.
 
 
 1.1 Device Information
@@ -194,75 +191,71 @@ The same information can be obtained by executing the 'ofed_info' command. For
 example:
 
 > ofed_info
-OFED-1.4
+OFED-1.5
+management:
+http://www.openfabrics.org/downloads/management/daily/libibumad-1.3.3_20091204_86353ad.tar.gz
+http://www.openfabrics.org/downloads/management/daily/libibmad-1.3.3_20091204_86353ad.tar.gz
+http://www.openfabrics.org/downloads/management/daily/opensm-3.3.3_20091204_86353ad.tar.gz
+http://www.openfabrics.org/downloads/management/daily/infiniband-diags-1.5.3_20091204_86353ad.tar.gz
 libibverbs:
-git://git.openfabrics.org/ofed_1_4/libibverbs.git ofed_1_4
-commit b00dc7d2f79e0660ac40160607c9c4937a895433
+http://www.openfabrics.org/downloads/rdmaoe/libibverbs/libibverbs-1.1.2-0.8.g66ece2f.tar.gz
 libmthca:
-git://git.kernel.org/pub/scm/libs/infiniband/libmthca.git master
-commit be5eef3895eb7864db6395b885a19f770fde7234
+http://www.openfabrics.org/downloads/libmthca/libmthca-1.0.5-0.1.gbe5eef3.tar.gz
 libmlx4:
-git://git.openfabrics.org/ofed_1_4/libmlx4.git ofed_1_4
-commit fd418d6ee049afe76bb769aff87c303b96848495
-libehca:
-git://git.openfabrics.org/ofed_1_4/libehca.git ofed_1_4
-commit e0c2d7e8ee2aa5dd3f3511270521fb0c206167c6
-libipathverbs:
-git://git.openfabrics.org/~ralphc/libipathverbs ofed_1_4
-commit 65e5701dbe7b511f796cb0026b0cd51831a62318
+http://www.openfabrics.org/downloads/rdmaoe/libmlx4/libmlx4-1.0-0.3.g1531245.tar.gz
 libcxgb3:
-git://git.openfabrics.org/~swise/libcxgb3.git ofed_1_4
-commit f685c8fe7e77e64614d825e563dd9f02a0b1ae16
+http://www.openfabrics.org/downloads/cxgb3/libcxgb3-1.2.5.tar.gz
+libehca:
+http://www.openfabrics.org/downloads/libehca/libehca-1.2.1-0.1.g0a82a52.tar.gz
+libipathverbs:
+http://www.openfabrics.org/downloads/libipathverbs/libipathverbs-1.2.tar.gz
 libnes:
-git://git.openfabrics.org/~glenn/libnes.git master
-commit 07fb9dfbbb36b28b5ea6caa14a1a5e215386b3e8
+http://www.openfabrics.org/downloads/nes/libnes-0.9.0.tar.gz
 libibcm:
-git://git.openfabrics.org/~shefty/libibcm.git master
-commit 7fb57e005b3eae2feb83b3fd369aeba700a5bcf8
+http://www.openfabrics.org/downloads/rdmacm/libibcm-1.0.5.tar.gz
 librdmacm:
-git://git.openfabrics.org/~shefty/librdmacm.git master
-commit e0b1ece1dc0518b2a5232872e0c48d3e2e354e47
+http://www.openfabrics.org/downloads/rdmacm/librdmacm-1.0.10.tar.gz
 libsdp:
-git://git.openfabrics.org/ofed_1_4/libsdp.git ofed_1_4
-commit 02404fb0266082f5b64412c3c25a71cb9d39442d
+http://www.openfabrics.org/downloads/libsdp/libsdp-1.1.99-0.1.gb1eaecb.tar.gz
 sdpnetstat:
-git://git.openfabrics.org/~amirv/sdpnetstat.git ofed_1_4
-commit 75a033a9512127449f141411b0b7516f72351f95
+http://www.openfabrics.org/downloads/sdpnetstat/sdpnetstat-1.60-0.1.g798e44f.tar.gz
 srptools:
-git://git.openfabrics.org/ofed_1_3/srptools.git ofed_1_3
-commit d3025d0771317584e51490a419a79ab55650ebc9
+http://www.openfabrics.org/downloads/srptools/srptools-0.0.4-0.1.gce1f64c.tar.gz
 perftest:
-git://git.openfabrics.org/~orenmeron/perftest.git master
-commit ca629627c7a26005a1a4c8775cc01f483524f1c4
+http://www.openfabrics.org/downloads/perftest/perftest-1.2.2-0.6.g3a2b795.tar.gz
 qlvnictools:
-git://git.openfabrics.org/~ramachandrak/qlvnictools.git ofed_1_4
-commit 1dc6e51a728cbfbdd2018260602b8bebde618da9
+http://www.openfabrics.org/downloads/qlvnictools/qlvnictools-0.0.1-0.1.ge27eef7.tar.gz
 tvflash:
-git://git.openfabrics.org/ofed_1_4/tvflash.git ofed_1_4
-commit e1b50b3b8af52b0bc55b2825bb4d6ce699d5c43b
+http://www.openfabrics.org/downloads/tvflash/tvflash-0.9.0-0.1.ge1b50b3.tar.gz
 mstflint:
-git://git.openfabrics.org/~orenk/mstflint.git master
-commit 9ddeea464e946cd425e05b0d1fdd9ec003fca824
+http://www.openfabrics.org/downloads/mstflint/mstflint-1.4-0.1.g899ead3.tar.gz
 qperf:
-git://git.openfabrics.org/~johann/qperf.git/.git master
-commit bee05d35b09b0349cf4734ae43fc9c2e970ada8c
+http://www.openfabrics.org/downloads/qperf/qperf-0.4.6-0.1.gb81434e.tar.gz
 ibutils:
-git://git.openfabrics.org/~orenk/ibutils.git master
-commit 6516d16e815c68fa405562ea773b0c5215c1b70c
+http://www.openfabrics.org/downloads/ibutils/ibutils-1.2-0.1.ge8e69b7.tar.gz
 ibsim:
-git://git.openfabrics.org/~sashak/ibsim.git master
-commit eff83c7a522dea41c21e15746b1c58ff21fdecaa
+http://www.openfabrics.org/downloads/ibsim/ibsim-0.5-0.1.g327c3d8.tar.gz
+dapl:
+http://www.openfabrics.org/downloads/dapl/dapl-2.0.25.tar.gz
+compat-dapl:
+http://www.openfabrics.org/downloads/dapl/compat-dapl-1.2.15.tar.gz
 
-ofa_kernel-1.4:
+ofa_kernel-1.5:
 Git:
-git://git.openfabrics.org/ofed_1_4/linux-2.6.git ofed_kernel
-commit 60ca4b0e03aa5acccb01a3e0430ba240ad521547
+git://git.openfabrics.org/ofed_1_5/linux-2.6.git rdmaoe
+commit 5ed038c4a28a8d9ea99d7999af178ee80ec2f663
 
 # MPI
-mvapich-1.1.0-3143.src.rpm
-mvapich2-1.2p1-1.src.rpm
-openmpi-1.2.8-1.src.rpm
-mpitests-3.1-891.src.rpm
+mvapich-1.1.0-3478.src.rpm
+mvapich2-1.4-2.src.rpm
+openmpi-1.3.4-1.src.rpm
+mpitests-3.2-916.src.rpm
+ib_bonding:
+http://www.openfabrics.org/~monis/ofed_1_5/ib-bonding-0.9.0-41.src.rpm
+rds-tools:
+http://www.openfabrics.org/~vlad/ofed_1_5/rds-tools/rds-tools-1.5-1.src.rpm
+rnfs-utils:
+http://www.openfabrics.org/~swise/ofed_1_5/rnfs-utils/rnfs-utils-1.1.5-10.OFED.src.rpm
 
 
 2.2 Installed OFED Components
@@ -273,17 +266,11 @@ on the machine.
 For example:
 
  > /etc/infiniband/info
-   prefix=/usr
-   Kernel=2.6.9-78.ELsmp
+prefix=/usr
+Kernel=2.6.18-164.el5
 
-   MODULES:  CONFIG_INFINIBAND=m CONFIG_INFINIBAND_USER_MAD=m
-   CONFIG_INFINIBAND_USER_ACCESS=m CONFIG_INFINIBAND_ADDR_TRANS=y
-   CONFIG_INFINIBAND_MTHCA=m CONFIG_IPATH_CORE=m CONFIG_INFINIBAND_IPATH=m
-   CONFIG_INFINIBAND_IPOIB=m
+Configure options: --with-core-mod --with-user_mad-mod --with-user_access-mod --with-addr_trans-mod --with-mthca-mod --with-mlx4-mod --with-mlx4_en-mod --with-ipoib-mod --with-sdp-mod --with-rds-mod
 
-   User level:  --kernel-version 2.6.9-78.ELsmp --kernel-sources
-   /lib/modules/2.6.9-78.ELsmp/build --with-libibcm --with-libibverbs
-   --with-libipathverbs --with-libmthca --with-mstflint --with-perftest
 
 2.3 Building/Installing InfiniBand (IB) Modules With Debug Information
 ----------------------------------------------------------------------
@@ -333,7 +320,7 @@ create_Module.symvers.sh (a part of the ofed-docs RPM) script to create the
 Module.symvers file.
 
 See "Module versioning & Module.symvers" in the modules.txt from kernel
-documentation (e.g. linux-2.6.20/Documentation/kbuild/modules.txt).
+documentation (e.g. linux-2.6.30/Documentation/kbuild/modules.txt).
 
 
 ===============================================================================
@@ -358,9 +345,9 @@ ofed_patch.sh  --remove
                --type|-t <kernel|backport <kernel tag>|addons <kernel tag>>
 
 Examples:
-ofed_patch.sh --add --ofed /tmp/OFED-1.4/ --patch /tmp/cma_fix.patch --type kernel
+ofed_patch.sh --add --ofed /tmp/OFED-1.5/ --patch /tmp/cma_fix.patch --type kernel
 
-ofed_patch.sh --remove --ofed /tmp/OFED-1.4/ --patch cma_fix.patch --type kernel
+ofed_patch.sh --remove --ofed /tmp/OFED-1.5/ --patch cma_fix.patch --type kernel
 
 ===============================================================================
 6. Adding vendor specific actions to the installation of OFED
@@ -447,11 +434,11 @@ meaning without building the RPMs and without using the install.pl script.
 
 7.1 Compiling the kernel modules
 --------------------------------
-1. tar xzf OFED-1.4.tgz
-2. rpm -ihv OFED-1.4/SRPMS/ofa_kernel-1.4-ofed1.4.src.rpm
+1. tar xzf OFED-1.5.tgz
+2. rpm -ihv OFED-1.5/SRPMS/ofa_kernel-1.5-ofed1.5.src.rpm
 3. cd /usr/src/redhat/SOURCES
-4. tar xzvf ofa_kernel-1.4.tgz
-5. cd ofa_kernel-1.4
+4. tar xzvf ofa_kernel-1.5.tgz
+5. cd ofa_kernel-1.5
 6. configure: 
    run ./configure --help for a list of options.
    basic invocation is:
@@ -469,13 +456,13 @@ NOTES:
 
 7.2 Compiling the user space libraries
 --------------------------------------
-To install user space library from the source RPM provided by OFED-1.4 manually,
+To install user space library from the source RPM provided by OFED-1.5 manually,
 do the following:
 
 Example for libibverbs:
  
-1. tar xzf OFED-1.4.tgz
-2. rpm -ihv SRPMS/libibverbs-1.1.2-1.ofed1.4.src.rpm
+1. tar xzf OFED-1.5.tgz
+2. rpm -ihv SRPMS/libibverbs-1.1.2-1.ofed1.5.src.rpm
 3. cd /usr/src/redhat/SOURCES (for RedHat)
    or
    cd /usr/src/packages/SOURCES (for SuSE)
