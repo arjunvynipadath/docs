@@ -184,6 +184,24 @@ Usage and configuration:
     datagram on each call to ifup, ifdown, etc. To avoid this, add the line
     IPOIB_MODE=connected 
     to the interface configuration file (e.g. ifcfg-ib0)
+18. When installing OFED on a machine that runs kernel 2.6.30 (or another kernel
+    from kernel.org that OFED supports), the installation scripts blocks the
+    installation of ib-bonding since the bonding module that comes with the
+    kernel has all the functionality to support IPoIB slaves. This approach
+    however doesn't patch the sysconfig (SuSE) or initscripts (RedHat) package
+    so the network configuration scrips may not work properly.
+    For example, if you install OFED on RHEL5.2 that runns kernel 2.6.30 and
+    you try to configure and run bonding, you won't be able to restart the
+    network and see bond0 up and running with IPoIB slaves.
+    A workaround to this problem would be this
+	a. Compile ib-bonding source rpm (under SRPMS directory) separately on a
+	machine with RHEL5.2  and kernel 2.6.18-92.el5 (default for this OS)
+	2. Install the binary rpm while machine runs kernel 2.6.18-92.el5.
+	This will patch the OS configuration scripts and install the bonding module.
+	3. Switch to kernel 2.6.30. The module that was compiled in (2) will not be
+	loaded since it was compiled and installed for a different kernel.
+	4. Configure bonding and restart the network. The bonding interface
+	should be up and running afterwards.
 ===============================================================================
 4. IPoIB Configuration Based on DHCP
 ===============================================================================
