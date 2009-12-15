@@ -1,7 +1,7 @@
              Open Fabrics Enterprise Distribution (OFED)
-                    SDP in OFED 1.4.1 Release Notes
+                    SDP in OFED 1.5 Release Notes
 
-                          May 2009
+                          December 2009
 
 
 
@@ -9,44 +9,37 @@
 Table of Contents
 ===============================================================================
 1. Overview
-2. Bug Fixes and Enhancements since OFED 1.3
-3. Bug Fixes and Enhancements since OFED 1.4
-4. Known Issues
-5. Verification Applications/Flows/Tests
+2. Bug Fixes and Enhancements since OFED 1.4.2
+3. Known Issues
+4. Verification Applications/Flows/Tests
 
 ===============================================================================
 1. Overview
 ===============================================================================
-SDP in OFED is at GA level for OFED 1.4.1 
+SDP in OFED is at GA level for OFED 1.5
 
 
 ===============================================================================
-2. Bug Fixes and Enhancements since OFED 1.3
+2. Bug Fixes and Enhancements since OFED 1.4.2
 ===============================================================================
 * Cleanup
-    - Compilation warnings
     - New kernel support
+    - Extensive ovehaul on BCopy code
+    - SDP spec compliance improved
 
 * New function
-    - sdpnetstat supply information about socket state and process name.
+    - ZCopy combined mode support
+    - RX processing from interrupt context
+    - HW interrupt moderation
+    - No TX interrupts
+    - /proc/net/sdpstats for sdp statistics
+    - /proc/net/sdpprf for performance debugging
+    - debug prints for SDP packets
 
 * Bug fixes
-    - open/close connection mechanism overhaul - many issue related to that are
-      fixed.
     - No known kernel crash is caused by SDP.
     - Many small bugs fixed - see bugzilla.
-    - Having now full windows interoperability.
 
-
-===============================================================================
-2. Bug Fixes and Enhancements since OFED 1.4
-===============================================================================
-SDP:
-- BUG1311 Netpipe fails with a IB_WC_LOC_LEN_ERR. 
-- BUG1472 - clean socket timeouts and refcount when device is removed 
-- BUG1502 - scheduling while atomic 
-- BUG1309 - SDP close is slow + fix recv buffer initial size setting 
-- BUG1087 - fixed recovery from failing rdma_create_qp() 
 
 ===============================================================================
 3. Known Issues
@@ -121,85 +114,4 @@ SDP:
 - Various Java client server applications (SUN:jre, BEA:jrockit/WebLogic, GNU:gij/gcj)
 - Many UNIX utilities to verify that pre-load did not harm the applications
 
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	     Open Fabrics Enterprise Distribution (OFED)
-	      libsdp v. 9382 in OFED 1.4.1 Release Notes
-
-			  May 2009
-
-
-===============================================================================
-Table of Contents
-===============================================================================
-1. Overview
-2. New Features
-3. Bug Fixes
-4. Bug Fixes and Enhancements since OFED 1.4
-5. Known Issues
-6. Verification Applications/Flows/Tests
-
-===============================================================================
-1. Overview
-===============================================================================
-This document describes the contents of the libsdp OFED 1.3 release. 
-libsdp is a LD_PRELOAD-able library that can be used to migrate existing
-applications to use InfiniBand Sockets Direct Protocol (SDP) instead of
-TCP sockets, transparently and without recompilations. To setup libsdp
-please follow the instructions below. The libsdp version for this release 
-is 1.3.
-
-
-===============================================================================
-2. New Features
-===============================================================================
-* Add support for new kernel options
-    - SIOCOUTQ ioctl support
-    - Add keepalive support
-        - New options: SOCK_KEEPALIVE, TCP_KEEPIDLE
-
-* Add libsdp-devel sub-package
-
-===============================================================================
-3. Bug Fixes
-===============================================================================
-The following list of bugs were fixed. Note that other less critical
-or visible bugs were also fixed.
-
-* Multi-threaded applications that are opening and closing many SDP sockets
-  quickly using the 'both' flow would incorrectly close a valid socket.
-
-* Attempt to bind to an invalid socket using 'both' flow returns the wrong
-  errno.
-
-* Applications using signal driven IO (FASYNC) on 'both' flow sockets would
-  fail because the second accep() would be executed on the TCP socket.
-
-* Update error handling to set errno to a valid error code prior to
-  returning -1.
-
-===============================================================================
-4. Bug Fixes and Enhancements since OFED 1.4
-===============================================================================
-libsdp:
-* Enable building libsdp on Solaris 
-* BUG1256 - Add epoll support 
-
-sdpnetstat:
-* BUF1513 - sdpnetstat is not showing all the listening processes on ipv6 sockets. 
-
-===============================================================================
-5. Known Issues
-===============================================================================
-* libsdp cannot provide its socket switch functionality for executables
-  statically linked with libc.
-
-* When using server to listen on both SDP and TCP, the number of sockets is 
-  doubled.
-
-
-===============================================================================
-6. Verification Applications/Flows/Tests
-===============================================================================
-See the corresponding section in the SDP release notes above.
 
