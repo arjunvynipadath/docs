@@ -1,12 +1,294 @@
 			   Release Notes for 
-			OFED 1.4.1 DAPL Release
-			    May 2009
-
-        OFED 1.4.1 RELEASE NOTES
+			OFED 1.5 DAPL Release
+			    Dec 2009
 
 	This release of the uDAPL reference implementation package for both
 	DAT 1.2 and 2.0 specification is timed to coincide with OFED release
 	of the Open Fabrics (www.openfabrics.org) software stack.
+
+        uDAPL v1 (1.2.15-1) and v2 (2.0.25-1)
+
+	----------------
+        
+	* New Features (v2 only) - UCM provider with IB UD based CM per process. 
+				   More scalable then rdma_cm (cma) or socket cm (scm). 
+	----------------
+
+	* Provider descriptions and PROS/CONS (cma, scm, ucm)
+
+	1. CMA - uses OFA rdma_cm to setup QP's. IPoIB, ARP, and SA queries required.
+       
+	Provider name: ofa-v2-cma
+	PROs:	OFA rdma_cm has the most testing across many applications.
+		Supports both iWARP and IB.
+                            
+	CONs:	Serialization of conn processing with kernel based CM service
+		Requires IPoIB ARP for name resolution, storms
+		Requires SA for path record queries for IB fabrics.
+		Conn Request private data limited to 52 bytes.
+        
+	Settings for larger clusters (512+ cores):
+
+	setenv DAPL_CM_ROUTE_TIMEOUT_MS 20000
+	setenv DAPL_CM_ARP_TIMEOUT_MS 10000
+
+	2. SCM - uses sockets to exchange QP information. IPoIB, ARP, and SA queries NOT required.
+       
+	Provider name (connectx): ofa-v2-mlx4_0-1
+	PROs:	Each rank has own instance of socket cm. More private data with requests. 
+		Doesn't require path-record lookup.   	
+                            
+	CONs:	Socket resources grow with scale-out, serialization of
+		connections with kernel based tcp sockets, 
+		Competes for MPI socket resources/port space and other TCP applications. 
+		Sockets remain in TIMEWAIT state for minutes after closure. 
+		Requires ARP for name resolution.
+		Doesn't support iWARP devices.
+        
+	Settings for larger clusters (512+ cores):
+
+	setenv DAPL_ACK_RETRY 7         /* IB RC Ack retry count */
+	setenv DAPL_ACK_TIMER 20        /* IB RC Ack retry timer */
+
+	3. UCM - use's IB UD QP to exchange QP info. Sockets, ARP, IPoIB, and SA queries NOT required.
+       
+	Provider name (connectx): ofa-v2-mlx4_0-1u
+	PROs:	Each rank has own instance of CM in user process 
+		Resources fixed per rank regardless of scale-out size
+		No serialization of user or kernel resources establishing connections, 
+		Simple 3-way msg handsake, CM messages fit in inline data for lowest message latency,
+		Supports alternate paths
+		No address resolution required. 
+		No path resolution required.
+                            
+	CONs:	New provider with limited testing, a little tougher to debug. 
+		Doesn't support iWARP	
+        
+	Settings for larger clusters (512+ cores):
+
+	setenv DAPL_UCM_REP_TIME 800    /* REQUEST timer, waiting for REPLY in millisecs */
+	setenv DAPL_UCM_RTU_TIME 400    /* REPLY timer, waiting for RTU in millisecs */
+	setenv DAPL_UCM_RETRY 15        /* REQUEST and REPLY retries */
+	setenv DAPL_ACK_RETRY 7         /* IB RC Ack retry count */
+	setenv DAPL_ACK_TIMER 20        /* IB RC Ack retry timer */
+
+	----------------
+
+	* CM Performance: CPS profile for cma, scm, and ucm v2 uDAPL providers:
+
+	Intel SR1600 Urbanna Servers with Xeon(R) CPU X5570  @ 2.93GHz
+	Urbanna Platform  - 2 node, 8 cores per node, Mellanox MLX4 IB QDR, no switch.
+
+	dtestcm (server/client):
+
+	cma: Connections: 183.21 usec, CPS 5458.31 Total 0.18 secs, poll_cnt=3403, Num=1000
+	scm: Connections: 178.80 usec, CPS 5592.93 Total 0.18 secs, poll_cnt=2344, Num=1000
+	ucm: Connections: 122.43 usec, CPS 8167.93 Total 0.12 secs, poll_cnt=2609, Num=1000
+
+	dapl_cm_bw: MPI uDAPL/CM profiling application (all-to-all connections, all ranks)
+
+	CMA
+	2  Connect times (10):   Total 0.0020 per 0.0002 CPS=4997.98
+	4  Connect times (40):   Total 0.0077 per 0.0002 CPS=5224.59
+	8  Connect times (240):  Total 0.0276 per 0.0001 CPS=8710.76
+	16 Connect times (1120): Total 0.1194 per 0.0001 CPS=9379.37
+	32 Connect times (4800): Total 6.1949 per 0.0013 CPS=774.83
+
+	SCM
+	2  Connect times (10):   Total 0.0024 per 0.0002 CPS=4103.61
+	4  Connect times (40):   Total 0.0060 per 0.0002 CPS=6622.41
+	8  Connect times (240):  Total 0.0206 per 0.0001 CPS=11634.15
+	16 Connect times (1120): Total 9.0118 per 0.0080 CPS=124.28
+	32 Connect times (4800): Total 21.0198 per 0.0044 CPS=228.36
+
+	UCM
+	2  Connect times (10):   Total 0.0014 per 0.0001 CPS=7353.27
+	4  Connect times (40):   Total 0.0045 per 0.0001 CPS=8816.19
+	8  Connect times (240):  Total 0.0191 per 0.0001 CPS=12582.44
+	16 Connect times (1120): Total 0.0799 per 0.0001 CPS=14017.68
+	32 Connect times (4800): Total 0.3337 per 0.0001 CPS=14385.21
+
+	----------------
+
+	* Bug Fixes
+
+	V2.0 Package
+
+	Release 2.0.25
+
+	winof scm: initialize opt for NODELAY setsockopt
+	winof cma: windows definition for EADDRNOTAVAIL missing
+	scm: client side setsockopt NODELAY fails if data arrives before setting
+	cma: setup_listener Cannot assign requested address
+	common: seg fault in dapl_evd_wait with multi-thread application using CNO's.
+	ucm: inbound DREQ/DREP handshake should transition QP.
+	winof: Remove duplicate include of comp_channel.cpp from cm.c as it is
+	included in opensm_ucb/device.c.
+
+	Release 2.0.24
+
+	winof: Utilize WinOF version of inet_ntop() for Windows OSes which do not
+	support inet_ntop().
+	ucm: windows build issue with new CQ completion channel
+	winof: add ucm provider to windows build
+	winof: add missing build files for ibal, scm
+	scm: connection peer resets under heavy load, incorrect event on error
+	ucm: increase default reply and rtu timeout values.
+	ucm: change some debug message levels and add check for valid UD REPLY during retries.
+	ucm: increase timers during subsequent retries
+	ucm, scm: address handles need destroyed when freeing Endpoints with UD QP's.
+	openib_common: ignore pd free errors, clear pd_handle and return.
+	ucm: using UD type QP's, ucm reports wrong reject event when user rejects AH resolution request.
+	ucm, scm, cma: Fix CNO support on DTO type EVD's
+	ucm: fix lock init bug in ucm_cm_find
+	ucm: fix build problem with latest windows ucm changes
+	ucm: The HCA should not be closed until all resources have been released.
+	ucm: Fix build warning when compiling on 32-bit systems.
+	ucm: Trying to deregister the same memory region twice leads to an
+	dat: reduce debug message level when parsing for location of dat.conf
+	ucm: update ucm provider for windows environment
+	ucm: add timer/retry CM logic to the ucm provider
+
+	Release 2.0.23
+
+	cma: cannot reuse the cm_id and qp for new connection, must reallocate a new one.
+	scm, cma: update DAPL cm protocol revision with latest address/port changes
+	ucm: modify IB address format to align better with sockaddr_in6
+	Add definition for getpid similar to that used by the other dtest apps.
+	WinOF provides a common implementation of gettimeofday that should
+	The completion manager was updated to provide an abstraction that
+	dtestcm: remove IB verb definitions
+	dtest, dtestx: remove IB verb definitions
+	scm: tighten up socket options to insure similiar behavior on Windows and Linux.
+	cma: improve serialization of destroy and event processing
+	scm: improve serialization of destroy and state changes
+	common: no cleanup/release code for timer thread
+	scm, cma: dapli_thread doesn't always get teminated on library close.
+	ucm: tighten up locking with CM processing, state changes
+	ucm: For UD type QP's, return CR p_data with CONN_EST event on passive side.
+	ucm: cleanup extra cr/lf
+	ucm: fix issues with UD QP's.
+	winof: Convert windows version of dapl and dat libaries to use private heaps.
+	dtest, dtestx: modifications for UD QP testing with ucm provider.
+	scm, ucm: UD QP support was broken when porting to common openib code base.
+	cma: cleanup warning with unused local variable, ret, in disconnect
+	cma: remove debug message after rdma_disconnect failure
+	scm: socket errno check needs O/S dependent wrapper
+	dapltest: update script files for WinOF
+	cma: conditional check for new rdma_cm definition.
+
+	Release 2.0.22
+	dapltest: add mdep processor yield and use with dapltest
+	ucm: Add new provider using a DAPL based IB-UD cm mechanism for MPI implementations.
+
+	Release 2.0.21
+	scm: Fix disconnect. QP's need to move to ERROR state in
+	modify dtest.c to cleanup CNO wait code and consolidate into
+	CNO events, once triggered will not be returned during the cno wait.
+	CNO support broken in both CMA and SCM providers.
+	common osd: include winsock2.h for IPv6 definitions.
+	common osd: include w2tcpip.h for sockaddr_in6 definitions.
+	DAPL introduced the concept of directly waiting on the CQ for
+	dapltest: Implement a malloc() threshold for the completion reaping.
+	scm: handle connected state when freeing CM objects
+	scm, dtest: changes for winof gettimeofday and FD_SETSIZE settings.
+	scm: set TCP_NODELAY sockopt on the server side for sends.
+	remove obsolete files in dapl/udapl source tree
+	dtestcm: add UD type QP option to test
+	scm: destroy QP called before disconnect
+	cma: add support for rdma_cm TIME_WAIT event.
+	scm: remove old udapl_scm code replaced by openib_scm.
+	winof: fix issues after consolidating cma, scm code base.
+	cma: lock held when exiting as a result of a rdma_create_event_channel failure.
+	windows: all dlist functions have been moved to the header file.
+	dtestcm windows: add build infrastructure for new dtestcm test suite
+	openib_common: reorganize code base to share common mem, cq, qp, dto functions
+	scm: fixes and optimizations for connection scaling
+	scm: double the default fd_set_size
+	scm: EP reference in CR should be cleared during ep_destroy
+	dtestx: fix conn establishment event checking
+	dtestcm: new test to measure dapl connection rates.
+
+	Release 2.0.20
+	common,scm: add debug capabilities to print in-process CM lists
+	scm: disconnect EP before cleaning up orphaned CR's during dat_ep_free
+	dapltest: windows scripts updated
+	scm: private data is not handled properly via CR rejects.
+	scm: cleanup orphaned UD CR's when destroying the EP
+	scm: provider specific query for default UD MTU is wrong.
+	scm: update CM code to shutdown before closing socket
+	dapltest: windows script dt-cli.bat updated
+	dapl/windows cma provider: add support for network devices based on index
+	openib: remove 1st gen provider, replaced with openib_cma and openib_scm
+	dapltest: update windows script files
+	dapltest: windows batch files in sripts directory
+	windows_osd/linux_osd: new dapl_os_gettid macro to return thread id
+	windows: missing build files for common and udapl sub-directories
+	windows: add build files for openib_scm, remove /Wp64 build option.
+	scm: multi-hca CM processing broken. Need cr thread wakeup mechanism per HCA.
+	dtest: add connection timers on client side
+	linux_osd: use pthread_self instead of getpid for debug messages
+	windows ibal-scm: dapl/dirs file needs updated to remove ibal-scm
+
+	v1.2 Package:
+
+	Release 1.2.15
+	dtest, dapltest: conflict with dapl-2 utils package, change to dapl1, dapltest1
+	scm: fix compiler warning, unused variable
+
+	----------------
+
+	* Build Notes:
+
+	# NON_DEBUG build/install example for x86_64, OFED targets
+	./configure --prefix /usr --sysconf=/etc --libdir /usr/lib64 LDFLAGS=-L/usr/lib64 CPPFLAGS="-I/usr/include"
+	make install
+
+	# DEBUG build/install example for x86_64, using OFED targets
+	./configure --enable-debug --prefix /usr --sysconf=/etc --libdir /usr/lib64 LDFLAGS=-L/usr/lib64 CPPFLAGS="-I/usr/include"
+	make install
+
+	# COUNTERS build/install example for x86_64, using OFED targets
+	./configure --prefix /usr --sysconf=/etc --libdir /usr/lib64 LDFLAGS=-L/usr/lib64 CPPFLAGS="-I/usr/include -DDAPL_COUNTERS"
+	make install
+
+	----------------
+
+	* BKM for running new DAPL library on your cluster without any impact on existing OFED installation:
+
+	Note: example for user /home/ardavis, (assumes /home/ardavis is exported) and MLX4 adapter, port 1
+
+	Download latest 2.x package: http://www.openfabrics.org/downloads/dapl/dapl-2.0.25.tar.gz
+
+	untar in /home/ardavis 
+	cd /home/ardavis/dapl-2.0.25
+	./configure && make (build on node with OFED 1.3 or higher installed, dependency on verb/rdma_cm libraries)
+
+	create /home/ardavis/dat.conf with following 3 lines. (entries with path to new libraries):
+
+	  ofa-v2-ib0 u2.0 nonthreadsafe default /home/ardavis/dapl-2.0.19/dapl/udapl/.libs/libdaplcma.so.1 dapl.2.0 "ib0 0" ""
+	  ofa-v2-mlx4_0-1 u2.0 nonthreadsafe default /home/ardavis/dapl-2.0.19/dapl/udapl/.libs/libdaploscm.so.2 dapl.2.0 "mlx4_0 1" ""
+	  ofa-v2-mlx4_0-1u u2.0 nonthreadsafe default /home/ardavis/dapl-2.0.19/dapl/udapl/.libs/libdaploucm.so.2 dapl.2.0 "mlx4_0 1" ""
+
+	Run uDAPL application or an MPI that uses uDAPL, with (assuming MLX4 connectx adapters) following:
+
+	  setenv DAT_OVERRIDE=/home/ardavis/dat.conf
+
+	If running Intel MPI and uDAPL socket cm, set the following:
+
+  	  setenv I_MPI_DEVICE=rdssm:ofa-v2-mlx4_0-1
+
+	or if running Intel MPI and uDAPL IB UD cm, set the following:
+
+  	  setenv I_MPI_DEVICE=rdssm:ofa-v2-mlx4_0-1u
+
+	or if running Intel MPI and uDAPL rdma_cm, set the following:
+
+	  setenv I_MPI_DEVICE=rdssm:ofa-v2-ib0
+
+-------------------------
+
+        OFED 1.4.1 RELEASE NOTES
 
         NEW SINCE OFED 1.4 - new versions of uDAPL v1 (1.2.14-1) and v2 (2.0.19-1)
 
@@ -70,7 +352,7 @@
 
   	  setenv I_MPI_DEVICE=rdssm:ofa-v2-mlx4_0-1
 
-	or if running Intel MPI and uDAPL rdma_cm, set the following:
+	if running Intel MPI and uDAPL rdma_cm, set the following:
 
 	  setenv I_MPI_DEVICE=rdssm:ofa-v2-ib0
 
