@@ -1,5 +1,5 @@
 	    Open Fabrics Enterprise Distribution (OFED)
-	              Version 1.5-rc4
+	              Version 1.5-rc5
 	               Release Notes
 	                December 2009
 
@@ -87,7 +87,7 @@ Notes:
 	- CentOS5.4     	2.6.18-164.el5
 	- Fedora Core12 	2.6.29              *
 	- OpenSuSE 11		2.6.25.5-1.1        *
-	- kernel.org:   	2.6.29, 2.6.30 and 2.6.31
+	- kernel.org:   	2.6.29, 2.6.30, 2.6.31 and 2.6.32
 
       * Minimal QA for these versions
 	
