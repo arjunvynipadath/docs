@@ -1,18 +1,17 @@
-                     Open Fabrics InfiniBand Diagnostic Utilities 
+                     Open Fabrics InfiniBand Diagnostic Utilities
                      --------------------------------------------
 
 *******************************************************************************
-RELEASE: OFED 1.4.1
-DATE:    May 2009
+RELEASE: OFED 1.5
+DATE:    Dec 2009
 
 ===============================================================================
 Table of Contents
 ===============================================================================
-1. Overview
-2. New features
-3. Major Bugs Fixed 
-3.1 Changes since OFED 1.4
-4. Known Issues
+1.  Overview
+2.  New features
+3.  Major Bugs Fixed
+4.  Known Issues
 
 ===============================================================================
 1. Overview
@@ -20,6 +19,7 @@ Table of Contents
 
 The ibutils package provides a set of diagnostic tools that check the health
 of an InfiniBand fabric.
+
 Package components:
 ibis:     IB interface - A TCL shell that provides interface for sending various
           MADs on the IB fabric. This is the component that actually accesses
@@ -35,62 +35,34 @@ ibdiag:   This package provides 3 tools which provide the user interface
                           fabric.
             - ibdiagpath: Performs various fabric quality and health checks on
                           the given links and nodes in a specific path.
-            - ibdiagui:   A GUI wrapper for the above tools. 
+            - ibdiagui:   A GUI wrapper for the above tools.
 
 ===============================================================================
 2. New Features
 ===============================================================================
 
+* New "From the Edge" topology matching algorithm.
+  Integrated into ibtopodiff when run with the flag -e
 
-* Mellanox InfiniScaleIV support:
-  - Support switches with port count > 32
-  - Added ibnl (IB network) files for MTS3600 and MTS3610 InfiniScaleIV based switch systems.
+* New library - libsysapi
+  The library is a C API for IBDM C++ objects
 
-* IBDM QoS Credit Loop check: 
-  This check now considers SL/VL when looking for credit loops. 
-  This check can be activated by running "ibdiagnet -r"
+* Added ibnl definition files for Mellanox and Sun IB QDR products
 
-* ibdiagnet: Added -csv flag, which generated a set of Comma Separated Values
-             files, which contains data about the fabric. Generated files:
-               inv_csv   - Lists the ports found in the fabric
-               links_csv - Lists the ports connections in the fabric
-               pm_csv    - Lists port counters in csv format 
-               err_csv   - Lists errors found during the run
+* Added new feature to ibdiagnet - general device info
 
-* ibmgtsim: Add basic M_Key mechanism simulation
+* ibdiagnet now can get port 0 as a parameterr (for managed switches).
+
 
 ===============================================================================
-3. Major Bugs Fixed 
+3. Major Bugs Fixed
 ===============================================================================
 
-* ibdm: Support 2 port switches in a loaded LST file.
+* ibutils: various fixes in build process (dependencies, parallel build, etc)
 
-* ibis: fix some buffer overrun bugs with long node description.
+* ibdiagnet: fixed crash with -r flag
 
-* Installation: Ibdiagui requires tcl/tk 8.4 or 8.5 (was only 8.4). This allows
-                installation on Fedora Core 9.
-
-* ibdiagnet: Fixed -pm flag caused a crash on back to back (no switch) setup.
-
-* ibdiagnet: Do not query port counters when local port is in INIT state.
-
-===============================================================================
-3.1 Changes since OFED 1.4
-===============================================================================
-
-* PM csv files format fix
-
-* Fixed generating and parsing IBNL files
-
-* Fixed CC packet format to meet IBTA approved format
-
-* Set of changes to sync with OpenSM changes
-
-* Regenerated wrappers - fixed compilation errors on some distros
-
-* Fixed printing SM and mcast info in ibdiagnet
-
-* Other minor fixes/improvements
+* ibdiagnet: fixed regular expression for pkey matching
 
 
 ===============================================================================
@@ -100,6 +72,4 @@ ibdiag:   This package provides 3 tools which provide the user interface
 - Ibdiagnet "-wt" option may generate a bad topology file when running on a
   cluster that contains complex switch systems.
 
-- When a subnet manager is not running, ibdiagnet IPoIB check may take a long 
-  time to complete.
-
+- ibdiagnet.lst file has vendor and device IDs with leading/trailing zeroes.
