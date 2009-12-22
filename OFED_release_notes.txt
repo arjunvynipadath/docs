@@ -70,10 +70,8 @@ Notes:
 	- ia64
 	
   o   Linux Operating Systems:
-	- RedHat EL4 up6:	2.6.9-67.ELsmp
 	- RedHat EL4 up7:	2.6.9-78.ELsmp 
 	- RedHat EL4 up8:	2.6.9-89.ELsmp 
-	- RedHat EL5 up2:	2.6.18-92.el5
 	- RedHat EL5 up3:	2.6.18-128.el5
 	- RedHat EL5 up4:	2.6.18-164.el5
 	- SLES10 SP2: 		2.6.16.60-0.21-smp  
@@ -81,13 +79,12 @@ Notes:
 	- SLES11: 		2.6.27.19-5-default
 	- OEL 4 up7		2.6.9-78.ELsmp
 	- OEL 4 up8		2.6.9-89.ELsmp
-	- OEL 5 up2		2.6.18-92.el5
-	- CentOS5.2		2.6.18-92.el5
 	- CentOS5.3     	2.6.18-128.el5
 	- CentOS5.4     	2.6.18-164.el5
-	- Fedora Core12 	2.6.29              *
+	- Fedora Core12 	2.6.31.5-127.fc12   *
 	- OpenSuSE 11		2.6.25.5-1.1        *
-	- kernel.org:   	2.6.29, 2.6.30, 2.6.31 and 2.6.32
+	- kernel.org:   	2.6.29, 2.6.30,
+                                2.6.31 and 2.6.32   *
 
       * Minimal QA for these versions
 	
