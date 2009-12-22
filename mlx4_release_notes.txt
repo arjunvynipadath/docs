@@ -1,7 +1,7 @@
 	    Open Fabrics Enterprise Distribution (OFED)
-          ConnectX driver (mlx4) in OFED 1.4.2 Release Notes
+          ConnectX driver (mlx4) in OFED 1.5 Release Notes
 			  
-  		   	July 2009
+  		   	December 2009
 
 
 ===============================================================================
