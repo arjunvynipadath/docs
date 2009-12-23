@@ -184,8 +184,8 @@ c. Using sysfs file system
 -------------------------------------------
 The text file BUILD_ID provides data on all OFED components (whether installed
 or not). This file is a part of the ofed-docs RPM and installed under 
-/usr/share/doc/ofed-docs-1.4 on RedHat, and under 
-/usr/share/doc/packages/ofed-docs-1.4 on SuSE.
+/usr/share/doc/ofed-docs-1.5 on RedHat, and under 
+/usr/share/doc/packages/ofed-docs-1.5 on SuSE.
 
 The same information can be obtained by executing the 'ofed_info' command. For
 example:
@@ -308,14 +308,14 @@ Note: The file /etc/security/limits.conf contains further documentation.
 
 
 ===============================================================================
-4. External Module Compilation Over OFED-1.4
+4. External Module Compilation Over OFED-1.5
 ===============================================================================
 
 To build kernel modules depending on OFED's modules, take the Modules.symvers
-file from <prefix>/src/openib/Module.symvers (part of the kernel-ib-devel RPM)
+file from <prefix>/src/ofa_kernel/Module.symvers (part of the kernel-ib-devel RPM)
 and copy it to the modules subdir and then compile your module.
 
-If <prefix>/src/openib/Module.symvers does not exist or it is empty, use the
+If <prefix>/src/ofa_kernel/Module.symvers does not exist or it is empty, use the
 create_Module.symvers.sh (a part of the ofed-docs RPM) script to create the
 Module.symvers file.
 
