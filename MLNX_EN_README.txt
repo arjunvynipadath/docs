@@ -1,17 +1,16 @@
 ===============================================================================
 	MLNX_EN driver for Mellanox Adapter Cards with 10GigE Support 
-		       README for MLNX_OFED 1.4
+		       README for MLNX_OFED 1.5
 			   
-			    March 2009
+			    December 2009
 ===============================================================================
 
 Contents:
 =========
 1. Overview
-2. Software Dependencies
-3. Ethernet Driver Usage and Configuration
-4. Known Issues
-5. Troubleshooting
+2. Ethernet Driver Usage and Configuration
+3. Known Issues
+4. Troubleshooting
 
 
 1. Overview
@@ -21,7 +20,7 @@ MLNX_EN driver is composed from mlx4_core and mlx4_en kernel modules.
 The MLNX_EN driver release exposes the following capabilities:
 - Single/Dual port
 - Fibre Channel over Ethernet (FCoE)
-- Up to 16 Rx queues per port
+- Up to 9 Rx queues per port
 - Rx steering mode: Receive Core Affinity (RCA)
 - Tx arbitration mode: VLAN user-priority (off by default)
 - MSI-X or INTx
@@ -40,14 +39,7 @@ The MLNX_EN driver release exposes the following capabilities:
 - CX4 connectors (XAUI) or XFP
 
 
-2. Software Dependencies
-========================
-- The mlx4_en module uses a Linux implementation for Large Receive Offload 
-  (LRO) in kernel 2.6.24 and later. These kernels require installing the 
-  "inet_lro" module.
-
-
-3. Ethernet Driver Usage and Configuration
+2. Ethernet Driver Usage and Configuration
 ==========================================
 
 - To assign an IP address to the interface run:
@@ -61,8 +53,8 @@ The MLNX_EN driver release exposes the following capabilities:
   Example:
   #> ethtool -i eth2
   driver: mlx4_en (MT_0BD0110004)
-  version: 1.4.0 (Dec 2008)
-  firmware-version: 2.6.0
+  version: 1.5.0 (Dec 2009)
+  firmware-version: 2.7.0
   bus-info: 0000:0e:00.0
 
 - To query stateless offload status run:
@@ -91,8 +83,23 @@ The MLNX_EN driver release exposes the following capabilities:
 - To set pause frame settings run:
   #> ethtool -A eth<x> [rx on|off] [tx on|off]
 
+- To query ring size values run:
+  #> ethtool -g eth<x>
+
+- To modify rings size run:
+  #> ethtool -G eth<x> [rx <N>] [tx <N>]
+
+- To view card's vpd run:
+  #> ethtool -e eth<x>
+
+- To modify card's vpd run:
+  #> ethtool -E eth<x>
+
 - To obtain additional device statistics, run:
   #> ethtool -S eth<x>
+
+- To perform a self diagnostics test, run:
+  #> ethtool -t eth<x>
 
 
 The driver defaults to the following parameters:
@@ -112,7 +119,7 @@ added to /etc/modprobe.conf file:
 Values of all parameters can be observed in /sys/module/mlx4_en/parameters/. 
 
 
-4. Known Issues
+3. Known Issues
 ===============
 - For RedHat EL4, adding and removing multiple vlan interfaces over the network
   interface created by the mlx4_en driver may lead to printing the following:
@@ -121,9 +128,7 @@ Values of all parameters can be observed in /sys/module/mlx4_en/parameters/.
 - iperf with multiple (> 100) streams may fail on kernel.org 2.6.25 versions
   earlier than 2.6.25.9.
 
-- mlx4_en driver is not supported on PPC64 and IA64
-
-5. Troubleshooting
+4. Troubleshooting
 ==================
 Problem: I restarted the driver and received the following error message:
    mlx4_core 0000:13:00.0: PCI device did not come back after reset, aborting.

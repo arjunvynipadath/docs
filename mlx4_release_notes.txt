@@ -1,7 +1,7 @@
 	    Open Fabrics Enterprise Distribution (OFED)
-          ConnectX driver (mlx4) in OFED 1.5 Release Notes
+          ConnectX driver (mlx4) in OFED 1.5.0 Release Notes
 			  
-  		   	December 2009
+  		   	Decenber 2009
 
 
 ===============================================================================
@@ -14,8 +14,9 @@ Table of Contents
 5. Infiniband (mlx4_ib) new features and bug fixes since OFED 1.4
 6. Eth (mlx4_en) new features and bug fixes since OFED 1.4
 7. New features and bug fixes since OFED 1.4.1
-8. Known Issues
-9. mlx4 Available Parameters
+8. New features and bug fixes since OFED 1.5.0
+9. Known Issues
+10. mlx4 Available Parameters
 
 ===============================================================================
 1. Overview
@@ -35,15 +36,14 @@ configurations, the driver is split into three modules:
 	Handles InfiniBand-specific functions and plugs into the InfiniBand
 	midlayer
 - mlx4_en
-	A new 10G driver named mlx4_en was added to drivers/net/mlx4.
-	It handles Ethernet specific functions and plugs into the netdev mid-layer.
+	Handles Ethernet specific functions and plugs into the netdev mid-layer.
 
 ===============================================================================
 2. Supported Firmware Versions
 ===============================================================================
-- This release was tested with FW 2.6.000.
+- This release was tested with FW 2.7.000.
 - The minimal version to use is 2.3.000. 
-- To use both IB and Ethernet (VPI) use FW version 2.6.0
+- To use both IB and Ethernet (VPI) use FW version 2.6.000 or higher
 
 ===============================================================================
 3. VPI (Virtual Protocol Interconnect) 
@@ -182,9 +182,29 @@ Bug Fixes
 - Added support for new device ID: 0x6764: MT26468 ConnectX EN 10GigE PCIe gen2
 
 ===============================================================================
-8. Known Issues
+8. New features and bug fixes since OFED 1.4.2
 ===============================================================================
-- mlx4_en driver is not supported on PPC64 and IA64
+8.1 Changes and New Features
+----------------------------
+- mlx4_en is now supported on PPC and IA64.
+- Added self diagnostics feature: ethtool -t eth<x>.
+- Card's vpd can be accessed for read and write using ethtool interface.
+
+8.2 Bug Fixes
+-------------
+- mlx4 can now work with MSI-X on RH4 systems.
+- Enabled the driver to load on systems with 32 cores and higher.
+- The driver is being stuck if the HW/FW stops responding, reset is done
+  instead.
+- Fixed recovery flows from memory allocation failures.
+- When the system is low on memory, the mlx4_en driver now allocates smaller RX
+  rings.
+- The mlx4_coredriver now retries to obtain MSI-X vectors if the initial request is
+  rejected by the OS
+
+===============================================================================
+9. Known Issues
+===============================================================================
 - The mlx4_en module uses a Linux implementation for Large Receive Offload
   (LRO) in kernel 2.6.24 and later. These kernels require installing the
   "inet_lro" module.
@@ -220,7 +240,7 @@ Bug Fixes
 
      
 ===============================================================================
-9. mlx4 Available Parameters
+10. mlx4 Available Parameters
 ===============================================================================
 In order to set mlx4 parameters, add the following line(s) to /etc/modpobe.conf:
    options mlx4_core parameter=<value>
@@ -257,6 +277,7 @@ mlx4_en parameters:
    rss_xor:             Use XOR hash function for RSS 0 (default is xor)
    rss_mask:            RSS hash type bitmask (default is 0xf)
    num_lro:             Number of LRO sessions per ring or disabled (0) (default is 32)
+   ip_reasm:            Allow reassembly of fragmented IP packets (default is enabled)
    pfctx:               Priority based Flow Control policy on TX[7:0]. 
    			Per priority bit mask (default is 0)
    pfcrx:               Priority based Flow Control policy on RX[7:0]. 
