@@ -51,7 +51,7 @@ Usage and configuration:
 1. To check the current mode used for outgoing connections, enter:
    cat /sys/class/net/ib0/mode
 2. To disable IPoIB CM at compile time, enter:
-   cd OFED-1.4
+   cd OFED-1.5
    export OFA_KERNEL_PARAMS="--without-ipoib-cm"
    ./install.pl
 3. To change the run-time configuration for IPoIB, enter:
@@ -202,6 +202,19 @@ Usage and configuration:
 	loaded since it was compiled and installed for a different kernel.
 	4. Configure bonding and restart the network. The bonding interface
 	should be up and running afterwards.
+19. On RHEL5.X, '/etc/init.d/openibd start' prints the following messages while
+    bringing up IPoIB interfaces:
+
+    Setting up InfiniBand network interfaces:
+    Bringing up interface ib0:                                 [  OK  ]
+    RTNETLINK answers: File exists
+    Error adding address 192.168.1.11 for ib1.
+    Bringing up interface ib1:                                 [  OK  ]
+    Setting up service network . . .                           [  done  ]
+
+    This does not affect IPoIB configuration and interfaces are configured as
+    expected.
+
 ===============================================================================
 4. IPoIB Configuration Based on DHCP
 ===============================================================================
