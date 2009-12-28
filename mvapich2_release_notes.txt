@@ -1,16 +1,16 @@
 ========================================================================
 
              Open Fabrics Enterprise Distribution (OFED)
-              MVAPICH2-1.2p1 in OFED 1.4 Release Notes
+              MVAPICH2-1.4 in OFED 1.5 Release Notes
 
-                          December 2008
+                          December 2009
 
 
 Overview
 --------
 
-These are the release notes for MVAPICH2-1.2p1.  This is OFED's edition of
-the MVAPICH2-1.2p1 release. MVAPICH2 is an MPI-2 implementation over
+These are the release notes for MVAPICH2-1.4.  This is OFED's edition of
+the MVAPICH2-1.4 release. MVAPICH2 is an MPI-2 implementation over
 InfiniBand and iWARP from the Ohio State University
 (http://mvapich.cse.ohio-state.edu/).
 
@@ -18,8 +18,8 @@ InfiniBand and iWARP from the Ohio State University
 User Guide
 ----------
 
-For more information on using MVAPICH2-1.2p1, please visit the user guide at
-http://mvapich.cse.ohio-state.edu/support/.
+For more information on using MVAPICH2-1.4, please visit the user guide
+at http://mvapich.cse.ohio-state.edu/support/.
 
 
 Software Dependencies
@@ -27,107 +27,167 @@ Software Dependencies
 
 MVAPICH2 depends on the installation of the OFED Distribution stack with
 OpenSM running. The MPI module also requires an established network
-interface (either InfiniBand, IPoIB, iWARP, uDAPL, or Ethernet). BLCR support
-is needed if built with fault tolerance support.
+interface (either InfiniBand, IPoIB, iWARP, uDAPL, or Ethernet). BLCR
+support is needed if built with fault tolerance support.
 
 
 New Features
 ------------
 
-MVAPICH2 (MPI-2 over InfiniBand and iWARP) is an MPI-2 implementation based on
-MPICH2.  MVAPICH2 1.2p1 is available as a single integrated package (with
-MPICH2 1.0.7).  This version of MVAPICH2-1.2p1 for OFED has the following
-changes from MVAPICH2-1.0.3:
+MVAPICH2 (MPI-2 over InfiniBand and iWARP) is an MPI-2 implementation
+based on MPICH2.  MVAPICH2 1.4 is available as a single integrated
+package (with MPICH2 1.0.8p1).  This version of MVAPICH2-1.4 for OFED
+has the following changes from MVAPICH2-1.2p1:
 
-MVAPICH2-1.2p1 (11/11/2008)
-- Fix shared-memory communication issue for AMD Barcelona systems.
+MVAPICH2-1.4 (10/29/09)
 
-MVAPICH2-1.2 (11/06/2008)
+- Enhancements since mvapich2-1.4rc2
+    - Efficient runtime CPU binding
+    - Add an environment variable for controlling the use of multiple
+      cq's for
+      iWARP interface.
+    - Add environmental variables to disable registration cache for
+      All-to-All
+      on large systems.
+    - Performance tune for pt-to-pt Intra-node communication with LiMIC2
+    - Performance tune for MPI_Broadcast
 
-* Bugs fixed since MVAPICH2-1.2-rc2
-  - Ignore the last bit of the pkey and remove the pkey_ix option since the
-    index can be different on different machines. Thanks for Pasha@Mellanox 
-    for the patch.
-  - Fix data types for memory allocations. Thanks for Dr. Bill Barth 
-    from TACC for the patches.
-  - Fix a bug when MV2_NUM_HCAS is larger than the number of active HCAs.
-  - Allow builds on architectures for which tuning parameters do not exist.
+- Bug fixes since mvapich2-1.4rc2
+    - Fix the reading error in lock_get_response by adding
+      initialization to req->mrail.protocol
+    - Fix mpirun_rsh scalability issue with hierarchical ssh scheme
+      when launching greater than 8K processes.
+    - Add mvapich_ prefix to yacc functions. This can avoid some
+      namespace
+      issues when linking with other libraries.  Thanks to Manhui Wang
+       for contributing the patch.
 
-* Efficient support for intra-node shared memory communication on 
-  diskless clusters
+MVAPICH2-1.4-RC2 (08/31/2009)
 
-* Changes related to the mpirun_rsh framework
-  - Always build and install mpirun_rsh in addition to the process 
-    manager(s) selected through the --with-pm mechanism.
-  - Cleaner job abort handling
-  - Ability to detect the path to mpispawn if the Linux proc filesystem is
-    available.
-  - Added Totalview debugger support
-  - Stdin is only available to rank 0.  Other ranks get /dev/null.
+- Added Feature: Check-point Restart with Fault-Tolerant Backplane
+  Support
+  (FTB_CR)
 
-* Other miscellaneous changes
-  - Add sequence numbers for RPUT and RGET finish packets.
-  - Increase the number of allowed nodes for shared memory broadcast to 4K.
-  - Use /dev/shm on Linux as the default temporary file path for shared 
-    memory communication. Thanks for Doug Johnson@OSC for the patch.
-  - MV2_DEFAULT_MAX_WQE has been replaced with MV2_DEFAULT_MAX_SEND_WQE and
-    MV2_DEFAULT_MAX_RECV_WQE for send and recv wqes, respectively.
-  - Fix compilation warnings.
+- Added Feature: Multiple CQ-based design for Chelsio iWARP
 
-MVAPICH2-1.2-RC2 (08/20/2008)
+- Fix for hang with packetized send using RDMA Fast path
 
-* Following bugs are fixed in RC2
-    - Properly handle the scenario in shared memory broadcast code when the
-      datatypes of different processes taking part in broadcast are different.
-    - Fix a bug in Checkpoint-Restart code to determine whether a connection
-      is a shared memory connection or a network connection.
-    - Support non-standard path for BLCR header files.
-    - Increase the maximum heap size to avoid race condition in realloc().
-    - Use int32_t for rank for larger jobs with 32k processes or more.
-    - Improve mvapich2-1.2 bandwidth to the same level of mvapich2-1.0.3.
-    - An error handling patch for uDAPL interface. Thanks for Nilesh Awate
-      for the patch.
-    - Explicitly set some of the EP attributes when on demand connection
-      is used in uDAPL interface.
+- Fix for allowing to use user specified P_Key's (Thanks to Mike Heinz @
+  QLogic)
 
+- Fix for allowing mpirun_rsh to accept parameters through the
+  parameters file (Thanks to Mike Heinz @ QLogic)
 
-MVAPICH2-1.2RC1 (07/02/08)
+- Distribute LiMIC2-0.5.2 with MVAPICH2. Added flexibility for selecting
+  and using a pre-existing installation of LiMIC2
 
-* Based on MPICH2 1.0.7
+- Modify the default value of shmem_bcast_leaders to 4K
 
-* Scalable and robust daemon-less job startup
+- Fix for one-sided with XRC support
 
-   - Enhanced and robust mpirun_rsh framework (non-MPD-based) to
-     provide scalable job launching on multi-thousand core clusters
+- Fix hang with XRC
 
-   - Available for OpenFabrics (IB and iWARP) and uDAPL interfaces
-     (including Solaris)
+- Fix to always enabling MVAPICH2_Sync_Checkpoint functionality
 
-* Checkpoint-restart with intra-node shared memory support
+- Increase the amount of command line that mpirun_rsh can handle (Thanks
+  for the suggestion by Bill Barth @ TACC)
 
-   - Allows best performance and scalability with fault-tolerance
-     support
+- Fix build error on RHEL 4 systems (Reported by Nathan Baca and
+  Jonathan
+  Atencio)
 
-* Enhancement to software installation
-   - Full autoconf-based configuration
-   - An application (mpiname) for querying the MVAPICH2
-     library version and configuration information
+- Fix issue with PGI compilation for PSM interface
 
-* Enhanced processor affinity using PLPA for multi-core architectures
-   - Allows user-defined flexible processor affinity
+- Fix for one-sided accumulate function with user-defined contiguous
+  datatypes
 
-* Enhanced scalability for RDMA-based direct one-sided communication
-  with less communication resource
+- Fix linear/hierarchical switching logic and reduce threshold for the
+  enhanced mpirun_rsh framework.
 
-* Shared memory optimized MPI_Bcast operations
+- Clean up intra-node connection management code for iWARP
 
-* Optimized and tuned MPI_Alltoall
+- Fix --enable-g=all issue with uDAPL interface
+
+- Fix one sided operation with on demand CM.
+
+- Fix VPATH build
+
+MVAPICH2-1.4-RC1 (06/02/2009)
+
+- MPI 2.1 standard compliant
+
+- Based on MPICH2 1.0.8p1
+
+- Dynamic Process Management (DPM) Support with mpirun_rsh and MPD
+   - Available for OpenFabrics (IB) interface
+
+- Support for eXtended Reliable Connection (XRC)
+   - Available for OpenFabrics (IB) interface
+
+- Kernel-level single-copy intra-node communication support based on
+  LiMIC2
+   - Delivers superior intra-node performance for medium and
+     large messages
+   - Available for all interfaces (IB, iWARP and uDAPL)
+
+- Enhancement to mpirun_rsh framework for faster job startup
+  on large clusters
+   - Hierarchical ssh to nodes to speedup job startup
+   - Available for OpenFabrics (IB and iWARP), uDAPL interfaces
+     (including Solaris) and the New QLogic-InfiniPath interface
+
+- Scalable checkpoint-restart with mpirun_rsh framework
+
+- Checkpoint-restart with intra-node shared memory (kernel-level with
+  LiMIC2) support
+   - Available for OpenFabrics (IB) Interface
+
+- K-nomial tree-based solution together with shared memory-based
+  broadcast for scalable MPI_Bcast operation
+   - Available for all interfaces (IB, iWARP and uDAPL)
+
+- Native support for QLogic InfiniPath
+   - Provides support over PSM interface
+
+* Bugs fixed since MVAPICH2-1.2p1
+
+  - Changed parameters for iWARP for increased scalability
+
+  - Fix error with derived datatypes and Put and Accumulate operations
+      Request was being marked complete before data transfer
+      had actually taken place when MV_RNDV_PROTOCOL=R3 was used
+
+  - Unregister stale memory registrations earlier to prevent
+    malloc failures
+
+  - Fix for compilation issues with --enable-g=mem and --enable-g=all
+
+  - Change dapl_prepost_noop_extra value from 5 to 8 to prevent
+    credit flow issues.
+
+  - Re-enable RGET (RDMA Read) functionality
+
+  - Fix SRQ Finalize error
+    Make sure that finalize does not hang when the srq_post_cond is
+    being waited on.
+
+  - Fix a multi-rail one-sided error when multiple QPs are used
+  
+  - PMI Lookup name failure with SLURM
+
+  - Port auto-detection failure when the 1st HCA did 
+    not have an active failure
+
+  - Change default small message scheduling for multirail
+    for higher performance
+ 
+  - MPE support for shared memory collectives now available
 
 
 Main Verification Flows
 -----------------------
 
-In order to verify the correctness of MVAPICH2-1.2p1, the following tests
+In order to verify the correctness of MVAPICH2-1.4, the following tests
 and parameters were run.
 
 Test                            Description
