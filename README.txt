@@ -180,7 +180,7 @@ Notes:
 
 7)  To run an application over SDP set the following variables:
     env LD_PRELOAD='stack_prefix'/lib/libsdp.so
-    LIBSDP_CONFIG_FILE='stack_prefix'/etc/libsdp.conf <application name>
+    LIBSDP_CONFIG_FILE=/etc/libsdp.conf <application name>
     (or LD_PRELOAD='stack_prefix'/lib64/libsdp.so on 64 bit machines)
     The default 'stack_prefix' is /usr
 
