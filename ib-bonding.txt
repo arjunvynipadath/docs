@@ -2,14 +2,13 @@ IB Bonding
 ===============================================================================
 
 1. Introduction
-2. How to work with ib-bond
-3. How to work with interface configuration scripts
-3.1 Configuration with initscripts support
-3.1.1 Writing network scripts under Redhat-AS4 (Update 4, 5, 6 or 7)
-3.1.2 Writing network scripts under Redhhat-EL5
-3.2 Configuration with sysconfig support
-3.2.1 Writing network scripts under SLES-10
-3.3 Configuring Ethernet slaves
+2. How to work with interface configuration scripts
+2.1 Configuration with initscripts support
+2.1.1 Writing network scripts under Redhat-AS4 (Update 6, 7 or 8)
+2.1.2 Writing network scripts under Redhhat-EL5
+2.2 Configuration with sysconfig support
+2.2.1 Writing network scripts under SLES-10
+2.3 Configuring Ethernet slaves
 
 1. Introduction
 -------------------------------------------------------------------------------
@@ -17,58 +16,18 @@ ib-bonding is a High Availability solution for IPoIB interfaces. It is based
 on the Linux Ethernet Bonding Driver and was adopted to work with IPoIB.
 However, the support for for IPoIB interfaces is only for the active-backup
 mode, other modes should not be used.
-ib-bonding package contains a bonding driver and a utility called ib-bond to
-manage and control the driver operation.
 
-2. How to work with ib-bond
+2. How to work with interface configuration scripts
 -------------------------------------------------------------------------------
+To create an interface configuration script for the ibX and bondX interfaces,
+you should use the standard syntax (depending on your OS).
 
-* Creating a bonding network interface
- --bond-name: sets the name of the bonding network interface. Default is bond0
- --bond-ip <IP/[MASK]>: sets the IP address of bond0. If MASK is not given it
-   is set to 255.255.255.0 (24 bits). Note that MASK should be the number of 1
-   bits in the netmask.
- --slaves: a comma separated list of slave ib devices. If not given ib0 and
-   ib1 will be used as slaves. Child interfaces are allowed.
- --miimon: the MII monitoring interval in mSec. Default is 100
-* Deleting a bonding network interface
- --stop: unenslave slaves and delete a specific bonding network interface (use with --bond-name)
- --stop-all: unenslave slaves and delete all bonding network interfaces
-* Querying a bonding network interface
- --status: show the status of a specific bonding network interface (use with --bond-name)
- --status-all: show the status of all bonding network interfaces
- 
-Examples:
-
-* To bring up bond0 with ib0 and ib2 as slaves (assumes 2 HCAs)
-	ib-bond --bond-ip 192.186.10.100 --slaves ib0,ib2
-* To bring up bond1 with ib0.f1f1 1and ib1.f1f1 as slaves with non default
-  netmask
-	ib-bond --bond-name bond1 --bond-ip 192.186.10.100/25 --slaves ib0.f1f1,ib1.f1f1
-* To query the status of bond1
-	ib-bond --bond-name bond1 --status
-* To query the status of all bonding interfaces
-	ib-bond --status-all
-* To stop bond1 
-	ib-bond --bond-name bond1 --stop
-* To stop all bonding interfaces
-	ib-bond --stop-all
-
-3. How to work with interface configuration scripts
--------------------------------------------------------------------------------
-Using ib-bond to configure interfaces doesn't save the configuration anywhere,
-so whenever the master or one of the slaves is destroyed the configuration
-should be restored by running ib-bond again (e.g. after system reboot).
-It is possible to avoid that if you create an interface configuration script for
-the ibX and bondX interfaces. To do that, you should use the standard syntax to
-create the bonding configuration (depending on your OS).
-
-3.1 Configuration with initscripts support
+2.1 Configuration with initscripts support
 ------------------------------------------
 Note: This feature is available only for Redhat-AS4 (Update 4, Update 5,
 Update 6 or Update 7) and for Redhat-EL5 and above.
 
-3.1.1 Writing network scripts under Redhat-AS4 (Update 4, 5, 6 or 7)
+2.1.1 Writing network scripts under Redhat-AS4 (Update 4, 5, 6 or 7)
 -----------------------------------------------------------------
 * In the master (bond) interface script add the line:
 TYPE=Bonding
@@ -118,7 +77,7 @@ required and can be omitted.
 After the configuration is saved, restart the network service by running:
 /etc/init.d/network restart
 
-3.1.2 Writing network scripts under Redhhat-EL5
+2.1.2 Writing network scripts under Redhhat-EL5
 -----------------------------------------------
 Follow the instructions in 3.1.1 (Writing network scripts under Redhat-AS4)
 with the following changes:
@@ -143,11 +102,11 @@ Note: restarting OFED doesn't keep the bonding configuration via initscripts.
 You have to restart the network service in order to recreate the bonding
 interface.
 
-3.2 Configuration with sysconfig support
+2.2 Configuration with sysconfig support
 ----------------------------------------
 Note: This feature is available only for SLES-10 and above.
 
-3.2.1 Writing network scripts under SLES-10 
+2.2.1 Writing network scripts under SLES-10 
 -----------------------------------------------
 * In the master (bond) interface script add the lins:
 
@@ -192,7 +151,7 @@ PRE_DOWN_SCRIPT=/etc/sysconfig/network/unenslave.sh
 After the configuration is saved, restart the network service by running:
 /etc/init.d/network restart
 
-3.3 Configuring Ethernet slaves
+2.3 Configuring Ethernet slaves
 -------------------------------
 It is not possible to have a mix of Ethernt slaves and IPoIB slaves under the
 same bonding master. It is possible however that a bonding master of Ethernet

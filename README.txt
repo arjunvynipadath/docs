@@ -193,9 +193,9 @@ install one or more MPI stacks.  Multiple MPI stacks can be installed
 simultaneously -- they will not conflict with each other.
 
 Three MPI stacks are included in this release of OFED:
-- MVAPICH 1.2.0
-- Open MPI 1.3.4
-- MVAPICH2 1.4
+- MVAPICH
+- Open MPI
+- MVAPICH2
 
 OFED also includes 4 basic tests that can be run against each MPI
 stack: bandwidth (bw), latency (lt), Intel MPI Benchmark and Presta. The tests

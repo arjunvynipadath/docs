@@ -1,6 +1,6 @@
               Open Fabrics Enterprise Distribution (OFED)
      Open MPI in OFED 1.5 Copyrights, License, and Release Notes
-			  
+  
                             December 2009
 
 Open MPI Copyrights

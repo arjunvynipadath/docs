@@ -1,8 +1,8 @@
 
-             Open Fabrics Enterprise Distribution (OFED)
-		    SRP in OFED 1.4 Release Notes
-			  
-			    December 2008
+                Open Fabrics Enterprise Distribution (OFED)
+                    SRP in OFED 1.5 Release Notes
+
+                            December 2009
 
 
 ==============================================================================
@@ -105,7 +105,7 @@ automatically.
       > max_cmd_per_lun -  Default: 63
       > max_sect (short for max_sectors) - sets the request size of a command
       > io_class  -  Default: 0x100 as in rev 16A of the specification
-		     Note: In rev 10 the default was 0xff00
+                     Note: In rev 10 the default was 0xff00
       > initiator_ext - Please refer to Section 9 (Multiple Connections...)
    d. See SRP Tools below for instructions on how the parameters in the
       echo command above may be obtained.
@@ -371,20 +371,20 @@ Manual Activation of High Availability
 Initialization: (Execute after each boot of the driver)
         1) Execute modprobe dm-multipath
         2) Execute modprobe ib-srp
-	3) Make sure you have created file /etc/udev/rules.d/91-srp.rules
-	   as described above
+        3) Make sure you have created file /etc/udev/rules.d/91-srp.rules
+           as described above
         4) Execute for each port and each HCA:
               srp_daemon -c -e -R 300 -i <InfiniBand HCA name> -p <port number>
           (You can use another value for -R. See under the Known Issues section
-	   the workaround for the rare race condition.)
+           the workaround for the rare race condition.)
            
-	   This step can be performed by executing srp_daemon.sh, which sends 
+           This step can be performed by executing srp_daemon.sh, which sends 
            its log to /var/log/srp_daemon.log.
 
-	Now it is possible to access the SRP LUNs on /dev/mapper/.
+        Now it is possible to access the SRP LUNs on /dev/mapper/.
 
-	NOTE: It is possible for regular (non-SRP) LUNs to also be present;
-      	the SRP LUNs may be identified by their names. You can configure the
+        NOTE: It is possible for regular (non-SRP) LUNs to also be present;
+        the SRP LUNs may be identified by their names. You can configure the
         /etc/multipath.conf file to change multipath behavior.
 
 
@@ -517,8 +517,8 @@ successfully:
 
         echo -n \
         id_ext=0000000000000001,ioc_guid=00066a0138000165,\
-	dgid=fe8000000000000000066a0260000165,pkey=ffff,\
-	service_id=0000494353535250,io_class=ff00,\
+        dgid=fe8000000000000000066a0260000165,pkey=ffff,\
+        service_id=0000494353535250,io_class=ff00,\
         initiator_ext=0000000000000001 > \
         /sys/class/inifiniband_srp/srp-mthca0-1/add_target
 

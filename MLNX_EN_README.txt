@@ -1,6 +1,6 @@
 ===============================================================================
 	MLNX_EN driver for Mellanox Adapter Cards with 10GigE Support 
-		       README for MLNX_OFED 1.5
+		       README for OFED 1.5
 			   
 			    December 2009
 ===============================================================================

@@ -21,7 +21,7 @@ to *real* devices
 
 Prerequisites
 -------------
-0. Supported distributions: RHEL 5.2/5.3/5.4, SLES 10 sp2, SLES 11 
+0. Supported distributions: RHEL 5.3/5.4, SLES 10 sp2, SLES 11 
 
 Note: On distribution default kernels you can run scst_vdisk blockio mode
       to have good performance. You can also run scst_disk ie. scsi pass-thru

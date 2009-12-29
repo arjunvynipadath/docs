@@ -1,7 +1,7 @@
              Open Fabrics Enterprise Distribution (OFED)
-          OSU MPI MVAPICH-1.1.0, in OFED 1.4.r10 Release Notes
+          OSU MPI MVAPICH-1.2.0, in OFED 1.5 Release Notes
 
-                          May 2009
+                          December 2009
 
 
 ===============================================================================
@@ -18,7 +18,7 @@ Table of Contents
 ===============================================================================
 1. Overview
 ===============================================================================
-These are the release notes for OSU MPI MVAPICH-1.1.0.
+These are the release notes for OSU MPI MVAPICH-1.2.0.
 OSU MPI is an MPI channel implementation over InfiniBand 
 by Ohio State University (OSU).
 
@@ -34,28 +34,18 @@ InfiniBand IPoIB or Ethernet).
 
 
 ===============================================================================
-3. New Features ( Compared to mvapich 1.0.0 )
+3. New Features ( Compared to mvapich 1.1.0 )
 ===============================================================================
-MVAPICH-1.1.0 has the following additional features:
-- eXtended Reliable Connection (XRC) support
-- Lock-free design to provide support for asynchronous
-  progress at both sender and receiver to overlap
-  computation and communication
-- Optimized MPI_allgather collective
+MVAPICH-1.2.0 has the following additional features:
+- Advanced network recovery support
+- mpirun launcher improvements
 - Efficient intra-node shared memory communication
   support for diskless clusters
-- Enhanced Totalview Support with the new mpirun_rsh framework
+- RoCEE (RDMAoE) networks support
 
 ===============================================================================
-4. Bug Fixes  ( Compared to mvapich 1.0.0 )
+4. Bug Fixes  ( Compared to mvapich 1.1.0 )
 ===============================================================================
-- De-register stale memory regions earlier to prevent 
-  excess allocations of physical memory
-- Fixes for MPI_Query_thread and MPI_Is_thread_main
-- Fixes for PGI compiler support
-- Compilation warnings cleanup
-- Fixes for optimized colletives
-- Fix data types for memory allocations
 - Multiple fixes for mpirun_rsh launcher
 
 ===============================================================================
@@ -78,12 +68,12 @@ MVAPICH-1.1.0 has the following additional features:
   fw-23108 version that is earlier than 3.4.000, or with an fw-25208 version
   4.7.400 or earlier.
 
-	NOTE: There is no issue if you chose to update firmware during Mellanox
-              OFED installation as newer firmware versions were burnt.
+  NOTE: There is no issue if you chose to update firmware during Mellanox
+        OFED installation as newer firmware versions were burnt.
 
   Workaround:
   Option 1 - Update the firmware. For instructions, see Mellanox Firmware Tools
-	    (MFT) User's Manual under the docs/ folder.
+             (MFT) User's Manual under the docs/ folder.
   Option 2 - In mvapich.conf, set VIADEV_SRQ_ENABLE=0
 
 - MVAPICH may fail to run on some SLES 10 machines due to problems in resolving

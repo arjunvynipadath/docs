@@ -2,8 +2,8 @@
                      --------------------------------------------
 
 *******************************************************************************
-RELEASE: OFED 1.4
-DATE:    Dec 2008
+RELEASE: OFED 1.5
+DATE:    Dec 2009
 
 ===============================================================================
 Table of Contents
@@ -32,9 +32,9 @@ Table of Contents
        for later analysis by Mellanox.
     e) mstvpd
        This utility dumps the on-card VPD.
-	f) hca_self_test.ofed
-	   This scripts checks the status of software, firmware and hardware
-	   of the HCAs installed on the local host.
+    f) hca_self_test.ofed
+       This scripts checks the status of software, firmware and hardware
+       of the HCAs installed on the local host.
 
 ===============================================================================
 2. New Features

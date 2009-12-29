@@ -3,7 +3,7 @@
 
 Version: OpenSM 3.2.x
 Repo:    git://git.openfabrics.org/~sashak/management.git
-Date:    May 2009
+Date:    December 2009
 
 1 Overview
 ----------

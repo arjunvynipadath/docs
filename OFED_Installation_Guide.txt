@@ -52,11 +52,11 @@ General Notes:
 The OFED Distribution package generates RPMs for installing the following:
 
   o   OpenFabrics core and ULPs:
-        - HCA drivers (mthca, mlx4, ipath, ehca)
+        - HCA drivers (mthca, mlx4, qib, ehca)
         - iWARP driver (cxgb3, nes)
         - core
         - Upper Layer Protocols: IPoIB, SDP, SRP Initiator and target, iSER
-	  Initiator and target, RDS, qlgc_vnic, uDAPL and NFS-RDMA
+          Initiator and target, RDS, qlgc_vnic, uDAPL and NFS-RDMA
   o   OpenFabrics utilities
         - OpenSM: InfiniBand Subnet Manager
         - Diagnostic tools
@@ -162,8 +162,8 @@ Note:   The installer will warn you if you attempt to compile any of the
          installation parameters can be found by running
          /etc/infiniband/info.
 
-	 Information on the driver version and source git trees can be found
-	 using the ofed_info utility
+         Information on the driver version and source git trees can be found
+         using the ofed_info utility
 
 
    During the interactive installation of OFED, two files are
@@ -202,6 +202,7 @@ Note:   The installer will warn you if you attempt to compile any of the
            --without-depcheck   Skip Distro's libraries check
            -v|-vv|-vvv.         Set verbosity level
            -q.                  Set quiet - no messages will be printed
+           --force              Force uninstall RPM coming with Distribution
 
            --all|--hpc|--basic  Install all,hpc or basic packages
                                 correspondingly

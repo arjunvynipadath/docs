@@ -28,25 +28,16 @@
 #
 # Description: creates Module.symvers file for InfiniBand modules 
 
-K_VER=${K_VER:-$(uname -r)}
-MOD_SYMVERS_IB=./Module.symvers
+KVERSION=${KVERSION:-$(uname -r)}
+MOD_SYMVERS=./Module.symvers
 SYMS=/tmp/syms
 
-if [ -d /lib/modules/$K_VER/updates/kernel/drivers/infiniband ]; then
-	MODULES_DIR=/lib/modules/$K_VER/updates/kernel/drivers/infiniband
-elif [ -d /lib/modules/$K_VER/kernel/drivers/infiniband ]; then
-	MODULES_DIR=/lib/modules/$K_VER/kernel/drivers/infiniband
-else
-	echo "No infiniband modules found"
-	exit 1
-fi
+echo MODULES_DIR=${MODULES_DIR-:./}
 
-echo MODULES_DIR=${MODULES_DIR}
-
-if [ -f ${MOD_SYMVERS_IB} -a ! -f ${MOD_SYMVERS_IB}.save ]; then
-	mv ${MOD_SYMVERS_IB} ${MOD_SYMVERS_IB}.save
+if [ -f ${MOD_SYMVERS} -a ! -f ${MOD_SYMVERS}.save ]; then
+	mv ${MOD_SYMVERS} ${MOD_SYMVERS}.save
 fi
-rm -f $MOD_SYMVERS_IB
+rm -f $MOD_SYMVERS
 rm -f $SYMS
 
 for mod in $(find ${MODULES_DIR} -name '*.ko') ; do
@@ -55,29 +46,19 @@ for mod in $(find ${MODULES_DIR} -name '*.ko') ; do
 done
 
 n_syms=$(wc -l $SYMS |cut -f1 -d" ")
-echo Found $n_syms InfiniBand symbols in $n_mods InfiniBand modules
+echo Found $n_syms OFED kernel symbols in $n_mods modules
 n=1
-
 
 while [ $n -le $n_syms ] ; do
     line=$(head -$n $SYMS|tail -1)
 
     line1=$(echo $line|cut -f1 -d:)
     line2=$(echo $line|cut -f2 -d:)
-    file=$(echo $line1|cut -f6- -d/)
-    file=$(echo $file|cut -f1 -d.)
-
+    file=$(echo $line1| sed -e 's@./@@' -e 's@.ko@@' -e "s@$PWD/@@")
     crc=$(echo $line2|cut -f1 -d" ")
-    crc=${crc:8}
     sym=$(echo $line2|cut -f3 -d" ")
-    sym=${sym:6}
-    echo -e  "0x$crc\t$sym\t$file" >> $MOD_SYMVERS_IB
-    if [ -z $allsyms ] ; then
-        allsyms=$sym
-    else
-        allsyms="$allsyms|$sym"
-    fi
+    echo -e  "0x$crc\t$sym\t$file" >> $MOD_SYMVERS
     n=$((n+1))
 done
 
-echo ${MOD_SYMVERS_IB} created. 
+echo ${MOD_SYMVERS} created. 

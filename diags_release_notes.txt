@@ -1,11 +1,11 @@
 	     Open Fabrics Enterprise Distribution (OFED)
-             Diagnostic Tools in OFED 1.4 Release Notes
+             Diagnostic Tools in OFED 1.5 Release Notes
 			  
-			   December 2008
+			   December 2009
 
 
-Repo:    git://git.openfabrics.org/~ofed_1_3/management.git (release)
-         git://git.openfabrics.org/~sashak/management/management.git (development)
+Repo: git://git.openfabrics.org/~sashak/management/management.git
+URL:  http://www.openfabrics.org/downloads/management
 
 
 General

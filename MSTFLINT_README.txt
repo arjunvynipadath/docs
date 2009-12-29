@@ -31,7 +31,7 @@ MSTFLINT Package - Firmware Burning and Diagnostics Tools
 3) Installation
     a) Build the mstflint utility. This package is built using a standard
        autotools method.
-	   
+   
        Example: 
        > ./configure
        > make
@@ -51,7 +51,7 @@ MSTFLINT Package - Firmware Burning and Diagnostics Tools
       # List all Mellanox devices
       > /sbin/lspci -d 15b3:
         02:00.0 Ethernet controller: Mellanox Technologies Unknown device 6368 (rev a0)
- 	   
+   
       # Use mstflint tool to query the firmware on this device
       > mstflint -d 02:00.0 q
 
@@ -78,12 +78,12 @@ MSTFLINT Package - Firmware Burning and Diagnostics Tools
        # List all Mellanox devices
        > /sbin/lspci -d 15b3:
          02:00.0 Ethernet controller: Mellanox Technologies Unknown device 6368 (rev a0)
-	   
+
        # Use mstregdump to dump HW registers, using PCI config cycles
        > mstregdump /proc/bus/pci/02/00.0 > crdump.log
 
        Note: Typically, you will need root privileges for hardware access
-	   
+
 5) Usage (mstflint):
        Read mstflint usage. Enter "./mstflint -h" for a short help message, or
        "./mstflint -hh" for a detailed help message.
@@ -107,33 +107,33 @@ MSTFLINT Package - Firmware Burning and Diagnostics Tools
        > mstregdump mthca0 > dumpfile
 
 7) Usage (mstvpd):
-    A VPD dump is displayed to the standard output.
-	A list of keywords to dump can be supplied after the -- flag
-	to apply an output filter.
+        A VPD dump is displayed to the standard output.
+        A list of keywords to dump can be supplied after the -- flag
+        to apply an output filter.
 
-	Examples:
-	> mstvpd mthca0
-	ID: Lion cub DDR
-	PN: MHGA28-1T
-	EC: A3
-	SN: MT0551X00740
-	V0: PCIe x8
-	V1: N/A
-	YA: R               R
-	RW:
+        Examples:
+        > mstvpd mthca0
+        ID: Lion cub DDR
+        PN: MHGA28-1T
+        EC: A3
+        SN: MT0551X00740
+        V0: PCIe x8
+        V1: N/A
+        YA: R               R
+        RW:
 
-	> mstvpd mthca0 -- PN ID
-	PN: MHGA28-1T
-	ID: Lion cub DDR
+        > mstvpd mthca0 -- PN ID
+        PN: MHGA28-1T
+        ID: Lion cub DDR
 
 8) Problem Reporting:
-	Please collect the following information when reporting issues:
+        Please collect the following information when reporting issues:
 
-	uname -a
-	cat /etc/issue
-	cat /proc/bus/pci/devices
-	mstflint -vv
-	lspci
+        uname -a
+        cat /etc/issue
+        cat /proc/bus/pci/devices
+        mstflint -vv
+        lspci
         mstflint -d 02:00.0 v
         mstflint -d 02:00.0 q
         mstvpd 02:00.0

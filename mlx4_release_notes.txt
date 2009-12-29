@@ -1,7 +1,7 @@
 	    Open Fabrics Enterprise Distribution (OFED)
-          ConnectX driver (mlx4) in OFED 1.5.0 Release Notes
-			  
-  		   	Decenber 2009
+	  ConnectX driver (mlx4) in OFED 1.5 Release Notes
+
+  			December 2009
 
 
 ===============================================================================
@@ -14,7 +14,7 @@ Table of Contents
 5. Infiniband (mlx4_ib) new features and bug fixes since OFED 1.4
 6. Eth (mlx4_en) new features and bug fixes since OFED 1.4
 7. New features and bug fixes since OFED 1.4.1
-8. New features and bug fixes since OFED 1.5.0
+8. New features and bug fixes since OFED 1.4.2
 9. Known Issues
 10. mlx4 Available Parameters
 
@@ -82,7 +82,7 @@ o Port type management:
     "ib"    - Always Infiniband.
     "auto"  - Link sensing mode - detect port type based on the attached 
               network type. If no link is detected, the driver retries link
-	      sensing every few seconds.
+              sensing every few seconds.
     
   Port link type can be configured for each device in the system at run time
   using the "/sbin/connectx_port_config" script.
@@ -199,7 +199,7 @@ Bug Fixes
 - Fixed recovery flows from memory allocation failures.
 - When the system is low on memory, the mlx4_en driver now allocates smaller RX
   rings.
-- The mlx4_coredriver now retries to obtain MSI-X vectors if the initial request is
+- The mlx4_core driver now retries to obtain MSI-X vectors if the initial request is
   rejected by the OS
 
 ===============================================================================
@@ -250,36 +250,39 @@ In order to set mlx4 parameters, add the following line(s) to /etc/modpobe.conf:
    options mlx4_en   parameter=<value>
 
 mlx4_core parameters:
-   set_4k_mtu:          attempt to set 4K MTU to all ConnectX ports (default 0)
-   msi_x:		attempt to use MSI-X if nonzero (default 1)
-   enable_qos:		Enable Quality of Service support in the HCA if > 0, (default 0) 
-   block_loopback	Block multicast loopback packets if > 0  (default: 1)
-   internal_err_reset:	Reset device on internal errors if non-zero (default 1)
-   debug_level:		Enable debug tracing if > 0 (default 0)
-   log_num_qp:		log maximum number of QPs per HCA (default is 17; max is 20)
-   log_num_srq:		log maximum number of SRQs per HCA (default is 16; max is 20)
-   log_rdmarc_per_qp:	log number of RDMARC buffers per QP (default is 4; max is 7)
-   log_num_cq:		log maximum number of CQs per HCA (default is 16 max is 19)
-   log_num_mcg:		log maximum number of multicast groups per HCA (default is 13; max is 21)
-   log_num_mpt:		log maximum number of memory protection table entries per HCA 
-   			(default is 17; max is 20)
-   log_num_mtt:		log maximum number of memory translation table segments per HCA
-   			(default is 20; max is 20)
-   log_num_mac:		log maximum number of MACs per ETH port (1-7) (int)
-   log_num_vlan:	log maximum number of VLANs per ETH port (0-7) (int)
-   log_mtts_per_seg     Log2 number of MTT entries per segment (1-5; default is 3)
-   use_prio:		Enable steering by VLAN priority on ETH ports (0/1, default 0) (bool)
+	set_4k_mtu:		attempt to set 4K MTU to all ConnectX ports (int)
+	debug_level:		Enable debug tracing if > 0 (int)
+	block_loopback:		Block multicast loopback packets if > 0 (int)
+	msi_x:			attempt to use MSI-X if nonzero (int)
+	log_num_mac:		Log2 max number of MACs per ETH port (1-7) (int)
+	log_num_vlan:		Log2 max number of VLANs per ETH port (0-7) (int)
+	use_prio:		Enable steering by VLAN priority on ETH ports (0/1, default 0)
+				(bool)
+	log_num_qp:		log maximum number of QPs per HCA (int)
+	log_num_srq:		log maximum number of SRQs per HCA (int)
+	log_rdmarc_per_qp:	log number of RDMARC buffers per QP (int)
+	log_num_cq:		log maximum number of CQs per HCA (int)
+	log_num_mcg:		log maximum number of multicast groups per HCA (int)
+	log_num_mpt:		log maximum number of memory protection table entries per HCA
+				(int)
+	log_num_mtt:		log maximum number of memory translation table segments per HCA
+				(int)
+	log_mtts_per_seg:	Log2 number of MTT entries per segment (1-5) (int)
+	enable_qos:		Enable Quality of Service support in the HCA (default: off)
+				 (bool)
+	internal_err_reset:	Reset device on internal errors if non-zero
+				(default 1) (int)
 
 mlx4_ib parameters:
-   debug_level: 	Enable debug tracing if > 0 (default 0)
+	debug_level: 	Enable debug tracing if > 0 (default 0)
 
 mlx4_en parameters:
-   rss_xor:             Use XOR hash function for RSS 0 (default is xor)
-   rss_mask:            RSS hash type bitmask (default is 0xf)
-   num_lro:             Number of LRO sessions per ring or disabled (0) (default is 32)
-   ip_reasm:            Allow reassembly of fragmented IP packets (default is enabled)
-   pfctx:               Priority based Flow Control policy on TX[7:0]. 
-   			Per priority bit mask (default is 0)
-   pfcrx:               Priority based Flow Control policy on RX[7:0]. 
-   			Per priority bit mask (default is 0)
-   inline_thold:        threshold for using inline data (default is 128)
+	rss_xor:	Use XOR hash function for RSS 0 (default is xor)
+	rss_mask:	RSS hash type bitmask (default is 0xf)
+	num_lro:	Number of LRO sessions per ring or disabled (0) (default is 32)
+	ip_reasm:	Allow reassembly of fragmented IP packets (default is enabled)
+	pfctx:		Priority based Flow Control policy on TX[7:0]. 
+			Per priority bit mask (default is 0)
+	pfcrx:		Priority based Flow Control policy on RX[7:0]. 
+			Per priority bit mask (default is 0)
+	inline_thold:	threshold for using inline data (default is 128)

@@ -1,7 +1,7 @@
 	     Open Fabrics Enterprise Distribution (OFED)
-              STGT/iSER target in OFED 1.4 Release Notes
+              STGT/iSER target in OFED 1.5 Release Notes
 
-			   December 2008
+			   December 2009
 
 
 * Background
