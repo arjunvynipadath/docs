@@ -224,3 +224,9 @@ Running NFSRDMA over Mellanox's ConnectX HCA requires that the adapter firmware
 be 2.7.0 or greater on all NFS clients and servers.  Firmware 2.6.0 has known
 issues that prevent the RDMA connection from being established.  Firmware 2.7.0
 has resolved these issues.
+
+IPv6 support requires portmap that supports version 4. Portmap included in RHEL5
+and SLES10 only supports version 2.  Without version 4 support, the following
+error will be logged:
+       svc: failed to register lockdv1 (errno 97).
+This error will not affect IPv4 support.
