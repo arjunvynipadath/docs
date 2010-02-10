@@ -1,7 +1,7 @@
 	    Open Fabrics Enterprise Distribution (OFED)
-	              Version 1.5
+	              Version 1.5.1
 	            Release Notes
-	            December 2009
+	            February December 2010
 
 
 ===============================================================================
@@ -14,8 +14,9 @@ Table of Contents
 	- Tested Switch Platforms
 	- Third party Test Packages
 	- OFED sources
-4. Main Changes from OFED 1.4.2
-5. Known Issues
+2. Main Changes from OFED 1.4.2
+3. Main Changes from OFED 1.5
+4. Known Issues
 
 
 ===============================================================================
@@ -204,7 +205,18 @@ for each package in the docs directory.
 	o NFS-RDMA is in beta level. Will be GA in OFED-1.5.1
 
 ===============================================================================
-3. Known Issues
+3. Main Changes from OFED 1.5
+===============================================================================
+1. Added RoCEE support
+2. updated Open MPI to rev 1.4.2
+3. Updated MVAPICH2 to rev 1.4-2
+4. Updated DAPL to rev 2.0.26
+5. Added extended atomic operations to ConnectX (kernel only)
+6. Bug fixes
+
+
+===============================================================================
+4. Known Issues
 ===============================================================================
 The following is a list of general limitations and known issues of the various
 components of the OFED 1.5 release.
