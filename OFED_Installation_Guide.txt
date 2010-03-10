@@ -1,5 +1,5 @@
             Open Fabrics Enterprise Distribution (OFED)
-                          Version 1.5
+                          Version 1.5.1
                        Installation Guide
 
                           December 2009
@@ -25,7 +25,7 @@ Table of contents
 1. Overview
 ==============================================================================
 
-This is the OpenFabrics Enterprise Distribution (OFED) version 1.5
+This is the OpenFabrics Enterprise Distribution (OFED) version 1.5.1
 software package supporting InfiniBand and iWARP fabrics. It is composed
 of several software modules intended for use on a computer cluster
 constructed as an InfiniBand subnet or an iWARP network.
@@ -203,6 +203,7 @@ Note:   The installer will warn you if you attempt to compile any of the
            -v|-vv|-vvv.         Set verbosity level
            -q.                  Set quiet - no messages will be printed
            --force              Force uninstall RPM coming with Distribution
+           --builddir           Change build directory. Default: /var/tmp/
 
            --all|--hpc|--basic  Install all,hpc or basic packages
                                 correspondingly
