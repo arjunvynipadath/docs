@@ -1,8 +1,8 @@
 
              Open Fabrics Enterprise Distribution (OFED)
-                    ehca in OFED 1.5 Release Notes
+                    ehca in OFED 1.5.1 Release Notes
 
-                               December 2009
+                               March 2010
 
 
 Overview
@@ -38,8 +38,13 @@ whereby <parameter> is one of the following items:
 
 New Features
 ------------
-- DMEM toleration
-- Port autodetection set to default
+- None
+
+Fixed Bugs ofed-1.5.1
+---------------------
+- Fixed crash when reading sysfs performance counters
+- Do not disable IRQs when processing EQs
+- Allow query of max_dest_rd_atomic and max_qp_rd_atomic values
 
 Fixed Bugs ofed-1.5
 ---------------------
@@ -93,7 +98,7 @@ Available backports
 - SLES11: 2.6.27.19-5.1-smp
 - SLES10SP2: 2.6.16-60
 - SLES10SP3: 2.6.16.60-0.54.5
-- kernel.org: 2.6.27-30
+- kernel.org: 2.6.29-32
 
 Known Issues
 ------------
