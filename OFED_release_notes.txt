@@ -218,7 +218,8 @@ for each package in the docs directory.
 7. Updated librdmacm to rev 1.0.11
 8. Removed tvflash RPM
 9. NFS-RDMA is not supported on SLES10 SP3
-10. Bug fixes
+10. Fixup IPv6 support and IPv4 routing corner cases for RDMA CM
+11. Bug fixes
 
 
 ===============================================================================
