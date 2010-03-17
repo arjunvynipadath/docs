@@ -1,7 +1,7 @@
              Open Fabrics Enterprise Distribution (OFED)
-                      How To Build OFED 1.5
+                      How To Build OFED 1.5.1
 
-                          December 2009
+                          March 2010
 
 
 ==============================================================================
@@ -14,8 +14,8 @@ Table of contents
 ==============================================================================
 1. Overview
 ==============================================================================
-The script "build_ofed.sh" is used to build the OFED package based on the
-OpenFabrics project. The package is built under the current working directory.
+The script "build.pl" is used to build the OFED package based on the
+OpenFabrics project. The package is built under /tmp directory.
 
 See OFED_release_notes.txt for more details. 
 
@@ -24,24 +24,25 @@ See OFED_release_notes.txt for more details.
 ==============================================================================
 
 The build script for the OFED package can be downloaded from: 
-  git://git.openfabrics.org/~vlad/ofabuild
-  branch: ofed_1_5
+  git://git.openfabrics.org/~vlad/build.git
+  branch: master
 
-Name: build_ofed.sh
+Name: build.pl
 
-        Usage: build_ofed.sh --ver|-v <OFED version>
-                     [--tmpdir <tmpdir to use as a work area>]
-                     [--ofed-scripts <path to ofed scripts directory>]
-                     [--ofed-docs <path to ofed docs directory>]
-                     [--mpidir|-m <path to mpi directory>]
-                     [--long-help]
+Usage: ./build.pl --version <version> [-r|--release]|[--daily] [-d|--distribution <distribution name>] [-v|--verbose]
+                [-b|--builddir <build directory>]
+                [-p|--packagesdir <packages directory>]
+                [--pre-build <pre-build script>]
+                [--skip-prebuild]
+                [--post-build <post-build script>]
+                [--skip-postbuild]
 
 Example:
 
-    ./build_ofed.sh --ver 1.5-rc7
+    ./build.pl --version 1.5.1-rc1 -p packages-ofed
 
-    This command will create a package (i.e., subtree) called OFED-1.5-rc7
-    in the current working directory.
+    This command will create a package (i.e., subtree) called OFED-1.5.1-rc1
+    under /tmp/$USER/
 
 ==============================================================================
 3. Requirements
@@ -65,3 +66,4 @@ Example:
          automake - "http://ftp.gnu.org/gnu/automake/automake-1.9.6.tar.gz"
          m4 - "http://ftp.gnu.org/gnu/m4/m4-1.4.4.tar.gz"
 
+3. wget or ssh slient
