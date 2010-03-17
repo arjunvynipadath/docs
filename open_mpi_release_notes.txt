@@ -1,7 +1,7 @@
               Open Fabrics Enterprise Distribution (OFED)
-     Open MPI in OFED 1.5 Copyrights, License, and Release Notes
+     Open MPI in OFED 1.5.1 Copyrights, License, and Release Notes
   
-                            December 2009
+                            March 2010
 
 Open MPI Copyrights
 -------------------
@@ -43,7 +43,7 @@ Copyright (c) 2008      Institut National de Recherche en
                         Informatique.  All rights reserved.
 Copyright (c) 2007      Lawrence Livermore National Security, LLC.
                         All rights reserved.
-Copyright (c) 2007-2009 Mellanox Technologies.  All rights reserved.
+Copyright (c) 2007-2010 Mellanox Technologies.  All rights reserved.
 Copyright (c) 2006      QLogic Corporation.  All rights reserved.
 
 Additional copyrights may follow
@@ -166,6 +166,35 @@ line options and installation instructions.
 
 Showing versions 1.2.7 - 1.4; see the "NEWS" file in an Open MPI
 distribution for the full list.
+
+1.4.1 (OFED version)
+---
+- Update support for various OpenFabrics devices in the openib BTL's
+  .ini file.
+- Fixing RDMA CM failure during QP creation (Ticket #2307)
+
+1.4.1
+---
+- Update to PLPA v1.3.2, addressing a licensing issue identified by
+  the Fedora project. See
+  https://svn.open-mpi.org/trac/plpa/changeset/262 for details.
+- Add check for malformed checkpoint metadata files (Ticket #2141).
+- Fix error path in ompi-checkpoint when not able to checkpoint
+  (Ticket #2138).
+- Cleanup component release logic when selecting checkpoint/restart
+  enabled components (Ticket #2135).
+- Fixed VT node name detection for Cray XT platforms, and fixed some
+  broken VT documentation files.
+- Fix a possible race condition in tearing down RDMA CM-based
+  connections.
+- Relax error checking on MPI_GRAPH_CREATE. Thanks to David Singleton
+  for pointing out the issue.
+- Fix a shared memory "hang" problem that occurred on x86/x86_64
+  platforms when used with the GNU >=4.4.x compiler series.
+- Add fix for Libtool 2.2.6b's problems with the PGI 10.x compiler
+  suite. Inspired directly from the upstream Libtool patches that fix
+  the issue (but we need something working before the next Libtool
+  release). 
 
 1.4
 ---

@@ -1,8 +1,7 @@
 
-			   MPI in OFED 1.5 README
+			   MPI in OFED 1.5.1 README
 
-				December 2009
-
+				March 2010
 
 ===============================================================================
 Table of Contents
@@ -18,7 +17,7 @@ Table of Contents
 ===============================================================================
 Open Fabrics Enterprise Distribution (OFED)Three MPI stacks are included in this release of OFED:
 - MVAPICH 1.2.0
-- Open MPI 1.4
+- Open MPI 1.4.1 (OFED)
 - MVAPICH2 1.4
 
 Setup, compilation and run information of MVAPICH, Open MPI and MVAPICH2 is
@@ -343,12 +342,12 @@ http://www.open-mpi.org/faq/).
 
 Example 1: Running the OSU bandwidth:
 
-    > cd /usr/mpi/gcc/openmpi-1.4/tests/osu_benchmarks-3.1.1
+    > cd /usr/mpi/gcc/openmpi-1.4.1/tests/osu_benchmarks-3.1.1
     > mpirun -np <N> -hostfile <HOSTFILE> osu_bw
 
 Example 2: Running the Intel MPI Benchmark benchmarks:
 
-    > cd /usr/mpi/gcc/openmpi-1.4/tests/IMB-3.2
+    > cd /usr/mpi/gcc/openmpi-1.4.1/tests/IMB-3.2
     > mpirun -np <N> -hostfile <HOSTFILE> IMB-MPI1
 
     --> Note that the version of IMB-EXT that ships in this version of
@@ -357,8 +356,13 @@ Example 2: Running the Intel MPI Benchmark benchmarks:
 
 Example 3: Running the Presta benchmarks:
 
-    > cd /usr/mpi/gcc/openmpi-1.4/tests/presta-1.4.0
+    > cd /usr/mpi/gcc/openmpi-1.4.1/tests/presta-1.4.0
     > mpirun -np <N> -hostfile <HOSTFILE> com -o 100
+
+NOTE: In order to run Open MPI over RoCCE (RDMAoE) network, follow MCA parameter
+      is required:
+        --mca btl_openib_cpc_include rdmacm
+
 
 3.5 More Open MPI Information
 -----------------------------
