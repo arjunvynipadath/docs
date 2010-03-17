@@ -2,7 +2,7 @@
                           Version 1.5.1
                        Installation Guide
 
-                          December 2009
+                          March 2010
 
 ==============================================================================
 Table of contents
@@ -15,10 +15,11 @@ Table of contents
  5.  Installing OFED Software
  6.  Building OFED RPMs
  7.  IPoIB Configuration
- 8.  Uninstalling OFED
- 9.  Upgrading OFED
- 10. Configuration
- 11. Related Documentation
+ 8.  Using SDP
+ 9.  Uninstalling OFED
+ 10. Upgrading OFED
+ 11. Configuration
+ 12. Related Documentation
 
 
 ==============================================================================
@@ -365,7 +366,164 @@ ONBOOT_ib0=1
 
 
 ==============================================================================
-8. Uninstalling OFED
+8. Using SDP
+==============================================================================
+
+Overview:
+---------
+
+Sockets Direct Protocol (SDP) is an InfiniBand byte-stream transport protocol
+that provides TCP stream semantics. Capable of utilizing InfiniBand's advanced
+protocol offload capabilities, SDP can provide lower latency, higher
+bandwidth, and lower CPU utilization than IPoIB running some sockets-based
+applications.
+
+SDP can be used by applications and improve their performance transparently
+(that is, without any recompilation). Since SDP has the same socket semantics
+as TCP, an existing application is able to run using SDP; the difference is
+that the application's TCP socket gets replaced with an SDP socket.
+
+It is also possible to configure the driver to automatically translate TCP to
+SDP based on the source IP, the destination, or the application name (See
+below).
+
+The SDP protocol is composed of a kernel module that implements the SDP as a
+new address-family/protocol-family, and a library that is used for replacing
+the TCP address family with SDP according to a policy.
+
+libsdp.so Library:
+------------------
+
+libsdp.so is a dynamically linked library, which is used for transparent
+integration of applications with SDP. The library is preloaded, and therefore
+takes precedence over glibc for certain socket calls. Thus, it can
+transparently replace the TCP socket family with SDP socket calls.
+
+The library also implements a user-level socket switch. Using a configuration
+file, the system administrator can set up the policy that selects the type of
+socket to be used. libsdp.so also has the option to allow server sockets to
+listen on both SDP and TCP interfaces. The various configurations with SDP/TCP
+sockets are explained inside the /etc/libsdp.conf file.
+
+Configuring SDP:
+----------------
+
+To load SDP upon boot, edit the file  /etc/infiniband/openib.conf and set
+"SDP_LOAD=yes".
+
+Note: For the changes to take effect, run: /etc/init.d/openibd restart
+
+SDP shares the same IP addresses and interface names as IPoIB. See IPoIB
+Configuration (chapter 7)
+
+How to Know SDP Is Working:
+---------------------------
+
+Since SDP is a transparent TCP replacement, it can sometimes be difficult to
+know that it is working correctly.
+To know if the traffic was passing through SDP or TCP, check
+/proc/net/sdpstats and see the the counters are running.
+
+sdpnetstat:
+-----------
+
+The sdpnetstat program can be used to verify both that SDP is loaded and is
+being used:
+
+host1$ sdpnetstat -S
+
+This command shows all active SDP sockets using the same format as the
+traditional netstat program.  Without the '-S' option, it shows all the
+information that netstat does plus SDP data.
+
+Assuming that the SDP kernel module is loaded and is being used, then the
+output of the command will show something like the following:
+
+host1$ sdpnetstat -S
+
+Proto Recv-Q Send-Q Local Address           Foreign Address       
+sdp        0      0 193.168.10.144:34216    193.168.10.125:12865   
+sdp        0 884720 193.168.10.144:42724    193.168.10.:filenet-rmi
+
+The example output above shows  two active SDP sockets and contains details
+about the connections.  If the SDP kernel module is not loaded, or it is
+loaded but is not being used, then the output of the command will be something
+like the following:
+
+host1$ sdpnetstat -S
+
+Proto Recv-Q Send-Q Local Address           Foreign Address       
+netstat: no support for `AF INET (tcp)' on this system.
+
+To verify whether the module is loaded or not, you can use the lsmod command
+
+Monitoring and Troubleshooting Tools:
+-------------------------------------
+
+SDP has debug support for both the user space libsdp.so library and the ib_sdp
+kernel module.
+Both can be useful to understand why a TCP socket was not redirected over SDP
+and to help find problems in the SDP implementation.
+
+User-space SDP debug is controlled by options in the libsdp.conf file. You can also have a local 
+version and point to it explicitly using the following command:
+
+host1$ export LIBSDP_CONFIG_FILE=<path>/libsdp.conf
+
+To obtain extensive debug information, you can modify libsdp.conf to have the
+log directive produce maximum debug output (provide the min-level flag with
+the value 1). More details in the default libsdp.conf installed by OFED.
+A non-root user can configure libsdp.so to record function calls and return values in the file  
+/tmp/libsdp.log.<pid>
+
+Kernel Space SDP Debug - The SDP kernel module can log detailed trace
+information if you enable it using the 'debug_level' variable in the sysfs
+filesystem. The following command performs this:
+
+host1$ echo 1 > /sys/module/ib_sdp/debug_level
+
+Note: Depending on the operating system distribution on your machine, you may need 
+an extra level, 'parameters', in the directory structure, so you may need to direct 
+the echo command to /sys/module/ib_sdp/parameters/debug_level.
+
+Turning off kernel debug is done by setting the sysfs variable to zero using
+the following command:
+
+host1$ echo 0 > /sys/module/ib_sdp/debug_level
+
+To display debug information, use the dmesg command:
+
+host1$ dmesg
+
+Environment Variables:
+----------------------
+
+For the transparent integration with SDP, the following two environment
+variables are required:
+1. LD_PRELOAD - this environment variable is used to preload libsdp.so and it
+   should point to the libsdp.so library. The variable should be set by the
+   system administrator to libsdp.so.
+2. LIBSDP_CONFIG_FILE - this environment variable is used to configure the
+   policy for replacing TCP sockets with SDP sockets. By default it points to:
+   /etc/libsdp.conf
+
+Using RDMA:
+-----------
+
+For smaller buffers, the overhead of preparing a user buffer to be RDMA'ed is
+too big - therefore it is more efficient to use BCopy.
+Large buffers could be sent by using RDMA, and thus lowering to CPU
+utilization. This mode is called "ZCopy combined mode". The sendmsg syscall is
+blocked till the buffer is transfered to the socket's peer, and the data is
+copied directly from the user buffer to the user buffer at the sink side.
+
+To set the threshold, use the module parameter sdp_zcopy_thresh. This paramter
+could be accessed through sysfs
+(/sys/module/ib_sdp/parameters/sdp_zcopy_thresh). Setting it to 0, disable
+ZCopy.
+
+==============================================================================
+9. Uninstalling OFED
 ==============================================================================
 
 There are two ways to uninstall OFED:
@@ -376,7 +534,7 @@ There are two ways to uninstall OFED:
    before removing the RPMs using the flag: --unload-modules   
 
 ==============================================================================
-9. Upgrading OFED
+10. Upgrading OFED
 ==============================================================================
 
 If an old OFED version is installed, it may be upgraded by installing a
@@ -385,7 +543,7 @@ version was loaded before upgrading, you need to restart OFED or reboot
 your machine in order to start the new OFED stack.
 
 ==============================================================================
-10. Configuration
+11. Configuration
 ==============================================================================
 
 Most of the OFED components can be configured or reconfigured after
@@ -407,7 +565,7 @@ Note: After the installer completes, information about the OFED
       /etc/infiniband/info.
 
 ==============================================================================
-11. Related Documentation
+12. Related Documentation
 ==============================================================================
 
 OFED documentation is located in the ofed-docs RPM.  After
