@@ -200,6 +200,8 @@ Bug Fixes
 ===============================================================================
 9.1 Changes and New Features
 ----------------------------
+- Added RDMA over Converged Enhanced Ethernet (RoCEE) support
+  See RoCEE_README.txt.
 - Masked Compare and Swap (MskCmpSwap)
   The MskCmpSwap atomic operation is an extension to the CmpSwap operation
   defined in the IB spec. MskCmpSwap allows the user to select a portion of the
