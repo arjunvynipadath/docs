@@ -1,8 +1,8 @@
 ===============================================================================
 	MLNX_EN driver for Mellanox Adapter Cards with 10GigE Support 
-		       README for OFED 1.5
+		      README for OFED 1.5.1
 			   
-			    December 2009
+			    March 2010
 ===============================================================================
 
 Contents:
@@ -20,7 +20,8 @@ MLNX_EN driver is composed from mlx4_core and mlx4_en kernel modules.
 The MLNX_EN driver release exposes the following capabilities:
 - Single/Dual port
 - Fibre Channel over Ethernet (FCoE)
-- Up to 9 Rx queues per port
+- Up to 16 Rx queues per port
+- 5 TX queues per port
 - Rx steering mode: Receive Core Affinity (RCA)
 - Tx arbitration mode: VLAN user-priority (off by default)
 - MSI-X or INTx
@@ -36,7 +37,6 @@ The MLNX_EN driver release exposes the following capabilities:
 - ifconfig up/down + mtu changes (up to 10K)
 - Ethtool support
 - Net device statistics
-- CX4 connectors (XAUI) or XFP
 
 
 2. Ethernet Driver Usage and Configuration
@@ -53,7 +53,7 @@ The MLNX_EN driver release exposes the following capabilities:
   Example:
   #> ethtool -i eth2
   driver: mlx4_en (MT_0BD0110004)
-  version: 1.5.0 (Dec 2009)
+  version: 1.5.1 (March 2010)
   firmware-version: 2.7.0
   bus-info: 0000:0e:00.0
 
@@ -124,9 +124,6 @@ Values of all parameters can be observed in /sys/module/mlx4_en/parameters/.
 - For RedHat EL4, adding and removing multiple vlan interfaces over the network
   interface created by the mlx4_en driver may lead to printing the following:
   "kernel: unregister_netdevice: waiting for eth<x.y> to become free. Usage count ="
-
-- iperf with multiple (> 100) streams may fail on kernel.org 2.6.25 versions
-  earlier than 2.6.25.9.
 
 4. Troubleshooting
 ==================

@@ -60,14 +60,6 @@ o Overview:
 o Firmware:
   The VPI driver works with FW 25408 version 2.6.000 or higher.
   One needs to use INI files that allow different protocols over same HCA.
-o Installing the mlnx_en driver:
-  To install the OFED 1.4 with the Ethernet driver make sure that "mlx4_en=y" 
-  in file ofed.conf
-o Loading drivers:
-  To load the Ethernet driver one should set "MLX4_EN_LOAD=yes"
-  in file /etc/infiniband/openib.conf. 
-  If "MLX4_EN_LOAD" is not marked as "yes", the Ethernet driver can be loaded
-  by running "/sbin/modprobe mlx4_en".
 o Port type management:
   By default both ConnectX ports are initialized as Infiniband ports.
   If you wish to change the port type use the connectx_port_config script after
@@ -206,25 +198,32 @@ Bug Fixes
 ===============================================================================
 9. New features and bug fixes since OFED 1.5
 ===============================================================================
+9.1 Changes and New Features
+----------------------------
 - Masked Compare and Swap (MskCmpSwap)
   The MskCmpSwap atomic operation is an extension to the CmpSwap operation
   defined in the IB spec. MskCmpSwap allows the user to select a portion of the
   64 bit target data for the “compare” check as well as to restrict the swap to a
   (possibly different) portion.
-
 - Masked Fetch and Add (MFetchAdd)
   The MFetchAdd Atomic operation extends the functionality of the standard IB
   FetchAdd by allowing the user to split the target into multiple fields of
   selectable length. The atomic add is done independently on each one of this
   fields. A bit set in the field_boundary parameter specifies the field
   boundaries.
+- Improved vlan tagging performance for the mlx4_en driver.
+- RSS support for Ethernet UDP traffic on ConnectX-2 cards with firmware
+  2.7.700 and higher.
+
+9.2 Bug Fixes
+-------------
+- Bonding stops functioning when one of the Ethernet ports is closed.
+- "Scheduling while atomic" errors in /var/log/messages when working with
+  bonding and mlx4_en drivers in several OS's.
 
 ===============================================================================
 10. Known Issues
 ===============================================================================
-- The mlx4_en module uses a Linux implementation for Large Receive Offload
-  (LRO) in kernel 2.6.24 and later. These kernels require installing the
-  "inet_lro" module.
 - The SQD feature is not supported:
 - To load the driver on machines with 64KB default page size UAR bar must be
   enlarged. 64KB page size is the default of PPC with RHEL5 and Itanium with
@@ -235,25 +234,6 @@ Bug Fixes
        log2_uar_bar_megabytes = 5
   2. Burn a modified firmware image with the changed INI file.
   3. Reboot the system.
-- Ethernet in MLNX_OFED 1.4 is not supported for the following OPNs:
-    MHQH29-XTC
-    MHGH29-XTC
-    MHGH29-XSC
-    MHGH28-XTC
-    MHGH28-XTC
-    MHGH28-XSC
-    MHGH28-XSC
-    MHEH28-XTC
-    MHEH28-XSC
-    MHQH19-XTC
-
-    Attempting to use these cards as NICs will yield the following error
-    in /var/log/messages:
-    mlx4_core 0000:0d:00.0: command 0x9 failed: fw status = 0x8
-    <date & time> mtlx008 kernel: mlx4_en 0000:0d:00.0: Failed Initializing port
-    <date & time> mtlx008 kernel: mlx4_en 0000:0d:00.0: Failed starting port:1
-
-    As a workaround, use the MLNX_EN driver instead of OFED for Linux.
 
      
 ===============================================================================
@@ -272,7 +252,6 @@ mlx4_core parameters:
 	block_loopback:		Block multicast loopback packets if > 0 (int)
 	msi_x:			attempt to use MSI-X if nonzero (int)
 	log_num_mac:		Log2 max number of MACs per ETH port (1-7) (int)
-	log_num_vlan:		Log2 max number of VLANs per ETH port (0-7) (int)
 	use_prio:		Enable steering by VLAN priority on ETH ports (0/1, default 0)
 				(bool)
 	log_num_qp:		log maximum number of QPs per HCA (int)
@@ -294,8 +273,8 @@ mlx4_ib parameters:
 	debug_level: 	Enable debug tracing if > 0 (default 0)
 
 mlx4_en parameters:
-	rss_xor:	Use XOR hash function for RSS 0 (default is xor)
-	rss_mask:	RSS hash type bitmask (default is 0xf)
+	udp_rss:        Enable RSS for incoming UDP traffic or disabled (0)
+	tcp_rss:	Enable RSS for incoming TCP traffic or disabled (0)
 	num_lro:	Number of LRO sessions per ring or disabled (0) (default is 32)
 	ip_reasm:	Allow reassembly of fragmented IP packets (default is enabled)
 	pfctx:		Priority based Flow Control policy on TX[7:0]. 
