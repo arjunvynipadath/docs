@@ -1,12 +1,12 @@
 			   Release Notes for 
-			OFED 1.5 DAPL Release
-			    Dec 2009
+			OFED 1.5.1 DAPL Release
+			    March 2010
 
 	This release of the uDAPL reference implementation package for both
 	DAT 1.2 and 2.0 specification is timed to coincide with OFED release
 	of the Open Fabrics (www.openfabrics.org) software stack.
 
-        uDAPL v1 (1.2.15-1) and v2 (2.0.25-1)
+        uDAPL v1 (1.2.16-1) and v2 (2.0.27-1)
 
 	----------------
         
@@ -114,8 +114,25 @@
 
 	V2.0 Package
 
-	Release 2.0.25
+	Release 2.0.27
+	windows: add scm makefile 
+	windows does not require rdma_cma_abi.h, move the include from common code 
+	windows patch to fix IB_INVALID_HANDLE name collision 
+	scm: dat_ep_connect fails on 32bit servers 
+	undefined symbol: dapls_print_cm_list 
+	cleanup CM object lock before freeing CM object memory 
+	destroy verbs completion channels created via ia_open or ep_create. 
+	package: update Copyright file and include the 3 license files in distribution 
+	common: when copying private_data out of rdma_cm events, use the 
+	cma: fix referencing freed address 
+	dapl: move close device after async thread is done 
 
+	Release 2.0.26
+	openib_common: add check for both gid and global routing in RTR
+	openib_common: remote memory read privilege set multi times
+	ucm, scm: DAPL_GLOBAL_ROUTING enabled causes segv
+
+	Release 2.0.25
 	winof scm: initialize opt for NODELAY setsockopt
 	winof cma: windows definition for EADDRNOTAVAIL missing
 	scm: client side setsockopt NODELAY fails if data arrives before setting
@@ -126,7 +143,6 @@
 	included in opensm_ucb/device.c.
 
 	Release 2.0.24
-
 	winof: Utilize WinOF version of inet_ntop() for Windows OSes which do not
 	support inet_ntop().
 	ucm: windows build issue with new CQ completion channel
@@ -150,7 +166,6 @@
 	ucm: add timer/retry CM logic to the ucm provider
 
 	Release 2.0.23
-
 	cma: cannot reuse the cm_id and qp for new connection, must reallocate a new one.
 	scm, cma: update DAPL cm protocol revision with latest address/port changes
 	ucm: modify IB address format to align better with sockaddr_in6
@@ -231,6 +246,10 @@
 	windows ibal-scm: dapl/dirs file needs updated to remove ibal-scm
 
 	v1.2 Package:
+
+	Release 1.2.16
+	package: update Copyright file and include the 3 license files in distribution 
+	cma: max sge incorrectly decremented during ibv_device_query 
 
 	Release 1.2.15
 	dtest, dapltest: conflict with dapl-2 utils package, change to dapl1, dapltest1
