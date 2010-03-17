@@ -11,7 +11,7 @@ Overview
 
 These are the release notes for MVAPICH2-1.4.1.  This is OFED's edition
 of the MVAPICH2-1.4.1 release. MVAPICH2 is an MPI-2 implementation over
-InfiniBand and iWARP from the Ohio State University
+InfiniBand, iWARP and RoCEE (RDMAoE) from the Ohio State University
 (http://mvapich.cse.ohio-state.edu/).
 
 
@@ -28,7 +28,9 @@ Software Dependencies
 MVAPICH2 depends on the installation of the OFED Distribution stack with
 OpenSM running. The MPI module also requires an established network
 interface (either InfiniBand, IPoIB, iWARP, uDAPL, or Ethernet). BLCR
-support is needed if built with fault tolerance support.
+support is needed if built with fault tolerance support. Similarly,
+hwloc support is needed if built with Portable Hardware Locality feature
+for CPU mapping.
 
 
 New Features
