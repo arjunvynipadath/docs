@@ -1,7 +1,7 @@
 	    Open Fabrics Enterprise Distribution (OFED)
-	  ConnectX driver (mlx4) in OFED 1.5 Release Notes
+	  ConnectX driver (mlx4) in OFED 1.5.1 Release Notes
 
-  			December 2009
+  			March 2010
 
 
 ===============================================================================
@@ -15,8 +15,9 @@ Table of Contents
 6. Eth (mlx4_en) new features and bug fixes since OFED 1.4
 7. New features and bug fixes since OFED 1.4.1
 8. New features and bug fixes since OFED 1.4.2
-9. Known Issues
-10. mlx4 Available Parameters
+9. New features and bug fixes since OFED 1.5
+10. Known Issues
+11. mlx4 Available Parameters
 
 ===============================================================================
 1. Overview
@@ -203,7 +204,23 @@ Bug Fixes
   rejected by the OS
 
 ===============================================================================
-9. Known Issues
+9. New features and bug fixes since OFED 1.5
+===============================================================================
+- Masked Compare and Swap (MskCmpSwap)
+  The MskCmpSwap atomic operation is an extension to the CmpSwap operation
+  defined in the IB spec. MskCmpSwap allows the user to select a portion of the
+  64 bit target data for the “compare” check as well as to restrict the swap to a
+  (possibly different) portion.
+
+- Masked Fetch and Add (MFetchAdd)
+  The MFetchAdd Atomic operation extends the functionality of the standard IB
+  FetchAdd by allowing the user to split the target into multiple fields of
+  selectable length. The atomic add is done independently on each one of this
+  fields. A bit set in the field_boundary parameter specifies the field
+  boundaries.
+
+===============================================================================
+10. Known Issues
 ===============================================================================
 - The mlx4_en module uses a Linux implementation for Large Receive Offload
   (LRO) in kernel 2.6.24 and later. These kernels require installing the
@@ -240,7 +257,7 @@ Bug Fixes
 
      
 ===============================================================================
-10. mlx4 Available Parameters
+11. mlx4 Available Parameters
 ===============================================================================
 In order to set mlx4 parameters, add the following line(s) to /etc/modpobe.conf:
    options mlx4_core parameter=<value>
