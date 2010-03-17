@@ -1,16 +1,16 @@
 ========================================================================
 
-             Open Fabrics Enterprise Distribution (OFED)
-              MVAPICH2-1.4.1 in OFED 1.5.1 Release Notes
+              Open Fabrics Enterprise Distribution (OFED)
+               MVAPICH2-1.4.1 in OFED 1.5.1 Release Notes
 
-                          March 2010
+                               March 2010
 
 
 Overview
 --------
 
-These are the release notes for MVAPICH2-1.4.  This is OFED's edition of
-the MVAPICH2-1.4 release. MVAPICH2 is an MPI-2 implementation over
+These are the release notes for MVAPICH2-1.4.1.  This is OFED's edition
+of the MVAPICH2-1.4.1 release. MVAPICH2 is an MPI-2 implementation over
 InfiniBand and iWARP from the Ohio State University
 (http://mvapich.cse.ohio-state.edu/).
 
@@ -18,7 +18,7 @@ InfiniBand and iWARP from the Ohio State University
 User Guide
 ----------
 
-For more information on using MVAPICH2-1.4.1, please visit the user 
+For more information on using MVAPICH2-1.4.1, please visit the user
 guide at http://mvapich.cse.ohio-state.edu/support/.
 
 
@@ -35,8 +35,8 @@ New Features
 ------------
 
 MVAPICH2 (MPI-2 over InfiniBand and iWARP) is an MPI-2 implementation
-based on MPICH2.  MVAPICH2 1.4.1 is available as a single integrated 
-package (with MPICH2 1.0.8p1).  This version of MVAPICH2-1.4.1 for OFED 
+based on MPICH2.  MVAPICH2 1.4.1 is available as a single integrated
+package (with MPICH2 1.0.8p1).  This version of MVAPICH2-1.4.1 for OFED
 has the following changes from MVAPICH2-1.4:
 
 MVAPICH2-1.4.1 (03/12/10)
@@ -80,7 +80,7 @@ MVAPICH2-1.4.1 (03/12/10)
 Main Verification Flows
 -----------------------
 
-In order to verify the correctness of MVAPICH2-1.4.1, the following 
+In order to verify the correctness of MVAPICH2-1.4.1, the following
 tests and parameters were run.
 
 Test                            Description
