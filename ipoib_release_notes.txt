@@ -1,7 +1,7 @@
 	     Open Fabrics Enterprise Distribution (OFED)
-		    IPoIB in OFED 1.5 Release Notes
+		    IPoIB in OFED 1.5.1 Release Notes
 			  
-			   December 2009
+			   March 2010
 
 
 ===============================================================================
@@ -195,6 +195,16 @@ Usage and configuration:
     expected.
 20. In IPoIB connected mode packages larger than 2016 bytes are not sent.
     https://bugs.openfabrics.org/show_bug.cgi?id=1839
+
+21. Under SLES11, if an IP configuration exists for an IPoIB interface
+    that later becomes a slave of a bonding master, a network restart
+    doesn't erase the IP configuration from the slave and it appears to has
+    an IP adddress even tough the new configuration doesn't set one. This
+    may cause problems when tring to use the bonded network interface. To
+    avoid this, restart the IB stack (openib restart) once you change the
+    configuration.
+    This issue is described in
+    https://bugs.openfabrics.org/show_bug.cgi?id=1975
 
 ===============================================================================
 3. IPoIB Configuration Based on DHCP
