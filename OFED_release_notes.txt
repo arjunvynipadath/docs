@@ -1,7 +1,7 @@
 	    Open Fabrics Enterprise Distribution (OFED)
 	              Version 1.5.1
 	            Release Notes
-	            February December 2010
+	            March 2010
 
 
 ===============================================================================
@@ -75,6 +75,7 @@ Notes:
 	- RedHat EL4 up8	2.6.9-89.ELsmp 
 	- RedHat EL5 up3	2.6.18-128.el5
 	- RedHat EL5 up4	2.6.18-164.el5
+	- RedHat EL5 up5 (beta)	2.6.18-186.el5
 	- SLES10 SP2 		2.6.16.60-0.21-smp  
 	- SLES10 SP3 		2.6.16.60-0.54-smp  
 	- SLES11 		2.6.27.19-5-default
@@ -136,14 +137,14 @@ companies:
 
 1.5 Third Party Packages
 ------------------------
-The following third party packages have been tested with OFED 1.5:
+The following third party packages have been tested with OFED 1.5.1:
 - Intel MPI, Version 3.2.2
 - Intel MPI, Version 4.0 beta 
 
 1.6 OFED Sources
 ----------------
 All sources are located under git://git.openfabrics.org/
-Kernel sources: git://git.openfabrics.org/ofed_1_5/linux-2.6.git ofed_kernel
+Kernel sources: git://git.openfabrics.org/ofed_1_5/linux-2.6.git ofed_kernel_1_5
 User level Sources are downloaded from http://www.openfabrics.org/downloads/
 as written in the BUILD_ID
 
@@ -207,24 +208,29 @@ for each package in the docs directory.
 ===============================================================================
 3. Main Changes from OFED 1.5
 ===============================================================================
-1. Added RoCEE support
-2. updated Open MPI to rev 1.4.2
-3. Updated MVAPICH2 to rev 1.4-2
-4. Updated DAPL to rev 2.0.26
-5. Added extended atomic operations to ConnectX (kernel only)
-6. Bug fixes
+1. Added RoCEE support. See RoCEE_README.txt.
+2. Added enhanced atomic operations to ConnectX (kernel only).
+   See enhanced_atomic_readme.txt.
+3. Updated Open MPI to rev 1.4.1-2ofed
+4. Updated MVAPICH2 to rev 1.4.1
+5. Updated DAPL to rev 2.0.27
+6. Updated libnes to rev 1.0.1
+7. Updated librdmacm to rev 1.0.11
+8. Removed tvflash RPM
+9. NFS-RDMA is not supported on SLES10 SP3
+10. Bug fixes
 
 
 ===============================================================================
 4. Known Issues
 ===============================================================================
 The following is a list of general limitations and known issues of the various
-components of the OFED 1.5 release.
+components of the OFED 1.5.1 release.
 
 1. When upgrading from an earlier OFED version, the installation script does not
    stop the earlier OFED version prior to uninstalling it. 
    Workaround: Stop the old OFED stack (/etc/init.d/openibd stop) before 
-   upgrading to OFED 1.5.
+   upgrading to OFED 1.5.1 or reboot the server after OFED installation.
 2. Memory registration by the user is limited according to administrator
    setting. See "Pinning (Locking) User Memory Pages" in OFED_tips.txt for
    system configuration.
@@ -242,7 +248,8 @@ components of the OFED 1.5 release.
 7.  "openibd stop" can sometime fail with the error: 
         Unloading ib_cm                                            [FAILED]
         ERROR: Module ib_cm is in use by ib_ipoib 
-    Workaround: run "openibd stop" again.
+    Workaround: run "openibd stop" again or remove ib_ipoib aliases from 
+                /etc/modprobe.conf.
 8.  When working with ISCSI over IPoIB or mlx4_en, you must disable LRO (even
     if IPoIB is set to connected mode). This is because there is a bug in older
     kernels which causes a kernel panic.
@@ -255,5 +262,8 @@ components of the OFED 1.5 release.
     OFED-1.5 will not install iSER on other kernels and original iSER
     module coming with Linux Distribution will stop working because of
     mismatch in symbols version.
+12. On SLES10 SP3 kernel 2.6.16.60-0.54.5 should be updated to 2.6.16.60-0.59.1
+    or later. As original kernel may cause kernel panic during
+   '/etc/init.d/openibd restart'.
 
 Note: See the release notes of each component for additional issues.
