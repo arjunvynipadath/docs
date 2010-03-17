@@ -109,7 +109,6 @@ o  Mvapich              a Fortran Compiler (such as gcc-g77)
 o  Mvapich2             libsysfs-devel
 o  Open MPI             libsysfs-devel
 o  ibutils              tcl-8.4, tcl-devel-8.4, tk, libstdc++-devel
-o  tvflash              pciutils-devel
 o  mstflint             libstdc++-devel (32-bit on ppc64), gcc-c++
 o  rnfs-utils           krb5-devel, krb5-libs, libevent-devel,
                         nfs-utils-lib-devel, openldap-devel,

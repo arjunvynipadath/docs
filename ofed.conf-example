@@ -62,7 +62,6 @@ dapl-utils=y
 dapl-debuginfo=y
 perftest=y
 mstflint=y
-tvflash=y
 sdpnetstat=y
 srptools=y
 rds-tools=y
