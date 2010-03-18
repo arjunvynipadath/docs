@@ -203,14 +203,14 @@ for each package in the docs directory.
     2.8 NFS-RDMA
 	o Added support for RHEL5.4, SLES10 SP3, kernel.org 2.6.25 and 2.6.30.
 	  kernels 2.6.26 and 2.6.27 are not supported
-	o NFS-RDMA is in beta level. Will be GA in OFED-1.5.1
+	o NFS-RDMA is in beta level.
 
 ===============================================================================
 3. Main Changes from OFED 1.5
 ===============================================================================
 1. Added RoCEE support. See RoCEE_README.txt.
 2. Added enhanced atomic operations to ConnectX (kernel only).
-   See enhanced_atomic_readme.txt.
+   See mlx4_release_notes.txt.
 3. Updated Open MPI to rev 1.4.1-2ofed
 4. Updated MVAPICH2 to rev 1.4.1
 5. Updated DAPL to rev 2.0.27
