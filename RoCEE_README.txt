@@ -9,8 +9,10 @@ Contents:
 2. Software Dependencies
 3. User Guidelines
 4. Ported Applications
-5. Firmware Requirements
-6. Known Issues
+5. Gid tables
+6. Using VLANs
+7. Firmware Requirements
+8. Known Issues
 
 
 1. Overview
@@ -65,14 +67,70 @@ hardware, mlx4_en must be loaded and the corresponding interface configured.
 - Performance tests have been ported
 
 
-5. Firmware Requirements
+5. Gid tables
+=============
+With RoCEE, there may be several entries in a port's GID table. The first entry
+always contains the IPv6 link local address of the corresponding ethernet
+interface. The link local address is formed in the following way:
+
+gid[0..7] = fe80000000000000
+gid[8] = mac[0] ^ 2
+gid[9] = mac[1]
+gid[10] = mac[2]
+gid[11] = ff
+gid[12] = fe
+gid[13] = mac[3]
+gid[14] = mac[4]
+gid[15] = mac[5]
+
+If VLAN is supported by the kernel, and there are VLAN interfaces on the main
+ethernet interface (the interface that the IB port is tied to), each such VLAN
+will appear as a new GID in the port's GID table. The format of the GID entry
+will be identical to the one decribed above with the following change:
+
+gid[11] = VLAN ID high byte (4 MS bits).
+gid[12] = VLAN ID low byte
+
+Please nore that VLAN ID is 12 bits.
+
+Priority pause frames
+---------------------
+Tagged ethernet frames carry a 3 bit priority field. The value of this field is
+derived from the IB SL field by taking the 3 LS bits of the SL field.
+
+
+6. Using VLANs
+==============
+In order for RoCEE traffic to used VLAN tagged frames, the user has to specify
+GID table entries that are derived from VLAN devices, when creating address
+vectors. Consider the example bellow:
+
+6.1 Make sure VLAN support is enabled by the kernel. Usually this requires
+loading the 8021q module.
+- modprobe 8021q
+
+6.2 Add a VLAN device
+- vconfig add eth2 7
+
+6.3 Assign IP address to the VLAN interface
+- ifconfig eth2.7 7.10.11.12
+suppose this created a new entry in the GID table in index 1.
+
+6.4 verbs test:
+server: ibv_rc_pingpong -g 1 
+client: ibv_rc_pingpongs -g 1 server
+
+6.5 For rdma_cm applications, the user only needs to specify an IP address of a
+VLAN device for the traffic to go with that VLAN tagged frames.
+
+7. Firmware Requirements
 ========================
 RoCEE requires ConnectX firmware version 2.7.000 or newer. Some features
 require newer, not yet released firmware versions. For example, loopback
 support is available in firmware version 2.7.700 or later.
 
 
-6. Known Issues
+8. Known Issues
 ===============
 - PowerPC and ia64 architectures are not supported. x32 architectures were
   not tested.
