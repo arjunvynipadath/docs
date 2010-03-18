@@ -15,7 +15,8 @@ Table of Contents
 6. Bug Fixes and Enhancements Since OFED 1.3.1
 7. Bug Fixes and Enhancements Since OFED 1.4
 8. Bug Fixes and Enhancements Since OFED 1.4.2
-9. Performance tuning
+9. Bug Fixes and Enhancements Since OFED 1.5.0
+10. Performance tuning
 
 ===============================================================================
 1. Overview
@@ -369,6 +370,14 @@ Notes:
   IPoIB can miss a change in destination GID under some conditions.  The
   problem is caused when ipoib_neigh->dgid contains a stale address.
   The fix is to set ipoib_neigh->dgid to zero in ipoib_neigh_alloc().
+
+===============================================================================
+8. Bug Fixes and Enhancements Since OFED 1.5.0
+===============================================================================
+
+- Fix lockup of the tx queue on mixed CM/UD traffic
+  When there is high rate of send traffic on both CM and UD QPs. the trasmitter
+  could be stopped by CM path but not re-enabled.
 
 ===============================================================================
 9. Performance tuning
