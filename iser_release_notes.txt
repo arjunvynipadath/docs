@@ -1,8 +1,8 @@
 
 	     Open Fabrics Enterprise Distribution (OFED)
-              iSER initiator in OFED 1.5 Release Notes
+              iSER initiator in OFED 1.5.x Release Notes
 
-			   December 2009
+			   March 2010
 
 
 * Background
@@ -19,11 +19,12 @@
 
 * Supported platforms
 
-	kernel.org: 2.6.30, 2.6.31 and 2.6.32
+	- kernel.org: 2.6.30 and higher
+	- RHEL 5.4
 
-	OFED-1.5 will not install iSER on other kernels and original iSER
-	module coming with Linux Distribution will stop working because of
-	mismatch in symbols version.
+	Except for these platforms, OFED-1.5.x will not install iSER on top of
+	the kernel and the original iSER module coming with Linux Distribution
+	will stop working because of mismatch in symbols version.
 
 * Fixed Bugs and Enhancements since OFED 1.3
 	iSER:
