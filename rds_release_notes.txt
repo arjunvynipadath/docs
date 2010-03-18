@@ -1,6 +1,6 @@
           Open Fabrics Enterprise Distribution (OFED)
-               RDS in OFED 1.5 Release Notes
-                       December 2009
+               RDS in OFED 1.5.1 Release Notes
+                       March 2010
 
 
 ===============================================================================
