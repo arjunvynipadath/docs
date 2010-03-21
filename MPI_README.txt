@@ -15,7 +15,8 @@ Table of Contents
 ===============================================================================
 1. Overview
 ===============================================================================
-Open Fabrics Enterprise Distribution (OFED)Three MPI stacks are included in this release of OFED:
+Open Fabrics Enterprise Distribution (OFED)Three MPI stacks are included in
+this release of OFED:
 - MVAPICH 1.2.0
 - Open MPI 1.4.1 (OFED)
 - MVAPICH2 1.4
@@ -146,11 +147,11 @@ A valid Fortran compiler must be present in order to build the MVAPICH MPI
 stack and tests.
 
 The default gcc-g77 Fortran compiler is provided with all RedHat Linux
-releases.  SuSE distributions earlier than SuSE Linux 9.0 do not provide
+releases. SuSE distributions earlier than SuSE Linux 9.0 do not provide
 this compiler as part of the default installation.
 
 The following compilers are supported by OFED's MVAPICH package: Gcc,
-Intel,Pathscale and PGI.  The install script prompts the user to choose
+Intel, Pathscale and PGI.  The install script prompts the user to choose
 the compiler with which to build the MVAPICH RPM. Note that more
 than one compiler can be selected simultaneously, if desired.
 
