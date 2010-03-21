@@ -207,6 +207,8 @@ Usage and configuration:
     This issue is described in
     https://bugs.openfabrics.org/show_bug.cgi?id=1975
 
+22. IPoIB LRO, currently, is not supported on ConnectX2 devices
+
 ===============================================================================
 3. IPoIB Configuration Based on DHCP
 ===============================================================================
