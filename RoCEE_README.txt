@@ -136,3 +136,5 @@ support is available in firmware version 2.7.700 or later.
   not tested.
 
 - SRP is not supported.
+
+- Counter reports to sysfs are not working.
