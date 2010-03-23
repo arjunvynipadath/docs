@@ -41,6 +41,13 @@ Main changes are:
 ===============================================================================
 3. Known Issues
 ===============================================================================
+- BUG1992 - SDP might hang under bi-directional traffic w/large payload
+
+- BUG1847 - zcopy send with iovlen > 1 is not supported
+
+- BUG1999 - ib_modify_cq is called after socket is closed
+  this happens in rare occasions and could cause a kernel crash
+
 - BUG1444 - setsockopt(SO_RCVBUF) is not working in sdp socket. To limit top
   system wide sdp memory usage for recv use module parameter top_mem_usage.
 
