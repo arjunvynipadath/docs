@@ -1,14 +1,14 @@
 	    Open Fabrics Enterprise Distribution (OFED)
-	              Version 1.5.1
-	            Release Notes
-	            March 2010
+	               Version 1.5.1
+   	               Release Notes
+	                March 2010
 
 
 ===============================================================================
 Table of Contents
 ===============================================================================
 1. Overview, which includes:
-	- OFED Distribution Rev 1.5 Contents
+	- OFED Distribution Rev 1.5.1 Contents
 	- Supported Platforms and Operating Systems
 	- Supported HCA and RNIC Adapter Cards and Firmware Versions
 	- Tested Switch Platforms
@@ -23,7 +23,7 @@ Table of Contents
 1. Overview
 ===============================================================================
 These are the release notes of OpenFabrics Enterprise Distribution (OFED)
-release 1.5. The OFED software package is composed of several software modules,
+release 1.5.1. The OFED software package is composed of several software modules,
 and is intended for use on a computer cluster constructed as an InfiniBand
 subnet or iWARP network. 
 
@@ -31,7 +31,7 @@ Note: If you plan to upgrade the OFED package on your cluster, please upgrade
 all of its nodes to this new version.
 
 
-1.1 OFED 1.5 Contents
+1.1 OFED 1.5.1 Contents
 -----------------------
 The OFED package contains the following components:
  - OpenFabrics core and ULPs:
@@ -57,7 +57,7 @@ The OFED package contains the following components:
  - Documentation
 
 Notes:
-1. iSER target and NFS-RDMA is of Beta quality.
+1. iSER Target and NFS-RDMA are of Beta quality.
 2. All other OFED components are of production quality.
 3. See release notes for each package in the docs directory.
 4. Any Topspin copyright belongs to Cisco Systems, Inc.
@@ -162,18 +162,18 @@ for each package in the docs directory.
 	o Kernel code based on 2.6.30
 	o libraries location - all userspace libraries can be downloaded from
 	  http://www.openfabrics.org/downloads/
-	  See BUILD_ID for exact location
-	o Qlogic replaced low level driver from ipath to qib.
+	  See BUILD_ID for exact locations
+	o Qlogic moved the low level driver from ipath to qib.
 
     2.2 SDP
 	o Performance improvements
 	o Zero copy in beta level
 
     2.3 uDAPL
-	o New UCM provider (ofa-v2-mlx4_0-1u)  with IB UD based CM per process. More
-	  scalable then rdma_cm (cma) or socket cm (scm). 
-	o Common code base with WinOF 2.1. 
-	o Bug fixes.
+	o New UCM provider (ofa-v2-mlx4_0-1u) with IB UD-based CM per process.
+          It is more scalable than rdma_cm (cma) or socket cm (scm). 
+	o Common code base with WinOF 2.1
+	o Bug fixes
 
 
     2.4 perftest
@@ -183,13 +183,14 @@ for each package in the docs directory.
 
     2.5 Management 
 	o OpenSM
-	  - Mesh Analysis for LASH routing algorithm.
-	  - Reloadable OpenSM configuration (preliminary implemented)
-	  - Routing paths sorted balancing (for UpDown and MinHops)
-	  - Weighted Lid Matrices calculation (for UpDown, MinHop and DOR).
-	  - I/O nodes connectivity (for FatTree).
+	  - Support for Mesh Analysis for LASH routing algorithm
+          - Reloadable OpenSM configuration (preliminary implementation)
+          - Routing paths sorted balancing (for UpDown and MinHops)
+          - Weighted LID matrices calculation (for UpDown, MinHop and DOR)
+          - I/O nodes connectivity (for FatTree)
 
 	o Diagnostic tools:
+	  TBD
 
     2.6 MPI:
 	a. OSU MVAPICH 1.2.0
@@ -202,13 +203,13 @@ for each package in the docs directory.
 
     2.8 NFS-RDMA
 	o Added support for RHEL5.4, SLES10 SP3, kernel.org 2.6.25 and 2.6.30.
-	  kernels 2.6.26 and 2.6.27 are not supported
-	o NFS-RDMA is in beta level.
+	  Kernels 2.6.26 and 2.6.27 are not supported
+	o NFS-RDMA is in Beta level
 
 ===============================================================================
 3. Main Changes from OFED 1.5
 ===============================================================================
-1. Added RoCEE support. See RoCEE_README.txt.
+1. Added RoCEE support - see RoCEE_README.txt
 2. Added enhanced atomic operations to ConnectX (kernel only).
    See mlx4_release_notes.txt.
 3. Updated Open MPI to rev 1.4.1-2ofed
@@ -218,7 +219,7 @@ for each package in the docs directory.
 7. Updated librdmacm to rev 1.0.11
 8. Removed tvflash RPM
 9. NFS-RDMA is not supported on SLES10 SP3
-10. Fixup IPv6 support and IPv4 routing corner cases for RDMA CM
+10. Fixed IPv6 support and IPv4 routing corner cases for RDMA CM
 11. Bug fixes
 
 
@@ -228,22 +229,22 @@ for each package in the docs directory.
 The following is a list of general limitations and known issues of the various
 components of the OFED 1.5.1 release.
 
-1. When upgrading from an earlier OFED version, the installation script does not
-   stop the earlier OFED version prior to uninstalling it. 
+1. When upgrading from an earlier OFED version, the installation script does
+   not stop the earlier OFED version prior to uninstalling it. 
    Workaround: Stop the old OFED stack (/etc/init.d/openibd stop) before 
    upgrading to OFED 1.5.1 or reboot the server after OFED installation.
 2. Memory registration by the user is limited according to administrator
    setting. See "Pinning (Locking) User Memory Pages" in OFED_tips.txt for
    system configuration.
 3. Fork support from kernel 2.6.12 and above is available provided
-   that applications do not use threads. The fork() is supported as long
-   as the parent process does not run before the child exits or calls exec().
+   that applications do not use threads. fork() is supported as long as the
+   parent process does not run before the child exits or calls exec().
    The former can be achieved by calling wait(childpid), and the latter can be
    achieved by application specific means.  The Posix system() call is
    supported.
 4. The qib driver is supported only on 64-bit platforms.
-5. When installing OFED on OpenSuse or Ubuntu one should use the 
-   --without-depcheck option of the install.pl script
+5. When installing OFED on OpenSuse or Ubuntu, use the --without-depcheck
+   option of the install.pl script.
 6. IPoIB: brctl utilities do not work on IPoIB interfaces. The reason for that
    is that these utilities support devices of type Ethernet only.
 7.  "openibd stop" can sometime fail with the error: 
@@ -251,20 +252,21 @@ components of the OFED 1.5.1 release.
         ERROR: Module ib_cm is in use by ib_ipoib 
     Workaround: run "openibd stop" again or remove ib_ipoib aliases from 
                 /etc/modprobe.conf.
-8.  When working with ISCSI over IPoIB or mlx4_en, you must disable LRO (even
-    if IPoIB is set to connected mode). This is because there is a bug in older
-    kernels which causes a kernel panic.
-9. On SLES11 in case that uninstall is failing, need to look at the error log 
-    and remove the RPMs manually using 'rpm -e <rpms list>'
-10. On SLES11 one should set allow_unsupported_modules parameter to 1 in file:
+8. When working with ISCSI over IPoIB or mlx4_en, you must disable LRO (even
+   if IPoIB is set to connected mode). This is due to a bug in older kernels
+   which causes a kernel panic.
+9. On SLES11, and in case uninstall is failing, check the error log and remove
+   the remaining RPMs manually using 'rpm -e <rpms list>'.
+10. On SLES11, set allow_unsupported_modules parameter to 1 in file:
     /etc/modprobe.d/unsupported-modules. Without this the modules will not
     load.
-11. iSER is supported on kernel.org: 2.6.30, 2.6.31 and 2.6.32 only
-    OFED-1.5 will not install iSER on other kernels and original iSER
-    module coming with Linux Distribution will stop working because of
-    mismatch in symbols version.
-12. On SLES10 SP3 kernel 2.6.16.60-0.54.5 should be updated to 2.6.16.60-0.59.1
-    or later. As original kernel may cause kernel panic during
-   '/etc/init.d/openibd restart'.
+11. iSER is supported on kernel.org 2.6.30, 2.6.31 and 2.6.32 only.
+    OFED-1.5 will not install iSER on other kernels, and the original iSER
+    module that comes with the Linux distribution will stop working due to a
+    mismatch in the symbols version.
+12. On SLES10 SP3, the kernel 2.6.16.60-0.54.5 should be updated to
+    2.6.16.60-0.59.1 or later. The original kernel may cause kernel panic
+    during '/etc/init.d/openibd restart'.
 
 Note: See the release notes of each component for additional issues.
+

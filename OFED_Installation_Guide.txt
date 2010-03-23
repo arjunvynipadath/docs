@@ -420,8 +420,8 @@ How to Know SDP Is Working:
 
 Since SDP is a transparent TCP replacement, it can sometimes be difficult to
 know that it is working correctly.
-To know if the traffic was passing through SDP or TCP, check
-/proc/net/sdpstats and see the the counters are running.
+To figure out whether traffic is passing through SDP or TCP, check
+/proc/net/sdpstats and monitor which counters are running.
 
 sdpnetstat:
 -----------
@@ -510,16 +510,16 @@ Using RDMA:
 -----------
 
 For smaller buffers, the overhead of preparing a user buffer to be RDMA'ed is
-too big - therefore it is more efficient to use BCopy.
-Large buffers could be sent by using RDMA, and thus lowering to CPU
-utilization. This mode is called "ZCopy combined mode". The sendmsg syscall is
-blocked till the buffer is transfered to the socket's peer, and the data is
-copied directly from the user buffer to the user buffer at the sink side.
+too big; therefore, it is more efficient to use BCopy. (Large buffers can also
+be sent using RDMA, but they lower CPU utilization.) This mode is called
+"ZCopy combined mode". The sendmsg syscall is blocked until the buffer is
+transfered to the socket's peer, and the data is copied directly from the user
+buffer at the source side to the user buffer at the sink side.
 
-To set the threshold, use the module parameter sdp_zcopy_thresh. This paramter
-could be accessed through sysfs
-(/sys/module/ib_sdp/parameters/sdp_zcopy_thresh). Setting it to 0, disable
-ZCopy.
+To set the threshold, use the module parameter sdp_zcopy_thresh. This parameter
+can be accessed through sysfs (/sys/module/ib_sdp/parameters/sdp_zcopy_thresh).
+Setting it to 0, disables ZCopy.
+
 
 ==============================================================================
 9. Uninstalling OFED
@@ -553,7 +553,7 @@ files include:
 - SDP configuration file:    /etc/libsdp.conf
 - OpenSM configuration file: /etc/ofa/opensm.conf (for RedHat)
                              /etc/sysconfig/opensm (for SuSE) - should be
-							 created manually if required.
+						 created manually if required.
 - DAPL configuration file:   /etc/dat.conf
 
 See packages Release Notes for more details.
@@ -562,6 +562,7 @@ Note: After the installer completes, information about the OFED
       installation such as the prefix, kernel version, and
       installation parameters can be found by running
       /etc/infiniband/info.
+
 
 ==============================================================================
 12. Related Documentation
@@ -572,7 +573,7 @@ installation the documents are located under the directory:
 /usr/share/doc/ofed-docs-x.x.x for RedHat
 /usr/share/doc/packages/ofed-docs-x.x.x for SuSE
 
-Document list:
+Documents list:
 
    o README.txt
    o OFED_Installation_Guide.txt
@@ -583,13 +584,11 @@ Document list:
    o All release notes and README files
 
 For more information, please visit the OpenFabrics web site:
-
-   http://www.openfabrics.org/
+   http://www.openfabrics.org
 
 open-iscsi documentation is located at:
 - RedHat: /usr/share/doc/iscsi-initiator-utils-<version number>
 - SuSE: /usr/share/doc/packages/open-iscsi
 
 For more information, please visit the open-iscsi web site:
-
-   http://www.open-iscsi.org/
+   http://www.open-iscsi.org

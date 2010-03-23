@@ -79,7 +79,8 @@ Usage and configuration:
 
    sysctl -w net.ipv4.conf.all.arp_ignore=1
 
-   To learn more about the arp_ignore parameter, see Documentation/networking/ip-sysctl.txt.
+   To learn more about the arp_ignore parameter, see 
+   Documentation/networking/ip-sysctl.txt.
    Note that distributions have the means to make kernel parameters persistent.
 
 2. There are IPoIB alias lines in modprobe.conf which prevent stopping/
@@ -118,7 +119,7 @@ Usage and configuration:
    To warn about this, a message is produced in the system log each time MTU is
    set to a value higher than 2K.
 
-7. IPoIB IPv6 support is broken for between systems with kernels < 2.6.12 and
+7. IPoIB IPv6 support is broken for systems with kernels < 2.6.12 and
    kernels >= 2.6.12.  The reason for that is that kernel 2.6.12 puts the link
    layer address at an offset of two bytes with respect to older kernels. This
    causes the other host to misinterpret the hardware address resulting in failure
@@ -129,35 +130,35 @@ Usage and configuration:
    (~5%) than in datagram mode. As a workaround, use datagram mode.
 
 9. Single-socket TCP bandwidth for kernels < 2.6.18 is lower than with
-   newer kernels. We recommend kernels from 2.6.18 and up for
+   newer kernels. It is recommended to use kernel 2.6.18 or up for
    best IPoIB performance.
 
 10. Connectivity issues encountered when using IPv6 on ia64 systems.
 
 11. The IPoIB module uses a Linux implementation for Large Receive Offload
    (LRO) in kernel 2.6.24 and later. These kernels require installing the
-    "inet_lro" module.
+   "inet_lro" module.
 
-12. ConnectX only: If you have a port configured as ETH, and are running IPoIB 
-    in connected mode -- and then change the port type to IB, the IPoIB mode 
-    changes to datagram mode.
+12. ConnectX only: If you have a port configured as ETH and IPoIB is running
+    in connected mode, and then you change the port type to IB, the IPoIB mode
+    will change to datagram mode.
 
-13. When working with ISCSI, you must disable LRO (even if you are working in
+13. When working with iSCSI, you must disable LRO (even if you are working in
     connected mode). This is because there is a bug in older kernels which causes
     a kernel panic.
 
 14. IPoIB datagram mode initial packet loss (bug #1287): When the datagram test
-    gets to packet size 8192 and larger it always loose the first packet in the 
+    gets to packet size 8192 or larger, it always loses the first packet in the
     sequence. 
     Workaround: Increase the number of pending skb's before a neighbor is
     resolved (default is 3). This value can be changed with:
     sysctl net.ipv4.neigh.ib0.unres_qlen.
     
 15. IPoIB multicast support is broken in RH4.x kernels. This is because
-    ndisc_mc_map() does not handle IPOIB hardware addresses.
+    ndisc_mc_map() does not handle IPoIB hardware addresses.
 
-16. If bonding uses IPoIB slave then unenslaving all slaves (or downing them
-     with ifdown) followed by unloading the module ib_ipoib might crash the
+16. If bonding uses an IPoIB slave, then un-enslaving all slaves (or downing
+    them with ifdown) followed by unloading the module ib_ipoib might crash the
      kernel. To avoid this leave the IPoIB interfaces enslaved when unloading
      ib_ipoib.
 
@@ -165,24 +166,28 @@ Usage and configuration:
     datagram on each call to ifup, ifdown, etc. To avoid this, add the line
     IPOIB_MODE=connected 
     to the interface configuration file (e.g. ifcfg-ib0)
-18. When installing OFED on a machine that runs kernel 2.6.30 (or another kernel
-    from kernel.org that OFED supports), the installation scripts blocks the
-    installation of ib-bonding since the bonding module that comes with the
+
+18. When installing OFED on a machine that runs kernel 2.6.30 (or another 
+    kernel from kernel.org that OFED supports), the installation script blocks
+    the installation of ib-bonding since the bonding module that comes with the
     kernel has all the functionality to support IPoIB slaves. This approach
-    however doesn't patch the sysconfig (SuSE) or initscripts (RedHat) package
-    so the network configuration scrips may not work properly.
+    however doesn't patch the sysconfig (SuSE) or initscripts (RedHat) package,
+    so the network configuration script may not work properly.
     For example, if you install OFED on RHEL5.2 that runs kernel 2.6.30 and
     you try to configure and run bonding, you won't be able to restart the
     network and see bond0 up and running with IPoIB slaves.
-    A workaround to this problem would be this
-        a. Compile ib-bonding source rpm (under SRPMS directory) separately on a
-        machine with RHEL5.2  and kernel 2.6.18-92.el5 (default for this OS)
-        2. Install the binary rpm while machine runs kernel 2.6.18-92.el5.
-        This will patch the OS configuration scripts and install the bonding module.
-        3. Switch to kernel 2.6.30. The module that was compiled in (2) will not be
-        loaded since it was compiled and installed for a different kernel.
-        4. Configure bonding and restart the network. The bonding interface
+    A workaround to this problem would be as follows:
+        a. Compile ib-bonding source rpm (under SRPMS directory) separately on
+        a machine with RHEL5.2 and kernel 2.6.18-92.el5 (default for this OS).
+        b. Install the binary RPM while the machine runs kernel 2.6.18-92.el5.
+        This will patch the OS configuration scripts and install the bonding
+        module.
+        c. Switch to kernel 2.6.30. The module that was compiled in (a) will
+        not be loaded since it was compiled and installed for a different
+	kernel.
+        d. Configure bonding and restart the network. The bonding interface
         should be up and running afterwards.
+
 19. On RHEL5.X, '/etc/init.d/openibd start' prints the following messages while
     bringing up IPoIB interfaces:
 
@@ -195,29 +200,30 @@ Usage and configuration:
 
     This does not affect IPoIB configuration and interfaces are configured as
     expected.
-20. In IPoIB connected mode packages larger than 2016 bytes are not sent.
+
+20. In IPoIB connected mode, packages larger than 2016 bytes are not sent.
     https://bugs.openfabrics.org/show_bug.cgi?id=1839
 
 21. Under SLES11, if an IP configuration exists for an IPoIB interface
     that later becomes a slave of a bonding master, a network restart
-    doesn't erase the IP configuration from the slave and it appears to has
-    an IP adddress even tough the new configuration doesn't set one. This
-    may cause problems when tring to use the bonded network interface. To
+    doesn't erase the IP configuration from the slave and it appears to have
+    an IP address even though the new configuration doesn't set one. This
+    may cause problems when trying to use the bonded network interface. To
     avoid this, restart the IB stack (openib restart) once you change the
     configuration.
     This issue is described in
     https://bugs.openfabrics.org/show_bug.cgi?id=1975
 
-22. IPoIB LRO, currently, is not supported on ConnectX2 devices
+22. Currently, IPoIB LRO is not supported on ConnectX-2 devices
 
 ===============================================================================
 3. IPoIB Configuration Based on DHCP
 ===============================================================================
 
-Setting an IPoIB interface configuration based on DHCP (v3.1.2 which is available 
-via www.isc.org) is performed similarly to the configuration of Ethernet 
-interfaces. In other words, you need to make sure that IPoIB configuration files 
-include the following line:
+Setting an IPoIB interface configuration based on DHCP (v3.1.3 which is
+available via www.isc.org) is performed similarly to the configuration of
+Ethernet interfaces. In other words, you need to make sure that IPoIB
+configuration files include the following line:
 	For RedHat:
 	BOOTPROTO=dhcp
 	For SLES:
@@ -228,7 +234,7 @@ installed under:
 /etc/sysconfig/network/ on a SuSE machine
 
 Note: A patch for DHCP is required for supporting IPoIB. The patch file for 
-DHCP v3.1.2, dhcp.patch, is available under the docs/ directory.
+DHCP v3.1.3, dhcp.patch, is available under the docs/ directory.
 
 Standard DHCP fields holding MAC addresses are not large enough to contain an 
 IPoIB hardware address. To overcome this problem, DHCP over InfiniBand messages 
@@ -245,9 +251,9 @@ The length of the client identifier field is not fixed in the specification.
 4.1 DHCP Server
 In order for the DHCP server to provide configuration records for clients, an 
 appropriate configuration file needs to be created. By default, the DHCP server 
-looks for a configuration file called dhcpd.conf under /etc. You can either edit
-this file or create a new one and provide its full path to the DHCP server using
-the -cf flag. See a file example at docs/dhcpd.conf of this package.
+looks for a configuration file called dhcpd.conf under /etc. You can either
+edit this file or create a new one and provide its full path to the DHCP server
+using the -cf flag. See a file example at docs/dhcpd.conf of this package.
 The DHCP server must run on a machine which has loaded the IPoIB module.
 
 To run the DHCP server from the command line, enter:
@@ -258,26 +264,27 @@ host1# dhcpd ib0 -d
 4.2 DHCP Client (Optional)
 
 Note: A DHCP client can be used if you need to prepare a diskless machine with 
-an IB driver. 
+an IB driver.
+
 In order to use a DHCP client identifier, you need to first create a 
 configuration file that defines the DHCP client identifier. Then run the DHCP 
 client with this file using the following command:
 dhclient cf <client conf file> <IB network interface name>
-Example of a configuration file for the ConnectX (PCI Device ID 25418), called 
+Example of a configuration file for the ConnectX (PCI Device ID 26428), called
 dhclient.conf:
 # The value indicates a hexadecimal number
 interface "ib1" {
-send dhcp-client-identifier 00:02:c9:03:00:00:10:39;
+send dhcp-client-identifier ff:00:00:00:00:00:02:00:00:02:c9:00:00:02:c9:03:00:00:10:39;
 }
-Example of a configuration file for InfiniHost III Ex (PCI Device ID 25218), called
-dhclient.conf:
+Example of a configuration file for InfiniHost III Ex (PCI Device ID 25218),
+called dhclient.conf:
 # The value indicates a hexadecimal number
 interface "ib1" {
 send dhcp-client-identifier 20:00:55:04:01:fe:80:00:00:00:00:00:00:00:02:c9:02:00:23:13:92;
 }
 
 In order to use the configuration file, run:
-host1# dhclient cf dhclient.conf ib1
+host1# dhclient -cf dhclient.conf ib1
 
 
 ===============================================================================
@@ -301,14 +308,15 @@ Notes:
 * Using /etc/infiniband/openib.conf to create a persistent configuration is
   no longer supported
 * On RHEL4_U7, cannot set a slave interface as primary.
-* ib-bonding will not be compiled and installed with OFED on OS with kernel
-  that is >= 2.6.27 (e.g. SLES11). The bonding driver that comes with those kernels 
-  already supports enslaving of IPoIB interfaces. In addition, an OS can come
-  with an older kernel but with a patched bonding driver that also doesn't
-  require modification (e.g. RHEL5.4). OFED will not replace the bonding
-  module in such cases also.
-  However, there still might be a issue of OS configuration tools (like sysconfig or
-  initscripts) that needs a fix but such issues were not observed yet.
+* ib-bonding will not be compiled and installed with OFED on an OS with kernel
+  that is >= 2.6.27 (e.g., SLES11). The bonding driver that comes with those
+  kernels already supports enslaving IPoIB interfaces. In addition, an OS
+  can come with an older kernel but with a patched bonding driver that also
+  doesn't require modification (e.g., RHEL5.4). OFED will not replace the
+  bonding module in such cases either.
+  However, there might still be issues with OS configuration tools (like
+  sysconfig or initscripts) that may need fixing, but such issues have not
+  been observed yet.
 
 
 ===============================================================================
@@ -316,14 +324,14 @@ Notes:
 ===============================================================================
 
 5.1 Subinterfaces
-
+-----------------
 You can create subinterfaces for a primary IPoIB interface to provide traffic
-isolation. Each such subinterface (also called a child interface) has a
+isolation. Each such subinterface (also called a child interface) has
 different IP and network addresses from the primary (parent) interface. The
 default Partition Key (PKey), ff:ff, applies to the primary (parent) interface.
 
 5.1.1 Creating a Subinterface
-
+-----------------------------
 To create a child interface (subinterface), follow this procedure:
 Note: In the following procedure, ib0 is used as an example of an IB
 subinterface.
@@ -352,8 +360,9 @@ RX bytes:0 (0.0 b) TX bytes:0 (0.0 b)
 Step 4. As can be seen, the interface does not have IP or network addresses so
 it needs to be configured.
 
-Step 5. To be able to use this interface, a configuration of the Subnet Manager is needed so that
-the PKey chosen, which defines a broadcast address, be recognized.
+Step 5. To be able to use this interface, a configuration of the Subnet Manager
+is needed so that the PKey chosen, which defines a broadcast address, can be
+recognized.
 
 5.1.2 Removing a Subinterface
 To remove a child interface (subinterface), run:
@@ -399,13 +408,13 @@ significant bit set (e.g., 0x8000 in the example above).
 ===============================================================================
 - Performance tuning is enabled by default for IPOIB CM.
 - Clear IPOIB_FLAG_ADMIN_UP if ipoib_open fails 
-- disable napi while cq is being drained (bugzilla #1587)
-- rdma_cm: Use rate from ipoib broadcast when joining ipoib multicast
-  When joining IPoIB multicast group, use the same rate as in the broadcast
-  group. Otherwise, if rdma_cm creates this group before IPoIB does, it might get
-  a different rate. This will cause IPoIB to fail joining to the same group later
-  on, because IPoIB has a strict rate selection.
-- fix unprotected use of priv->broadcast in ipoib_mcast_join_task.
+- Disable napi while cq is being drained (bugzilla #1587)
+- rdma_cm: Use the rate from the ipoib broadcast when joining an ipoib
+  multicast. When joining an IPoIB multicast group, use the same rate as in the
+  broadcast group. Otherwise, if rdma_cm creates this group before IPoIB does,
+  it might get a different rate. This will cause IPoIB to fail joining the same
+  group later on, because IPoIB has a strict rate selection.
+- Fixed unprotected use of priv->broadcast in ipoib_mcast_join_task.
 - Do not join broadcast group if interface is brought down
 
   
@@ -431,15 +440,15 @@ significant bit set (e.g., 0x8000 in the example above).
 10. Bug Fixes and Enhancements Since OFED 1.5.0
 ===============================================================================
 
-- Fix lockup of the tx queue on mixed CM/UD traffic
-  When there is high rate of send traffic on both CM and UD QPs. the trasmitter
-  could be stopped by CM path but not re-enabled.
+- Fixed lockup of the TX queue on mixed CM/UD traffic
+  When there is a high rate of send traffic on both CM and UD QPs, the
+  transmitter can be stopped by the CM path but not re-enabled.
 
 ===============================================================================
-11. Performance tuning
+11. Performance Tuning
 ===============================================================================
 When IPoIB is configured to run in connected mode, tcp parameter tuning is
-performed at driver startup -- to improve the throughput of medium and large
+performed at driver startup to improve the throughput of medium and large
 messages.
 The driver startup scripts set the following TCP parameters as follows:
 
@@ -455,7 +464,7 @@ The driver startup scripts set the following TCP parameters as follows:
       net.ipv4.tcp_rmem="4096 87380 16777216"
       net.ipv4.tcp_wmem="4096 65536 16777216"
 
-This tuning is effective only for connected mode.  If you run in datagram mode,
+This tuning is effective only for connected mode. If you run in datagram mode,
 it actually reduces performance.
 
 If you change the IPoIB run mode to "datagram" while the driver is running,
