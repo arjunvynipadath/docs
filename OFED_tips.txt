@@ -1,7 +1,7 @@
 		Open Fabrics Enterprise Distribution (OFED)
-		      Tips for Working with OFED 1.5
+		      Tips for Working with OFED 1.5.1
 
-		 	     December 2009
+		 	     March 2010
 
 ===============================================================================
 Table of Contents
@@ -9,7 +9,7 @@ Table of Contents
 1. OFED Utilities
 2. Debug HOWTOs
 3. Pinning (Locking) User Memory Pages
-4. External Module Compilation Over OFED-1.5
+4. External Module Compilation Over OFED-1.5.1
 5. Adding/Deleting a patch to OFED package
 6. Adding vendor specific actions to the installation of OFED
 7. How to compile OFED sources manually
@@ -184,8 +184,8 @@ c. Using sysfs file system
 -------------------------------------------
 The text file BUILD_ID provides data on all OFED components (whether installed
 or not). This file is a part of the ofed-docs RPM and installed under 
-/usr/share/doc/ofed-docs-1.5 on RedHat, and under 
-/usr/share/doc/packages/ofed-docs-1.5 on SuSE.
+/usr/share/doc/ofed-docs-1.5.1 on RedHat, and under 
+/usr/share/doc/packages/ofed-docs-1.5.1 on SuSE.
 
 The same information can be obtained by executing the 'ofed_info' command. For
 example:
@@ -307,7 +307,7 @@ Note: The file /etc/security/limits.conf contains further documentation.
 
 
 ===============================================================================
-4. External Module Compilation Over OFED-1.5
+4. External Module Compilation Over OFED-1.5.1
 ===============================================================================
 
 To build kernel modules depending on OFED's modules, take the Modules.symvers
@@ -346,9 +346,9 @@ ofed_patch.sh  --remove
                --type|-t <kernel|backport <kernel tag>|addons <kernel tag>>
 
 Examples:
-ofed_patch.sh --add --ofed /tmp/OFED-1.5/ --patch /tmp/cma_fix.patch --type kernel
+ofed_patch.sh --add --ofed /tmp/OFED-1.5.1/ --patch /tmp/cma_fix.patch --type kernel
 
-ofed_patch.sh --remove --ofed /tmp/OFED-1.5/ --patch cma_fix.patch --type kernel
+ofed_patch.sh --remove --ofed /tmp/OFED-1.5.1/ --patch cma_fix.patch --type kernel
 
 ===============================================================================
 6. Adding vendor specific actions to the installation of OFED
@@ -435,11 +435,11 @@ meaning without building the RPMs and without using the install.pl script.
 
 7.1 Compiling the kernel modules
 --------------------------------
-1. tar xzf OFED-1.5.tgz
-2. rpm -ihv OFED-1.5/SRPMS/ofa_kernel-1.5-ofed1.5.src.rpm
+1. tar xzf OFED-1.5.1.tgz
+2. rpm -ihv OFED-1.5.1/SRPMS/ofa_kernel-1.5.1-ofed1.5.1.src.rpm
 3. cd /usr/src/redhat/SOURCES
-4. tar xzvf ofa_kernel-1.5.tgz
-5. cd ofa_kernel-1.5
+4. tar xzvf ofa_kernel-1.5.1.tgz
+5. cd ofa_kernel-1.5.1
 6. configure: 
    run ./configure --help for a list of options.
    basic invocation is:
@@ -457,12 +457,12 @@ NOTES:
 
 7.2 Compiling the user space libraries
 --------------------------------------
-To install user space library from the source RPM provided by OFED-1.5 manually,
+To install user space library from the source RPM provided by OFED-1.5.1 manually,
 do the following:
 
 Example for libibverbs:
  
-1. tar xzf OFED-1.5.tgz
+1. tar xzf OFED-1.5.1.tgz
 2. rpm -ihv SRPMS/libibverbs-1.1.2-1.ofed1.5.src.rpm
 3. cd /usr/src/redhat/SOURCES (for RedHat)
    or

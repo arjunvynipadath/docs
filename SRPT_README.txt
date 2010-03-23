@@ -22,7 +22,7 @@ modes on real or virtual devices in the backend
 
 Prerequisites
 -------------
-0. Supported distributions: RHEL 5.2/5.3/5.4, SLES 10 sp2, SLES 11 
+0. Supported distributions: RHEL 5.2/5.3/5.4, SLES 10 sp2/sp3, SLES 11 
 
 NOTES: On distribution default kernels you can run scst_vdisk blockio mode
        to have good performance. You can also run scst_disk ie. scsi pass-thru
@@ -233,11 +233,13 @@ diff -Naur scst/scst.h scst.wk/scst.h
 2. Download/install OFED-1.5.1 package - SRP target is part of OFED package
 
 NOTES: if your system already have OFED stack installed, you need to remove
-       all the previous built RPMs and reinstall
+       the previous built of kernel-ib RPMs and reinstall
       
    $ cd ~/OFED-1.5.1
-   $ rm RPMS/*
+   $ rm RPMS/*/*/kernel-ib*
    $ ./install.pl -c ofed.conf
+
+   Make sure that srpt=y in the ofed.conf
 
 2a. download OFED packages from this URL
     http://www.openfabrics.org/downloads/OFED/OFED-1.5.1/
