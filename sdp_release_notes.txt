@@ -49,7 +49,7 @@ Main changes are:
   this happens in rare occasions and could cause a kernel crash
 
 - BUG1444 - setsockopt(SO_RCVBUF) is not working in sdp socket. To limit top
-  system wide sdp memory usage for recv use module parameter top_mem_usage.
+  system wide sdp memory usage for recv, use the module parameter top_mem_usage.
 
 - BUG1331 - TCP allows connecting to IP_ANY - 0.0.0.0 (as a destination address!). SDP 
   does not allow - and will reject the connection.
