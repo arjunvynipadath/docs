@@ -189,9 +189,6 @@ for each package in the docs directory.
           - Weighted LID matrices calculation (for UpDown, MinHop and DOR)
           - I/O nodes connectivity (for FatTree)
 
-	o Diagnostic tools:
-	  TBD
-
     2.6 MPI:
 	a. OSU MVAPICH 1.2.0
 	b. Open MPI 1.4
