@@ -6,13 +6,13 @@
 
  Author: NetApp and Open Grid Computing
  
- Adapted for OFED 1.5 (from linux-2.6.30/Documentation/filesystems/nfs-rdma.txt)
+ Adapted for OFED 1.5.1 (from linux-2.6.30/Documentation/filesystems/nfs-rdma.txt)
  by Jon Mason
 
 Table of Contents
 ~~~~~~~~~~~~~~~~~
  - Overview
- - OFED 1.5 limitations
+ - OFED 1.5.1 limitations
  - Getting Help
  - Installation
  - Check RDMA and NFS Setup
@@ -32,14 +32,12 @@ Overview
   the full Connectathon test suite and operates over both Infiniband and iWARP
   RDMA adapters.
 
-OFED 1.5 limitations:
+OFED 1.5.1 limitations:
 ~~~~~~~~~~~~~~~~~~~~~
   NFS-RDMA is supported for the following releases:
   - Redhat Enterprise Linux (RHEL) version 5.2
   - Redhat Enterprise Linux (RHEL) version 5.3
   - Redhat Enterprise Linux (RHEL) version 5.4
-  - SUSE Linux Enterprise Server (SLES) version 10, Service Pack 2
-  - SUSE Linux Enterprise Server (SLES) version 10, Service Pack 3 
   - SUSE Linux Enterprise Server (SLES) version 11
 
   And the following kernel.org kernels:
@@ -48,7 +46,7 @@ OFED 1.5 limitations:
   - 2.6.30
 
   All other Linux Distrubutions and kernel versions are NOT supported on OFED
-  1.5
+  1.5.1
 
 Getting Help
 ~~~~~~~~~~~~
@@ -70,10 +68,10 @@ Installation
     Testing has been performed using several Mellanox-based IB cards and 
     the Chelsio cxgb3 iWARP adapter.
 
-  - Install OFED 1.5
+  - Install OFED 1.5.1
 
-    NFS/RDMA has been tested on RHEL5.2, RHEL 5.3, RHEL5.4, SLES10SP2,
-    SLES10SP3, SLES11, kernels 2.6.22, 2.6.25, and 2.6.30.  On these kernels,
+    NFS/RDMA has been tested on RHEL5.2, RHEL 5.3, RHEL5.4, SLES11,
+    kernels 2.6.22, 2.6.25, and 2.6.30.  On these kernels,
     NFS-RDMA will be installed by default if you simply select "install all",
     and can be specifically included by a "custom" install.
 
