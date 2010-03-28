@@ -24,12 +24,14 @@ Prerequisites
 -------------
 0. Supported distributions: RHEL 5.2/5.3/5.4, SLES 10 sp2/sp3, SLES 11 
 
-NOTES: On distribution default kernels you can run scst_vdisk blockio mode
-       to have good performance. You can also run scst_disk ie. scsi pass-thru
-       mode; however, you have to compile scst with -DSTRICT_SERIALIZING 
-       enabled and this does not yield good performance.
-       It is required to recompile the kernel to have good performance with
-       scst_disk ie. scsi pass-thru mode
+NOTES: On distribution default kernels, you can run scst_vdisk blockio mode
+       to have good performance.
+
+       It is required to patch and recompile the kernel to run scst_disk
+       ie. scsi pass-thru mode
+       OR
+       You have to compile scst with -DSTRICT_SERIALIZING enabled and this
+       does not yield good performance.
 
 1. Download and install SCST driver (supported version 1.0.1.1)
 
@@ -41,7 +43,7 @@ NOTES: On distribution default kernels you can run scst_vdisk blockio mode
     $ tar zxvf scst-1.0.1.1.tar.gz
     $ cd scst-1.0.1.1
   
-    THIS STEP IS SPECIFIC FOR SLES 10 sp2 distribution:
+    THIS STEP IS SPECIFIC FOR SLES 10 sp2/sp3 distributions:
 
     $ patch -p1 -i <path to OFED>/docs/scst/scst_sles10_sp2.patch
 
@@ -49,7 +51,8 @@ NOTES: On distribution default kernels you can run scst_vdisk blockio mode
 
     $ make && make install
 
-    NOTES: FOR SLES 11 distribution, skip this step and go directly to step (2)
+NOTES: FOR SLES 11 distribution, skip next step (step 1c) and go directly to
+       step (2)
 
 1c. patch scst.h header file with scst.patch
 
@@ -165,11 +168,11 @@ dgid=fe800000000000000002c90200226cf5,pkey=ffff,service_id=0002c90200226cf4 >
 OR
 
 + You can edit /etc/infiniband/openib.conf to load srp driver and srp HA daemon
-automatically ie. set SRP_LOAD=yes, and SRPHA_ENABLE=yes
+automatically ie. set SRP_LOAD=yes, SRP_DAEMON_ENABLE=yes, and SRPHA_ENABLE=yes
 + To set up and use high availability feature you need dm-multipath driver
 and multipath tool
-+ Please refer to OFED-1.x SRP's user manual for more in-details instructions
-on how-to enable/use HA feature
++ Please refer to OFED-1.5.1 SRP's user manual for more in-details instructions
+on how-to enable/use HA feature (OFED-1.5.1/docs/srp_release_notes.txt)
 
 
 Here is an example of srp target setup file
@@ -207,3 +210,14 @@ How-to unload/shutdown
  $ modprobe -r scst_vdisk scst
 3. Unload ofed
  $ /etc/rc.d/openibd stop
+
+===========================================================================
+Known Issues
+===========================================================================
+
+- With active connections/sesssions and active I/Os, unload ib_srpt driver
+  will randomly fail and got stuck.
+  
+- With active connections/sessions with active I/Os, reboot system will
+  randomly get stuck.
+
