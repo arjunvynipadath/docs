@@ -196,7 +196,9 @@ for each package in the docs directory.
 	d. MPI tests 3.2
 
     2.7 iSER:
-	o Available only on kernel.org 2.6.30, 2.6.31 and 2.6.32
+	o Available on:
+          - kernel.org: 2.6.30 and higher
+          - RHEL5.4
 
     2.8 NFS-RDMA
 	o Added support for RHEL5.4, SLES10 SP3, kernel.org 2.6.25 and 2.6.30.
