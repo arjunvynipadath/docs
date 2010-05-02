@@ -1,5 +1,5 @@
 	    Open Fabrics Enterprise Distribution (OFED)
-	               Version 1.5.1
+	               Version 1.5.2
    	               Release Notes
 	                March 2010
 
@@ -8,7 +8,7 @@
 Table of Contents
 ===============================================================================
 1. Overview, which includes:
-	- OFED Distribution Rev 1.5.1 Contents
+	- OFED Distribution Rev 1.5.2 Contents
 	- Supported Platforms and Operating Systems
 	- Supported HCA and RNIC Adapter Cards and Firmware Versions
 	- Tested Switch Platforms
@@ -16,14 +16,15 @@ Table of Contents
 	- OFED sources
 2. Main Changes from OFED 1.4.2
 3. Main Changes from OFED 1.5
-4. Known Issues
+4. Main Changes from OFED 1.5.1
+5. Known Issues
 
 
 ===============================================================================
 1. Overview
 ===============================================================================
 These are the release notes of OpenFabrics Enterprise Distribution (OFED)
-release 1.5.1. The OFED software package is composed of several software modules,
+release 1.5.2. The OFED software package is composed of several software modules,
 and is intended for use on a computer cluster constructed as an InfiniBand
 subnet or iWARP network. 
 
@@ -31,7 +32,7 @@ Note: If you plan to upgrade the OFED package on your cluster, please upgrade
 all of its nodes to this new version.
 
 
-1.1 OFED 1.5.1 Contents
+1.1 OFED 1.5.2 Contents
 -----------------------
 The OFED package contains the following components:
  - OpenFabrics core and ULPs:
@@ -75,7 +76,7 @@ Notes:
 	- RedHat EL4 up8	2.6.9-89.ELsmp 
 	- RedHat EL5 up3	2.6.18-128.el5
 	- RedHat EL5 up4	2.6.18-164.el5
-	- RedHat EL5 up5 (beta)	2.6.18-186.el5
+	- RedHat EL5 up5 	2.6.18-194.el5
 	- SLES10 SP2 		2.6.16.60-0.21-smp  
 	- SLES10 SP3 		2.6.16.60-0.54-smp  
 	- SLES11 		2.6.27.19-5-default
@@ -137,7 +138,7 @@ companies:
 
 1.5 Third Party Packages
 ------------------------
-The following third party packages have been tested with OFED 1.5.1:
+The following third party packages have been tested with OFED 1.5.2:
 - Intel MPI, Version 3.2.2
 - Intel MPI, Version 4.0 beta 
 
@@ -223,15 +224,24 @@ for each package in the docs directory.
 
 
 ===============================================================================
-4. Known Issues
+4. Main Changes from OFED 1.5.1
+===============================================================================
+1. Added RHEL5.5 support
+2. /etc/modprobe.conf deprecated
+   ib_ipoib use /etc/modprobe.d/ib_ipoib.conf
+   ib_sdp use /etc/modprobe.d/ib_sdp.conf
+   mlx4_en use /etc/modprobe.d/mlx4_en.conf
+
+===============================================================================
+5. Known Issues
 ===============================================================================
 The following is a list of general limitations and known issues of the various
-components of the OFED 1.5.1 release.
+components of the OFED 1.5.2 release.
 
 1. When upgrading from an earlier OFED version, the installation script does
    not stop the earlier OFED version prior to uninstalling it. 
    Workaround: Stop the old OFED stack (/etc/init.d/openibd stop) before 
-   upgrading to OFED 1.5.1 or reboot the server after OFED installation.
+   upgrading to OFED 1.5.2 or reboot the server after OFED installation.
 2. Memory registration by the user is limited according to administrator
    setting. See "Pinning (Locking) User Memory Pages" in OFED_tips.txt for
    system configuration.
@@ -250,7 +260,7 @@ components of the OFED 1.5.1 release.
         Unloading ib_cm                                            [FAILED]
         ERROR: Module ib_cm is in use by ib_ipoib 
     Workaround: run "openibd stop" again or remove ib_ipoib aliases from 
-                /etc/modprobe.conf.
+                /etc/modprobe.d/ib_ipoib.conf.
 8. When working with ISCSI over IPoIB or mlx4_en, you must disable LRO (even
    if IPoIB is set to connected mode). This is due to a bug in older kernels
    which causes a kernel panic.

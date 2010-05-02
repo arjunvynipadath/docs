@@ -1,10 +1,10 @@
             Open Fabrics Enterprise Distribution (OFED)
-                        Version 1.5.1
+                        Version 1.5.2
                             README
                        
-                         March 2010
+                         May 2010
 
-This is the OpenFabrics Enterprise Distribution (OFED) version 1.5.1
+This is the OpenFabrics Enterprise Distribution (OFED) version 1.5.2
 software package supporting InfiniBand and iWARP fabrics. It is composed
 of several software modules intended for use on a computer cluster
 constructed as an InfiniBand subnet or an iWARP network.
@@ -23,8 +23,8 @@ This document includes the following sections:
 
 OpenFabrics Home Page:  http://www.openfabrics.org
 
-The OFED rev 1.5.1 software download available in
-http://www.openfabrics.org/builds/ofed-1.5.1/release/
+The OFED rev 1.5.2 software download available in
+http://www.openfabrics.org/builds/ofed-1.5.2/release/
 
 Please email bugs and error reports to your InfiniBand vendor, or use bugzilla
 https://bugs.openfabrics.org/
@@ -117,11 +117,11 @@ The OFED Distribution package generates RPMs for installing the following:
 The default installation directory is: /usr
 
 Install Quick Guide:
-1) Download and extract: tar xzvf OFED-1.5.1.tgz file.
-2) Change into directory: cd OFED-1.5.1
+1) Download and extract: tar xzvf OFED-1.5.2.tgz file.
+2) Change into directory: cd OFED-1.5.2
 3) Run as root: ./install.pl
 4) Follow the directions to install required components. For details, please see
-   OFED_Installation_Guide.txt under OFED-1.5.1/docs.
+   OFED_Installation_Guide.txt under OFED-1.5.2/docs.
 
 
 Notes:
@@ -207,9 +207,9 @@ the tests.
 6. Related Documentation
 ========================
 1) Release Notes for OFED Distribution components are to be found under
-   OFED-1.5.1/docs and, after the package installation, under
-   /usr/share/doc/ofed-docs-1.5.1 for RedHat
-   /usr/share/doc/packages/ofed-docs-1.5.1 for SuSE.
+   OFED-1.5.2/docs and, after the package installation, under
+   /usr/share/doc/ofed-docs-1.5.2 for RedHat
+   /usr/share/doc/packages/ofed-docs-1.5.2 for SuSE.
 2) For a detailed installation guide, see OFED_Installation_Guide.txt.
 3) For more information, please visit the OFED web-page http://www.openfabrics.org
 

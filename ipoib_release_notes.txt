@@ -83,13 +83,13 @@ Usage and configuration:
    Documentation/networking/ip-sysctl.txt.
    Note that distributions have the means to make kernel parameters persistent.
 
-2. There are IPoIB alias lines in modprobe.conf which prevent stopping/
-   unloading the stack (i.e., '/etc/init.d/openibd stop' will fail). 
+2. There are IPoIB alias lines in /etc/modprobe.d/ib_ipoib.conf which prevent
+   stopping/unloading the stack (i.e., '/etc/init.d/openibd stop' will fail). 
    These alias lines cause the drivers to be loaded again by udev scripts.
 
    Workaround: Change modprobe.conf to set
    OFA_KERNEL_PARAMS="--without-modprobe" before running install.pl, or remove 
-   the alias lines from modprobe.conf.
+   the alias lines from /etc/modprobe.d/ib_ipoib.conf.
    
 3. On SLES 10:
    The ib1 interface uses the configuration script of ib0.

@@ -1,8 +1,8 @@
             Open Fabrics Enterprise Distribution (OFED)
-                          Version 1.5.1
+                          Version 1.5.2
                        Installation Guide
 
-                          March 2010
+                          May 2010
 
 ==============================================================================
 Table of contents
@@ -26,7 +26,7 @@ Table of contents
 1. Overview
 ==============================================================================
 
-This is the OpenFabrics Enterprise Distribution (OFED) version 1.5.1
+This is the OpenFabrics Enterprise Distribution (OFED) version 1.5.2
 software package supporting InfiniBand and iWARP fabrics. It is composed
 of several software modules intended for use on a computer cluster
 constructed as an InfiniBand subnet or an iWARP network.
@@ -265,8 +265,9 @@ o If libibverbs-utils is installed, then ofed.sh and ofed.csh are
   environment variable with <prefix>/bin.  In addition, ofed.conf is
   installed under /etc/ld.so.conf.d/ to update the dynamic linker's
   run-time search path to find the InfiniBand shared libraries.
-o The file /etc/modprobe.conf is updated to include the following:
+o The file /etc/modprobe.d/ib_ipoib.conf is updated to include the following:
   - "alias ib<n> ib_ipoib" for each ib<n> interface.
+o The file /etc/modprobe.d/ib_sdp.conf is updated to include the following:
   - "alias net-pf-27 ib_sdp" for sdp.
 o If opensm is installed, the daemon opensmd is installed under /etc/init.d/
 o All verbs tests and examples are installed under <prefix>/bin and management 
