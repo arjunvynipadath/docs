@@ -227,7 +227,7 @@ configuration files include the following line:
 	For RedHat:
 	BOOTPROTO=dhcp
 	For SLES:
-	BOOTPROTO=dchp
+	BOOTPROTO=dhcp
 Note: If IPoIB configuration files are included, ifcfg-ib<n> files will be 
 installed under:
 /etc/sysconfig/network-scripts/ on a RedHat machine
