@@ -1,7 +1,7 @@
              Open Fabrics Enterprise Distribution (OFED)
-                    SDP in OFED 1.5.1 Release Notes
+                    SDP in OFED 1.5.2 Release Notes
 
-                          March 2010
+                          August 2010
 
 
 
@@ -16,50 +16,67 @@ Table of Contents
 ===============================================================================
 1. Overview
 ===============================================================================
-SDP in OFED is at GA level for OFED 1.5.1
+SDP in OFED is at GA level for OFED 1.5.2
 Main changes are:
-- Improve Copy stability
-- PPC support
-- Fix some installation problems
+- Fixed stability issues
+- Latency is 4 msec
+- BW without jitter
+- Improved device removal
 - Bug fixes
 
-===============================================================================
-2. Bug Fixes and Enhancements since OFED 1.5
-===============================================================================
-* Cleanup
-    - Fix kernel crashes
-    - No timeouts in ZCopy
-    - SDP in QLogic <-> OFED stack compilancy 
-    - Cleaned up bugzilla - removed old bugs that were fixed already
-    - Removed unnecessary prints
+Missing features:
+- AIO support
+- inline send support
+- ZCopy pipeline mode
 
-* Bug fixes
-    - No known kernel crash is caused by SDP.
-    - Many small bugs fixed - see bugzilla.
+===============================================================================
+2. Bug Fixes and Enhancements since OFED 1.5.1
+===============================================================================
+* Cleanups
+    - Removed unnecessary variables.
+    - Removed printk warning.
+    - Added support for 2.6.30 / 2.6.32.
+    - Removed whitespaces.
+    - Removed sdp_bzcopy_thresh module parameter.
+
+* Bug Fixes
+    - Improved recovery from errors.
+    - Fixed datapath hangings.
+    - Fixed module reference count.
+    - Fixed orphan count logic issues.
+    - Fixed device removal.
+    - Added support for ib devices that do not support fmr.
+    - Improved support for PPC.
+
+* Enhancements
+    - Enabled FMR pool cache.
+    - Limited FMR resources.
+    - Added support for handling multi iov's in ZCOPY.
+    - Added usage of polling in rx.
+    - Added usage of max number of SGE from HW capabilities.
+    - Added module parameter to disable SDP over RoCE.
+    - Made sdp_socket.h available to user applications.
 
 
 ===============================================================================
 3. Known Issues
 ===============================================================================
-- BUG1992 - SDP might hang under bi-directional traffic w/large payload
+- BUG 1331 - TCP allows connecting to IP_ANY - 0.0.0.0 (as a destination address!).
+  SDP does not allow connecting to IP_ANY and will reject the connection.
 
-- BUG1847 - zcopy send with iovlen > 1 is not supported
-
-- BUG1999 - ib_modify_cq is called after socket is closed
-  this happens in rare occasions and could cause a kernel crash
-
-- BUG1444 - setsockopt(SO_RCVBUF) is not working in sdp socket. To limit top
+- BUG 1444 - The setsockopt(SO_RCVBUF) is not working in sdp socket. To limit top
   system wide sdp memory usage for recv, use the module parameter top_mem_usage.
 
-- BUG1331 - TCP allows connecting to IP_ANY - 0.0.0.0 (as a destination address!). SDP 
-  does not allow - and will reject the connection.
+- BUG 1923 - Failures when using OOB.
+
+- SDP is at beta level on Infinihost HCA family
 
 - Each SDP socket currently consumes up to 2 MBytes of memory. If this value
   is high for your installation, it is possible to trade off performance
   for lower memory utilization per socket by reducing the value of the
   "rcvbuf_scale" module parameter (default: 16).
 
-  Note: the minimum legal value for this parameter is 1.
+  Note: The minimum legal value for the "rcvbuf_scale" module is 1.
   At this parameter value, each socket will consume approximately 128 KBytes.
 
 - Small message size performance is low when messages are sent by client
@@ -89,23 +106,26 @@ Main changes are:
        set the tavor_quirk module parameter of the rdma_cm module to value 1
        (default: 0).
 
-- BZCopy is disabled by default. large block transfers will be using ZCopy.
-  to reenable BZCopy or to change its threshold set the module parameter sdp_bzcopy_thresh
-  to a non zero value - every block larger than that will be sent by using BZCopy.
-
-- ZCopy is enabled by default for blocks larger than 64K. could be disabled by setting
-  the module paramter sdp_zcopy_thresh to zero. Or to any other value by setting it to
-  another non zero value.
+- ZCopy is enabled by default for blocks larger than 64K. ZCopy can be disabled 
+  by setting the module paramter sdp_zcopy_thresh to zero or to any other value 
+  by setting it to another non zero value.
 
 - ZCOPY mode gives good performance for large blocks with very small cpu 
-  utilization When in use,  All messages longer than 
-  'sdp_zcopy_thresh' bytes in length will cause the user space buffer to
-  be pinned and the data sent directly from the original buffer.  This 
-  results in less CPU use and, on many systems, much better bandwidth.
-  The default 64K value for 'sdp_zcopy_thresh' is sometimes too low for
-  some systems.  You must experiment with your hardware to select the
-  best value.
+  utilization. When in use, all messages longer than 'sdp_zcopy_thresh' bytes 
+  in length will cause the user space buffer to be pinned and the data sent 
+  directly from the original buffer. This results in less CPU usage and on many 
+  systems in enhanced bandwidth.
+  ZCOPY is most efficient with multi stream jobs and it performs better as the 
+  message size increases.
+  The default 64K value for 'sdp_zcopy_thresh' is sometimes too low for some 
+  systems. You must experiment with your hardware to select the best value.
 
+- ZCOPY vs BCOPY:
+  ZCOPY performance is more efficient in weak cpu and multi streams, whereas 
+  BCOPY is more efficient in single stream.
+
+- To use SDP over RoCE, please set 'sdp_link_layer_ib_only' module parameter 
+  to 0.
 
 ===============================================================================
 4. Verification Applications/Flows/Tests
