@@ -137,4 +137,5 @@ support is available in firmware version 2.7.700 or later.
 
 - SRP is not supported.
 
-- Counter reports to sysfs are not working.
+- UD QPs that send traffic with VLAN tags (e.g. 802.1q tagged frames) do not
+  work. This will be fixed in a subsequent release.
