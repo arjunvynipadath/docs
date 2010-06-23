@@ -120,6 +120,7 @@ o  rnfs-utils           krb5-devel, krb5-libs, libevent-devel,
 
 Note:   The installer will warn you if you attempt to compile any of the
         above packages and do not have the prerequisites installed.
+        On SLES, some of required RPMs can be found on SLES SDK DVD.
 
 *** Important Note for open-iscsi users:
     Installing iSER as part of OFED installation will also install open-iscsi.
