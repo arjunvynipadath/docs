@@ -91,7 +91,7 @@ will be identical to the one decribed above with the following change:
 gid[11] = VLAN ID high byte (4 MS bits).
 gid[12] = VLAN ID low byte
 
-Please nore that VLAN ID is 12 bits.
+Please note that VLAN ID is 12 bits.
 
 Priority pause frames
 ---------------------
