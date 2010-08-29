@@ -11,8 +11,9 @@ Contents:
 4. Ported Applications
 5. Gid tables
 6. Using VLANs
-7. Firmware Requirements
-8. Known Issues
+7. Statistic counters
+8. Firmware Requirements
+9. Known Issues
 
 
 1. Overview
@@ -123,7 +124,26 @@ client: ibv_rc_pingpongs -g 1 server
 6.5 For rdma_cm applications, the user only needs to specify an IP address of a
 VLAN device for the traffic to go with that VLAN tagged frames.
 
-7. Firmware Requirements
+7. Statistic counters
+=====================
+RoCEE traffic is counted and can be read from the sysfs counters in the same
+manner as it is done for regular Infiniband devices. Only the following
+counters are supported:
+- port_xmit_packets
+- port_rcv_packets
+- port_rcv_data
+- port_xmit_data
+
+For example, to read the number of transmitted packets on port 2 of device
+mlx4_1, one needs to read the file:
+/sys/class/infiniband/mlx4_1/ports/2/counters/port_xmit_packets
+
+Note: RoCEE traffic will not show in the associated Etherent device's counters
+since it is offloaded by the hardware and does not go through Ethernet network
+driver.
+
+
+8. Firmware Requirements
 ========================
 RoCEE requires ConnectX firmware version 2.7.000 or newer. Some features
 require newer, not yet released firmware versions. For example, loopback
