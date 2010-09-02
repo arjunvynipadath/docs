@@ -1,6 +1,6 @@
             Open Fabrics Enterprise Distribution (OFED)
       NetEffect Ethernet Cluster Server Adapter Release Notes
-                           March 2010
+                           September 2010
 
 
 
@@ -10,14 +10,19 @@ support for the NetEffect Ethernet Cluster Server Adapters.
 ==========
 What's New
 ==========
-OFED 1.5.1 contains several enhancements and bug fixes to iw_nes driver.
+OFED 1.5.2 contains several enhancements and bug fixes to iw_nes driver.
 
-* Add support for KR, device id 0x0110.
-* Add new ethtool stats.
-* Fix crash caused by multiple disconnects during Asynchronous Event handling.
-* Fix crash in listener destroy during loopback setup.
-* Clear stall bit before destroying NIC QP.
-* Set assume aligned header bit.
+* Add new feature iWarp Multicast Acceleration (IMA).
+* Add module option to disable extra doorbell read after a write.
+* Change CQ event notification to not fire event unless there is a
+  new CQE not polled.
+* Fix payload calculation for post receive with more than one SGE.
+* Fix crash when CLOSE was indicated twice due to connection close
+  during remote peer's timeout on pending MPA reply.
+* Fix ifdown hang by not calling ib_unregister_device() till removal
+  of iw_nes module.
+* Handle RST when state of connection is in FIN_WAIT2.
+* Correct properties for various nes_query_{qp, port, device} calls.
 
 
 ============================================
@@ -30,10 +35,10 @@ the following to /etc/modprobe.conf:
     options rdma_cm unify_tcp_port_space=1
 
 
-=====================
-Power Management Mode
-=====================
-It is recommended to disable Active State Power Management in the BIOS, e.g.:
+========================================
+Required Setting - Power Management Mode
+========================================
+If possible, disable Active State Power Management in the BIOS, e.g.:
 
   PCIe ASPM L0s - Advanced State Power Management: DISABLED
 
@@ -58,13 +63,14 @@ disable_mpa_crc=0
 send_first=0
     Send RDMA Message First on Active Connection.
 
-nes_drv_opt=0x00000000
+nes_drv_opt=0x00000100
     Following options are supported:
 
     0x00000010 - Enable MSI
-    0x00000080 - No Inline Data.
-    0x00000100 - Diable Interrupt Moderation
+    0x00000080 - No Inline Data
+    0x00000100 - Disable Interrupt Moderation
     0x00000200 - Disable Virtual Work Queue
+    0x00001000 - Disable extra doorbell read after write
 
 nes_debug_level=0
     Specify debug output level.
@@ -182,7 +188,6 @@ Example mpiexec command line for uDAPL-2.0:
             /opt/intel/impi/3.2.2/bin64/IMB-MPI1
 
 Example mpiexec command line for uDAPL-1.2:
-
     mpiexec -genv I_MPI_FALLBACK_DEVICE 0
             -genv I_MPI_DEVICE rdma:OpenIB-iwarp
             -genv I_MPI_USE_RENDEZVOUS_RDMA_WRITE 1
@@ -195,23 +200,13 @@ Recommended Setting for MVAPICH2 and OFA
 ========================================
 Add the following to the mpirun command:
 
-    -env MV2_USE_RDMA_CM 1
     -env MV2_USE_IWARP_MODE 1
-    -env MV2_MAX_INLINE_SIZE 64
-    -env MV2_DEFAULT_MAX_CQ_SIZE 32766
-    -env MV2_RDMA_CM_MAX_PORT 65535
-    -env MV2_VBUF_TOTAL_SIZE 9216
 
 Example mpiexec command line:
 
     mpiexec -l -n 2
-            -env MV2_USE_RDMA_CM 1
             -env MV2_USE_IWARP_MODE 1
-            -env MV2_MAX_INLINE_SIZE 64
-            -env MV2_DEFAULT_MAX_CQ_SIZE 32766
-            -env MV2_RDMA_CM_MAX_PORT 65535
-            -env MV2_VBUF_TOTAL_SIZE 9216
-            /usr/mpi/gcc/mvapich2-1.4/tests/osu_benchmarks-3.1.1/osu_latency
+            /usr/mpi/gcc/mvapich2-1.5/tests/osu_benchmarks-3.1.1/osu_latency
 
 
 ==========================================
@@ -226,14 +221,14 @@ Example mpirun command with uDAPL-2.0:
     mpiexec -l -n 64
             -env MV2_DAPL_PROVIDER ofa-v2-iwarp
             -env MV2_ON_DEMAND_THRESHOLD 64
-            /usr/mpi/gcc/mvapich2-1.4/tests/IMB-3.2/IMB-MPI1
+            /usr/mpi/gcc/mvapich2-1.5/tests/IMB-3.2/IMB-MPI1
 
 Example mpirun command with uDAPL-1.2:
 
     mpiexec -l -n 64
             -env MV2_DAPL_PROVIDER OpenIB-iwarp
             -env MV2_ON_DEMAND_THRESHOLD 64
-            /usr/mpi/gcc/mvapich2-1.4/tests/IMB-3.2/IMB-MPI1
+            /usr/mpi/gcc/mvapich2-1.5/tests/IMB-3.2/IMB-MPI1
 
 
 ===========================
@@ -247,16 +242,8 @@ http://www.open-mpi.org/faq/?category=tuning#setting-mca-params
 
 
 =======================================
-Recommended Settings for Open MPI 1.4.1
+Recommended Settings for Open MPI 1.4.2
 =======================================
-There is a known problem with cached pinned memory.  It is recommended
-that pinned memory caching be disabled.  For more information, see
-https://svn.open-mpi.org/trac/ompi/ticket/1853
-
-To disable pinned memory caching, add the following parameter:
-
-    -mca mpi_leave_pinned 0
-
 Allow the sender to use RDMA Writes:
 
     -mca btl_openib_flags 2
@@ -267,7 +254,66 @@ Example mpirun command line:
            -mca btl openib,self,sm
            -mca btl_mpi_leave_pinned 0
            -mca btl_openib_flags 2
-           /usr/mpi/gcc/openmpi-1.4.1/tests/IMB-3.2/IMB-MPI1
+           /usr/mpi/gcc/openmpi-1.4.2/tests/IMB-3.2/IMB-MPI1
+
+
+===================================
+iWARP Multicast Acceleration (IMA)
+===================================
+
+iWARP multicast acceleration enables raw L2 multicast traffic kernel
+bypass using user-space verbs API using the new defined QP type
+IBV_QPT_RAW_ETH.
+
+The L2 RAW_ETH acceleration assumes that user application transmits and
+receives a whole L2 frame including MAC/IP/UDP/TCP headers.
+
+ETH RAW QP usage:
+First the application creates IBV_QPT_RAW_ETH QP with associated CQ, PD,
+completion channels as it is performed for RDMA connection.
+
+Next step is enabling L2 MAC address RX filters for directing received
+multicasts to the RAW_ETH QPs using ibv_attach_multicast() verb.
+
+From this point the application is ready to receive and transmit multicast
+traffic.
+
+In multicast acceleration the user application passes to ibv_post_send()
+whole IGMP frame including MAC header, IP header, UDP header and UDP payload.
+It is a user responsibility to make IP fragmentation when required payload
+is larger than MTU. Every fragment is a separate L2 frame to transmit.
+The ibv_poll_cq() provides an information about the status of transmit buffer.
+
+On receive path, ibv_poll_cq() returns information about received L2
+packet, the Rx buffer (previously posted by ibv_post_recv() ) contains
+whole L2 frame including MAC header, IP header and UDP header.
+It is a user application responsibility to check if received packet is
+a valid UDP frame so the fragments must be checked and checksums must be
+computed.
+
+IMA API description (NE020 specific):
+User application must create separate CQs for RX and TX path.
+Only single SGE on tranmit is supported.
+User application must post at least 65 rx buffers to keep RX path working.
+
+IMA device:
+IMA requires creation of the /dev/infiniband/nes_ud_sksq device to get
+access to optimized IMA transmit path. The best method for creation of this
+device is manual addition following line to /etc/udev/rules.d/90-ib.rules
+file after OFED distribution installation and rebooting machine.
+
+KERNEL=="nes_ud_sksq", NAME="infiniband/%k", MODE="0644"
+
+As a result the 90-ib.rules should look like:
+
+KERNEL=="umad*", NAME="infiniband/%k"
+KERNEL=="issm*", NAME="infiniband/%k"
+KERNEL=="ucm*", NAME="infiniband/%k", MODE="0666"
+KERNEL=="uverbs*", NAME="infiniband/%k", MODE="0666"
+KERNEL=="ucma", NAME="infiniband/%k", MODE="0666"
+KERNEL=="rdma_cm", NAME="infiniband/%k", MODE="0666"
+KERNEL=="nes_ud_sksq", NAME="infiniband/%k", MODE="0644"
+
 
 
 NetEffect is a trademark of Intel Corporation in the U.S. and other countries.
