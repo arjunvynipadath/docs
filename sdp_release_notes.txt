@@ -38,6 +38,7 @@ Missing features:
     - Added support for 2.6.30 / 2.6.32.
     - Removed whitespaces.
     - Removed sdp_bzcopy_thresh module parameter.
+    - Removed many irq/bh locks
 
 * Bug Fixes
     - Improved recovery from errors.
@@ -47,6 +48,7 @@ Missing features:
     - Fixed device removal.
     - Added support for ib devices that do not support fmr.
     - Improved support for PPC.
+    - Fixed OOB support
 
 * Enhancements
     - Enabled FMR pool cache.
@@ -56,6 +58,8 @@ Missing features:
     - Added usage of max number of SGE from HW capabilities.
     - Added module parameter to disable SDP over RoCE.
     - Made sdp_socket.h available to user applications.
+    - Has CPU affinity per skb handling
+    - RX polling in usec granularity
 
 
 ===============================================================================
@@ -66,8 +70,6 @@ Missing features:
 
 - BUG 1444 - The setsockopt(SO_RCVBUF) is not working in sdp socket. To limit top
   system wide sdp memory usage for recv, use the module parameter top_mem_usage.
-
-- BUG 1923 - Failures when using OOB.
 
 - SDP is at beta level on Infinihost HCA family
 
