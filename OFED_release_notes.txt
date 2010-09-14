@@ -88,7 +88,7 @@ Notes:
 	- Fedora Core12 	2.6.31.5-127.fc12    *
 	- OpenSuSE 11.2		2.6.31.5-0.1-default *
 	- kernel.org		2.6.29, 2.6.30,
-                                2.6.31 and 2.6.32    *
+                                2.6.31, 2.6.32 and 2.6.33    *
 
       * Minimal QA for these versions
 	

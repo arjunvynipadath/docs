@@ -1,8 +1,8 @@
 
              Open Fabrics Enterprise Distribution (OFED)
-                    ehca in OFED 1.5.1 Release Notes
+                    ehca in OFED 1.5.2 Release Notes
 
-                               March 2010
+                            September 2010
 
 
 Overview
@@ -39,6 +39,10 @@ whereby <parameter> is one of the following items:
 New Features
 ------------
 - None
+
+Fixed Bugs ofed-1.5.2
+---------------------
+- Fixed automatic detection if hcall locks should be enabled or not
 
 Fixed Bugs ofed-1.5.1
 ---------------------
@@ -93,10 +97,10 @@ Fixed Bugs ofed-1.3
 
 Available backports
 -------------------
-- RedHat EL5 up3: 2.6.18-128.ELsmp
 - RedHat EL5 up4: 2.6.18-164.ELsmp
+- RedHat EL5 up5: 2.6.18-194.ELsmp
 - SLES11: 2.6.27.19-5.1-smp
-- SLES10SP2: 2.6.16-60
+- SLES11SP1: 2.6.32.12-0.7-default
 - SLES10SP3: 2.6.16.60-0.54.5
 - kernel.org: 2.6.29-32
 
