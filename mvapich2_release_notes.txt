@@ -1,24 +1,23 @@
 ========================================================================
 
               Open Fabrics Enterprise Distribution (OFED)
-               MVAPICH2-1.4.1 in OFED 1.5.1 Release Notes
+               MVAPICH2-1.5.1 in OFED 1.5.2 Release Notes
 
-                               March 2010
+                             September 2010
 
 
 Overview
 --------
 
-These are the release notes for MVAPICH2-1.4.1.  This is OFED's edition
-of the MVAPICH2-1.4.1 release. MVAPICH2 is an MPI-2 implementation over
-InfiniBand, iWARP and RoCEE (RDMAoE) from the Ohio State University
-(http://mvapich.cse.ohio-state.edu/).
+These are the release notes for MVAPICH2-1.5.1. MVAPICH2 is an MPI-2
+implementation over InfiniBand, iWARP and RoCEE (RDMAoE) from the Ohio
+State University (http://mvapich.cse.ohio-state.edu/).
 
 
 User Guide
 ----------
 
-For more information on using MVAPICH2-1.4.1, please visit the user
+For more information on using MVAPICH2-1.5.1, please visit the user
 guide at http://mvapich.cse.ohio-state.edu/support/.
 
 
@@ -27,56 +26,70 @@ Software Dependencies
 
 MVAPICH2 depends on the installation of the OFED Distribution stack with
 OpenSM running. The MPI module also requires an established network
-interface (either InfiniBand, IPoIB, iWARP, uDAPL, or Ethernet). BLCR
-support is needed if built with fault tolerance support. Similarly,
-hwloc support is needed if built with Portable Hardware Locality feature
+interface (either InfiniBand, IPoIB, iWARP, RoCEE uDAPL, or Ethernet).
+BLCR support is needed if built with fault tolerance support. Similarly,
+HWLOC support is needed if built with Portable Hardware Locality feature
 for CPU mapping.
 
 
-New Features
-------------
+ChangeLog
+---------
 
-MVAPICH2 (MPI-2 over InfiniBand and iWARP) is an MPI-2 implementation
-based on MPICH2.  MVAPICH2 1.4.1 is available as a single integrated
-package (with MPICH2 1.0.8p1).  This version of MVAPICH2-1.4.1 for OFED
-has the following changes from MVAPICH2-1.4:
+* Features and Enhancements
+    - Significantly reduce memory footprint on some systems by changing
+      the stack size setting for multi-rail configurations
+    - Optimization to the number of RDMA Fast Path connections
+    - Performance improvements in Scatterv and Gatherv collectives for
+      CH3 interface (Thanks to Dan Kokran and Max Suarez of NASA for
+      identifying the issue)
+    - Tuning of Broadcast Collective
+    - Support for tuning of eager thresholds based on both adapter and
+      platform type
+    - Environment variables for message sizes can now be expressed in
+      short form K=Kilobytes and M=Megabytes (e.g.
+      MV2_IBA_EAGER_THRESHOLD=12K)
+    - Ability to selectively use some or all HCAs using colon separated
+      lists.  e.g. MV2_IBA_HCA=mlx4_0:mlx4_1
+    - Improved Bunch/Scatter mapping for process binding with HWLOC and
+      SMT support (Thanks to Dr. Bernd Kallies of ZIB for ideas and
+      suggestions)
+    - Update to Hydra code from MPICH2-1.3b1
+    - Auto-detection of various iWARP adapters
+    - Specifying MV2_USE_IWARP=1 is no longer needed when using iWARP
+    - Changing automatic eager threshold selection and tuning for iWARP
+      adapters based on number of nodes in the system instead of the
+      number of processes
+    - PSM progress loop optimization for QLogic Adapters (Thanks to Dr.
+      Avneesh Pant of QLogic for the patch)
 
-MVAPICH2-1.4.1 (03/12/10)
-
-* Enhancements since mvapich2-1.4
-   - MPMD launch capability to mpirun_rsh
-   - Portable Hardware Locality (hwloc) support,
-        - Patch suggested by Dr. Bernd Kallies 
-   - Multi-port support for iWARP
-   - Enhanced iWARP design for scalability to higher process count
-   - Ring based startup support for RDMAoE
-
-* Bug fixes since mvapich2-1.4
-   - Fixes for MPE and other profiling tools
-        - As suggested by Anthony Chan (chan@mcs.anl.gov)
-   - Fixes for finalization issue with dynamic process management
-   - Removed overrides to PSM_SHAREDCONTEXT, PSM_SHAREDCONTEXTS_MAX variables.
-        - Suggested by Ben Truscott .
-   - Fixing the error check for buffer aliasing in MPI_Reduce as
-        - Suggested by Dr. Rajeev Thakur 
-   - Fix Totalview integration for RHEL5
-   - Update simplemake to handle build timestamp issues
-   - Fixes for --enable-g={mem, meminit}
-   - Improved logic to control the receive and send requests to handle the
-     limitation of CQ Depth on iWARP
-   - Fixing assertion failures with IMB-EXT tests
-   - VBUF size for very small iWARP clusters bumped up to 33K
-   - Replace internal mallocs with MPIU_Malloc uniformly for correct
-     tracing with --enable-g=mem
-   - Fixing multi-port for iWARP
-   - Fix memory leaks
-   - Shared-memory reduce fixes for MPI_Reduce invoked with MPI_IN_PLACE
-   - Handling RDMA_CM_EVENT_TIMEWAIT_EXIT event
-   - Fix for threaded-ctxdup mpich2 test
-   - Detecting spawn errors
-        - Patch contributed by Dr. Bernd Kallies 
-   - IMB-EXT fixes reported by Yutaka from Cray Japan
-   - Fix alltoall assertion error when LiMIC2 is used
+* Bug fixes
+    - Fix memory leak in registration cache with --enable-g=all
+    - Fix memory leak in operations using datatype modules
+    - Fix for rdma_cross_connect issue for RDMA CM. The server is
+      prevented from initiating a connection.
+    - Don't fail during build if RDMA CM is unavailable
+    - Various mpirun_rsh bug fixes for CH3, Nemesis and uDAPL interfaces
+    - ROMIO panfs build fix
+    - Update panfs for not-so-new ADIO file function pointers
+    - Shared libraries can be generated with unknown compilers
+    - Explicitly link against DL library to prevent build error due to
+      DSO link change in Fedora 13 (introduced with gcc-4.4.3-5.fc13)
+    - Fix regression that prevents the proper use of our internal HWLOC
+      component
+    - Remove spurious debug flags when certain options are selected at
+      build time
+    - Error code added for situation when received eager SMP message is
+      larger than receive buffer
+    - Fix for Gather and GatherV back-to-back hang problem with LiMIC2
+    - Fix for packetized send in Nemesis
+    - Fix related to eager threshold in nemesis ib-netmod
+    - Fix initialization parameter for Nemesis based on adapter type
+    - Fix for uDAPL one sided operations (Thanks to Jakub Fedoruk from
+      Intel for reporting this)
+    - Fix an issue with out-of-order message handling for iWARP
+    - Fixes for memory leak and Shared context Handling in PSM for
+      QLogic Adapters (Thanks to Dr. Avneesh Pant of QLogic for the
+      patch)
 
 
 Main Verification Flows
