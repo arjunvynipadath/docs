@@ -2,7 +2,7 @@
                         Version 1.5.2
                             README
                        
-                         May 2010
+                         September 2010
 
 This is the OpenFabrics Enterprise Distribution (OFED) version 1.5.2
 software package supporting InfiniBand and iWARP fabrics. It is composed
