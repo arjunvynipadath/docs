@@ -13,7 +13,8 @@ Contents:
 6. Using VLANs
 7. Statistic counters
 8. Firmware Requirements
-9. Known Issues
+9. Supported hardware
+10. Known Issues
 
 
 1. Overview
@@ -49,6 +50,10 @@ hardware, mlx4_en must be loaded and the corresponding interface configured.
 - All IB verbs applications which run over IB verbs should work on RoCEE
   links as long as they use GRH headers (that is, as long as they specify use
   of GRH in their address vector)
+- rdma_cm applications working over RoCEE will have the TOS field set to a
+  default value of 3. The default value is given as a module paramter to
+  rdma_cm:
+   def_prec2sl:Default value for SL priority with RoCE. Valid values 0 - 7 (int).
 
 
 4. Ported Applications
@@ -145,12 +150,16 @@ driver.
 
 8. Firmware Requirements
 ========================
-RoCEE requires ConnectX firmware version 2.7.000 or newer. Some features
-require newer, not yet released firmware versions. For example, loopback
-support is available in firmware version 2.7.700 or later.
+RoCEE has limited support with firmware 2.7.700 and will be fully supported
+with firmware 2.8.000.
 
 
-8. Known Issues
+9. Supported hardware
+=====================
+Currently, ConnectX B0 hardware is supported. A0 hardware may have issues.
+
+
+10. Known Issues
 ===============
 - PowerPC and ia64 architectures are not supported. x32 architectures were
   not tested.
