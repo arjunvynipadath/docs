@@ -16,8 +16,9 @@ Table of Contents
 7. New features and bug fixes since OFED 1.4.1
 8. New features and bug fixes since OFED 1.4.2
 9. New features and bug fixes since OFED 1.5
-10. Known Issues
-11. mlx4 available parameters
+10. New features and bug fixes since OFED 1.5.1
+11. Known Issues
+12. mlx4 available parameters
 
 ===============================================================================
 1. Overview
@@ -224,7 +225,25 @@ Bug Fixes
   bonding and mlx4_en drivers in several operating systems.
 
 ===============================================================================
-10. Known Issues
+10. New features and bug fixes since OFED 1.5.1
+===============================================================================
+9.1 Changes and New Features
+----------------------------
+1. Added RAW QP support
+2. Extend range of log_mtts_per_seg - upper bound moved from 5 to 7.
+3. Add 0xff70 vendor ID support for MADs.
+4. Added support for GID change event.
+
+9.2 Bug Fixes
+-------------
+1. Fix chunk sg list overflow in mlx4_alloc_icm()
+2. Fix bug in invalidation of counter index.
+3. Fix bug in catching netdev events for updating GID table.
+4. Bug fixes in populating GID table for RoCE.
+5. XRC locking fixes, and prevention of null dereference.
+6. Add spinlock to xrc_reg_list changes and scanning in interrupt context.
+===============================================================================
+11. Known Issues
 ===============================================================================
 - The SQD feature is not supported
 - To load the driver on machines with a 64KB default page size, the UAR bar
@@ -239,7 +258,7 @@ Bug Fixes
 
      
 ================================================================================
-11. mlx4 available parameters
+12. mlx4 available parameters
 ================================================================================
 In order to set mlx4 parameters, add the following line(s) to /etc/modpobe.conf:
    options mlx4_core parameter=<value>
