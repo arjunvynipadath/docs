@@ -1,7 +1,7 @@
 	    Open Fabrics Enterprise Distribution (OFED)
-	  ConnectX driver (mlx4) in OFED 1.5.1 Release Notes
+	  ConnectX driver (mlx4) in OFED 1.5.2 Release Notes
 
-  			March 2010
+  			September 2010
 
 
 ===============================================================================
@@ -227,14 +227,15 @@ Bug Fixes
 ===============================================================================
 10. New features and bug fixes since OFED 1.5.1
 ===============================================================================
-9.1 Changes and New Features
+10.1 Changes and New Features
 ----------------------------
 1. Added RAW QP support
 2. Extend range of log_mtts_per_seg - upper bound moved from 5 to 7.
 3. Add 0xff70 vendor ID support for MADs.
 4. Added support for GID change event.
+5. Better interrupts spreading under heavy RX load (mlx4_en)
 
-9.2 Bug Fixes
+10.2 Bug Fixes
 -------------
 1. Fix chunk sg list overflow in mlx4_alloc_icm()
 2. Fix bug in invalidation of counter index.
@@ -242,6 +243,8 @@ Bug Fixes
 4. Bug fixes in populating GID table for RoCE.
 5. XRC locking fixes, and prevention of null dereference.
 6. Add spinlock to xrc_reg_list changes and scanning in interrupt context.
+7. Fixed offload changes via Ethtool for VLAN interfaces
+
 ===============================================================================
 11. Known Issues
 ===============================================================================
