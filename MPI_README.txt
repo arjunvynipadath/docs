@@ -1,7 +1,7 @@
 
 			   MPI in OFED 1.5.2 README
 
-				October 2010
+				September 2010
 
 ===============================================================================
 Table of Contents
