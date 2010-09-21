@@ -14,7 +14,8 @@ Contents:
 7. Statistic counters
 8. Firmware Requirements
 9. Supported hardware
-10. Known Issues
+10. Added fearues
+11. Known Issues
 
 
 1. Overview
@@ -159,7 +160,20 @@ with firmware 2.8.000.
 Currently, ConnectX B0 hardware is supported. A0 hardware may have issues.
 
 
-10. Known Issues
+10. Added fearues
+=================
+ibdev2netdev is a utility that displays the association between an HCA's port
+and the network interface bound to it. Example run:
+
+sw417:/usr/src/packages/SOURCES/ofa_kernel-1.5.2 # ibdev2netdev 
+mlx4_0 port 1 ==> ib0 (Down)
+mlx4_0 port 2 ==> ib1 (Down)
+mlx4_1 port 1 ==> eth2 (Up)
+mlx4_1 port 2 ==> eth3 (Up)
+
+
+
+11. Known Issues
 ===============
 - PowerPC and ia64 architectures are not supported. x32 architectures were
   not tested.
