@@ -292,8 +292,10 @@ mlx4_core parameters:
 			(int)
  enable_qos:		enable Quality of Service support in the HCA
 			(default: off) (bool)
-internal_err_reset:	reset device on internal errors if non-zero
-			(default 1) (int)
+ enable_pre_t11_mode:	set FCoXX to pre-T11 mode if non-zero
+			(default 0) (int)
+ internal_err_reset:	reset device on internal errors if non-zero
+ 			(default 1) (int)
 
 mlx4_ib parameters:
  debug_level: 		enable debug tracing if > 0 (default 0)
