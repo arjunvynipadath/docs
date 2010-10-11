@@ -17,8 +17,9 @@ Table of Contents
 8. New features and bug fixes since OFED 1.4.2
 9. New features and bug fixes since OFED 1.5
 10. New features and bug fixes since OFED 1.5.1
-11. Known Issues
-12. mlx4 available parameters
+11. New features and bug fixes since OFED 1.5.2
+12. Known Issues
+13. mlx4 available parameters
 
 ===============================================================================
 1. Overview
@@ -246,7 +247,23 @@ Bug Fixes
 7. Fixed offload changes via Ethtool for VLAN interfaces
 
 ===============================================================================
-11. Known Issues
+11. New features and bug fixes since OFED 1.5.2
+===============================================================================
+11.1 Changes and new features
+-----------------------------
+1. RoCE counters are now added to the regular Ethernet counters. The counters
+for RoCE specific traffic are at the same place are not changed.
+
+11.2 Bug fixes
+--------------
+1. Fix race when reading node desctiption through MADs.
+2. Fix modify CQ so each of moderation paramters is independent.
+3. Limit the number of fast registration work requests to match HW capabilities.
+
+
+
+===============================================================================
+12. Known Issues
 ===============================================================================
 - The SQD feature is not supported
 - To load the driver on machines with a 64KB default page size, the UAR bar
@@ -261,7 +278,7 @@ Bug Fixes
 
      
 ================================================================================
-12. mlx4 available parameters
+13. mlx4 available parameters
 ================================================================================
 In order to set mlx4 parameters, add the following line(s) to /etc/modpobe.conf:
    options mlx4_core parameter=<value>
