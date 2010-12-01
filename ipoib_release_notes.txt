@@ -17,7 +17,8 @@ Table of Contents
 8. Bug Fixes and Enhancements Since OFED 1.4
 9. Bug Fixes and Enhancements Since OFED 1.4.2
 10. Bug Fixes and Enhancements Since OFED 1.5.0
-11. Performance tuning
+11. Bug Fixes and Enhancements Since OFED 1.5.2
+12. Performance tuning
 
 ===============================================================================
 1. Overview
@@ -445,7 +446,13 @@ significant bit set (e.g., 0x8000 in the example above).
   transmitter can be stopped by the CM path but not re-enabled.
 
 ===============================================================================
-11. Performance Tuning
+11. Bug Fixes and Enhancements Since OFED 1.5.2
+===============================================================================
+1. Fix IPoIB rx_frames and rx_usecs to conform to ethtool documentation.
+
+
+===============================================================================
+12. Performance Tuning
 ===============================================================================
 When IPoIB is configured to run in connected mode, tcp parameter tuning is
 performed at driver startup to improve the throughput of medium and large
