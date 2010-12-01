@@ -9,62 +9,55 @@
 Table of Contents
 ===============================================================================
 1. Overview
-2. Bug Fixes and Enhancements since OFED 1.5.1
+2. Bug Fixes and Enhancements since OFED 1.5.2
 3. Known Issues
 4. Verification Applications/Flows/Tests
 
 ===============================================================================
 1. Overview
 ===============================================================================
-SDP in OFED is at GA level for OFED 1.5.2
+SDP in OFED is at GA level for MLNX OFED 1.5.2
 Main changes are:
-- Fixed stability issues
-- Latency is 4 msec
-- BW without jitter
-- Improved device removal
+- Inline + blueflame support
+- Stability issues
 - Bug fixes
 
 Missing features:
 - AIO support
-- inline send support
 - ZCopy pipeline mode
+- BUG2160 - Use TCP port space - will enable libsdp bind both TCP and SDP
+  sockets in an atomic operation.
+- BUG2147 - Support ZCopy when accessing socket in multithreaded environment
+- Use fast reg mr's instead of fmr's  
 
 ===============================================================================
-2. Bug Fixes and Enhancements since OFED 1.5.1
+2. Bug Fixes and Enhancements since OFED 1.5.2
 ===============================================================================
 * Cleanups
-    - Removed unnecessary variables.
-    - Removed printk warning.
-    - Added support for 2.6.30 / 2.6.32.
-    - Removed whitespaces.
-    - Removed sdp_bzcopy_thresh module parameter.
-    - Removed many irq/bh locks
+    - Added support for 2.6.34 / 2.6.36.
 
 * Bug Fixes
+    - Fixed compilation problems on 32 bit hosts
+    - Do not compile in debug mode when not asked.
     - Improved recovery from errors.
-    - Fixed datapath hangings.
-    - Fixed module reference count.
-    - Fixed orphan count logic issues.
-    - Fixed device removal.
-    - Added support for ib devices that do not support fmr.
-    - Improved support for PPC.
-    - Fixed OOB support
 
 * Enhancements
-    - Enabled FMR pool cache.
-    - Limited FMR resources.
-    - Added support for handling multi iov's in ZCOPY.
-    - Added usage of polling in rx.
-    - Added usage of max number of SGE from HW capabilities.
-    - Added module parameter to disable SDP over RoCE.
-    - Made sdp_socket.h available to user applications.
-    - Has CPU affinity per skb handling
-    - RX polling in usec granularity
+    - more statistics in /proc/sdpstats
+    - added debugfs for sdp:
+     	- sdpprf was moved from /proc to debugfs/sdp
+    	- debugfs/<socket_id> - Socket history
 
 
 ===============================================================================
 3. Known Issues
 ===============================================================================
+- Sometimes socket bind is failed with EINVAL, because TCP socket was binded
+  successfully but SDP was occupied. See Bugzilla 2159 and Bugzilla 2160
+
+- when SO_REUSEADDR is set, can't bind more than one socket to IP_ANY and a
+  specific port. TCP does allow doing that unless one of the sockets is
+  listening.
+
 - BUG 1331 - TCP allows connecting to IP_ANY - 0.0.0.0 (as a destination address!).
   SDP does not allow connecting to IP_ANY and will reject the connection.
 
@@ -108,6 +101,13 @@ Missing features:
        set the tavor_quirk module parameter of the rdma_cm module to value 1
        (default: 0).
 
+- When waiting for RX, driver first poll and then arm interrupt and goes to
+  sleep. polling duration could be set by recv_poll module parameter. The
+  higher this value is, the CPU utilization is higher, and number of
+  interrupts is lower.
+  This should be fine tuned according to the specific environment and
+  application latency.
+
 - ZCopy is enabled by default for blocks larger than 64K. ZCopy can be disabled 
   by setting the module paramter sdp_zcopy_thresh to zero or to any other value 
   by setting it to another non zero value.
@@ -126,8 +126,14 @@ Missing features:
   ZCOPY performance is more efficient in weak cpu and multi streams, whereas 
   BCOPY is more efficient in single stream.
 
-- To use SDP over RoCE, please set 'sdp_link_layer_ib_only' module parameter 
-  to 0.
+- To disable using SDP over RoCE, set 'sdp_link_layer_ib_only' module parameter 
+  to 1.
+
+- to enable debugging of data path, compile driver with CONFIG_SDP_DEBUG_DATA.
+  traces are stored in a cyclic buffer in debufs/sdpprf.
+  To dump trace to dmesg, use sdp_debug_level:
+  bit 0: trace packets
+  bit 1: trace SDP driver internals
 
 ===============================================================================
 4. Verification Applications/Flows/Tests
@@ -139,6 +145,8 @@ Missing features:
 - LTP socket tests
 - iperf-2.0.2         
 - ttcp
+- openmpi
+- openmpi + Intel MPI benchmarks
 - Threaded and forking echo client server examples
 - Various Java client server applications (SUN:jre, BEA:jrockit/WebLogic, GNU:gij/gcj)
 - Many UNIX utilities to verify that pre-load did not harm the applications
