@@ -1,0 +1,17 @@
+=========================================================================================
+MPI compilation fails with PGI compiler:
+PGC-F-0249-#error -- "Never use <bits/byteswap.h> directly; include <byteswap.h> instead." (/opt/pgi/linux86/8.0-1/include/bits/byteswap.h: 21) 
+=========================================================================================
+
+The issue caused by the system "endian.h" file that directly include "bits/byteswap.h". This means in PGI version of "bits/byteswap.h, "endian.h" needs to be added to the list of header files that are allowed to call it directly. So by changing line 20 of "/opt/pgi/linux86/8.0-1/include/bits/byteswap.h" from:
+Code:
+#if !defined _BYTESWAP_H && !defined _NETINET_IN_H
+# error "Never use <bits/byteswap.h> directly; include <byteswap.h> instead."
+#endif
+to
+Code:
+#if !defined _BYTESWAP_H && !defined _NETINET_IN_H && !defined  _ENDIAN_H
+# error "Never use <bits/byteswap.h> directly; include <byteswap.h> instead."
+#endif
+you can work around the problem.
+
