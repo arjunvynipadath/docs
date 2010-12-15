@@ -135,6 +135,10 @@ Missing features:
   bit 0: trace packets
   bit 1: trace SDP driver internals
 
+- BUG2185 - kernel panic at sdp thresholds_test when accessing sdpstats  
+  It is reported that sometimes accessing /proc/net/sdpstats causes kernel
+  panic.
+
 ===============================================================================
 4. Verification Applications/Flows/Tests
 ===============================================================================
