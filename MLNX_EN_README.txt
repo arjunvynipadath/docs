@@ -1,16 +1,14 @@
 ===============================================================================
 	MLNX_EN driver for Mellanox Adapter Cards with 10GigE Support 
-		      README for OFED 1.5.1
+		      README for OFED 1.5.2
 			   
-			    March 2010
+			  December 2010
 ===============================================================================
 
 Contents:
 =========
 1. Overview
 2. Ethernet Driver Usage and Configuration
-3. Known Issues
-4. Troubleshooting
 
 
 1. Overview
@@ -53,8 +51,8 @@ The MLNX_EN driver release exposes the following capabilities:
   Example:
   #> ethtool -i eth2
   driver: mlx4_en (MT_0BD0110004)
-  version: 1.5.1 (March 2010)
-  firmware-version: 2.7.0
+  version: 1.5.2 (March 2010)
+  firmware-version: 2.8.000
   bus-info: 0000:0e:00.0
 
 - To query stateless offload status run:
@@ -89,12 +87,6 @@ The MLNX_EN driver release exposes the following capabilities:
 - To modify rings size run:
   #> ethtool -G eth<x> [rx <N>] [tx <N>]
 
-- To view card's vpd run:
-  #> ethtool -e eth<x>
-
-- To modify card's vpd run:
-  #> ethtool -E eth<x>
-
 - To obtain additional device statistics, run:
   #> ethtool -S eth<x>
 
@@ -118,20 +110,4 @@ added to /etc/modprobe.conf file:
 
 Values of all parameters can be observed in /sys/module/mlx4_en/parameters/. 
 
-
-3. Known Issues
-===============
-- For RedHat EL4, adding and removing multiple vlan interfaces over the network
-  interface created by the mlx4_en driver may lead to printing the following:
-  "kernel: unregister_netdevice: waiting for eth<x.y> to become free. Usage count ="
-
-4. Troubleshooting
-==================
-Problem: I restarted the driver and received the following error message:
-   mlx4_core 0000:13:00.0: PCI device did not come back after reset, aborting.
-   mlx4_core 0000:13:00.0: Failed to reset HCA, aborting.
-
-Suggestion: This error appears if you have burnt new firmware to the adapter
-   card but have not rebooted the machine yet. Reboot the machine to allow the
-   new firmware to take effect.
 
