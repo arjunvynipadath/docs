@@ -1,7 +1,7 @@
 	    Open Fabrics Enterprise Distribution (OFED)
 	  ConnectX driver (mlx4) in OFED 1.5.2 Release Notes
 
-  			October 2010
+  			December 2010
 
 
 ===============================================================================
@@ -44,7 +44,7 @@ configurations, the driver is split into three modules:
 ===============================================================================
 2. Supported firmware versions
 ===============================================================================
-- This release was tested with FW 2.7.000.
+- This release was tested with FW 2.8.0000
 - The minimal version to use is 2.3.000. 
 - To use both IB and Ethernet (VPI) use FW version 2.6.000 or higher
 
@@ -272,6 +272,11 @@ changed during driver startup.
 6. Fix port speed reporting for RoCE ports.
 7. Limit GID entries for VLAN to match hardware capabilities.
 8. Fix RoCE link state report.
+9. Workaround firmware bug reporting wrong number of blue flame registers.
+10. Bug fix in kernel pos_send when VLANs are used.
+11. Fix in mlx4_en for handling VLAN operations when working under bond
+   interfaces.
+12.Fix Ethtool transceiver type report for mlx4_en
 
 
 ===============================================================================
