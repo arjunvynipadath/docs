@@ -1,8 +1,8 @@
 
                 Open Fabrics Enterprise Distribution (OFED)
-                    SRP in OFED 1.5.1 Release Notes
+                    SRP in OFED 1.5.2 Release Notes
 
-                            March 2010
+                            December 2010
 
 
 ==============================================================================
@@ -161,7 +161,7 @@ ibsrpdm usage
 1. Detecting reachable targets
 
    a. To detect all targets reachable by the SRP initiator via the default
-      umad device (/dev/umad0), execute the following command:
+      umad device (/dev/infiniband/umad0), execute the following command:
       $ ibsrpdm
 
       This command will output information on each SRP target detected, in
@@ -545,6 +545,37 @@ should make sure this will not occur. One solution may be to stop "haldaemon"
   You do not see this problem with srp_daemon mode since srp_daemon will
   retry to connect.
 
+- The combination of "weak" single lun srp target, I/O with big block size,
+  default max_command_per_lun=63 while using /dev/urandom to create file with
+  ext3 fs on srp lun, may cause ext3 remount with "read-only" flag
+  ie.
+  Example:
+  sdb1 is first partition of srp lun sdb, ext3 fs is created
+  $ mount /dev/sdb1 /mnt/sdb1; cd /mnt/sdb1
+  $ dd if=/dev/urandom of=10G-file bs=1G count=10
+  --> ext3 fs may remount with read-only flag
+
+  Workarounds:
+  ------------
+  a. Log into the target with small max_command_per_lun (3,4,8)
+     $ echo id_ext=0002c9030008fc0c,ioc_guid=0002c9030008fc0c,
+     dgid=fe800000000000000002c90300084417,max_cmd_per_lun=4,pkey=ffff,
+     service_id=0002c9030008fc0c > /sys/class/infiniband_srp/srp-mlx4_0-1/add_target 
+ 
+  ----------------OR-------------------
+  
+  b. Run dd with /dev/zero instead of /dev/urandom
+     $ dd if=/dev/zero of=10G-file bs=1G count=10
+  
+  ----------------OR-------------------
+  
+  c. Run dd with smaller block size
+     $ dd if=/dev/urandom of=10G-file bs=128K count=40000
+  
+  ----------------OR-------------------
+
+  d. Combine the a,b,c steps (This is the recommended workaround)
+ 
 ==============================================================================
 14. Vendor Specific Notes
 ==============================================================================
