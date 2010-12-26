@@ -1,7 +1,7 @@
 	    Open Fabrics Enterprise Distribution (OFED)
-	               Version 1.5.2
+	               Version 1.5.3
 	               Release Notes
-	               September 2010
+	               December 2010
 
 
 ===============================================================================
@@ -17,7 +17,8 @@ Table of Contents
 2. Main Changes from OFED 1.4.2
 3. Main Changes from OFED 1.5
 4. Main Changes from OFED 1.5.1
-5. Known Issues
+5. Main Changes from OFED 1.5.2
+6. Known Issues
 
 
 ===============================================================================
@@ -72,23 +73,15 @@ Notes:
 	- ia64
 	
   o   Linux Operating Systems:
-	- RedHat EL4 up7	2.6.9-78.ELsmp * (last release of OFED supporting this OS)
-	- RedHat EL4 up8	2.6.9-89.ELsmp * (last release of OFED supporting this OS)
-	- RedHat EL5 up3	2.6.18-128.el5 * (last release of OFED supporting this OS)
 	- RedHat EL5 up4	2.6.18-164.el5
 	- RedHat EL5 up5 	2.6.18-194.el5
-	- SLES10 SP2 		2.6.16.60-0.21-smp * (last release of OFED supporting this OS)
 	- SLES10 SP3 		2.6.16.60-0.54-smp  
 	- SLES11 		2.6.27.19-5-default
 	- SLES11 SP1 		2.6.32.12-0.7-default
-	- OEL 4 up7		2.6.9-78.ELsmp * (last release of OFED supporting this OS)
-	- OEL 4 up8		2.6.9-89.ELsmp * (last release of OFED supporting this OS)
-	- CentOS5.3     	2.6.18-128.el5 * (last release of OFED supporting this OS)
 	- CentOS5.4     	2.6.18-164.el5
 	- CentOS5.5     	2.6.18-194.el5
 	- OpenSuSE 11.2		2.6.31.5-0.1-default *
-	- kernel.org		2.6.29, 2.6.30,
-                                2.6.31, 2.6.32 and 2.6.33    *
+	- kernel.org		2.6.29 - 2.6.33    *
 
       * Minimal QA for these versions
 	
@@ -259,15 +252,35 @@ for each package in the docs directory.
             mpitests to rev 3.2-923
 
 ===============================================================================
-5. Known Issues
+5. Main Changes from OFED 1.5.2
+===============================================================================
+1. Updated packages:
+   dapl-2.0.31.tar.gz
+   librdmacm-1.0.14.tar.gz
+   ibacm-1.0.4.tar.gz
+   ibutils-1.5.6.tar.gz
+   libmlx4-1.0-0.15.g4caebef.tar.gz
+   libnes-1.1.1.tar.gz
+   libsdp-1.1.106-0.5.gd48f6f9.tar.gz
+   mstflint-1.4-0.8.gc569a81.tar.gz
+   perftest-1.3.0-0.37.gc269d2d.tar.gz
+   sdpnetstat-1.60-0.1.g4e0a557.tar.gz
+
+   - MPI
+     openmpi-1.4.3-1.src.rpm
+
+2. Added RHEL6 support
+
+===============================================================================
+6. Known Issues
 ===============================================================================
 The following is a list of general limitations and known issues of the various
-components of the OFED 1.5.2 release.
+components of the OFED 1.5.3 release.
 
 1. When upgrading from an earlier OFED version, the installation script does
    not stop the earlier OFED version prior to uninstalling it. 
    Workaround: Stop the old OFED stack (/etc/init.d/openibd stop) before 
-   upgrading to OFED 1.5.2 or reboot the server after OFED installation.
+   upgrading to OFED 1.5.3 or reboot the server after OFED installation.
 2. Memory registration by the user is limited according to administrator
    setting. See "Pinning (Locking) User Memory Pages" in OFED_tips.txt for
    system configuration.
