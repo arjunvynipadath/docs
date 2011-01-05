@@ -141,6 +141,12 @@ SDP in OFED is at GA level for MLNX OFED 1.5.2
 - BUG2185 - Occasionally, accessing /proc/net/sdpstats, causes kernel
   panic.
 
+- For set-user-ID/set-group-ID ELF binaries, only libraries in the standard
+  search directories that are also set-user-ID.  Since always installing
+  libsdp with this bit on is a security vulnerability, the default behavior is
+  to reset this bit.  A user that want to run such binaries should modify the
+  libsdp.spec file.
+
 ===============================================================================
 5. Verification Applications/Flows/Tests
 ===============================================================================
