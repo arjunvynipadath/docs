@@ -270,6 +270,7 @@ for each package in the docs directory.
      openmpi-1.4.3-1.src.rpm
 
 2. Added RHEL6 support
+3. Added RHEL5.6 support
 
 ===============================================================================
 6. Known Issues
