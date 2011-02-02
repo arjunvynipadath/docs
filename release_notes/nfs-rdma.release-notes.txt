@@ -12,6 +12,7 @@
 Table of Contents
 ~~~~~~~~~~~~~~~~~
  - Overview
+ - OFED 1.5.3 limitations
  - OFED 1.5.1 limitations
  - Getting Help
  - Installation
@@ -31,6 +32,19 @@ Overview
   wire bandwidth at minimal client CPU) under many workloads. The code passes
   the full Connectathon test suite and operates over both Infiniband and iWARP
   RDMA adapters.
+
+OFED 1.5.3 limitations:
+~~~~~~~~~~~~~~~~~~~~~
+  NFSoRDMA was removed from the list of packages in the install script to
+  prevent it's installation by default.
+  To force NFSoRDMA installation one need to add the following lines to the
+  ofed.conf:
+  nfsrdma=y
+  rnfs-utils=y
+  To get ofed.conf, run 
+  # ./install.pl -p
+  After adding the lines above to ofed.conf, to install OFED run 
+  # ./install.pl -c ofed.conf
 
 OFED 1.5.1 limitations:
 ~~~~~~~~~~~~~~~~~~~~~

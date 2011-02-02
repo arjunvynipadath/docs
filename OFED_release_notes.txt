@@ -271,6 +271,16 @@ for each package in the docs directory.
 
 2. Added RHEL6 support
 3. Added RHEL5.6 support
+4. NFSoRDMA was removed from the list of packages in the install script to
+   prevent it's installation by default.
+   To force NFSoRDMA installation one need to add the following lines to the
+   ofed.conf:
+   nfsrdma=y
+   rnfs-utils=y
+   To get ofed.conf, run 
+   # ./install.pl -p
+   After adding the lines above to ofed.conf, to install OFED run 
+   # ./install.pl -c ofed.conf
 
 ===============================================================================
 6. Known Issues
