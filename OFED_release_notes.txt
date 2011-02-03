@@ -1,7 +1,7 @@
 	    Open Fabrics Enterprise Distribution (OFED)
 	               Version 1.5.3
 	               Release Notes
-	               December 2010
+	               February 2011
 
 
 ===============================================================================
@@ -74,14 +74,16 @@ Notes:
 	
   o   Linux Operating Systems:
 	- RedHat EL5 up4	2.6.18-164.el5
-	- RedHat EL5 up5 	2.6.18-194.el5
+	- RedHat EL5 up5	2.6.18-194.el5
+	- RedHat EL5 up6	2.6.18-238.el5
+	- RedHat EL6		2.6.32-71.el6
 	- SLES10 SP3 		2.6.16.60-0.54-smp  
 	- SLES11 		2.6.27.19-5-default
 	- SLES11 SP1 		2.6.32.12-0.7-default
 	- CentOS5.4     	2.6.18-164.el5
 	- CentOS5.5     	2.6.18-194.el5
 	- OpenSuSE 11.2		2.6.31.5-0.1-default *
-	- kernel.org		2.6.29 - 2.6.33    *
+	- kernel.org		2.6.29 - 2.6.36    *
 
       * Minimal QA for these versions
 	
