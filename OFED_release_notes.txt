@@ -8,7 +8,7 @@
 Table of Contents
 ===============================================================================
 1. Overview, which includes:
-	- OFED Distribution Rev 1.5.2 Contents
+	- OFED Distribution Rev 1.5.3 Contents
 	- Supported Platforms and Operating Systems
 	- Supported HCA and RNIC Adapter Cards and Firmware Versions
 	- Tested Switch Platforms
@@ -25,7 +25,7 @@ Table of Contents
 1. Overview
 ===============================================================================
 These are the release notes of OpenFabrics Enterprise Distribution (OFED)
-release 1.5.2. The OFED software package is composed of several software modules,
+release 1.5.3. The OFED software package is composed of several software modules,
 and is intended for use on a computer cluster constructed as an InfiniBand
 subnet or iWARP network. 
 
@@ -33,7 +33,7 @@ Note: If you plan to upgrade the OFED package on your cluster, please upgrade
 all of its nodes to this new version.
 
 
-1.1 OFED 1.5.2 Contents
+1.1 OFED 1.5.3 Contents
 -----------------------
 The OFED package contains the following components:
  - OpenFabrics core and ULPs:
@@ -54,6 +54,8 @@ The OFED package contains the following components:
  - Extra packages:
 	- open-iscsi: open-iscsi initiator with iSER support
 	- ib-bonding: Bonding driver for IPoIB interface
+	- infinipath-psm: Performance-Scaled Messaging API, an accelerated 
+	  interface to QLogic HCAs
  - Sources of all software modules (under conditions mentioned in the modules'
    LICENSE files)
  - Documentation
@@ -103,10 +105,8 @@ well as iWARP RNICs by Chelsio Communications and Intel.
 	http://www.mellanox.com/content/pages.php?pg=firmware_download
 
   o   Qlogic HCAs:
-	- QHT7140 QLogic InfiniPath SDR HTX HCA
-	- QLE7140 QLogic InfiniPath SDR PCIe HCA
-	- QLE7240 QLogic InfiniPath DDR x8 PCIe HCA
-	- QLE7280 QLogic IniniPath DDR x16 PCIe HCA
+	- QLogic TrueScale DDR PCIe x8 and x16 HCAs
+	- QLogic TrueScale QDR PCIe x8 Gen2 HCAs
 
   o   IBM HCAs:
 	- GX Dual-port SDR 4x IB HCA
@@ -134,7 +134,7 @@ companies:
 
 1.5 Third Party Packages
 ------------------------
-The following third party packages have been tested with OFED 1.5.2:
+The following third party packages have been tested with OFED 1.5.3:
 - Intel MPI, Version 3.2.2
 - Intel MPI, Version 4.0 beta 
 
@@ -322,7 +322,7 @@ components of the OFED 1.5.3 release.
     /etc/modprobe.d/unsupported-modules. Without this the modules will not
     load.
 11. iSER is supported on kernel.org 2.6.30, 2.6.31 and 2.6.32 only.
-    OFED-1.5.2 will not install iSER on other kernels, and the original iSER
+    OFED-1.5.3 will not install iSER on other kernels, and the original iSER
     module that comes with the Linux distribution will stop working due to a
     mismatch in the symbols version.
 12. On SLES10 SP3, the kernel 2.6.16.60-0.54.5 should be updated to
