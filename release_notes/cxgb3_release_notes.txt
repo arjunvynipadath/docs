@@ -1,14 +1,14 @@
             Open Fabrics Enterprise Distribution (OFED)
                 CHELSIO T3 RNIC RELEASE NOTES
-			September 2010
+			February 2011
 
 
 The iw_cxgb3 and cxgb3 modules provide RDMA and NIC support for the
 Chelsio S series adapters.  Make sure you choose the 'cxgb3' and
-'libcxgb3' options when generating your ofed rpms.
+'libcxgb3' options when generating your OFED rpms.
 
 ============================================
-New for ofed-1.5.2
+New for OFED-1.5.3
 ============================================
 
 - Bug fixes. Various upstream bug fixes have been included in this
@@ -245,8 +245,8 @@ msi             - whether to use MSI or MSI-X.  Default is 2.
 Updating Firmware:
 ============================================
 
-This release requires firmware version 7.10.0, and Protocol SRAM
-version 1.1.0.  These versions are included in the ofed-1.5.2 release
+This release requires firmware version 7.11.0, and Protocol SRAM
+version 1.1.0.  These versions are included in the OFED-1.5.3 release
 and will be automatically loaded when the cxgb3 module is loaded and
 the interface configured.  To load later/newer versions of the firmware,
 follow this procedure:
