@@ -19,7 +19,7 @@ Code:
 you can work around the problem.
 
 ================================================================================
-ofa_kernel compilation fails on PPC64 witj kernel >= 2.6.32
+ofa_kernel compilation fails on PPC64 with kernel >= 2.6.28
 ================================================================================
 
 Compilation Error:
