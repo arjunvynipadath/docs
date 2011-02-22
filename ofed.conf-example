@@ -41,6 +41,7 @@ libibmad-static=y
 libibmad-debuginfo=y
 ibsim=y
 ibsim-debuginfo=y
+ibacm=y
 librdmacm=y
 librdmacm-utils=y
 librdmacm-devel=y

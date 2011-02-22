@@ -41,7 +41,7 @@ The OFED package contains the following components:
 	- iWARP RNIC driver (cxgb3, nes)
 	- core
 	- Upper Layer Protocols: IPoIB, SDP, SRP Initiator and target, iSER 
-	  Initiator and target, RDS, uDAPL, qlgc_vnic and NFS-RDMA.
+	  Initiator and target, RDS, uDAPL, qlgc_vnic and NFS-RDMA*.
  - OpenFabrics utilities:
 	- OpenSM (OSM): InfiniBand Subnet Manager
 	- Diagnostic tools
@@ -65,6 +65,8 @@ Notes:
 2. All other OFED components are of production quality.
 3. See release notes for each package in the docs directory.
 4. Any Topspin copyright belongs to Cisco Systems, Inc.
+5. NFS-RDMA will not be installed by default. See "Main Changes from
+   OFED 1.5.2"
 
 1.2 Supported Platforms and Operating Systems
 ---------------------------------------------
@@ -99,7 +101,7 @@ well as iWARP RNICs by Chelsio Communications and Intel.
 	- InfiniHost III Ex (MemFree: fw-25218 Rev 5.3.000 
 	                     with memory: fw-25208 Rev 4.8.200)
 	- InfiniHost III Lx (fw-25204 Rev 1.2.000)
-	- ConnectX IB (fw-25408 Rev 2.7.700)
+	- ConnectX IB (fw-25408 Rev 2.8.000)
 
 	For official firmware versions please see:
 	http://www.mellanox.com/content/pages.php?pg=firmware_download
