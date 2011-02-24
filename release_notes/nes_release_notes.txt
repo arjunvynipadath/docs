@@ -1,6 +1,6 @@
             Open Fabrics Enterprise Distribution (OFED)
       NetEffect Ethernet Cluster Server Adapter Release Notes
-                           September 2010
+                           February 2011
 
 
 
@@ -10,20 +10,20 @@ support for the NetEffect Ethernet Cluster Server Adapters.
 ==========
 What's New
 ==========
-OFED 1.5.2 contains several enhancements and bug fixes to iw_nes driver.
+OFED 1.5.3 contains several enhancements and bug fixes to iw_nes driver.
 
-* Add new feature iWarp Multicast Acceleration (IMA).
-* Add module option to disable extra doorbell read after a write.
-* Change CQ event notification to not fire event unless there is a
-  new CQE not polled.
-* Fix payload calculation for post receive with more than one SGE.
-* Fix crash when CLOSE was indicated twice due to connection close
-  during remote peer's timeout on pending MPA reply.
-* Fix ifdown hang by not calling ib_unregister_device() till removal
-  of iw_nes module.
-* Handle RST when state of connection is in FIN_WAIT2.
-* Correct properties for various nes_query_{qp, port, device} calls.
-
+* Correct AEQE operation.
+* Add backports for 2.6.35 and 2.6.36 kernels.
+* Fix for problem of lack of HW limit checking for MG attach for IMA.
+* Fix for a problem with non-aligned buffers crash during post_recv for IMA.
+* Fix for possible crash when RAW QP resources are destroyed.
+* Fix for problem of RAW QP transition state to	ERR.
+* Fix a problem with sending packets with VLAN flag for IMA.
+* Enable bonds on iw_nes.
+* Fix hazard of sending ibevent for unregistered device.
+* Fix for sending IB_EVENT_PORT_ERR/PORT_ACTIVE	event on link state interrupt.
+* Fix SFP link down detection issue with switch port disable.
+* Fix incorrect SFP link status detection on driver init.
 
 ============================================
 Required Setting - RDMA Unify TCP port space
@@ -121,30 +121,14 @@ mpd.hosts file
 mpd.hosts is a text file with a list of nodes, one per line, in the MPI ring.  
 Use either fully qualified hostname or IP address.
 
+===========================
+100% CPU Utilization remark
+===========================
+Most of the RDMA applications use CQ Polling mode to decrease latency.
+This operational mode can cause 100% CPU utilization.
 
-=======================================
-Recommended Settings for HP MPI 2.2.7
-=======================================
-Add the following to mpirun command:
-
-    -1sided
-
-Example mpirun command with uDAPL-2.0:
-
-    mpirun -np 2 -hostfile /opt/mpd.hosts
-           -UDAPL -prot -intra=shm
-           -e MPI_HASIC_UDAPL=ofa-v2-iwarp
-           -1sided
-           /opt/hpmpi/help/hello_world
-        
-Example mpirun command with uDAPL-1.2:
-
-    mpirun -np 2 -hostfile /opt/mpd.hosts
-           -UDAPL -prot -intra=shm
-           -e MPI_HASIC_UDAPL=OpenIB-iwarp
-           -1sided
-           /opt/hpmpi/help/hello_world
-    
+To switch to Event Driven mode and lower CPU utilization please refer to README or 
+Release Notes for specific application.
 
 ============================================================
 Recommended Settings for Platform MPI 7.1 (formerly HP-MPI)
@@ -171,21 +155,30 @@ Example mpirun command with uDAPL-1.2:
            
 
 ==============================================
-Recommended Settings for Intel MPI 3.2.x/4.0.x
+Recommended Settings for Intel MPI 4.0.x
 ==============================================
 Add the following to mpiexec command:
 
     -genv I_MPI_FALLBACK_DEVICE 0
-    -genv I_MPI_DEVICE rdma:OpenIB-iwarp
+    -genv I_MPI_FABRICS shm:dapl 
+    -genv I_MPI_DAPL_PROVIDER ofa-v2-iwarp
     -genv I_MPI_USE_RENDEZVOUS_RDMA_WRITE 1
 
 Example mpiexec command line for uDAPL-2.0:
 
     mpiexec -genv I_MPI_FALLBACK_DEVICE 0
-            -genv I_MPI_DEVICE rdma:ofa-v2-iwarp
+            -genv I_MPI_DEVICE shm:dapl
+            -genv I_MPI_DAPL_PROVIDER OpenIB-iwarp
+            -genv I_MPI_DAPL_PROVIDER ofa-v2-iwarp
             -genv I_MPI_USE_RENDEZVOUS_RDMA_WRITE 1
             -ppn 1 -n 2
-            /opt/intel/impi/3.2.2/bin64/IMB-MPI1
+            /opt/intel/impi/4.0.0.025/bin64/IMB-MPI1
+
+Intel MPI use CQ Polling mode as a default.
+To switch to wait mode add the following to mpiexec command:
+     -genv I_MPI_WAIT_MODE 1
+
+NOTE: Wait mode supports the sock device only.
 
 Example mpiexec command line for uDAPL-1.2:
     mpiexec -genv I_MPI_FALLBACK_DEVICE 0
@@ -198,37 +191,40 @@ Example mpiexec command line for uDAPL-1.2:
 ========================================
 Recommended Setting for MVAPICH2 and OFA
 ========================================
-Add the following to the mpirun command:
+Example mpirun_rsh command line:
 
-    -env MV2_USE_IWARP_MODE 1
+    mpirun_rsh -ssh -np 2 -hostfile /root/mpd.hosts
+            /usr/mpi/gcc/mvapich2-1.6/tests/osu_benchmarks-3.1.1/osu_latency
 
-Example mpiexec command line:
-
-    mpiexec -l -n 2
-            -env MV2_USE_IWARP_MODE 1
-            /usr/mpi/gcc/mvapich2-1.5/tests/osu_benchmarks-3.1.1/osu_latency
-
+MVAPICH2 use CQ Polling mode as a default.
+To switch to Blocking mode add the following to mpirun_rsh command:
+     MV2_USE_BLOCKING=1
 
 ==========================================
 Recommended Setting for MVAPICH2 and uDAPL
 ==========================================
-Add the following to the mpirun command for 64 or more processes:
+Add the following to the mpirun_rsh command for 64 or more processes:
 
     -env MV2_ON_DEMAND_THRESHOLD <number of processes>
 
-Example mpirun command with uDAPL-2.0:
+Example mpirun_rsh command with uDAPL-2.0:
 
-    mpiexec -l -n 64
-            -env MV2_DAPL_PROVIDER ofa-v2-iwarp
-            -env MV2_ON_DEMAND_THRESHOLD 64
-            /usr/mpi/gcc/mvapich2-1.5/tests/IMB-3.2/IMB-MPI1
+    mpirun_rsh -ssh -np 64 -hostfile /root/mpd.hosts
+            MV2_DAPL_PROVIDER=ofa-v2-iwarp
+            MV2_ON_DEMAND_THRESHOLD=64
+            /usr/mpi/gcc/mvapich2-1.6/tests/IMB-3.2/IMB-MPI1
 
-Example mpirun command with uDAPL-1.2:
+Example mpirun_rsh command with uDAPL-1.2:
 
-    mpiexec -l -n 64
-            -env MV2_DAPL_PROVIDER OpenIB-iwarp
-            -env MV2_ON_DEMAND_THRESHOLD 64
-            /usr/mpi/gcc/mvapich2-1.5/tests/IMB-3.2/IMB-MPI1
+    mpirun_rsh -ssh -np 64 -hostfile /root/mpd.hosts
+            MV2_DAPL_PROVIDER=OpenIB-iwarp
+            MV2_ON_DEMAND_THRESHOLD=64
+            /usr/mpi/gcc/mvapich2-1.6/tests/IMB-3.2/IMB-MPI1
+
+MVAPICH2 use CQ Polling mode as a default.
+To switch to Blocking mode add the following to mpirun_rsh command:
+     MV2_USE_BLOCKING=1
+
 
 
 ===========================
@@ -242,7 +238,7 @@ http://www.open-mpi.org/faq/?category=tuning#setting-mca-params
 
 
 =======================================
-Recommended Settings for Open MPI 1.4.2
+Recommended Settings for Open MPI 1.4.3
 =======================================
 Allow the sender to use RDMA Writes:
 
@@ -254,7 +250,10 @@ Example mpirun command line:
            -mca btl openib,self,sm
            -mca btl_mpi_leave_pinned 0
            -mca btl_openib_flags 2
-           /usr/mpi/gcc/openmpi-1.4.2/tests/IMB-3.2/IMB-MPI1
+           /usr/mpi/gcc/openmpi-1.4.3/tests/IMB-3.2/IMB-MPI1
+
+OpenMPI use CQ Polling mode as a default.
+No command parameter available to swith to Event Driven mode.
 
 
 ===================================
