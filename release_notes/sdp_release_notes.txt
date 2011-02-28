@@ -1,5 +1,5 @@
              Open Fabrics Enterprise Distribution (OFED)
-                    SDP in MLNX_OFED 1.5.3 Release Notes
+                    SDP in OFED 1.5.3 Release Notes
 
                           March 2011
 
