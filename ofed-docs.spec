@@ -33,7 +33,7 @@ Name: ofed-docs
 Version: @VERSION@
 Release: 0
 License: GPL/BSD
-Url: https://openib.org/svn/gen2/branches/1.1/ofed/docs
+Url: http://git.openfabrics.org/git?p=ofed_1_5/docs.git;a=summary
 Group: Documentation/Man
 Source: %{name}-%{version}.tar.gz
 BuildRoot: %{?build_root:%{build_root}}%{!?build_root:/var/tmp/%{name}-%{version}-root}
