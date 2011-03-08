@@ -1,24 +1,24 @@
 ========================================================================
 
               Open Fabrics Enterprise Distribution (OFED)
-               MVAPICH2-1.5.1 in OFED 1.5.2 Release Notes
+                MVAPICH2-1.6 in OFED 1.5.3 Release Notes
 
-                             September 2010
+                               March 2011
 
 
 Overview
 --------
 
-These are the release notes for MVAPICH2-1.5.1. MVAPICH2 is an MPI-2
-implementation over InfiniBand, iWARP and RoCEE (RDMAoE) from the Ohio
+These are the release notes for MVAPICH2-1.6. MVAPICH2 is an MPI-2
+implementation over InfiniBand, iWARP and RoCE (RDMAoE) from the Ohio
 State University (http://mvapich.cse.ohio-state.edu/).
 
 
 User Guide
 ----------
 
-For more information on using MVAPICH2-1.5.1, please visit the user
-guide at http://mvapich.cse.ohio-state.edu/support/.
+For more information on using MVAPICH2-1.6, please visit the user guide
+at http://mvapich.cse.ohio-state.edu/support/.
 
 
 Software Dependencies
@@ -26,7 +26,7 @@ Software Dependencies
 
 MVAPICH2 depends on the installation of the OFED Distribution stack with
 OpenSM running. The MPI module also requires an established network
-interface (either InfiniBand, IPoIB, iWARP, RoCEE uDAPL, or Ethernet).
+interface (either InfiniBand, IPoIB, iWARP, RoCE uDAPL, or Ethernet).
 BLCR support is needed if built with fault tolerance support. Similarly,
 HWLOC support is needed if built with Portable Hardware Locality feature
 for CPU mapping.
@@ -36,76 +36,125 @@ ChangeLog
 ---------
 
 * Features and Enhancements
-    - Significantly reduce memory footprint on some systems by changing
-      the stack size setting for multi-rail configurations
-    - Optimization to the number of RDMA Fast Path connections
-    - Performance improvements in Scatterv and Gatherv collectives for
-      CH3 interface (Thanks to Dan Kokran and Max Suarez of NASA for
-      identifying the issue)
-    - Tuning of Broadcast Collective
-    - Support for tuning of eager thresholds based on both adapter and
-      platform type
-    - Environment variables for message sizes can now be expressed in
-      short form K=Kilobytes and M=Megabytes (e.g.
-      MV2_IBA_EAGER_THRESHOLD=12K)
-    - Ability to selectively use some or all HCAs using colon separated
-      lists.  e.g. MV2_IBA_HCA=mlx4_0:mlx4_1
-    - Improved Bunch/Scatter mapping for process binding with HWLOC and
-      SMT support (Thanks to Dr. Bernd Kallies of ZIB for ideas and
-      suggestions)
-    - Update to Hydra code from MPICH2-1.3b1
-    - Auto-detection of various iWARP adapters
-    - Specifying MV2_USE_IWARP=1 is no longer needed when using iWARP
-    - Changing automatic eager threshold selection and tuning for iWARP
-      adapters based on number of nodes in the system instead of the
-      number of processes
-    - PSM progress loop optimization for QLogic Adapters (Thanks to Dr.
-      Avneesh Pant of QLogic for the patch)
+    - Optimization and enhanced performance for clusters with nVIDIA
+      GPU adapters (with and without GPUDirect technology)
+    - Support for InfiniBand Quality of Service (QoS) with multiple lanes
+    - Support for 3D torus topology with appropriate SL settings
+        - For both CH3 and Nemesis interfaces
+        - Thanks to Jim Schutt, Marcus Epperson and John Nagle from
+          Sandia for the initial patch
+    - Enhanced R3 rendezvous protocol
+        - For both CH3 and Nemesis interfaces
+    - Robust RDMA Fast Path setup to avoid memory allocation
+      failures
+        - For both CH3 and Nemesis interfaces
+    - Multiple design enhancements for better performance of
+      small and medium sized messages
+    - Using LiMIC2 for efficient intra-node RMA transfer to avoid extra 
+      memory copies
+    - Upgraded to LiMIC2 version 0.5.4
+    - Support of Shared-Memory-Nemesis interface on multi-core platforms
+      requiring intra-node communication only (SMP-only systems, 
+      laptops, etc. )
+    - Enhancements to mpirun_rsh job start-up scheme on large-scale systems
+    - Optimization in MPI_Finalize
+    - XRC support with Hydra Process Manager
+    - Updated Hydra launcher with MPICH2-1.3.3 Hydra process manager
+    - Hydra is the default mpiexec process manager
+    - Enhancements and optimizations for one sided Put and Get operations
+    - Removing the limitation on number of concurrent windows in RMA
+      operations
+    - Optimized thresholds for one-sided RMA operations
+    - Support for process-to-rail binding policy (bunch, scatter and
+      user-defined) in multi-rail configurations (OFA-IB-CH3, OFA-iWARP-CH3,
+      and OFA-RoCE-CH3 interfaces)
+    - Enhancements to Multi-rail Design and features including striping
+      of one-sided messages
+    - Dynamic detection of multiple InfiniBand adapters and using these
+      by default in multi-rail configurations (OLA-IB-CH3, OFA-iWARP-CH3 and
+      OFA-RoCE-CH3 interfaces)
+    - Optimized and tuned algorithms for Gather, Scatter, Reduce,
+      AllReduce and AllGather collective  operations
+    - Enhanced support for multi-threaded applications
+    - Fast Checkpoint-Restart support with aggregation scheme
+    - Job Pause-Migration-Restart Framework for Pro-active Fault-Tolerance
+    - Support for new standardized Fault Tolerant Backplane (FTB) Events
+      for Checkpoint-Restart and Job Pause-Migration-Restart Framework
+    - Enhanced designs for automatic detection of various
+      architectures and adapters
+    - Configuration file support (similar to the one available in MVAPICH).
+      Provides a convenient method for handling all runtime variables 
+      through a configuration file.
+    - User-friendly configuration options to enable/disable various
+      checkpoint/restart and migration features
+    - Enabled ROMIO's auto detection scheme for filetypes
+      on Lustre file system
+    - Improved error checking for system and BLCR calls in
+      checkpoint-restart and migration code path
+    - Enhanced OSU Micro-benchmarks suite (version 3.3)
+    - Building and installation of OSU micro benchmarks during default
+      MVAPICH2 installation
+    - Improved configure help for MVAPICH2 features
+    - Improved usability of process to CPU mapping with support of
+      delimiters (',' , '-') in CPU listing
+	- Thanks to Gilles Civario for the initial patch
+    - Use of gfortran as the default F77 compiler
 
 * Bug fixes
-    - Fix memory leak in registration cache with --enable-g=all
-    - Fix memory leak in operations using datatype modules
-    - Fix for rdma_cross_connect issue for RDMA CM. The server is
-      prevented from initiating a connection.
-    - Don't fail during build if RDMA CM is unavailable
-    - Various mpirun_rsh bug fixes for CH3, Nemesis and uDAPL interfaces
-    - ROMIO panfs build fix
-    - Update panfs for not-so-new ADIO file function pointers
-    - Shared libraries can be generated with unknown compilers
-    - Explicitly link against DL library to prevent build error due to
-      DSO link change in Fedora 13 (introduced with gcc-4.4.3-5.fc13)
-    - Fix regression that prevents the proper use of our internal HWLOC
-      component
-    - Remove spurious debug flags when certain options are selected at
-      build time
-    - Error code added for situation when received eager SMP message is
-      larger than receive buffer
-    - Fix for Gather and GatherV back-to-back hang problem with LiMIC2
-    - Fix for packetized send in Nemesis
-    - Fix related to eager threshold in nemesis ib-netmod
-    - Fix initialization parameter for Nemesis based on adapter type
-    - Fix for uDAPL one sided operations (Thanks to Jakub Fedoruk from
-      Intel for reporting this)
-    - Fix an issue with out-of-order message handling for iWARP
-    - Fixes for memory leak and Shared context Handling in PSM for
-      QLogic Adapters (Thanks to Dr. Avneesh Pant of QLogic for the
-      patch)
-
+    - Fix for shmat() return code check
+    - Fix for issues in one-sided RMA
+    - Fix for issues with inter-communicator collectives in Nemesis
+    - KNEM patch for osu_bibw issue with KNEM version 0.9.2
+    - Fix for osu_bibw error with Shared-memory-Nemesis interface
+    - Fix for a hang in collective when thread level is set to multiple
+    - Fix for intel test errors with rsend, bsend and ssend 
+      operations in Nemesis
+    - Fix for memory free issue when it allocated by scandir
+    - Fix for a hang in Finalize
+    - Fix for issue with MPIU_Find_local_and_external when it is called
+      from MPIDI_CH3I_comm_create
+    - Fix for handling CPPFLAGS values with spaces
+    - Dynamic Process Management to work with XRC support
+    - Fix related to disabling CPU affinity when shared memory is 
+      turned off at run time
+    - Resolving a hang in mpirun_rsh termination when CR is enabled
+    - Fixing issue in MPI_Allreduce and Reduce when called with MPI_IN_PLACE
+        - Thanks to the initial patch by Alexander Alekhin
+    - Fix for threading related errors with comm_dup
+    - Fix for alignment issues in RDMA Fast Path
+    - Fix for extra memcpy in header caching
+    - Only set FC and F77 if gfortran is executable
+    - Fix in aggregate ADIO alignment
+    - XRC connection management
+    - Fixes in registration cache
+    - Fixes for multiple memory leaks
+    - Fix for issues in mpirun_rsh
+    - Checks before enabling aggregation and migration
+    - Fixing the build errors with --disable-cxx
+	- Thanks to Bright Yang for reporting this issue
 
 Main Verification Flows
 -----------------------
 
-In order to verify the correctness of MVAPICH2-1.4.1, the following
-tests and parameters were run.
+In order to verify the correctness of MVAPICH2-1.6, the following tests
+and parameters were run.
 
 Test                            Description
-====================================================================
+=======================================================================
 Intel                           Intel's MPI functionality test suite
 OSU Benchmarks                  OSU's performance tests
 IMB                             Intel's MPI Benchmark test
 mpich2                          Test suite distributed with MPICH2
 NAS                             NAS Parallel Benchmarks (NPB3.2)
+SPEC MPI2007                    SPEC's benchmark suite for MPI
 
+
+User Guide
+----------
+
+The MVAPICH2 team provides a very detailed guide to build, install and
+use MVAPICH2 on various platforms. The latest version of the user guide
+can be obtained from http://mvapich.cse.ohio-state.edu/support/
 
 Mailing List
 ------------
