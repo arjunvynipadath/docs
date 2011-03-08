@@ -2,8 +2,8 @@
                      --------------------------------------------
 
 *******************************************************************************
-RELEASE: OFED 1.5
-DATE:    Dec 2009
+RELEASE: ibutils 1.5.7
+DATE:    Mar 2011
 
 ===============================================================================
 Table of Contents
@@ -41,30 +41,17 @@ ibdiag:   This package provides 3 tools which provide the user interface
 2. New Features
 ===============================================================================
 
-* New "From the Edge" topology matching algorithm.
-  Integrated into ibtopodiff when run with the flag -e
+* Added scripts that convert OSM dump files for ibdmchk
 
-* New library - libsysapi
-  The library is a C API for IBDM C++ objects
-
-* Added ibnl definition files for Mellanox and Sun IB QDR products
-
-* Added new feature to ibdiagnet - general device info
-
-* ibdiagnet now can get port 0 as a parameterr (for managed switches).
-
+* ibutils: added support for GUIDInfo MAD in ibis and simulator
 
 ===============================================================================
 3. Major Bugs Fixed
 ===============================================================================
 
-* ibutils: various fixes in build process (dependencies, parallel build, etc)
+* ibmgtsim: fixed various bugs with running simulations
 
-* ibdiagnet: fixed crash with -r flag
-
-* ibdiagnet: fixed regular expression for pkey matching
-
-* ibdiagnet: ibdiagnet.lst file has device IDs with trailing zeroes - fixed
+* ibutils: fixed rpmbuild with and w/o ibmgtsim
 
 ===============================================================================
 4. Known Issues
@@ -72,3 +59,11 @@ ibdiag:   This package provides 3 tools which provide the user interface
 
 - Ibdiagnet "-wt" option may generate a bad topology file when running on a
   cluster that contains complex switch systems.
+
+- ibutils works only partially on RHEL6 and any other distro with TCL 8.5.
+  ibdiagnet/ibdiagpath/ibis don't work with TCL 8.5 due to a change in
+  TCL behavior: the built-in TCL function "dump" on TCL 8.5 always includes
+  field names.
+  Until the fix, any user script that uses ibis needs to be fixed in order
+  to function correctly on TCL 8.5
+  
