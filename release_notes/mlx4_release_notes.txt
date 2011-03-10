@@ -1,7 +1,7 @@
 	    Open Fabrics Enterprise Distribution (OFED)
-	  ConnectX driver (mlx4) in OFED 1.5.2 Release Notes
+	  ConnectX driver (mlx4) in OFED 1.5.3 Release Notes
 
-  			December 2010
+  			March 2011
 
 
 ===============================================================================
@@ -44,7 +44,7 @@ configurations, the driver is split into three modules:
 ===============================================================================
 2. Supported firmware versions
 ===============================================================================
-- This release was tested with FW 2.8.0000
+- This release was tested with FW 2.8.0600
 - The minimal version to use is 2.3.000. 
 - To use both IB and Ethernet (VPI) use FW version 2.6.000 or higher
 
@@ -252,32 +252,39 @@ Bug Fixes
 11.1 Changes and new features
 -----------------------------
 1. RoCE counters are now added to the regular Ethernet counters. The counters
-for RoCE specific traffic are at the same place and are not changed.
+   for RoCE specific traffic are at the same place and are not changed.
 2. Forward any vendor ID SMP MADs to firmware for handling.
 3. Add blue flame support for kernel consumers. This allows lower latencies to
-be achieved. To use blue flame, a consumer needs to create the QP with inline
-support.
+   be achieved. To use blue flame, a consumer needs to create the QP with
+   inline support.
+4. Enabled raw eth QPs to work with inline and blueflame
+5. Enabled new steering model in mlx4_en. The RX packets are now steered
+   through the MCG table instead of Mac table for unicast, and default entry
+   for multicast.
+6. Added support for promiscuous mode in the new steering model.
 
 11.2 Bug fixes
 --------------
-1. Fix race when reading node desctription through MADs.
-2. Fix modify CQ so each of moderation parameters is independent.
-3. Limit the number of fast registration work requests to match HW capabilities.
-4 Changes to node-description via sysfs are now propagated to FW (for FW
-2.8.000 and later).  This enables FW to send a 144 trap to OpenSM regarding the
-change, so that OpenSM can read that nodes updated description.  This fixes an
-old race condition, where OpenSM read the nodes description before it was
-changed during driver startup.
-5. Fix max fast registration WRs that can be posted to CX.
-6. Fix port speed reporting for RoCE ports.
-7. Limit GID entries for VLAN to match hardware capabilities.
-8. Fix RoCE link state report.
-9. Workaround firmware bug reporting wrong number of blue flame registers.
+1.  Fix race when reading node description through MADs.
+2.  Fix modify CQ so each of moderation parameters is independent.
+3.  Limit the number of fast registration work requests to match HW
+    capabilities.
+4   Changes to node-description via sysfs are now propagated to FW (for FW
+    2.8.000 and later).  This enables FW to send a 144 trap to OpenSM regarding
+    the change, so that OpenSM can read that nodes updated description.  This
+    fixes an old race condition, where OpenSM read the nodes description before
+    it was changed during driver startup.
+5.  Fix max fast registration WRs that can be posted to CX.
+6.  Fix port speed reporting for RoCE ports.
+7.  Limit GID entries for VLAN to match hardware capabilities.
+8.  Fix RoCE link state report.
+9.  Workaround firmware bug, reporting wrong number of blue flame registers.
 10. Bug fix in kernel pos_send when VLANs are used.
 11. Fix in mlx4_en for handling VLAN operations when working under bond
-   interfaces.
-12.Fix Ethtool transceiver type report for mlx4_en
-
+    interfaces.
+12. Fix Ethtool transceiver type report for mlx4_en
+13. Avoid vunmpa invalid pointer in allocation bad flow
+14. Fix mlx4_ib_reg_xrc_rcv_qp() locking
 
 ===============================================================================
 12. Known Issues

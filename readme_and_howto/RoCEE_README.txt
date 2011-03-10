@@ -1,6 +1,6 @@
 ===============================================================================
-                       OFED-1.5.1 RoCEE Support README
-			        February 2010
+                       OFED-1.5.3 RoCEE Support README
+			        March 2011
 ===============================================================================
 
 Contents:
@@ -151,8 +151,8 @@ driver.
 
 8. Firmware Requirements
 ========================
-RoCEE has limited support with firmware 2.7.700 and will be fully supported
-with firmware 2.8.000.
+RoCEE has limited support with firmware 2.7.700 and is fully supported
+with firmware 2.8.000 and above.
 
 
 9. Supported hardware
@@ -165,7 +165,7 @@ Currently, ConnectX B0 hardware is supported. A0 hardware may have issues.
 ibdev2netdev is a utility that displays the association between an HCA's port
 and the network interface bound to it. Example run:
 
-sw417:/usr/src/packages/SOURCES/ofa_kernel-1.5.2 # ibdev2netdev 
+# ibdev2netdev 
 mlx4_0 port 1 ==> ib0 (Down)
 mlx4_0 port 2 ==> ib1 (Down)
 mlx4_1 port 1 ==> eth2 (Up)
