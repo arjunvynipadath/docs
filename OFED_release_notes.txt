@@ -1,7 +1,7 @@
 	    Open Fabrics Enterprise Distribution (OFED)
 	               Version 1.5.3
 	               Release Notes
-	               February 2011
+	               March 2011
 
 
 ===============================================================================
@@ -101,7 +101,7 @@ well as iWARP RNICs by Chelsio Communications and Intel.
 	- InfiniHost III Ex (MemFree: fw-25218 Rev 5.3.000 
 	                     with memory: fw-25208 Rev 4.8.200)
 	- InfiniHost III Lx (fw-25204 Rev 1.2.000)
-	- ConnectX IB (fw-25408 Rev 2.8.000)
+	- ConnectX IB (fw-25408 Rev 2.8.0600)
 
 	For official firmware versions please see:
 	http://www.mellanox.com/content/pages.php?pg=firmware_download
@@ -163,8 +163,8 @@ For details see HOWTO.build_ofed.
    infiniband-diags-1.5.8
    opensm-3.3.8
    ibutils-1.5.7
-   libibverbs-1.1.4-0.18.g387c870
-   libmlx4-1.0-0.16.g677fa61
+   libibverbs-1.1.4-1.22.g7257cd3.tar.gz
+   libmlx4-1.0.1-1.18.gb810a27.tar.gz
    libnes-1.1.1
    infinipath-psm-1.14
    libsdp-1.1.108-0.15.gd7fdb72
@@ -178,15 +178,16 @@ For details see HOWTO.build_ofed.
 
 2. Added RHEL6 support
 3. Added RHEL5.6 support
-4. Improved RAW Ethernet QP support (requires ConnectX/ConnectX2 FW >= 2.8.0000)
+4. Improved RAW Ethernet QP support (requires ConnectX/ConnectX2 FW >= 2.8.0600)
 5. NFSoRDMA was removed from the list of packages in the install script to
-   prevent it's installation by default.
-   To force NFSoRDMA installation one need to add the following lines to the
-   ofed.conf:
+   prevent its installation by default.
+   To force NFSoRDMA installation, add the following lines to the ofed.conf:
    nfsrdma=y
    rnfs-utils=y
+   
    To get ofed.conf, run 
    # ./install.pl -p
+   
    After adding the lines above to ofed.conf, to install OFED run 
    # ./install.pl -c ofed.conf
 
@@ -337,6 +338,7 @@ components of the OFED 1.5.3 release.
 12. On SLES10 SP3, the kernel 2.6.16.60-0.54.5 should be updated to
     2.6.16.60-0.59.1 or later. The original kernel may cause kernel panic
     during '/etc/init.d/openibd restart'.
+13. ConnectX/ConnectX2 in VPI mode are not supported in PPC64
 
 Note: See the release notes of each component for additional issues.
 
