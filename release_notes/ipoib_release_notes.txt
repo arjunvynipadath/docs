@@ -1,7 +1,7 @@
 	     Open Fabrics Enterprise Distribution (OFED)
-		    IPoIB in OFED 1.5.2 Release Notes
+		    IPoIB in OFED 1.5.3 Release Notes
 			  
-			   December 2010
+			   March 2011
 
 
 ===============================================================================
@@ -449,7 +449,8 @@ significant bit set (e.g., 0x8000 in the example above).
 11. Bug Fixes and Enhancements Since OFED 1.5.2
 ===============================================================================
 1. Fix IPoIB rx_frames and rx_usecs to conform to ethtool documentation.
-
+2. Fix faulty list maintenance in path and neigh list
+3. Leave stale send-only multicast groups
 
 ===============================================================================
 12. Performance Tuning
