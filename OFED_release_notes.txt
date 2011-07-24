@@ -1,7 +1,7 @@
 	    Open Fabrics Enterprise Distribution (OFED)
-	               Version 1.5.3.1
+	               Version 1.5.3.2
 	               Release Notes
-	               March 2011
+	               July 2011
 
 
 ===============================================================================
@@ -14,12 +14,13 @@ Table of Contents
 	- Tested Switch Platforms
 	- Third party Test Packages
 	- OFED sources
-2. Main Changes from OFED 1.5.3
-3. Main Changes from OFED 1.5.2
-4. Main Changes from OFED 1.5.1
-5. Main Changes from OFED 1.5
-6. Main Changes from OFED 1.4.2
-7. Known Issues
+2. Main Changes from OFED 1.5.3.1
+3. Main Changes from OFED 1.5.3
+4. Main Changes from OFED 1.5.2
+5. Main Changes from OFED 1.5.1
+6. Main Changes from OFED 1.5
+7. Main Changes from OFED 1.4.2
+8. Known Issues
 
 
 ===============================================================================
@@ -78,17 +79,17 @@ Notes:
 	- ia64
 	
   o   Linux Operating Systems:
-	- RedHat EL5 up4	2.6.18-164.el5
 	- RedHat EL5 up5	2.6.18-194.el5
 	- RedHat EL5 up6	2.6.18-238.el5
+	- RedHat EL5 up7	2.6.18-274.el5
 	- RedHat EL6		2.6.32-71.el6
+	- RedHat EL6.1		2.6.32-131.0.15.el6
 	- SLES10 SP3 		2.6.16.60-0.54-smp  
 	- SLES11 		2.6.27.19-5-default
 	- SLES11 SP1 		2.6.32.12-0.7-default
-	- CentOS5.4     	2.6.18-164.el5
 	- CentOS5.5     	2.6.18-194.el5
 	- OpenSuSE 11.2		2.6.31.5-0.1-default *
-	- kernel.org		2.6.29 - 2.6.36    *
+	- kernel.org		2.6.29 - 2.6.39    *
 
       * Minimal QA for these versions
 	
@@ -153,12 +154,20 @@ are included in the OFED sources directory.
 For details see HOWTO.build_ofed.
 
 ===============================================================================
-2. Main Changes from OFED 1.5.3
+2. Main Changes from OFED 1.5.3.1
+===============================================================================
+1. Add RHEL5.7 support
+2. Add RHEL6.1 support
+3. Add kernel.org 2.6.37 - 2.6.39 support
+4. ib-bonding-0.9.0-43 (SLES10 SP4 support)
+
+===============================================================================
+3. Main Changes from OFED 1.5.3
 ===============================================================================
 1. Fix QIB support on SLES10 SP3
 
 ===============================================================================
-3. Main Changes from OFED 1.5.2
+4. Main Changes from OFED 1.5.2
 ===============================================================================
 1. Updated packages:
    dapl-2.0.32
@@ -198,7 +207,7 @@ For details see HOWTO.build_ofed.
    # ./install.pl -c ofed.conf
 
 ===============================================================================
-4. Main Changes from OFED 1.5.1
+5. Main Changes from OFED 1.5.1
 ===============================================================================
 1. Added RHEL5.5, SLES11 SP1 and kernel 2.6.33 support
 2. /etc/modprobe.conf deprecated
@@ -232,7 +241,7 @@ For details see HOWTO.build_ofed.
             mpitests to rev 3.2-923
 
 ===============================================================================
-5. Main Changes from OFED 1.5
+6. Main Changes from OFED 1.5
 ===============================================================================
 1. Added RoCEE support - see RoCEE_README.txt
 2. Added enhanced atomic operations to ConnectX (kernel only).
@@ -248,7 +257,7 @@ For details see HOWTO.build_ofed.
 11. Bug fixes
 
 ===============================================================================
-6. Main Changes from OFED 1.4.2
+7. Main Changes from OFED 1.4.2
 ===============================================================================
 Note: For details regarding the various changes,  please see the release notes
 for each package in the docs directory.
@@ -301,7 +310,7 @@ for each package in the docs directory.
 	o NFS-RDMA is in Beta level
 
 ===============================================================================
-7. Known Issues
+8. Known Issues
 ===============================================================================
 The following is a list of general limitations and known issues of the various
 components of the OFED 1.5.3 release.
