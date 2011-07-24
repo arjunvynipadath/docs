@@ -1,7 +1,7 @@
 ===============================================================================
-                      OFED 1.5.2 for Linux
+                      OFED 1.5.3.2
             Mellanox Firmware Burning and Diagnostic Utilities 
-		         December 2010
+		        July 2011
 ===============================================================================
       
 ===============================================================================
@@ -39,23 +39,13 @@ Package Contents:
 ===============================================================================
 2. New Features
 ===============================================================================
+* mstflint tool functionality updated to the MFT-2.7.0/flint 
+  See MFT documentation on Mellanox web site for details.
+  Highlight features:
 
-* Added support for flash type SST25VF016B in mstflint
-
-* Added support for flash type M25PX16 in mstflint
-
-* Added an option to set the VSD and GUIDs (mstflint command 'sv' and 'sg') in 
-  a binary image file. This is useful for production to prepare images for pre-
-  assembly flash burning. These new commands are supported by Mellanox 4th 
-  generation devices.
-  
-* Added an option to set the VSD and GUIDs (mstflint command 'sv' and 'sg') on
-  an already burnt device. These command re-burn the existing image with the
-  given GUIDs or VSD.
-  When the 'sg' command is applied on a device with blank (0xff) GUIDs, it
-  updates the GUIDs without re-burning the image.
-
-* mstregdump: Updated address list for ConnectX2 device.
+  - Support ConnectX-3 flash access 
+  - Support SwitchX flash access
+  - Support HW access restriction key (where supported FW)
 
 ===============================================================================
 3. Bugs Fixed 
@@ -66,6 +56,7 @@ Package Contents:
 ===============================================================================
 4. Known Issues
 ===============================================================================
+* The mstregdump tool does not support ConnectX3 and SwitchX device.
 
 * Rarely you may get the following error message when running mstflint:
       Warning: memory access to device 0a:00.0 failed: Input/output error.
