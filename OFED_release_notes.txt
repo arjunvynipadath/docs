@@ -1,7 +1,7 @@
 	    Open Fabrics Enterprise Distribution (OFED)
 	               Version 1.5.4
 	               Release Notes
-	               November 2011
+	               December 2011
 
 
 ===============================================================================
@@ -157,16 +157,16 @@ OFED-1.5.4 Main Changes from OFED 1.5.3.2
 4. Updated packages:
    libibverbs-1.1.4-1.24.gb89d4d7
    libmlx4-1.0.1-1.20.g6771d22
-   libnes-1.1.2
+   libnes-1.1.3
    libcxgb3-1.3.1
-   libcxgb4-1.1.1
+   libcxgb4-1.2.0
    dapl-2.0.34
    ibacm-1.0.5
    librdmacm-1.0.15
    infinipath-psm-2.9-926.1005_open
    ibutils-1.5.7-0.1.g05a9d1a
-   perftest-1.3.0-0.54.ge7b1832
-   mstflint-1.4-1.15.gdd62ac0
+   perftest-1.3.0-0.56.gd6f6093
+   mstflint-1.4-1.18.g1adcfbf
    
    Management:
    libibmad-1.3.8
@@ -174,7 +174,7 @@ OFED-1.5.4 Main Changes from OFED 1.5.3.2
    opensm-3.3.12
    
    MPI:
-   mvapich2-1.7-2.2011svn4978
+   mvapich2-1.7-5.2011svn5031
 
 OFED-1.5.3.2 Main Changes from OFED 1.5.3.1
 -------------------------------------------------------------------------------
