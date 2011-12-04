@@ -9,6 +9,8 @@
  Adapted for OFED 1.5.1 (from linux-2.6.30/Documentation/filesystems/nfs-rdma.txt)
  by Jon Mason
 
+ Further adapted for OFED 1.5.4 by Jeff Becker
+
 Table of Contents
 ~~~~~~~~~~~~~~~~~
  - Overview
@@ -32,6 +34,13 @@ Overview
   wire bandwidth at minimal client CPU) under many workloads. The code passes
   the full Connectathon test suite and operates over both Infiniband and iWARP
   RDMA adapters.
+
+OFED 1.5.4 limitations:
+~~~~~~~~~~~~~~~~~~~~~
+  NFS/RDMA has been ported and tested on the following kernels:
+  - Redhat Enterprise Linux (RHEL) version 6.1
+  - SUSE Linux Enterprise Server (SLES) version 11 service pack 1
+  - kernel.org 2.6.30-2.6.38
 
 OFED 1.5.3 limitations:
 ~~~~~~~~~~~~~~~~~~~~~
@@ -82,10 +91,8 @@ Installation
     Testing has been performed using several Mellanox-based IB cards and 
     the Chelsio cxgb3 iWARP adapter.
 
-  - Install OFED 1.5.1
+  - Install OFED 1.5.4
 
-    NFS/RDMA has been tested on RHEL5.2, RHEL 5.3, RHEL5.4, SLES11,
-    kernels 2.6.22, 2.6.25, and 2.6.30.  On these kernels,
     NFS-RDMA will be installed by default if you simply select "install all",
     and can be specifically included by a "custom" install.
 
@@ -211,12 +218,7 @@ NFS/RDMA Setup
 
     Mount the NFS/RDMA server:
 
-    $ mount.rnfs <IPoIB-server-name-or-address>:/<export> /mnt -o proto=rdma,port=20049 
-
-    NOTE: For kernels < 2.6.23, the "-i" flag must be passed into mount.rnfs.
-    This option allows the mount command to ignore the kernel version check.  If
-    not disabled, the check will prevent passing arguments to the kernel and not
-    allow the updated version of NFS to accept the "rdma" NFS option.
+    $ mount -t nfs4 <IPoIB-server-name-or-address>:/ /mnt -o rdma,port=20049 
 
     To verify that the mount is using RDMA, run "cat /proc/mounts" and check
     the "proto" field for the given mount.
