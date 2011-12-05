@@ -1,7 +1,7 @@
 		Open Fabrics Enterprise Distribution (OFED)
-		      Tips for Working with OFED 1.5.1
+		      Tips for Working with OFED 1.5.x
 
-		 	     March 2010
+		 	     December 2011
 
 ===============================================================================
 Table of Contents
@@ -9,7 +9,7 @@ Table of Contents
 1. OFED Utilities
 2. Debug HOWTOs
 3. Pinning (Locking) User Memory Pages
-4. External Module Compilation Over OFED-1.5.1
+4. External Module Compilation Over OFED-1.5.x
 5. Adding/Deleting a patch to OFED package
 6. Adding vendor specific actions to the installation of OFED
 7. How to compile OFED sources manually

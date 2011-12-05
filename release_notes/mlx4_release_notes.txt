@@ -1,7 +1,7 @@
 	    Open Fabrics Enterprise Distribution (OFED)
-	  ConnectX driver (mlx4) in OFED 1.5.3 Release Notes
+	  ConnectX driver (mlx4) in OFED 1.5.4 Release Notes
 
-  			March 2011
+  			December 2011
 
 
 ===============================================================================
@@ -18,8 +18,9 @@ Table of Contents
 9. New features and bug fixes since OFED 1.5
 10. New features and bug fixes since OFED 1.5.1
 11. New features and bug fixes since OFED 1.5.2
-12. Known Issues
-13. mlx4 available parameters
+12. New features and bug fixes since OFED 1.5.3
+13. Known Issues
+14. mlx4 available parameters
 
 ===============================================================================
 1. Overview
@@ -287,7 +288,17 @@ Bug Fixes
 14. Fix mlx4_ib_reg_xrc_rcv_qp() locking
 
 ===============================================================================
-12. Known Issues
+12. New features and bug fixes since OFED 1.5.3
+===============================================================================
+1.  Fix the release func to be consistent with the allocation one
+2.  Fix high priority attach
+3.  Fix endianness with blue frame support
+4.  Consider reserved_cqs
+5.  Add debug messages when cannot perform SENSE_PORT
+6.  Add sensing port only when supported by HW
+
+===============================================================================
+13. Known Issues
 ===============================================================================
 - The SQD feature is not supported
 - To load the driver on machines with a 64KB default page size, the UAR bar
@@ -302,7 +313,7 @@ Bug Fixes
 
      
 ================================================================================
-13. mlx4 available parameters
+14. mlx4 available parameters
 ================================================================================
 In order to set mlx4 parameters, add the following line(s) to /etc/modpobe.conf:
    options mlx4_core parameter=<value>

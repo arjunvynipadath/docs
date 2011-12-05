@@ -1,7 +1,7 @@
 	     Open Fabrics Enterprise Distribution (OFED)
-		    IPoIB in OFED 1.5.3 Release Notes
+		    IPoIB in OFED 1.5.4 Release Notes
 			  
-			   March 2011
+			   December 2011
 
 
 ===============================================================================
@@ -18,7 +18,8 @@ Table of Contents
 9. Bug Fixes and Enhancements Since OFED 1.4.2
 10. Bug Fixes and Enhancements Since OFED 1.5.0
 11. Bug Fixes and Enhancements Since OFED 1.5.2
-12. Performance tuning
+12. Bug Fixes and Enhancements Since OFED 1.5.3
+13. Performance tuning
 
 ===============================================================================
 1. Overview
@@ -453,7 +454,16 @@ significant bit set (e.g., 0x8000 in the example above).
 3. Leave stale send-only multicast groups
 
 ===============================================================================
-12. Performance Tuning
+12. Bug Fixes and Enhancements Since OFED 1.5.3
+===============================================================================
+1. Set pkt_type correctly for multicast packets (fix IGMP breakage)
+2. Add support to TSO status query
+3. Fix the function that performs dma unmap of memory buffers
+4. Remove TX moderation settings from ethtool support
+5. Allow disabling/enabling TSO on the fly through ethtool
+
+===============================================================================
+13. Performance Tuning
 ===============================================================================
 When IPoIB is configured to run in connected mode, tcp parameter tuning is
 performed at driver startup to improve the throughput of medium and large

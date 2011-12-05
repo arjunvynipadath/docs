@@ -1,7 +1,7 @@
              Open Fabrics Enterprise Distribution (OFED)
-                    SDP in OFED 1.5.3 Release Notes
+                    SDP in OFED 1.5.4 Release Notes
 
-                          March 2011
+                          December 2011
 
 
 
@@ -24,18 +24,16 @@ protocol offload capabilities, SDP can provide lower latency, higher bandwidth,
 and lower CPU utilization than IPoIB or 
 Ethernet running some sockets-based applications.
 
-SDP in OFED is at GA level for OFED 1.5.3
-
 ===============================================================================
 2. Main Features and Changes
 ===============================================================================
-- Adde IPv6 support
+- Added IPv6 support
 - Added support for Inline and blueflame
 - Improved stability issues
 - Bug fixes
 
 ===============================================================================
-2. Bug Fixes and Enhancements since OFED 1.5.2
+2. Bug Fixes and Enhancements since OFED 1.5.3
 ===============================================================================
 * Cleanups
     - Added support for 2.6.34 / 2.6.36.
