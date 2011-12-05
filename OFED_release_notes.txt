@@ -76,11 +76,11 @@ Notes:
 	- RedHat EL5 up7	2.6.18-274.el5
 	- RedHat EL6		2.6.32-71.el6
 	- RedHat EL6.1		2.6.32-131.0.15.el6
-	- RedHat EL6.2 Beta	2.6.32-202.el6
+	- RedHat EL6.2 		2.6.32-220.el6
 	- SLES10 SP4 		2.6.16.60-0.85.1-smp  
 	- SLES11 		2.6.27.19-5-default
 	- SLES11 SP1 		2.6.32.12-0.7-default
-	- Scientific Linux 6.1  2.6.32-131.0.15.el6
+	- Scientific Linux 6.1	2.6.32-131.0.15.el6
 	- kernel.org		2.6.30 - 3.0    *
 
       * Minimal QA for these versions
@@ -94,9 +94,7 @@ well as iWARP RNICs by Chelsio Communications and Intel.
 	- ConnectX(R) and ConnectX EN (fw-25408 Rev 2.9.1000)
 	- ConnectX-2 (fw-ConnectX2 Rev 2.9.1000)
 	- ConnectX-2 EN (fw-ConnectX2 Rev 2.9.1000)
-	- ConnectX-3 (fw-4099) 
-	  Note: To receive ConnectX-3 firmware, please contact your Mellanox 
-		representative.
+	- ConnectX-3 (fw-ConnectX3 Rev 2.10.0000) 
 
 	For official firmware versions please see:
 	http://www.mellanox.com/content/pages.php?pg=firmware_download
@@ -145,16 +143,22 @@ The kernel sources are based on Linux 2.6.30 mainline kernel. Its patches
 are included in the OFED sources directory.
 For details see HOWTO.build_ofed.
 
+The list of maintainers is available under:
+http://www.openfabrics.org/downloads/MAINTAINERS
+
 ===============================================================================
 2. Change log
 ===============================================================================
 OFED-1.5.4 Main Changes from OFED 1.5.3.2
 -------------------------------------------------------------------------------
 1. Add kernel 3.0 support
-2. Add RHEL6.2 beta support
+2. Add RHEL6.2 support
 3. Add NFSRDMA to the list of packages to be installed by default on supported
    platforms
-4. Updated packages:
+4. Add new InfiniBand link speeds: EDR/FDR/FDR10
+5. OFA Kernel: See ofa_kernel.changelog.txt
+
+6. Updated packages:
    libibverbs-1.1.4-1.24.gb89d4d7
    libmlx4-1.0.1-1.20.g6771d22
    libnes-1.1.3
