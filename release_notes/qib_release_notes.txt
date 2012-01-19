@@ -1,7 +1,7 @@
 	      Open Fabrics Enterprise Distribution (OFED)
-		    qib in OFED 1.5.3 Release Notes
+		    qib in OFED 1.5.4 Release Notes
 
-			  February 2011
+			  January 2012
 
 ======================================================================
 1. Overview
@@ -20,7 +20,7 @@ PCI-Express HCAs, including,
     - QLE7280 (x16 PCIe Gen1) 
     
 
-The qib driver has been updated for OFED 1.5.3.
+The qib driver has been updated for OFED 1.5.4.
 
 The qib kernel driver obsoletes the ipath kernel driver but is
 compatible with libipathverbs so no new user level components are needed.
