@@ -1,14 +1,14 @@
 	    Open Fabrics Enterprise Distribution (OFED)
-	               Version 1.5.4
+	               Version 1.5.4.1
 	               Release Notes
-	               December 2011
+	               January 2012
 
 
 ===============================================================================
 Table of Contents
 ===============================================================================
 1. Overview, which includes:
-	- OFED Distribution Rev 1.5.4 Contents
+	- OFED Distribution Rev 1.5.4.1 Contents
 	- Supported Platforms and Operating Systems
 	- Supported HCA and RNIC Adapter Cards and Firmware Versions
 	- Tested Switch Platforms
@@ -22,7 +22,7 @@ Table of Contents
 1. Overview
 ===============================================================================
 These are the release notes of OpenFabrics Enterprise Distribution (OFED)
-release 1.5.4. The OFED software package is composed of several software modules,
+release 1.5.4.1. The OFED software package is composed of several software modules,
 and is intended for use on a computer cluster constructed as an InfiniBand
 subnet or iWARP network. 
 
@@ -30,12 +30,12 @@ Note: If you plan to upgrade the OFED package on your cluster, please upgrade
 all of its nodes to this new version.
 
 
-1.1 OFED 1.5.4 Contents
+1.1 OFED 1.5.4.1 Contents
 -----------------------
 The OFED package contains the following components:
  - OpenFabrics core and ULPs:
 	- IB HCA drivers (mthca, mlx4, qib, ehca)
-	- iWARP RNIC driver (cxgb3, nes)
+	- iWARP RNIC driver (cxgb3, cxgb4, nes)
 	- core
 	- Upper Layer Protocols: IPoIB, SDP, SRP Initiator and target, iSER 
 	  Initiator and target, RDS, uDAPL, qlgc_vnic and NFS-RDMA*.
@@ -49,7 +49,6 @@ The OFED package contains the following components:
 	- OSU MVAPICH2 stack supporting the InfiniBand and iWARP interface
 	- MPI benchmark tests (OSU benchmarks, Intel MPI benchmarks, Presta)
  - Extra packages:
-	- open-iscsi: open-iscsi initiator with iSER support
 	- ib-bonding: Bonding driver for IPoIB interface
 	- infinipath-psm: Performance-Scaled Messaging API, an accelerated 
 	  interface to QLogic HCAs
@@ -58,7 +57,7 @@ The OFED package contains the following components:
  - Documentation
 
 Notes:
-1. iSER Target and NFS-RDMA are of Beta quality.
+1. NFS-RDMA are of Beta quality.
 2. All other OFED components are of production quality.
 3. See release notes for each package in the docs directory.
 4. Any Topspin copyright belongs to Cisco Systems, Inc.
@@ -81,7 +80,7 @@ Notes:
 	- SLES11 		2.6.27.19-5-default
 	- SLES11 SP1 		2.6.32.12-0.7-default
 	- Scientific Linux 6.1	2.6.32-131.0.15.el6
-	- kernel.org		2.6.30 - 3.0    *
+	- kernel.org		2.6.30 - 3.1    *
 
       * Minimal QA for these versions
 	
@@ -128,7 +127,7 @@ companies:
 
 1.5 Third Party Packages
 ------------------------
-The following third party packages have been tested with OFED 1.5.4:
+The following third party packages have been tested with OFED 1.5.4.1:
 - Intel MPI, Version 3.2.2
 - Intel MPI, Version 4.0
 
@@ -149,6 +148,22 @@ http://www.openfabrics.org/downloads/MAINTAINERS
 ===============================================================================
 2. Change log
 ===============================================================================
+OFED-1.5.4.1 Main Changes from OFED 1.5.4
+-------------------------------------------------------------------------------
+1. Add kernel 3.1 support
+2. NES bug fixes
+3. OFA Kernel: See ofa_kernel.changelog.txt
+
+4. Updated packages:
+   perftest-1.3.0-0.58.g8f82435
+   
+   Management:
+   infiniband-diags-1.5.13
+   opensm-3.3.13
+
+   MPI:
+   mvapich2-1.7-6.2012svn5140
+
 OFED-1.5.4 Main Changes from OFED 1.5.3.2
 -------------------------------------------------------------------------------
 1. Add kernel 3.0 support
@@ -334,7 +349,7 @@ for each package in the docs directory.
 3. Known Issues
 ===============================================================================
 The following is a list of general limitations and known issues of the various
-components of the OFED 1.5.4 release.
+components of the OFED 1.5.4.1 release.
 
 1. When upgrading from an earlier OFED version, the installation script does
    not stop the earlier OFED version prior to uninstalling it. 

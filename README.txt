@@ -1,8 +1,8 @@
             Open Fabrics Enterprise Distribution (OFED)
-                          Version 1.5.4
+                          Version 1.5.4.1
                              README
 
-                          December 2011
+                          January 2012
 
 ==============================================================================
 Table of contents
@@ -28,7 +28,7 @@ Table of contents
 1. Overview
 ==============================================================================
 
-This is the OpenFabrics Enterprise Distribution (OFED) version 1.5.4
+This is the OpenFabrics Enterprise Distribution (OFED) version 1.5.4.1
 software package supporting InfiniBand and iWARP fabrics. It is composed
 of several software modules intended for use on a computer cluster
 constructed as an InfiniBand subnet or an iWARP network.
@@ -70,8 +70,7 @@ The OFED Distribution package generates RPMs for installing the following:
         - OSU MVAPICH2 stack supporting the InfiniBand and iWARP interface
         - MPI benchmark tests (OSU BW/LAT, Intel MPI Benchmark, Presta)
   o   Extra packages
-        - open-iscsi: open-iscsi initiator with iSER support
-        - ib-bonding: Bonding driver for IPoIB interface
+        - ib-bonding: Bonding driver for IPoIB interface (SLES10SP4 only)
   o   Sources of all software modules (under conditions mentioned in the
       modules' LICENSE files)
   o   Documentation
@@ -112,13 +111,6 @@ o  Mvapich2             libsysfs-devel
 o  Open MPI             libsysfs-devel
 o  ibutils              tcl-8.4, tcl-devel-8.4, tk, libstdc++-devel
 o  mstflint             libstdc++-devel (32-bit on ppc64), gcc-c++
-o  rnfs-utils           krb5-devel, krb5-libs, libevent-devel,
-                        nfs-utils-lib-devel, openldap-devel,
-                        e2fsprogs-devel (on RedHat)
-                        krb5-devel, libevent-devel, nfsidmap-devel,
-                        libopenssl-devel, libblkid-devel (on SLES11)
-                        krb5-devel, libevent, nfsidmap, krb5, openldap2-devel,
-                        cyrus-sasl-devel, e2fsprogs-devel (on SLES10)
 
 Note:   The installer will warn you if you attempt to compile any of the
         above packages and do not have the prerequisites installed.
@@ -238,6 +230,7 @@ o The kernel modules are installed under:
     /lib/modules/`uname -r`/updates/kernel/drivers/scsi/
   - Chelsio driver:
     /lib/modules/`uname -r`/updates/kernel/drivers/net/cxgb3/
+    /lib/modules/`uname -r`/updates/kernel/drivers/net/cxgb4/
   - ConnectX driver:
     /lib/modules/`uname -r`/updates/kernel/drivers/net/mlx4/
   - RDS:
