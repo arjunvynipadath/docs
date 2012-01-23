@@ -1,6 +1,6 @@
             Open Fabrics Enterprise Distribution (OFED)
       NetEffect Ethernet Cluster Server Adapter Release Notes
-                           November 2011
+                           January 2012
 
 
 
@@ -10,6 +10,13 @@ support for the NetEffect Ethernet Cluster Server Adapters.
 ==========
 What's New
 ==========
+
+OFED 1.5.4.1 contains bug fixes for iw_nes driver.
+
+* Fixed a problem with QP destroy timer and improved AE handling.
+* Fixed a problem with sending MPA reject message.
+* Fixed fast memory registration issues.
+
 OFED 1.5.4 contains several enhancements and bug fixes to iw_nes driver.
 
 * Added backports for 2.6.35 to 3.0 kernels.
