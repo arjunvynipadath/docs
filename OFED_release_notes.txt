@@ -82,7 +82,7 @@ Notes:
 	- Scientific Linux 6.1	2.6.32-131.0.15.el6
 	- kernel.org		2.6.30 - 3.1    *
 
-      * Minimal QA for these versions
+      * Minimal QA for these versions.
 	
 1.3 HCAs and RNICs Supported
 ----------------------------
@@ -150,7 +150,7 @@ http://www.openfabrics.org/downloads/MAINTAINERS
 ===============================================================================
 OFED-1.5.4.1 Main Changes from OFED 1.5.4
 -------------------------------------------------------------------------------
-1. Add kernel 3.1 support
+1. Add kernel 3.1 support (NES and RDS are not supported on kernel 3.1)
 2. NES bug fixes
 3. OFA Kernel: See ofa_kernel.changelog.txt
 
@@ -382,6 +382,7 @@ components of the OFED 1.5.4.1 release.
 10. On SLES11, set allow_unsupported_modules parameter to 1 in file:
     /etc/modprobe.d/unsupported-modules. Without this the modules will not
     load.
+11. Kernel 3.1 is not officially suported.
 
 Note: See the release notes of each component for additional issues.
 
