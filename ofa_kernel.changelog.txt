@@ -1,3 +1,58 @@
+commit f18080e6ee62b25030886c37b7120eb93746e5c9
+Author: Marcel Apfelbaum <marcela@dev.mellanox.co.il>
+Date:   Sun Jan 29 18:16:53 2012 +0200
+
+    IB/mlx4: fix wrong info returned when querying IBoE ports
+    
+    To issue port query, use the QUERY_(Ethernet)_PORT command instead of
+    MAD_IFC command as the latter attempts to query the firmware IB SMA agent,
+    which is irrelevant for IBoE ports. This allows to support both 10Gb/s and
+    40Gb/s rates (e.g in sysfs), using QDR speed (10Gb/s) and width of 1X or 4X.
+    
+    Signed-off-by: Dotan Barak <dotanb@mellanox.com>
+    Signed-off-by: Or Gerlitz <ogerlitz@mellanox.com>
+    Signed-off-by: Marcel Apfelbaum <marcela@mellanox.com>
+
+commit 91290f5b55984cc71e0ac3896d27c2e7fb5ce51f
+Author: Marcel Apfelbaum <marcela@dev.mellanox.co.il>
+Date:   Sun Jan 29 18:13:39 2012 +0200
+
+    IB/core: fix wrong display of rate in sysfs
+    
+    commit "IB: Add new InfiniBand link speeds" introduced a bug under
+    which the rate for IB SDR/4X links was displayed as 8.5Gbs
+    instead of 10Gbs, fix that.
+    
+    Signed-off-by: Or Gerlitz <ogerlitz@mellanox.com>
+    Signed-off-by: Marcel Apfelbaum <marcela@dev.mellanox.co.il>
+
+commit 9aa07c16ba7164823c96e19a18c287c00248958a
+Author: Mike Marciniszyn <mike.marciniszyn@qlogic.com>
+Date:   Fri Jan 27 11:00:06 2012 -0500
+
+    IB/qib: correct memcpy optimization
+    
+    qib_0700_memcpy_optimizations.patch was pushed
+    with a discrepancy vs. our internal qualified
+    code.
+    
+    This patch corrects that issu.
+    
+    Signed-off-by: Mike Marciniszyn <mike.marciniszyn@qlogic.com>
+
+commit 5eebbdb0c6084fa9c995201d7a2dee39ff8d2188
+Author: Mike Marciniszyn <mike.marciniszyn@qlogic.com>
+Date:   Fri Jan 27 10:59:02 2012 -0500
+
+    IB/qib: correct rc flush panic patch
+    
+    This migrates the kernel.org code that was included in
+    3.2.
+    
+    That version has significantly more test time.
+    
+    Signed-off-by: Mike Marciniszyn <mike.marciniszyn@qlogic.com>
+
 commit 4500690e2518cb8e6ad46aea00bb0ec1a27cc8cd
 Author: Tatyana Nikolova <Tatyana.E.Nikolova@intel.com>
 Date:   Tue Jan 17 10:18:56 2012 -0600
