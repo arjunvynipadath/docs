@@ -1,3 +1,41 @@
+commit 967460824529719677d6a1d4600ec3e89a4538ab
+Author: Marcel Apfelbaum <marcela@dev.mellanox.co.il>
+Date:   Wed Feb 1 14:27:56 2012 +0200
+
+    IB/mad: Return unsupported for MADs as appropriate
+    
+    Setup a response with appropriate error status and send
+    it for the MADs that are not supported by a specific
+    class/version.
+    
+    Signed-off-by: Swapna Thete <swapna.thete@qlogic.com>
+    Reviewed-by: Hal Rosenstock <hal@mellanox.com>
+    Signed-off-by: Marcel Apfelbaum <marcela@dev.mellanox.co.il>
+
+commit bcd990ffbe4a7558783ee693dbbabfce262c1ab1
+Author: Marcel Apfelbaum <marcela@dev.mellanox.co.il>
+Date:   Wed Feb 1 14:25:45 2012 +0200
+
+    IB/mad: Add MAD error codes per IBTA spec
+    
+    Add appropriate MAD error codes so that they can be used
+    while returning appropriate error responses.
+    
+    Signed-off-by: Swapna Thete <swapna.thete@qlogic.com>
+    Signed-off-by: Marcel Apfelbaum <marcela@dev.mellanox.co.il>
+
+commit 87b9c75bea7d8a2024647b3dbc06a3b34ac93a65
+Author: Tatyana Nikolova <Tatyana.E.Nikolova@intel.com>
+Date:   Tue Jan 31 15:17:23 2012 -0600
+
+    RDMA/nes: Fixes for Sparse Endian related warnings
+    
+    Fixes for Endian Sparse Warnings introduced with the enhanced MPA patch
+    
+    Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
+    Signed-off-by: Tatyana Nikolova <Tatyana.E.Nikolova@intel.com>
+    Signed-off-by: Faisal Latif <Faisal.Latif@intel.com>
+
 commit f18080e6ee62b25030886c37b7120eb93746e5c9
 Author: Marcel Apfelbaum <marcela@dev.mellanox.co.il>
 Date:   Sun Jan 29 18:16:53 2012 +0200
