@@ -93,7 +93,7 @@ well as iWARP RNICs by Chelsio Communications and Intel.
 	- ConnectX(R) and ConnectX EN (fw-25408 Rev 2.9.1000)
 	- ConnectX-2 (fw-ConnectX2 Rev 2.9.1000)
 	- ConnectX-2 EN (fw-ConnectX2 Rev 2.9.1000)
-	- ConnectX-3 (fw-ConnectX3 Rev 2.10.0000) 
+	- ConnectX-3 (fw-ConnectX3 Rev 2.10.0000)  (FDR and FDR10 Modes are Supported)
 
 	For official firmware versions please see:
 	http://www.mellanox.com/content/pages.php?pg=firmware_download
