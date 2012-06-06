@@ -1,8 +1,8 @@
             Open Fabrics Enterprise Distribution (OFED)
-                          Version 1.5.4.1
+                          Version 3.2-rc1
                              README
 
-                          January 2012
+                          June 2012
 
 ==============================================================================
 Table of contents
@@ -15,20 +15,18 @@ Table of contents
  5.  Installing OFED Software
  6.  Building OFED RPMs
  7.  IPoIB Configuration
- 8.  Using SDP
- 9.  Uninstalling OFED
- 10. Upgrading OFED
- 11. Configuration
- 12. Starting and Verifying the IB Fabric
- 13. MPI (Message Passing Interface)
- 14. Related Documentation
+ 8.  Uninstalling OFED
+ 9. Upgrading OFED
+ 10. Configuration
+ 11. Starting and Verifying the IB Fabric
+ 12. Related Documentation
 
 
 ==============================================================================
 1. Overview
 ==============================================================================
 
-This is the OpenFabrics Enterprise Distribution (OFED) version 1.5.4.1
+This is the OpenFabrics Enterprise Distribution (OFED) version 3.2
 software package supporting InfiniBand and iWARP fabrics. It is composed
 of several software modules intended for use on a computer cluster
 constructed as an InfiniBand subnet or an iWARP network.
@@ -58,19 +56,15 @@ The OFED Distribution package generates RPMs for installing the following:
         - HCA drivers (mthca, mlx4, qib, ehca)
         - iWARP driver (cxgb3, cxgb4, nes)
         - core
-        - Upper Layer Protocols: IPoIB, SDP, SRP Initiator and target, iSER
+        - Upper Layer Protocols: IPoIB, SRP Initiator and target, iSER
           Initiator and target, RDS, qlgc_vnic, uDAPL and NFS-RDMA
   o   OpenFabrics utilities
         - OpenSM: InfiniBand Subnet Manager
         - Diagnostic tools
         - Performance tests
-  o   MPI
-        - OSU MVAPICH stack supporting the InfiniBand and iWARP interface
-        - Open MPI stack supporting the InfiniBand and iWARP interface
-        - OSU MVAPICH2 stack supporting the InfiniBand and iWARP interface
-        - MPI benchmark tests (OSU BW/LAT, Intel MPI Benchmark, Presta)
   o   Extra packages
-        - ib-bonding: Bonding driver for IPoIB interface (SLES10SP4 only)
+	- infinipath-psm: Performance-Scaled Messaging API, an accelerated 
+	  interface to QLogic HCAs
   o   Sources of all software modules (under conditions mentioned in the
       modules' LICENSE files)
   o   Documentation
@@ -106,9 +100,6 @@ Note:   To build 32-bit libraries on x86_64 and ppc64 platforms, the 32-bit
         glibc-devel should be installed.
 
 Specific Component Requirements:
-o  Mvapich              a Fortran Compiler (such as gcc-g77)
-o  Mvapich2             libsysfs-devel
-o  Open MPI             libsysfs-devel
 o  ibutils              tcl-8.4, tcl-devel-8.4, tk, libstdc++-devel
 o  mstflint             libstdc++-devel (32-bit on ppc64), gcc-c++
 
@@ -116,13 +107,6 @@ Note:   The installer will warn you if you attempt to compile any of the
         above packages and do not have the prerequisites installed.
         On SLES, some of required RPMs can be found on SLES SDK DVD.
         E.g.: libgfortran43, kernel-source, ...
-
-*** Important Note for open-iscsi users:
-    Installing iSER as part of OFED installation will also install open-iscsi.
-    Before installing OFED, please uninstall any open-iscsi version that may
-    be installed on your machine. Installing OFED with iSER support while
-    another open-iscsi version is already installed will cause the installation
-    process to fail.
 
 ==============================================================================
 4. How to Download and Extract the OFED Distribution
@@ -206,50 +190,24 @@ Note:   The installer will warn you if you attempt to compile any of the
 
 Notes:
 ------
-a. It is possible to rename and/or edit the ofed.conf and ofed_net.conf files.
+   It is possible to rename and/or edit the ofed.conf and ofed_net.conf files.
    Thus it is possible to change user choices (observing the original format).
    See examples of ofed.conf and ofed_net.conf under OFED-X.X.X/docs.
    Run './install.pl -p' to get ofed.conf with all available packages included.
-
-b. Important note for open-iscsi users:
-   Installing iSER as part of the OFED installation will also install
-   open-iscsi. Before installing OFED, please uninstall any open-iscsi version
-   that may be installed on your machine. Installing OFED with iSER support
-   while another open-iscsi version is already installed will cause the
-   installation process to fail.
-
 
 Install Process Results:
 ------------------------
 
 o The OFED package is installed under <prefix> directory. Default prefix is /usr
 o The kernel modules are installed under:
-  - Infiniband subsystem:
-    /lib/modules/`uname -r`/updates/kernel/drivers/infiniband/
-  - open-iscsi:
-    /lib/modules/`uname -r`/updates/kernel/drivers/scsi/
-  - Chelsio driver:
-    /lib/modules/`uname -r`/updates/kernel/drivers/net/cxgb3/
-    /lib/modules/`uname -r`/updates/kernel/drivers/net/cxgb4/
-  - ConnectX driver:
-    /lib/modules/`uname -r`/updates/kernel/drivers/net/mlx4/
-  - RDS:
-    /lib/modules/`uname -r`/updates/kernel/net/rds/
-  - NFSoRDMA:
-    /lib/modules/`uname -r`/updates/kernel/fs/exportfs/
-    /lib/modules/`uname -r`/updates/kernel/fs/lockd/
-    /lib/modules/`uname -r`/updates/kernel/fs/nfs/
-    /lib/modules/`uname -r`/updates/kernel/fs/nfs_common/
-    /lib/modules/`uname -r`/updates/kernel/fs/nfsd/
-    /lib/modules/`uname -r`/updates/kernel/net/sunrpc/
-  - Bonding module:
-    /lib/modules/`uname -r`/updates/kernel/drivers/net/bonding/bonding.ko
-o The package kernel include files are placed under <prefix>/src/ofa_kernel/.
+    /lib/modules/`uname -r`/updates/ - on SUSE Distros
+    /lib/modules/`uname -r`/extra/ofa_kernel/ - on RedHat distros
+o The package kernel include files are placed under <prefix>/src/compat-rdma/.
   These includes should be used when building kernel modules which use
   the Openfabrics stack. (Note that these includes, if needed, are
   "backported" to your kernel).
 o The raw package (un-backported) source files are placed under
-  <prefix>/src/ofa_kernel-x.x.x
+  <prefix>/src/compat-rdma-x.x.x
 o The script "openibd" is installed under /etc/init.d/. This script can
   be used to load and unload the software stack.
 o The directory /etc/infiniband is created with the files "info" and
@@ -257,29 +215,12 @@ o The directory /etc/infiniband is created with the files "info" and
   installation information. The "openib.conf" file contains the list of
   modules that are loaded when the "openibd" script is used.
 o The file "90-ib.rules" is installed under /etc/udev/rules.d/
-o If libibverbs-utils is installed, then ofed.sh and ofed.csh are
-  installed under /etc/profile.d/. These automatically update the PATH
-  environment variable with <prefix>/bin.  In addition, ofed.conf is
-  installed under /etc/ld.so.conf.d/ to update the dynamic linker's
-  run-time search path to find the InfiniBand shared libraries.
 o The file /etc/modprobe.d/ib_ipoib.conf is updated to include the following:
   - "alias ib<n> ib_ipoib" for each ib<n> interface.
-o The file /etc/modprobe.d/ib_sdp.conf is updated to include the following:
-  - "alias net-pf-27 ib_sdp" for sdp.
 o If opensm is installed, the daemon opensmd is installed under /etc/init.d/
 o All verbs tests and examples are installed under <prefix>/bin and management
   utilities under <prefix>/sbin
 o ofed_info script provides information on the OFED version and git repository.
-o If iSER is included, open-iscsi user-space files will be also installed:
-  - Configuration files will be installed at /etc/iscsi
-  - Startup script will be installed at:
-    - RedHat: /etc/init.d/iscsi
-    - SuSE: /etc/init.d/open-iscsi
-  - Other tools (iscsiadm, iscsid, iscsi_discovery, iscsi-iname, iscsistart)
-    will be installed under /sbin.
-  - Documentation will be installed under:
-    - RedHat: /usr/share/doc/iscsi-initiator-utils-<version number>
-    - SuSE: /usr/share/doc/packages/open-iscsi
 o man pages will be installed under /usr/share/man/.
 
 ==============================================================================
@@ -361,166 +302,8 @@ NETWORK_ib0=172.16.0.0
 BROADCAST_ib0=172.16.255.255
 ONBOOT_ib0=1
 
-
 ==============================================================================
-8. Using SDP
-==============================================================================
-
-Overview:
----------
-
-Sockets Direct Protocol (SDP) is an InfiniBand byte-stream transport protocol
-that provides TCP stream semantics. Capable of utilizing InfiniBand's advanced
-protocol offload capabilities, SDP can provide lower latency, higher
-bandwidth, and lower CPU utilization than IPoIB running some sockets-based
-applications.
-
-SDP can be used by applications and improve their performance transparently
-(that is, without any recompilation). Since SDP has the same socket semantics
-as TCP, an existing application is able to run using SDP; the difference is
-that the application's TCP socket gets replaced with an SDP socket.
-
-It is also possible to configure the driver to automatically translate TCP to
-SDP based on the source IP, the destination, or the application name (See
-below).
-
-The SDP protocol is composed of a kernel module that implements the SDP as a
-new address-family/protocol-family, and a library that is used for replacing
-the TCP address family with SDP according to a policy.
-
-libsdp.so Library:
-------------------
-
-libsdp.so is a dynamically linked library, which is used for transparent
-integration of applications with SDP. The library is preloaded, and therefore
-takes precedence over glibc for certain socket calls. Thus, it can
-transparently replace the TCP socket family with SDP socket calls.
-
-The library also implements a user-level socket switch. Using a configuration
-file, the system administrator can set up the policy that selects the type of
-socket to be used. libsdp.so also has the option to allow server sockets to
-listen on both SDP and TCP interfaces. The various configurations with SDP/TCP
-sockets are explained inside the /etc/libsdp.conf file.
-
-Configuring SDP:
-----------------
-
-To load SDP upon boot, edit the file  /etc/infiniband/openib.conf and set
-"SDP_LOAD=yes".
-
-Note: For the changes to take effect, run: /etc/init.d/openibd restart
-
-SDP shares the same IP addresses and interface names as IPoIB. See IPoIB
-Configuration (chapter 7)
-
-How to Know SDP Is Working:
----------------------------
-
-Since SDP is a transparent TCP replacement, it can sometimes be difficult to
-know that it is working correctly.
-To figure out whether traffic is passing through SDP or TCP, check
-/proc/net/sdpstats and monitor which counters are running.
-
-sdpnetstat:
------------
-
-The sdpnetstat program can be used to verify both that SDP is loaded and is
-being used:
-
-host1$ sdpnetstat -S
-
-This command shows all active SDP sockets using the same format as the
-traditional netstat program.  Without the '-S' option, it shows all the
-information that netstat does plus SDP data.
-
-Assuming that the SDP kernel module is loaded and is being used, then the
-output of the command will show something like the following:
-
-host1$ sdpnetstat -S
-
-Proto Recv-Q Send-Q Local Address           Foreign Address
-sdp        0      0 193.168.10.144:34216    193.168.10.125:12865
-sdp        0 884720 193.168.10.144:42724    193.168.10.:filenet-rmi
-
-The example output above shows  two active SDP sockets and contains details
-about the connections.  If the SDP kernel module is not loaded, or it is
-loaded but is not being used, then the output of the command will be something
-like the following:
-
-host1$ sdpnetstat -S
-
-Proto Recv-Q Send-Q Local Address           Foreign Address
-netstat: no support for `AF INET (tcp)' on this system.
-
-To verify whether the module is loaded or not, you can use the lsmod command
-
-Monitoring and Troubleshooting Tools:
--------------------------------------
-
-SDP has debug support for both the user space libsdp.so library and the ib_sdp
-kernel module.
-Both can be useful to understand why a TCP socket was not redirected over SDP
-and to help find problems in the SDP implementation.
-
-User-space SDP debug is controlled by options in the libsdp.conf file. You can also have a local
-version and point to it explicitly using the following command:
-
-host1$ export LIBSDP_CONFIG_FILE=<path>/libsdp.conf
-
-To obtain extensive debug information, you can modify libsdp.conf to have the
-log directive produce maximum debug output (provide the min-level flag with
-the value 1). More details in the default libsdp.conf installed by OFED.
-A non-root user can configure libsdp.so to record function calls and return values in the file
-/tmp/libsdp.log.<pid>
-
-Kernel Space SDP Debug - The SDP kernel module can log detailed trace
-information if you enable it using the 'debug_level' variable in the sysfs
-filesystem. The following command performs this:
-
-host1$ echo 1 > /sys/module/ib_sdp/debug_level
-
-Note: Depending on the operating system distribution on your machine, you may need
-an extra level, 'parameters', in the directory structure, so you may need to direct
-the echo command to /sys/module/ib_sdp/parameters/debug_level.
-
-Turning off kernel debug is done by setting the sysfs variable to zero using
-the following command:
-
-host1$ echo 0 > /sys/module/ib_sdp/debug_level
-
-To display debug information, use the dmesg command:
-
-host1$ dmesg
-
-Environment Variables:
-----------------------
-
-For the transparent integration with SDP, the following two environment
-variables are required:
-1. LD_PRELOAD - this environment variable is used to preload libsdp.so and it
-   should point to the libsdp.so library. The variable should be set by the
-   system administrator to libsdp.so.
-2. LIBSDP_CONFIG_FILE - this environment variable is used to configure the
-   policy for replacing TCP sockets with SDP sockets. By default it points to:
-   /etc/libsdp.conf
-
-Using RDMA:
------------
-
-For smaller buffers, the overhead of preparing a user buffer to be RDMA'ed is
-too big; therefore, it is more efficient to use BCopy. (Large buffers can also
-be sent using RDMA, but they lower CPU utilization.) This mode is called
-"ZCopy combined mode". The sendmsg syscall is blocked until the buffer is
-transfered to the socket's peer, and the data is copied directly from the user
-buffer at the source side to the user buffer at the sink side.
-
-To set the threshold, use the module parameter sdp_zcopy_thresh. This parameter
-can be accessed through sysfs (/sys/module/ib_sdp/parameters/sdp_zcopy_thresh).
-Setting it to 0, disables ZCopy.
-
-
-==============================================================================
-9. Uninstalling OFED
+8. Uninstalling OFED
 ==============================================================================
 
 There are two ways to uninstall OFED:
@@ -531,7 +314,7 @@ There are two ways to uninstall OFED:
    before removing the RPMs using the flag: --unload-modules
 
 ==============================================================================
-10. Upgrading OFED
+9. Upgrading OFED
 ==============================================================================
 
 If an old OFED version is installed, it may be upgraded by installing a
@@ -540,7 +323,7 @@ version was loaded before upgrading, you need to restart OFED or reboot
 your machine in order to start the new OFED stack.
 
 ==============================================================================
-11. Configuration
+10. Configuration
 ==============================================================================
 
 Most of the OFED components can be configured or reconfigured after
@@ -563,7 +346,7 @@ Note: After the installer completes, information about the OFED
 
 
 ==============================================================================
-12. Starting and Verifying the IB Fabric
+11. Starting and Verifying the IB Fabric
 ==============================================================================
 1)  If you rebooted your machine after the installation process completed,
     IB interfaces should be up. If you did not reboot your machine, please
@@ -600,33 +383,9 @@ Note: After the installer completes, information about the OFED
     (using the option: -t <file>) and all reports will use the names they
     appear in the file (instead of LIDs, GUIDs and directed routes).
 
-7)  To run an application over SDP set the following variables:
-    env LD_PRELOAD='stack_prefix'/lib/libsdp.so
-    LIBSDP_CONFIG_FILE=/etc/libsdp.conf <application name>
-    (or LD_PRELOAD='stack_prefix'/lib64/libsdp.so on 64 bit machines)
-    The default 'stack_prefix' is /usr
 
 ==============================================================================
-13. MPI (Message Passing Interface)
-==============================================================================
-In Step 2 of the main menu of install.pl, options 2, 3 and 4 can
-install one or more MPI stacks.  Multiple MPI stacks can be installed
-simultaneously -- they will not conflict with each other.
-
-Three MPI stacks are included in this release of OFED:
-- MVAPICH
-- Open MPI
-- MVAPICH2
-
-OFED also includes 4 basic tests that can be run against each MPI
-stack: bandwidth (bw), latency (lt), Intel MPI Benchmark and Presta. The tests
-are located under: <prefix>/mpi/<compiler>/<mpi stack>/tests/.
-
-Please see MPI_README.txt for more details on each MPI package and how to run
-the tests.
-
-==============================================================================
-14. Related Documentation
+12. Related Documentation
 ==============================================================================
 
 OFED documentation is located in the ofed-docs RPM.  After
@@ -646,10 +405,3 @@ Documents list:
 
 For more information, please visit the OpenFabrics web site:
    http://www.openfabrics.org
-
-open-iscsi documentation is located at:
-- RedHat: /usr/share/doc/iscsi-initiator-utils-<version number>
-- SuSE: /usr/share/doc/packages/open-iscsi
-
-For more information, please visit the open-iscsi web site:
-   http://www.open-iscsi.org
