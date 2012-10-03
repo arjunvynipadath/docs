@@ -1,7 +1,7 @@
 	    Open Fabrics Enterprise Distribution (OFED)
-	               Version 3.5-rc1
+	               Version 3.5-rc2
 	               Release Notes
-	               August 2012
+	               October 2012
 
 
 ===============================================================================
@@ -157,6 +157,24 @@ http://www.openfabrics.org/downloads/MAINTAINERS
 ===============================================================================
 2. Change log
 ===============================================================================
+OFED-3.5-rc2 Main Changes from OFED 3.5-rc1
+-------------------------------------------------------------------------------
+compat-rdma: Add SRP backport
+compat-rdma: /etc/init.d/openibd: Fix LSB header
+compat-rdma: IB/qib: linux-3.6 patches backported
+compat-rdma: iw_cxgb4: Fix bug 2369 in OFED bugzilla
+compat-rdma: IB/qib: fix compliance regression in 3.5
+compat-rdma: RDMA/nes: Add linux-next-pending patches
+compat-rdma: RDMA/nes: Updated backports
+compat-rdma: NFSRDMA RHEL6.3 backport
+compat-rdma: NFSRDMA SLES11SP2 backport
+compat-rdma: linux-next-cherry-picks: RDMA/ucma.c: Different fix for ucma context uid=0, causing iWarp RDMA applications to fail in connection establishment
+
+Updated packages:
+    infinipath-psm-3.0.1-115.1015_open
+    perftest-1.4.0-0.80.gd1763bd
+    qperf-0.4.7-0.2.gf3f7001
+
 OFED-3.5-rc1 Main Changes from OFED 3.2-rc1
 -------------------------------------------------------------------------------
 1. Based on linux-3.5 kernel
@@ -375,7 +393,7 @@ for each package in the docs directory.
 3. Known Issues
 ===============================================================================
 The following is a list of general limitations and known issues of the various
-components of the OFED 3.5-rc1 release.
+components of the OFED 3.5-rc2 release.
 
 1. When upgrading from an earlier OFED version, the installation script does
    not stop the earlier OFED version prior to uninstalling it. 
