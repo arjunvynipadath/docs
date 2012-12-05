@@ -1,11 +1,18 @@
             Open Fabrics Enterprise Distribution (OFED)
                 CHELSIO T4 RNIC RELEASE NOTES
-			November 2011
+			December 2012
 
 
 The iw_cxgb4 and cxgb4 modules provide RDMA and NIC support for the
 Chelsio T4 series adapters.  Make sure you choose the 'cxgb4' and
 'libcxgb4' options when generating your OFED rpms.
+
+============================================
+New for OFED-3.5
+============================================
+- Added T4 firmware configuration file support
+- Added new T4 firmware 1.6.2.0 support.
+- Important bug fixes
 
 ============================================
 New for OFED-1.5.4
@@ -22,13 +29,10 @@ Supported Operating System
         - x86
 
   o   Linux Operating Systems:
-        - RedHat EL5 up6        2.6.18-238.el5
-        - RedHat EL5 up7        2.6.18-274.el5
-        - RedHat EL6            2.6.32-71.el6
-        - RedHat EL6.1          2.6.32-131.0.15.el6
-        - SLES10 SP4            2.6.16.60-0.85.1-smp
-        - SLES11 SP1            2.6.32.12-0.7-default
-        - kernel.org            2.6.30 - 3.0    *
+	- RedHat EL6.2		2.6.32-220.el6
+	- RedHat EL6.3		2.6.32-279.el6.x86_64
+	- SLES11 SP2		3.0.13-0.27-default
+	- kernel.org		3.5    *
 
       * Minimal QA for these versions
 
@@ -45,13 +49,13 @@ Supported Cards
 Updating Firmware
 =================
 This driver requires released firmware for T4 card. This driver has been tested
-with t4fw-1.3.10.0 and later firmware. This firmware is available at
+with t4fw-1.6.2.0 and later firmware. This firmware is available at
 service.chelsio.com inside the driver package.
 
 If your distro/kernel cxgb4 driver supports firmware loading, you can place
-the chelsio firmware image in /lib/firmware/cxgb4, then unload and reload the
-cxgb4 module to get the new images loaded. If this does not work, then you can
-load the firmware images manually as follows:
+the chelsio firmware image in /lib/firmware/cxgb4, then rename it as t4fw.bin
+and unload and reload the cxgb4 module to get the new images loaded. If this
+does not work, then you can load the firmware images manually as follows:
 
 Obtain the cxgbtool tool from service.chelsio.com. This tool is available
 inside driver package.
@@ -71,7 +75,7 @@ Now note the ethernet interface name for the T4 device.  This can be
 done by typing 'ifconfig -a' and noting the interface name for the
 interface with a HW address that begins with "00:07:43".
 
-# cxgbtool ethxx loadfw <firmware_file>
+# cxgbtool <interface name> loadfw <firmware_file>
 # reboot
 
 NOTE: Driver package on the service.chelsio.com is getting updated
@@ -180,6 +184,14 @@ To run Intel MPI applications:
 =============
 OpenMPI:
 =============
+From OFED-3.5 package onwards OpenMPI is not a part of the OFED package. User
+has to manually download and install it.
+
+- Download latest OpenMPI released SRPM from following location.
+http://www.open-mpi.org/software/ompi
+
+- To install OpenMPI on your setup refer to the following guidelines
+http://www.open-mpi.org/software/ompi/v1.6/srpm.php
 
 OpenMPI iWARP support is only available in OpenMPI version 1.3 or greater.
 
@@ -195,6 +207,15 @@ To run OpenMPI applications:
 =============
 MVAPICH2:
 =============
+From OFED-3.5 package onwards MVAPICH2 is not a part of the OFED package. User
+has to manually download and install it.
+
+- Download latest MVAPICH2 released SRPM from following location.
+http://mvapich.cse.ohio-state.edu/download/mvapich2/
+
+- To install MVAPICH2 on your setup do the following
+./configure --prefix=/usr --sysconfdir=/etc --libdir=/usr/lib64 && make &&
+make install
 
 The following env vars enable MVAPICH2 version 1.4-2.  Place these
 in your user env after installing and setting up MVAPICH2 MPI:
