@@ -45,7 +45,7 @@ The OFED package contains the following components:
 	- Performance tests
  - Extra packages:
 	- infinipath-psm: Performance-Scaled Messaging API, an accelerated 
-	  interface to QLogic HCAs
+	  interface to Intel(R) HCAs
  - Sources of all software modules (under conditions mentioned in the modules'
    LICENSE files)
  - Documentation
@@ -82,8 +82,8 @@ well as iWARP RNICs by Chelsio Communications and Intel.
 	http://www.mellanox.com/content/pages.php?pg=firmware_download
 
   o   Qlogic HCAs:
-	- QLogic TrueScale DDR PCIe x8 and x16 HCAs
-	- QLogic TrueScale QDR PCIe x8 Gen2 HCAs
+	- Intel(R) True Scale DDR PCIe x8 and x16 HCAs
+	- Intel(R) True Scale QDR PCIe x8 Gen2 HCAs
 
   o   IBM HCAs:
 	- GX Dual-port SDR 4x IB HCA
