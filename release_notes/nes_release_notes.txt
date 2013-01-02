@@ -32,6 +32,7 @@ OFED 3.5 contains several important bug fixes for iw_nes driver:
 	- Fixed an incorrect setting of a multicast address in the perfect filter table. 
 	- Fixed a problem when adding timer and a timer is already pending.
 	- Fixed a problem when initializing terminate timer more than once.
+	- Fixed a problem when establishing iWarp connection and tx checksum offload is disabled.
 	- Added backports for Linux 2.6 and 3.0 kernels
 	- iw_nes driver version is changed to 1.5.0.1   	 
 
@@ -92,8 +93,8 @@ NOTE: Assuming NetEffect Ethernet Cluster Server Adapter is assigned eth2.
 
     ifconfig eth2 mtu 9000     		- largest mtu supported
 
-    ethtool -K eth2 tso on  		- enables TSO  (Operation not supported for rhel6.2/rhel6.3)
-    ethtool -K eth2 tso off 		- disables TSO (Operation not supported for rhel6.2/rhel6.3)
+    ethtool -K eth2 tso on  		- enables TSO
+    ethtool -K eth2 tso off 		- disables TSO
 
     ethtool -C eth2 rx-usecs-irq 128 	- set static interrupt moderation
 
