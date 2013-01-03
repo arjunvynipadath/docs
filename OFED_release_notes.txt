@@ -1,7 +1,7 @@
 	    Open Fabrics Enterprise Distribution (OFED)
-	               Version 3.5-rc3
+	               Version 3.5-rc4
 	               Release Notes
-	               December 2012
+	               January 2013
 
 
 ===============================================================================
@@ -157,6 +157,13 @@ http://www.openfabrics.org/downloads/MAINTAINERS
 ===============================================================================
 2. Change log
 ===============================================================================
+OFED-3.5-rc4 Main Changes from OFED 3.5-rc3
+-------------------------------------------------------------------------------
+RDMA/nes: Fixes for OFED-3.5 RC3
+RDMA/cxgb4: Keep the maximum number of stag limited to T4_MAX_NUM_STAG
+Updated packages:
+    infinipath-psm-3.1-364.1140_open
+
 OFED-3.5-rc3 Main Changes from OFED 3.5-rc2
 -------------------------------------------------------------------------------
 RDMA/nes: Fix for terminate timer crash
@@ -226,7 +233,7 @@ OFED-3.5-rc1 Main Changes from OFED 3.2-rc1
 
 OFED-3.5-rc1 Main Changes from OFED 1.5.4.1
 -------------------------------------------------------------------------------
-1. Based on linux-3.2 kernel
+1. Based on linux-3.5 kernel
 2. kernel-ib RPM renamed to compat-rdma
 3. Removed MPI packages
 4. Updated packages:
