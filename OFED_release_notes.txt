@@ -68,7 +68,7 @@ The OFED package contains the following components:
 	
 1.3 HCAs and RNICs Supported
 ----------------------------
-This release supports IB HCAs by Mellanox Technologies, Qlogic and IBM as
+This release supports IB HCAs by Mellanox Technologies, Intel and IBM as
 well as iWARP RNICs by Chelsio Communications and Intel.
 
   o   Mellanox Technologies HCAs (SDR, DDR and QDR Modes are Supported):
@@ -81,7 +81,7 @@ well as iWARP RNICs by Chelsio Communications and Intel.
 	For official firmware versions please see:
 	http://www.mellanox.com/content/pages.php?pg=firmware_download
 
-  o   Qlogic HCAs:
+  o   Intel (formerly QLogic) HCAs:
 	- Intel(R) True Scale DDR PCIe x8 and x16 HCAs
 	- Intel(R) True Scale QDR PCIe x8 Gen2 HCAs
 
@@ -103,7 +103,7 @@ well as iWARP RNICs by Chelsio Communications and Intel.
 ----------------------
 This release was tested with switches and gateways provided by the following
 companies:
-	- Qlogic
+	- Intel (formerly QLogic)
 	- Flextronics
 	- Oracle (Sun)
 	- Mellanox
