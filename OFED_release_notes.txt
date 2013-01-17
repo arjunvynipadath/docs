@@ -1,5 +1,5 @@
 	    Open Fabrics Enterprise Distribution (OFED)
-	               Version 3.5-rc4
+	               Version 3.5-rc5
 	               Release Notes
 	               January 2013
 
@@ -157,6 +157,10 @@ http://www.openfabrics.org/downloads/MAINTAINERS
 ===============================================================================
 2. Change log
 ===============================================================================
+OFED-3.5-rc5 Main Changes from OFED 3.5-rc4
+-------------------------------------------------------------------------------
+perftest-2.0-0.25.g971259d
+
 OFED-3.5-rc4 Main Changes from OFED 3.5-rc3
 -------------------------------------------------------------------------------
 RDMA/nes: Fixes for OFED-3.5 RC3
