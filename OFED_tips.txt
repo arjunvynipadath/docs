@@ -278,7 +278,7 @@ qlvnictools:
 http://www.openfabrics.org/downloads/qlvnictools/qlvnictools-0.0.1-0.1.ge27eef7.tar.gz
 
 qperf:
-http://www.openfabrics.org/downloads/qperf/qperf-0.4.6-0.1.gb81434e.tar.gz
+http://www.openfabrics.org/downloads/qperf/qperf-0.4.9.tar.gz
 
 rds-tools:
 http://www.openfabrics.org/downloads/rds-tools/rds-tools-2.0.4.tar.gz
