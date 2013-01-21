@@ -223,7 +223,7 @@ infiniband-diags:
 http://www.openfabrics.org/downloads/management/infiniband-diags-1.6.1.tar.gz
 
 infinipath-psm:
-http://www.openfabrics.org/downloads/infinipath-psm/infinipath-psm-2.9-926.1005_open.tar.gz
+http://www.openfabrics.org/downloads/infinipath-psm/infinipath-psm-3.1-364.1140_open.tar.gz
 
 libcxgb3:
 http://www.openfabrics.org/downloads/cxgb3/libcxgb3-1.3.1.tar.gz
