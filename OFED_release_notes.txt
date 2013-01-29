@@ -1,5 +1,5 @@
 	    Open Fabrics Enterprise Distribution (OFED)
-	               Version 3.5-rc5
+	               Version 3.5-rc6
 	               Release Notes
 	               January 2013
 
@@ -157,6 +157,11 @@ http://www.openfabrics.org/downloads/MAINTAINERS
 ===============================================================================
 2. Change log
 ===============================================================================
+OFED-3.5-rc6 Main Changes from OFED 3.5-rc5
+-------------------------------------------------------------------------------
+IB/rds: correct IB api usage
+perftest-2.0-0.27.g2edd80a
+
 OFED-3.5-rc5 Main Changes from OFED 3.5-rc4
 -------------------------------------------------------------------------------
 perftest-2.0-0.25.g971259d
