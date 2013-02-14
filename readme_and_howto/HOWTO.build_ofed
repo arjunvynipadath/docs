@@ -1,7 +1,7 @@
              Open Fabrics Enterprise Distribution (OFED)
-                      How To Build OFED 1.5.x
+                      How To Build OFED 3.5
 
-                          December 2011
+                          February 2013
 
 
 ==============================================================================
@@ -39,9 +39,9 @@ Usage: ./build.pl --version <version> [-r|--release]|[--daily] [-d|--distributio
 
 Example:
 
-    ./build.pl --version 1.5.3-rc1 -p packages-ofed
+    ./build.pl --version 3.5-rc1 -p packages-ofed
 
-    This command will create a package (i.e., subtree) called OFED-1.5.3-rc1
+    This command will create a package (i.e., subtree) called OFED-3.5-rc1
     under /tmp/$USER/
 
 ==============================================================================

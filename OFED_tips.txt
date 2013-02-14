@@ -1,7 +1,7 @@
 		Open Fabrics Enterprise Distribution (OFED)
 		      Tips for Working with OFED 3.5
 
-		 	     August 2012
+		 	     February 2013
 
 ===============================================================================
 Table of Contents
@@ -10,9 +10,8 @@ Table of Contents
 2. Debug HOWTOs
 3. Pinning (Locking) User Memory Pages
 4. External Module Compilation Over OFED-3.5
-5. Adding/Deleting a patch to OFED package
-6. Adding vendor specific actions to the installation of OFED
-7. How to compile OFED sources manually
+5. Adding vendor specific actions to the installation of OFED
+6. How to compile OFED sources manually
 
 ===============================================================================
 1. OFED Utilities
@@ -198,7 +197,6 @@ OFED-3.5-rc1:
 
 ofed-scripts:
 git://git.openfabrics.org/~vlad/ofed_scripts.git compat-rdma
-ar.gz
 
 compat-rdma:
 git://git.openfabrics.org/compat-rdma/compat-rdma.git master
@@ -336,7 +334,7 @@ Note: The file /etc/security/limits.conf contains further documentation.
 
 
 ===============================================================================
-4. External Module Compilation Over OFED-1.5.1
+4. External Module Compilation Over OFED-3.5
 ===============================================================================
 
 To build kernel modules depending on OFED's modules, take the Modules.symvers
@@ -352,41 +350,14 @@ MODULES_DIR=/lib/modules/`uname -r`/updates ./create_Module.symvers.sh
 See "Module versioning & Module.symvers" in the modules.txt from kernel
 documentation (e.g. linux-2.6.30/Documentation/kbuild/modules.txt).
 
-
 ===============================================================================
-5. Adding/Deleting a patch to OFED package
-===============================================================================
-If there is a need to add or delete a patch to OFED package one should use the 
-ofed_patch.sh script, that is available under the docs directory.
-
-This script supports kernel sources only.
-
-Usage:
-Add patch to OFED:
-ofed_patch.sh  --add
-               --ofed|-o <path_to_ofed>
-               --patch|-p <path_to_patch>
-               --type|-t <kernel|backport <kernel tag>|addons <kernel tag>>
-
-Remove patch from OFED:
-ofed_patch.sh  --remove
-               --ofed|-o <path_to_ofed>
-               --patch|-p <patch name>
-               --type|-t <kernel|backport <kernel tag>|addons <kernel tag>>
-
-Examples:
-ofed_patch.sh --add --ofed /tmp/OFED-1.5.1/ --patch /tmp/cma_fix.patch --type kernel
-
-ofed_patch.sh --remove --ofed /tmp/OFED-1.5.1/ --patch cma_fix.patch --type kernel
-
-===============================================================================
-6. Adding vendor specific actions to the installation of OFED
+5. Adding vendor specific actions to the installation of OFED
 ===============================================================================
 
 Vendors that want to add actions to the install/uninstall process of OFED can
 bind external scripts to hooks in install.pl and ofed_uninstall.sh.
 
-6.1  Specifying vendor scripts and configuration parameters
+5.1  Specifying vendor scripts and configuration parameters
 -----------------------------------------------------------
 This option is only available when installing ofed in non interactive mode.
 Edit the OFED configuration file (ofed.conf ) and add the lines below (you don't have to use all of them).
@@ -409,7 +380,7 @@ vendor_config_something=value_for_that_something
 Running ./install.pl -c ofed.conf in the OFED directory will now invoke the
 relevant vendor specific actions.
 
-6.2. Requirements from vendor scripts
+5.2. Requirements from vendor scripts
 -------------------------------------
 The script files that are given to install.pl in ofed.conf should
 	- be located in the root directory of OFED
@@ -417,7 +388,7 @@ The script files that are given to install.pl in ofed.conf should
 
 If vendor script fails it fails the entire installation.
 
-6.3 Skeleton for pre/post install vendor script
+5.3 Skeleton for pre/post install vendor script
 -----------------------------------------------
 install.pl passes some useful installation variables to the vendor pre/post
 install scripts environment. See the example below for a typical usage.
@@ -456,13 +427,13 @@ readconf $CONFIG
 exit 0
 
 ===============================================================================
-7. How to compile OFED sources manually
+6. How to compile OFED sources manually
 ===============================================================================
 
 These are the instructions how to compile and install kernel and user parts "manually" 
 meaning without building the RPMs and without using the install.pl script.
 
-7.1 Compiling the kernel modules
+6.1 Compiling the kernel modules
 --------------------------------
 1. tar xzf OFED-3.5.tgz
 2. rpm -ihv OFED-3.5/SRPMS/compat-rdma-3.5-OFED.3.5.src.rpm
@@ -481,7 +452,7 @@ NOTES:
   2. INSTALL_MOD_DIR = "extra/ofa_kernel" for RedHat base Distros 
      INSTALL_MOD_DIR = "updates" for other Distros 
 
-7.2 Compiling the user space libraries
+6.2 Compiling the user space libraries
 --------------------------------------
 To install user space library from the source RPM provided by OFED-1.5.1 manually,
 do the following:

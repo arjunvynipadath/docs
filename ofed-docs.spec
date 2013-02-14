@@ -33,7 +33,7 @@ Name: ofed-docs
 Version: @VERSION@
 Release: 0
 License: GPL/BSD
-Url: http://git.openfabrics.org/git?p=ofed_1_5/docs.git;a=summary
+Url: http://git.openfabrics.org/git?p=compat-rdma/docs.git;a=summary
 Group: Documentation/Man
 Source: %{name}-%{version}.tar.gz
 BuildRoot: %{?build_root:%{build_root}}%{!?build_root:/var/tmp/%{name}-%{version}-root}

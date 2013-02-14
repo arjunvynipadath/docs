@@ -1,32 +1,30 @@
             Open Fabrics Enterprise Distribution (OFED)
-                          Version 3.2-rc1
+                          Version 3.5
                              README
 
-                          June 2012
+                          February 2013
 
 ==============================================================================
 Table of contents
 ==============================================================================
 
  1.  Overview
- 2.  Contents of the OFED Distribution
- 3.  Hardware and Software Requirements
- 4.  How to Download and Extract the OFED Distribution
- 5.  Installing OFED Software
- 6.  Building OFED RPMs
- 7.  IPoIB Configuration
- 8.  Uninstalling OFED
- 9. Upgrading OFED
- 10. Configuration
- 11. Starting and Verifying the IB Fabric
- 12. Related Documentation
+ 2.  How to Download and Extract the OFED Distribution
+ 3.  Installing OFED Software
+ 4.  Building OFED RPMs
+ 5.  IPoIB Configuration
+ 6.  Uninstalling OFED
+ 7.  Upgrading OFED
+ 8.  Configuration
+ 9.  Starting and Verifying the IB Fabric
+ 10. Related Documentation
 
 
 ==============================================================================
 1. Overview
 ==============================================================================
 
-This is the OpenFabrics Enterprise Distribution (OFED) version 3.2
+This is the OpenFabrics Enterprise Distribution (OFED) version 3.5
 software package supporting InfiniBand and iWARP fabrics. It is composed
 of several software modules intended for use on a computer cluster
 constructed as an InfiniBand subnet or an iWARP network.
@@ -47,69 +45,7 @@ General Notes:
     nodes in the cluster using any cluster-aware tools (such as pdsh).
 
 ==============================================================================
-2. OFED Package Contents
-==============================================================================
-
-The OFED Distribution package generates RPMs for installing the following:
-
-  o   OpenFabrics core and ULPs:
-        - HCA drivers (mthca, mlx4, qib, ehca)
-        - iWARP driver (cxgb3, cxgb4, nes)
-        - core
-        - Upper Layer Protocols: IPoIB, SRP Initiator and target, iSER
-          Initiator and target, RDS, qlgc_vnic, uDAPL and NFS-RDMA
-  o   OpenFabrics utilities
-        - OpenSM: InfiniBand Subnet Manager
-        - Diagnostic tools
-        - Performance tests
-  o   Extra packages
-	- infinipath-psm: Performance-Scaled Messaging API, an accelerated 
-	  interface to QLogic HCAs
-  o   Sources of all software modules (under conditions mentioned in the
-      modules' LICENSE files)
-  o   Documentation
-
-==============================================================================
-3. Hardware and Software Requirements
-==============================================================================
-
-1) Server platform with InfiniBand HCA or iWARP RNIC (see OFED Distribution
-   Release Notes for details)
-
-2) Linux operating system (see OFED Distribution Release Notes for details)
-
-3) Administrator privileges on your machine(s)
-
-4) Disk Space:  - For Build & Installation: 300MB
-                - For Installation only:    200MB
-
-5) For the OFED Distribution to compile on your machine, some software
-   packages of your operating system (OS) distribution are required. These
-   are listed here.
-
-OS Distribution         Required Packages
----------------         ----------------------------------
-General:
-o  Common to all        gcc, glib, glib-devel, glibc, glibc-devel,
-                        glibc-devel-32bit (to build 32-bit libraries on x86_86
-                        and ppc64), zlib-devel, libstdc++-devel
-o  RedHat, Fedora       kernel-devel, rpm-build, redhat-rpm-config
-o  SLES                 kernel-source, rpm
-
-Note:   To build 32-bit libraries on x86_64 and ppc64 platforms, the 32-bit
-        glibc-devel should be installed.
-
-Specific Component Requirements:
-o  ibutils              tcl-8.4, tcl-devel-8.4, tk, libstdc++-devel
-o  mstflint             libstdc++-devel (32-bit on ppc64), gcc-c++
-
-Note:   The installer will warn you if you attempt to compile any of the
-        above packages and do not have the prerequisites installed.
-        On SLES, some of required RPMs can be found on SLES SDK DVD.
-        E.g.: libgfortran43, kernel-source, ...
-
-==============================================================================
-4. How to Download and Extract the OFED Distribution
+2. How to Download and Extract the OFED Distribution
 ==============================================================================
 
 1) Download the OFED-X.X.X.tgz file to your target Linux host.
@@ -122,7 +58,7 @@ Note:   The installer will warn you if you attempt to compile any of the
      tar xzvf OFED-X.X.X.tgz
 
 ==============================================================================
-5. Installing OFED Software
+3. Installing OFED Software
 ==============================================================================
 
 1) Go to the directory into which the package was extracted:
@@ -200,8 +136,7 @@ Install Process Results:
 
 o The OFED package is installed under <prefix> directory. Default prefix is /usr
 o The kernel modules are installed under:
-    /lib/modules/`uname -r`/updates/ - on SUSE Distros
-    /lib/modules/`uname -r`/extra/ofa_kernel/ - on RedHat distros
+    /lib/modules/`uname -r`/updates/
 o The package kernel include files are placed under <prefix>/src/compat-rdma/.
   These includes should be used when building kernel modules which use
   the Openfabrics stack. (Note that these includes, if needed, are
@@ -224,7 +159,7 @@ o ofed_info script provides information on the OFED version and git repository.
 o man pages will be installed under /usr/share/man/.
 
 ==============================================================================
-6. Building OFED RPMs
+4. Building OFED RPMs
 ==============================================================================
 
 1) Go to the directory into which the package was extracted:
@@ -247,7 +182,7 @@ Note: Depending on your hardware, the build procedure may take 30-45
       installer on each node with the RPMs that were previously built.
 
 ==============================================================================
-7. IP-over-IB (IPoIB) Configuration
+5. IP-over-IB (IPoIB) Configuration
 ==============================================================================
 
 Configuring IPoIB is an optional step during the installation.  During
@@ -303,7 +238,7 @@ BROADCAST_ib0=172.16.255.255
 ONBOOT_ib0=1
 
 ==============================================================================
-8. Uninstalling OFED
+6. Uninstalling OFED
 ==============================================================================
 
 There are two ways to uninstall OFED:
@@ -314,7 +249,7 @@ There are two ways to uninstall OFED:
    before removing the RPMs using the flag: --unload-modules
 
 ==============================================================================
-9. Upgrading OFED
+7. Upgrading OFED
 ==============================================================================
 
 If an old OFED version is installed, it may be upgraded by installing a
@@ -323,7 +258,7 @@ version was loaded before upgrading, you need to restart OFED or reboot
 your machine in order to start the new OFED stack.
 
 ==============================================================================
-10. Configuration
+8. Configuration
 ==============================================================================
 
 Most of the OFED components can be configured or reconfigured after
@@ -331,7 +266,6 @@ the installation by modifying the relevant configuration files.  The
 list of the modules that will be loaded automatically upon boot can be
 found in the /etc/infiniband/openib.conf file.  Other configuration
 files include:
-- SDP configuration file:    /etc/libsdp.conf
 - OpenSM configuration file: /etc/ofa/opensm.conf (for RedHat)
                              /etc/sysconfig/opensm (for SuSE) - should be
                              created manually if required.
@@ -346,7 +280,7 @@ Note: After the installer completes, information about the OFED
 
 
 ==============================================================================
-11. Starting and Verifying the IB Fabric
+9. Starting and Verifying the IB Fabric
 ==============================================================================
 1)  If you rebooted your machine after the installation process completed,
     IB interfaces should be up. If you did not reboot your machine, please
@@ -385,7 +319,7 @@ Note: After the installer completes, information about the OFED
 
 
 ==============================================================================
-12. Related Documentation
+10. Related Documentation
 ==============================================================================
 
 OFED documentation is located in the ofed-docs RPM.  After
@@ -397,7 +331,6 @@ Documents list:
 
    o README.txt
    o OFED_Installation_Guide.txt
-   o MPI_README.txt
    o Examples of configuration files
    o OFED_tips.txt
    o HOWTO.build_ofed
