@@ -1,7 +1,7 @@
 		Open Fabrics Enterprise Distribution (OFED)
-		      Tips for Working with OFED 3.5
+		      Tips for Working with OFED 3.5-1
 
-		 	     February 2013
+		 	     September 2013
 
 ===============================================================================
 Table of Contents
@@ -9,7 +9,7 @@ Table of Contents
 1. OFED Utilities
 2. Debug HOWTOs
 3. Pinning (Locking) User Memory Pages
-4. External Module Compilation Over OFED-3.5
+4. External Module Compilation Over OFED-3.5-1
 5. Adding vendor specific actions to the installation of OFED
 6. How to compile OFED sources manually
 
@@ -183,24 +183,21 @@ c. Using sysfs file system
 -------------------------------------------
 The text file BUILD_ID provides data on all OFED components (whether installed
 or not). This file is a part of the ofed-docs RPM and installed under 
-/usr/share/doc/ofed-docs-1.5.1 on RedHat, and under 
-/usr/share/doc/packages/ofed-docs-1.5.1 on SuSE.
+/usr/share/doc/ofed-docs-3.5-1 on RedHat, and under 
+/usr/share/doc/packages/ofed-docs-3.5-1 on SuSE.
 
 The same information can be obtained by executing the 'ofed_info' command. For
 example:
 
 # ofed_info -s
-OFED-3.5-rc1:
+OFED-3.5-1:
 
-# ofed_info
-OFED-3.5-rc1:
-
-ofed-scripts:
-git://git.openfabrics.org/~vlad/ofed_scripts.git compat-rdma
+compat-dapl:
+http://www.openfabrics.org/downloads/dapl/compat-dapl-1.2.19.tar.gz
 
 compat-rdma:
 git://git.openfabrics.org/compat-rdma/compat-rdma.git master
-commit 2036874cf4c072c04b96b69e5b965a788fc77a6d
+commit d8f006ab216ec54eca367aacd2d658b6a740c076
 
 dapl:
 http://www.openfabrics.org/downloads/dapl/dapl-2.0.36.tar.gz
@@ -251,7 +248,7 @@ libmlx4:
 http://www.openfabrics.org/downloads/mlx4/libmlx4-1.0.4.tar.gz
 
 libmthca:
-http://www.openfabrics.org/downloads/libmthca/libmthca-1.0.5-0.1.gbe5eef3.tar.gz
+http://www.openfabrics.org/downloads/mthca/libmthca-1.0.6.tar.gz
 
 libnes:
 http://www.openfabrics.org/downloads/nes/libnes-1.1.3.tar.gz
@@ -260,17 +257,17 @@ librdmacm:
 http://www.openfabrics.org/downloads/rdmacm/librdmacm-1.0.16.tar.gz
 
 mstflint:
-http://www.openfabrics.org/downloads/mstflint/mstflint-1.4-1.18.g1adcfbf.tar.gz
+http://www.openfabrics.org/downloads/mstflint/mstflint-1.4-1.23.g5c2032a.tar.gz
 
 ofed-docs:
-git://git.openfabrics.org/compat-rdma/docs.git ofed_3_2
-commit 6dff336cfb197351c9fa0b50c0715b59a4d822cf
+git://beany.openfabrics.org/~rupertd/docs/.git ofed_3_5
+commit 8cc35ac211de682e6734c3f1ffb13d7fbb62f1d5
 
 opensm:
 http://www.openfabrics.org/downloads/management/opensm-3.3.15.tar.gz
 
 perftest:
-http://www.openfabrics.org/downloads/perftest/perftest-1.4.0-0.66.g9074687.tar.gz
+http://www.openfabrics.org/downloads/perftest/perftest-2.0-0.27.g2edd80a.tar.gz
 
 qlvnictools:
 http://www.openfabrics.org/downloads/qlvnictools/qlvnictools-0.0.1-0.1.ge27eef7.tar.gz
@@ -284,6 +281,8 @@ http://www.openfabrics.org/downloads/rds-tools/rds-tools-2.0.4.tar.gz
 srptools:
 http://www.openfabrics.org/downloads/srptools/srptools-0.0.4-0.1.gce1f64c.tar.gz
 
+ofed-scripts:
+git://git.openfabrics.org/~vlad/ofed_scripts.git compat-rdma
 
 2.2 Installed OFED Components
 -------------------------------
@@ -294,7 +293,7 @@ For example:
 
 # /etc/infiniband/info 
 prefix=/usr
-Kernel=2.6.32-220.el6.x86_64
+Kernel=2.6.32_358.el6.x86_64
 
 Configure options: --with-core-mod --with-user_mad-mod --with-user_access-mod --with-addr_trans-mod --with-mthca-mod --with-mlx4-mod --with-mlx4_en-mod --with-cxgb3-mod --with-cxgb4-mod --with-nes-mod --with-qib-mod --with-ipoib-mod --with-srp-mod
 
@@ -303,7 +302,6 @@ Configure options: --with-core-mod --with-user_mad-mod --with-user_access-mod --
 To compile/build/install the IB modules so that they will contain debug
 information, set OPENIB_KERNEL_EXTRA_CFLAGS="-g" in your environment
 before running OFED's install.pl/build.sh .
-
 
 ===============================================================================
 3. Pinning (Locking) User Memory Pages
@@ -334,7 +332,7 @@ Note: The file /etc/security/limits.conf contains further documentation.
 
 
 ===============================================================================
-4. External Module Compilation Over OFED-3.5
+4. External Module Compilation Over OFED-3.5-1
 ===============================================================================
 
 To build kernel modules depending on OFED's modules, take the Modules.symvers
@@ -435,11 +433,11 @@ meaning without building the RPMs and without using the install.pl script.
 
 6.1 Compiling the kernel modules
 --------------------------------
-1. tar xzf OFED-3.5.tgz
-2. rpm -ihv OFED-3.5/SRPMS/compat-rdma-3.5-OFED.3.5.src.rpm
+1. tar xzf OFED-3.5-1.tgz
+2. rpm -ihv OFED-3.5-1/SRPMS/compat-rdma-3.5-OFED.3.5.src.rpm
 3. cd /usr/src/redhat/SOURCES
-4. tar xzvf compat-rdma-3.5.tgz
-5. cd compat-rdma-3.5
+4. tar xzvf compat-rdma-3.5-1.tgz
+5. cd compat-rdma-3.5-1
 6. configure: 
    run ./configure --help for a list of options.
    basic invocation is:
@@ -454,12 +452,12 @@ NOTES:
 
 6.2 Compiling the user space libraries
 --------------------------------------
-To install user space library from the source RPM provided by OFED-1.5.1 manually,
+To install user space library from the source RPM provided by OFED-3.5-1 manually,
 do the following:
 
 Example for libibverbs:
  
-1. tar xzf OFED-3.5.tgz
+1. tar xzf OFED-3.5-1.tgz
 2. rpm -ihv SRPMS/libibverbs-1.1.6-1.src.rpm
 3. cd /usr/src/redhat/SOURCES (for RedHat)
    or

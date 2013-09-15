@@ -1,6 +1,6 @@
             Open Fabrics Enterprise Distribution (OFED)
                        Version 3.5-1 README
-                          August 2013
+                          September 2013
 
 ==============================================================================
 Table of contents
@@ -23,7 +23,7 @@ Table of contents
 ==============================================================================
 
 This is the OpenFabrics Enterprise Distribution (OFED) version 3.5-1
-software package supporting InfiniBand and iWARP fabrics. It is composed
+software package supporting InfiniBand, iWARP and RoCE fabrics. It is composed
 of several software modules intended for use on a computer cluster
 constructed as an InfiniBand subnet or an iWARP network.
 
@@ -137,7 +137,7 @@ o The kernel modules are installed under:
     /lib/modules/`uname -r`/updates/
 o The package kernel include files are placed under <prefix>/src/compat-rdma/.
   These includes should be used when building kernel modules which use
-  the Openfabrics stack. (Note that these includes, if needed, are
+  the Openfabrics stack. (Note that these include, if needed, are
   "backported" to your kernel).
 o The raw package (un-backported) source files are placed under
   <prefix>/src/compat-rdma-x.x.x
