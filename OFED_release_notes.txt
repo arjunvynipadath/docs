@@ -1,13 +1,13 @@
 	    Open Fabrics Enterprise Distribution (OFED)
-	          Version 3.5-2 Release Notes
-	               September 2013
+	          Version 3.5-2 RC2 Release Notes
+	               October 2013
 
 
 ===============================================================================
 Table of Contents
 ===============================================================================
 1. Overview, which includes:
-	- OFED Distribution Rev 3.5-2 Contents
+	- OFED Distribution Rev 3.5-2 RC2 Contents
 	- Supported Platforms and Operating Systems
 	- Supported HCA and RNIC Adapter Cards and Firmware Versions
 	- Tested Switch Platforms
@@ -21,7 +21,7 @@ Table of Contents
 1. Overview
 ===============================================================================
 These are the release notes of OpenFabrics Enterprise Distribution (OFED)
-release 3.5-2. The OFED software package is composed of several software modules,
+release 3.5-2 RC2. The OFED software package is composed of several software modules,
 and is intended for use on a computer cluster constructed as an InfiniBand
 Fabric, an iWARP Network or a RoCE Fabric.
 
@@ -29,7 +29,7 @@ Note: If you plan to upgrade the OFED package on your cluster, please upgrade
 all of its nodes to this new version.
 
 
-1.1 OFED 3.5-2 Contents
+1.1 OFED 3.5-2 RC2 Contents
 -----------------------
 The OFED package contains the following components:
  - OpenFabrics core and ULPs:
@@ -86,7 +86,8 @@ InfiniBand Adapters
   o   Mellanox Technologies HCAs (SDR, DDR and QDR Modes are Supported):
 	- ConnectX(R) and ConnectX EN (fw-25408 Rev 2.9.1000)
 	- ConnectX-2 (fw-ConnectX2 Rev 2.9.1000)
-	- ConnectX-3 (fw-ConnectX3 Rev 2.11.0500) (FDR and FDR10 Modes are Supported)
+   o   Mellanox Technologies HCAs (FDR and FDR10 Modes are Supported):
+	- ConnectX-3 (fw-ConnectX3 Rev 2.30.3000) 
 
 	For official firmware versions please see:
 	http://www.mellanox.com/content/pages.php?pg=firmware_download
@@ -138,8 +139,8 @@ RoCE Switches
 
 1.5 Third Party Packages
 ------------------------
-The following third party packages have been tested with OFED 3.5-2:
-- Open MPI - 1.6.4
+The following third party packages have been tested with OFED 3.5-2 RC2:
+- Open MPI - 1.6.5
 
 1.6 OFED Sources
 ----------------
@@ -183,6 +184,14 @@ http://www.openfabrics.org/downloads/MAINTAINERS
 ===============================================================================
 2. Change log
 ===============================================================================
+OFED-3.5-2 RC2 Main Changes from OFED 3.5-2 RC1
+-------------------------------------------------------------------------------
+1. Updated packages:
+   - dapl-2.0.39
+   - infinipath-psm-3.1-4
+   - libcxgb4-1.3.1
+2. install.pl: Enable nfsrdma on RHEL6.4
+   - if ($kernel =~ m/^3\.5/ or $DISTRO =~ /SLES11.2|RHEL6.[234]/) 
 
 OFED-3.5-2 Main Changes from OFED 3.5-1 and OFED 3.5 
 -------------------------------------------------------------------------------
