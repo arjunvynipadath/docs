@@ -1,6 +1,6 @@
             Open Fabrics Enterprise Distribution (OFED)
-                       Version 3.5-2 RC2 README
-                          Ocotber 2013
+                       Version 3.5-2 RC3 README
+                          December 2013
 
 ==============================================================================
 Table of contents
@@ -22,7 +22,7 @@ Table of contents
 1. Overview
 ==============================================================================
 
-This is the OpenFabrics Enterprise Distribution (OFED) version 3.5-2 RC2
+This is the OpenFabrics Enterprise Distribution (OFED) version 3.5-2 RC3
 software package supporting InfiniBand, iWARP and RoCE fabrics. It is composed
 of several software modules intended for use on a computer cluster
 constructed as an InfiniBand subnet or an iWARP network.

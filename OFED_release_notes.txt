@@ -1,13 +1,12 @@
 	    Open Fabrics Enterprise Distribution (OFED)
-	          Version 3.5-2 RC2 Release Notes
-	               October 2013
-
+	          Version 3.5-2 RC3 Release Notes
+	               December 2013
 
 ===============================================================================
 Table of Contents
 ===============================================================================
 1. Overview, which includes:
-	- OFED Distribution Rev 3.5-2 RC2 Contents
+	- OFED Distribution Rev 3.5-2 RC3 Contents
 	- Supported Platforms and Operating Systems
 	- Supported HCA and RNIC Adapter Cards and Firmware Versions
 	- Tested Switch Platforms
@@ -16,12 +15,11 @@ Table of Contents
 2. Change log
 3. Known Issues
 
-
 ===============================================================================
 1. Overview
 ===============================================================================
 These are the release notes of OpenFabrics Enterprise Distribution (OFED)
-release 3.5-2 RC2. The OFED software package is composed of several software modules,
+release 3.5-2 RC3. The OFED software package is composed of several software modules,
 and is intended for use on a computer cluster constructed as an InfiniBand
 Fabric, an iWARP Network or a RoCE Fabric.
 
@@ -29,7 +27,7 @@ Note: If you plan to upgrade the OFED package on your cluster, please upgrade
 all of its nodes to this new version.
 
 
-1.1 OFED 3.5-2 RC2 Contents
+1.1 OFED 3.5-3 RC2 Contents
 -----------------------
 The OFED package contains the following components:
  - OpenFabrics core and ULPs:
@@ -126,7 +124,7 @@ InfiniBand Switches
 	- SX6036
 
 iWARP Switches
-  o   Fujitisu
+  o   Fujitsu
 	- XG2000C 10Gb Ethernet Switch
 
 RoCE Switches
@@ -139,7 +137,7 @@ RoCE Switches
 
 1.5 Third Party Packages
 ------------------------
-The following third party packages have been tested with OFED 3.5-2 RC2:
+The following third party packages have been tested with OFED 3.5-2 RC3:
 - Open MPI - 1.6.5
 
 1.6 OFED Sources
@@ -184,35 +182,37 @@ http://www.openfabrics.org/downloads/MAINTAINERS
 ===============================================================================
 2. Change log
 ===============================================================================
-OFED-3.5-2 RC2 Main Changes from OFED 3.5-2 RC1
+OFED-3.5-2 RC3 Main Changes from OFED 3.5-2 RC2
 -------------------------------------------------------------------------------
 1. Updated packages:
-   - dapl-2.0.39
-   - infinipath-psm-3.1-4
-   - libcxgb4-1.3.1
-2. install.pl: Enable nfsrdma on RHEL6.4
-   - if ($kernel =~ m/^3\.5/ or $DISTRO =~ /SLES11.2|RHEL6.[234]/) 
+   - librdmacm-1.0.17.1
+   - perftest-2.0-0.63.g5bb5fe6.tar.gz
 
 OFED-3.5-2 Main Changes from OFED 3.5-1 and OFED 3.5 
 -------------------------------------------------------------------------------
 1. Add support for the OSes
    - RedHat EL6.4 
    - SLES11 SP3
-2. Removed pacckage
+2. Removed packages
    - compat-dapl
 3. Updated packages:
-   - dapl-2.0.38
+   - dapl-2.0.39
    - ibacm-1.0.8
    - infiniband-diags-1.6.2
-   - libcxgb4-1.3.0
+   - infinipath-psm-3.1-4
+   - libcxgb4-1.3.1
    - libibmad-1.3.10
    - libibverbs-1.1.7
    - libmlx4-1.0.5
    - libmthca-1.0.6
-   - librdmacm-1.0.17
+   - librdmacm-1.0.17.1
    - mstflint-3.0-0.6
    - opensm-3.3.16
    - perftest-2.0-0.58
+
+New Patches
+1. 0001-mlx4_core-Roll-back-round-robin-bitmap-allocation-co.patch
+   See Bug 2452
 
 ===============================================================================
 3. Known Issues
@@ -220,28 +220,39 @@ OFED-3.5-2 Main Changes from OFED 3.5-1 and OFED 3.5
 The following is a list of general limitations and known issues of the various
 components of the OFED 3.5-2 release.
 
-1. When upgrading from an earlier OFED version, the installation script does
-   not stop the earlier OFED version prior to uninstalling it.
-   Workaround: Stop the old OFED stack (/etc/init.d/openibd stop) before
-   upgrading to OFED 3.5 or reboot the server after OFED installation.
-2. Memory registration by the user is limited according to administrator
-   setting. See "Pinning (Locking) User Memory Pages" in OFED_tips.txt for
-   system configuration.
-3. Fork support from kernel 2.6.12 and above is available provided
-   that applications do not use threads. fork() is supported as long as the
-   parent process does not run before the child exits or calls exec().
-   The former can be achieved by calling wait(childpid), and the latter can be
-   achieved by application specific means.  The Posix system() call is
-   supported.
-4. The qib driver is supported only on 64-bit platforms.
-5. IPoIB: brctl utilities do not work on IPoIB interfaces. The reason for that
-   is that these utilities support devices of type Ethernet only.
-6. In case uninstall is failing, check the error log and remove
-   the remaining RPMs manually using 'rpm -e <rpms list>'.
-7. On SLES11.x, set allow_unsupported_modules parameter to 1 in file:
+01. When upgrading from an earlier OFED version, the installation script does
+    not stop the earlier OFED version prior to uninstalling it.
+    Workaround: Stop the old OFED stack (/etc/init.d/openibd stop) before
+    upgrading to OFED 3.5 or reboot the server after OFED installation.
+02. Memory registration by the user is limited according to administrator
+    setting. See "Pinning (Locking) User Memory Pages" in OFED_tips.txt for
+    system configuration.
+03. Fork support from kernel 2.6.12 and above is available provided
+    that applications do not use threads. fork() is supported as long as the
+    parent process does not run before the child exits or calls exec().
+    The former can be achieved by calling wait(childpid), and the latter can be
+    achieved by application specific means.  The Posix system() call is
+    supported.
+04. The qib driver is supported only on 64-bit platforms.
+05. IPoIB: brctl utilities do not work on IPoIB interfaces. The reason for that
+    is that these utilities support devices of type Ethernet only.
+06. In case uninstall is failing, check the error log and remove
+    the remaining RPMs manually using 'rpm -e <rpms list>'.
+07. On SLES11.x, set allow_unsupported_modules parameter to 1 in file:
     /etc/modprobe.d/unsupported-modules. Without this the modules will not
     load.
-8. RDS is supported only on kernel.org 3.5 and not on any distro OS.
+08. RDS is supported only on kernel.org 3.5 and not on any distro OS.
+09. RHEL 6.5 is not supported in 3.5-2 but will be supported in the next OFED
+    version which is OFED 3.12
+10. Mellanox ConnectIB HCAs are not supported in OFED 3.5-2. See OFED 3.12
+11. There are known issues with iWARP using Chelsio adapters which will be 
+    resolved in OFED 3.12. See Bugs 2402, 2441 and 2445
+12. There is an issue with dapl which will be resolved in the next release
+    dapl 2.0.40 which will be included in OFED 3.12 - see Bug 2448
+13. There is an issue with PSM when compiling with gcc >= 4.6. This will be 
+    resolved in OFED 3.12 - see Bug 2430
+14. There is an issue with NFSoRDMA when running on Power PC. This will be 
+    resolved in OFED 3.12 - see Bug 2449
 
 Note: See the release notes of each component for additional issues.
 
