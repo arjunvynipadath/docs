@@ -1,12 +1,12 @@
 	    Open Fabrics Enterprise Distribution (OFED)
-	          Version 3.5-2 RC3 Release Notes
+	          Version 3.5-2 Release Notes
 	               December 2013
 
 ===============================================================================
 Table of Contents
 ===============================================================================
 1. Overview, which includes:
-	- OFED Distribution Rev 3.5-2 RC3 Contents
+	- OFED Distribution Rev 3.5-2 Contents
 	- Supported Platforms and Operating Systems
 	- Supported HCA and RNIC Adapter Cards and Firmware Versions
 	- Tested Switch Platforms
@@ -19,7 +19,7 @@ Table of Contents
 1. Overview
 ===============================================================================
 These are the release notes of OpenFabrics Enterprise Distribution (OFED)
-release 3.5-2 RC3. The OFED software package is composed of several software modules,
+release 3.5-2. The OFED software package is composed of several software modules,
 and is intended for use on a computer cluster constructed as an InfiniBand
 Fabric, an iWARP Network or a RoCE Fabric.
 
@@ -27,7 +27,7 @@ Note: If you plan to upgrade the OFED package on your cluster, please upgrade
 all of its nodes to this new version.
 
 
-1.1 OFED 3.5-3 RC2 Contents
+1.1 OFED 3.5-2 Contents
 -----------------------
 The OFED package contains the following components:
  - OpenFabrics core and ULPs:
@@ -137,8 +137,9 @@ RoCE Switches
 
 1.5 Third Party Packages
 ------------------------
-The following third party packages have been tested with OFED 3.5-2 RC3:
+The following third party packages have been tested with OFED 3.5-2:
 - Open MPI - 1.6.5
+- Intel MPI 4.1 
 
 1.6 OFED Sources
 ----------------
@@ -253,6 +254,9 @@ components of the OFED 3.5-2 release.
     resolved in OFED 3.12 - see Bug 2430
 14. There is an issue with NFSoRDMA when running on Power PC. This will be 
     resolved in OFED 3.12 - see Bug 2449
+15. Newer SLES or RHEL patch kernels that are updates to the original kernel that is included in the 
+    original SLES or RHEL distibutions may not work with OFED-3.5-2. The list of kernels that are supported are listed in
+    section 1.2. 
 
 Note: See the release notes of each component for additional issues.
 
