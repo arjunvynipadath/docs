@@ -1,12 +1,12 @@
 	    Open Fabrics Enterprise Distribution (OFED)
-	          Version 3.5-2 Release Notes
-	               December 2013
+	          Version 3.12-rc1 Release Notes
+	               February 2014
 
 ===============================================================================
 Table of Contents
 ===============================================================================
 1. Overview, which includes:
-	- OFED Distribution Rev 3.5-2 Contents
+	- OFED Distribution Rev 3.12-rc1 Contents
 	- Supported Platforms and Operating Systems
 	- Supported HCA and RNIC Adapter Cards and Firmware Versions
 	- Tested Switch Platforms
@@ -19,7 +19,7 @@ Table of Contents
 1. Overview
 ===============================================================================
 These are the release notes of OpenFabrics Enterprise Distribution (OFED)
-release 3.5-2. The OFED software package is composed of several software modules,
+release 3.12-rc1. The OFED software package is composed of several software modules,
 and is intended for use on a computer cluster constructed as an InfiniBand
 Fabric, an iWARP Network or a RoCE Fabric.
 
@@ -27,13 +27,13 @@ Note: If you plan to upgrade the OFED package on your cluster, please upgrade
 all of its nodes to this new version.
 
 
-1.1 OFED 3.5-2 Contents
+1.1 OFED 3.12-rc1 Contents
 -----------------------
 The OFED package contains the following components:
  - OpenFabrics core and ULPs:
-	- IB HCA drivers (mthca, mlx4, qib, ehca)
+	- IB HCA drivers (mthca, mlx4, mlx5, qib, ehca, ocrdma)
 	- iWARP RNIC driver (cxgb3, cxgb4, nes)
-	- RoCE drivers (mlx4)
+	- RoCE drivers (mlx4, ocrdma)
 - ib core
 	- Upper Layer Protocols: IPoIB, SRP Initiator and target, iSER
 	  Initiator and target, RDS, uDAPL, qlgc_vnic and NFS-RDMA*.
@@ -57,12 +57,10 @@ The OFED package contains the following components:
 	- ppc64
 
   o   Linux Operating Systems:
-	- RedHat EL6.2 		2.6.32-220.el6
-	- RedHat EL6.3 		2.6.32-279.el6
 	- RedHat EL6.4 		2.6.32-358.el6
-	- SLES11 SP2 		3.0.13-0.27-default
+	- RedHat EL6.5 		2.6.32-431.el6
 	- SLES11 SP3		3.0.76-0.9.1
-	- kernel.org		3.5    *
+	- kernel.org		3.12    *
 
       * Minimal QA for these versions.
 
@@ -84,9 +82,11 @@ InfiniBand Adapters
   o   Mellanox Technologies HCAs (SDR, DDR and QDR Modes are Supported):
 	- ConnectX(R) and ConnectX EN (fw-25408 Rev 2.9.1000)
 	- ConnectX-2 (fw-ConnectX2 Rev 2.9.1000)
-   o   Mellanox Technologies HCAs (FDR and FDR10 Modes are Supported):
-	- ConnectX-3 (fw-ConnectX3 Rev 2.30.3000) 
-
+  o   Mellanox Technologies HCAs (FDR and FDR10 Modes are Supported):
+	- ConnectX-3 (fw-ConnectX3 Rev 2.30.8000) 
+  o   Mellanox Technologies HCAs (FDR and FDR10 Modes are Supported):
+	- Connect-IB™ (fw-ConnectIB.mlx Rev 10.10.2000 and above)
+	
 	For official firmware versions please see:
 	http://www.mellanox.com/content/pages.php?pg=firmware_download
 
@@ -137,7 +137,7 @@ RoCE Switches
 
 1.5 Third Party Packages
 ------------------------
-The following third party packages have been tested with OFED 3.5-2:
+The following third party packages have been tested with OFED 3.12-rc1:
 - Open MPI - 1.6.5
 - Intel MPI 4.1 
 
@@ -147,11 +147,11 @@ All sources are located under git://git.openfabrics.org/
 
 Linux:
 ------
-URL: git://git.openfabrics.org/compat-rdma/linux-3.5.git
-Branch: for-ofed-3.5
+URL: git://git.openfabrics.org/compat-rdma/linux-3.12.git
+Branch: master
 
 - Linux kernel sub-tree that includes files relevant for the OFED project only.
-  Based on v3.5. Used to shorten git clone time.
+  Based on v3.12. Used to shorten git clone time.
   Note: the regular Linux git tree can be used as well.
 
 compat:
@@ -173,7 +173,7 @@ Branch: master
 User level Sources are downloaded from http://www.openfabrics.org/downloads/
 as written in the BUILD_ID
 
-The kernel sources are based on Linux 3.5 mainline kernel. Its patches
+The kernel sources are based on Linux 3.12 mainline kernel. Its patches
 are included in the OFED sources directory.
 For details see HOWTO.build_ofed.
 
@@ -183,43 +183,31 @@ http://www.openfabrics.org/downloads/MAINTAINERS
 ===============================================================================
 2. Change log
 ===============================================================================
-OFED-3.5-2 RC3 Main Changes from OFED 3.5-2 RC2
--------------------------------------------------------------------------------
-1. Updated packages:
-   - librdmacm-1.0.17.1
-   - perftest-2.0-0.63.g5bb5fe6.tar.gz
-
-OFED-3.5-2 Main Changes from OFED 3.5-1 and OFED 3.5 
+OFED-3.12-rc1 Main Changes from OFED 3.5-2
 -------------------------------------------------------------------------------
 1. Add support for the OSes
-   - RedHat EL6.4 
-   - SLES11 SP3
-2. Removed packages
-   - compat-dapl
+   - RedHat EL6.5
+2. New drivers available
+   - ocrdma
+   - libocrdma-1.0.1
+   - mlx5
+   - libmlx5-1.0.1
 3. Updated packages:
-   - dapl-2.0.39
-   - ibacm-1.0.8
-   - infiniband-diags-1.6.2
-   - infinipath-psm-3.1-4
-   - libcxgb4-1.3.1
-   - libibmad-1.3.10
-   - libibverbs-1.1.7
-   - libmlx4-1.0.5
-   - libmthca-1.0.6
-   - librdmacm-1.0.17.1
-   - mstflint-3.0-0.6
-   - opensm-3.3.16
-   - perftest-2.0-0.58
-
-New Patches
-1. 0001-mlx4_core-Roll-back-round-robin-bitmap-allocation-co.patch
-   See Bug 2452
+   - ibsim-0.6
+   - infiniband-diags-1.6.4
+   - infinipath-psm-3.2-2_ga8c3e3e_open
+   - libibmad-1.3.11
+   - librdmacm-1.0.18
+   - mstflint-3.5.0
+   - opensm-3.3.17
+   - perftest-2.0-0.76.gbf9a463
+   - srptools-1.0.1
 
 ===============================================================================
 3. Known Issues
 ===============================================================================
 The following is a list of general limitations and known issues of the various
-components of the OFED 3.5-2 release.
+components of the OFED 3.12-rc1 release.
 
 01. When upgrading from an earlier OFED version, the installation script does
     not stop the earlier OFED version prior to uninstalling it.
@@ -243,9 +231,9 @@ components of the OFED 3.5-2 release.
     /etc/modprobe.d/unsupported-modules. Without this the modules will not
     load.
 08. RDS is supported only on kernel.org 3.5 and not on any distro OS.
-09. RHEL 6.5 is not supported in 3.5-2 but will be supported in the next OFED
+09. RHEL 6.5 is not supported in 3.12-rc1 but will be supported in the next OFED
     version which is OFED 3.12
-10. Mellanox ConnectIB HCAs are not supported in OFED 3.5-2. See OFED 3.12
+10. Mellanox ConnectIB HCAs are not supported in OFED 3.12-rc1. See OFED 3.12
 11. There are known issues with iWARP using Chelsio adapters which will be 
     resolved in OFED 3.12. See Bugs 2402, 2441 and 2445
 12. There is an issue with dapl which will be resolved in the next release
@@ -255,7 +243,7 @@ components of the OFED 3.5-2 release.
 14. There is an issue with NFSoRDMA when running on Power PC. This will be 
     resolved in OFED 3.12 - see Bug 2449
 15. Newer SLES or RHEL patch kernels that are updates to the original kernel that is included in the 
-    original SLES or RHEL distibutions may not work with OFED-3.5-2. The list of kernels that are supported are listed in
+    original SLES or RHEL distibutions may not work with OFED-3.12-rc1. The list of kernels that are supported are listed in
     section 1.2. 
 
 Note: See the release notes of each component for additional issues.
