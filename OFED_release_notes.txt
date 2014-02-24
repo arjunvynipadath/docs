@@ -83,10 +83,10 @@ InfiniBand Adapters
 	- ConnectX(R) and ConnectX EN (fw-25408 Rev 2.9.1000)
 	- ConnectX-2 (fw-ConnectX2 Rev 2.9.1000)
   o   Mellanox Technologies HCAs (FDR and FDR10 Modes are Supported):
-	- ConnectX-3 (fw-ConnectX3 Rev 2.30.8000) 
+	- ConnectX-3 (fw-ConnectX3 Rev 2.30.8000)
   o   Mellanox Technologies HCAs (FDR and FDR10 Modes are Supported):
 	- Connect-IB™ (fw-ConnectIB.mlx Rev 10.10.2000 and above)
-	
+
 	For official firmware versions please see:
 	http://www.mellanox.com/content/pages.php?pg=firmware_download
 
@@ -139,7 +139,7 @@ RoCE Switches
 ------------------------
 The following third party packages have been tested with OFED 3.12-rc1:
 - Open MPI - 1.6.5
-- Intel MPI 4.1 
+- Intel MPI 4.1
 
 1.6 OFED Sources
 ----------------
@@ -189,19 +189,24 @@ OFED-3.12-rc1 Main Changes from OFED 3.5-2
    - RedHat EL6.5
 2. New drivers available
    - ocrdma
-   - libocrdma-1.0.1
+   - libocrdma-1.0.2
    - mlx5
    - libmlx5-1.0.1
 3. Updated packages:
+   - dapl-2.0.40
    - ibsim-0.6
    - infiniband-diags-1.6.4
    - infinipath-psm-3.2-2_ga8c3e3e_open
+   - libcxgb4-1.3.2
    - libibmad-1.3.11
+   - libibumad-1.3.9
+   - libipathverbs-1.2.1
+   - libnes-1.1.4
    - librdmacm-1.0.18
    - mstflint-3.5.0
    - opensm-3.3.17
    - perftest-2.0-0.76.gbf9a463
-   - srptools-1.0.1
+   - srptools-1.0.2
 
 ===============================================================================
 3. Known Issues
@@ -234,17 +239,15 @@ components of the OFED 3.12-rc1 release.
 09. RHEL 6.5 is not supported in 3.12-rc1 but will be supported in the next OFED
     version which is OFED 3.12
 10. Mellanox ConnectIB HCAs are not supported in OFED 3.12-rc1. See OFED 3.12
-11. There are known issues with iWARP using Chelsio adapters which will be 
+11. There are known issues with iWARP using Chelsio adapters which will be
     resolved in OFED 3.12. See Bugs 2402, 2441 and 2445
-12. There is an issue with dapl which will be resolved in the next release
-    dapl 2.0.40 which will be included in OFED 3.12 - see Bug 2448
-13. There is an issue with PSM when compiling with gcc >= 4.6. This will be 
+12. There is an issue with PSM when compiling with gcc >= 4.6. This will be
     resolved in OFED 3.12 - see Bug 2430
-14. There is an issue with NFSoRDMA when running on Power PC. This will be 
+13. There is an issue with NFSoRDMA when running on Power PC. This will be
     resolved in OFED 3.12 - see Bug 2449
-15. Newer SLES or RHEL patch kernels that are updates to the original kernel that is included in the 
+14. Newer SLES or RHEL patch kernels that are updates to the original kernel that is included in the
     original SLES or RHEL distibutions may not work with OFED-3.12-rc1. The list of kernels that are supported are listed in
-    section 1.2. 
+    section 1.2.
 
 Note: See the release notes of each component for additional issues.
 
