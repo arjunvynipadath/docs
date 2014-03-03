@@ -205,7 +205,7 @@ OFED-3.12-rc1 Main Changes from OFED 3.5-2
    - librdmacm-1.0.18
    - mstflint-3.5.0
    - opensm-3.3.17
-   - perftest-2.0-0.76.gbf9a463
+   - perftest-2.0-0.80.g54c73c6
    - srptools-1.0.2
 
 ===============================================================================
