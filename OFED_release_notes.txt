@@ -1,12 +1,12 @@
 	    Open Fabrics Enterprise Distribution (OFED)
-	          Version 3.12-rc1 Release Notes
-	               February 2014
+	          Version 3.12-rc2 Release Notes
+	               	   May 2014
 
 ===============================================================================
 Table of Contents
 ===============================================================================
 1. Overview, which includes:
-	- OFED Distribution Rev 3.12-rc1 Contents
+	- OFED Distribution Rev 3.12-rc2 Contents
 	- Supported Platforms and Operating Systems
 	- Supported HCA and RNIC Adapter Cards and Firmware Versions
 	- Tested Switch Platforms
@@ -19,7 +19,7 @@ Table of Contents
 1. Overview
 ===============================================================================
 These are the release notes of OpenFabrics Enterprise Distribution (OFED)
-release 3.12-rc1. The OFED software package is composed of several software modules,
+release 3.12-rc2. The OFED software package is composed of several software modules,
 and is intended for use on a computer cluster constructed as an InfiniBand
 Fabric, an iWARP Network or a RoCE Fabric.
 
@@ -27,7 +27,7 @@ Note: If you plan to upgrade the OFED package on your cluster, please upgrade
 all of its nodes to this new version.
 
 
-1.1 OFED 3.12-rc1 Contents
+1.1 OFED 3.12-rc2 Contents
 -----------------------
 The OFED package contains the following components:
  - OpenFabrics core and ULPs:
@@ -137,7 +137,7 @@ RoCE Switches
 
 1.5 Third Party Packages
 ------------------------
-The following third party packages have been tested with OFED 3.12-rc1:
+The following third party packages have been tested with OFED 3.12-rc2:
 - Open MPI - 1.6.5
 - Intel MPI 4.1
 
@@ -183,6 +183,15 @@ http://www.openfabrics.org/downloads/MAINTAINERS
 ===============================================================================
 2. Change log
 ===============================================================================
+OFED-3.12-rc2 Main Changes from OFED 3.12-rc1
+-------------------------------------------------------------------------------
+1. Updated packages:
+   - dapl-2.0.42
+   - ibutils-1.5.7-0.2.gbd7e502.tar.gz
+   - libcxgb4-1.3.3
+   - mstflint-3.6.0-1.8
+   - perftest-2.2-0.16.g8406133.tar.gz
+
 OFED-3.12-rc1 Main Changes from OFED 3.5-2
 -------------------------------------------------------------------------------
 1. Add support for the OSes
@@ -212,12 +221,12 @@ OFED-3.12-rc1 Main Changes from OFED 3.5-2
 3. Known Issues
 ===============================================================================
 The following is a list of general limitations and known issues of the various
-components of the OFED 3.12-rc1 release.
+components of the OFED 3.12-rc2 release.
 
 01. When upgrading from an earlier OFED version, the installation script does
     not stop the earlier OFED version prior to uninstalling it.
     Workaround: Stop the old OFED stack (/etc/init.d/openibd stop) before
-    upgrading to OFED 3.5 or reboot the server after OFED installation.
+    upgrading to OFED 3.12 or reboot the server after OFED installation.
 02. Memory registration by the user is limited according to administrator
     setting. See "Pinning (Locking) User Memory Pages" in OFED_tips.txt for
     system configuration.
@@ -236,17 +245,12 @@ components of the OFED 3.12-rc1 release.
     /etc/modprobe.d/unsupported-modules. Without this the modules will not
     load.
 08. RDS is supported only on kernel.org 3.5 and not on any distro OS.
-09. RHEL 6.5 is not supported in 3.12-rc1 but will be supported in the next OFED
-    version which is OFED 3.12
-10. Mellanox ConnectIB HCAs are not supported in OFED 3.12-rc1. See OFED 3.12
-11. There are known issues with iWARP using Chelsio adapters which will be
-    resolved in OFED 3.12. See Bugs 2402, 2441 and 2445
-12. There is an issue with PSM when compiling with gcc >= 4.6. This will be
-    resolved in OFED 3.12 - see Bug 2430
-13. There is an issue with NFSoRDMA when running on Power PC. This will be
-    resolved in OFED 3.12 - see Bug 2449
-14. Newer SLES or RHEL patch kernels that are updates to the original kernel that is included in the
-    original SLES or RHEL distibutions may not work with OFED-3.12-rc1. The list of kernels that are supported are listed in
+09. There are known issues with iWARP using Chelsio adapters which will be
+    resolved in OFED 3.12 RC3 See Bugs 2482 and 2485
+10. There is an issue with NFSoRDMA when running on Power PC. This will be
+    resolved in OFED 3.12-1 - see Bug 2449
+11. Newer SLES or RHEL patch kernels that are updates to the original kernel that is included in the
+    original SLES or RHEL distibutions may not work with OFED-3.12-rc2. The list of kernels that are supported are listed in
     section 1.2.
 
 Note: See the release notes of each component for additional issues.
