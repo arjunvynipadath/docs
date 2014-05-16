@@ -228,6 +228,13 @@ NFS/RDMA Setup
 Known Issues
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
+OFA Bug 2482 - NFSRDMA fails to mind the rdma device's max page
+list length.  For cxgb4 devices, this can cause a hw crash requiring
+a system reboot. The workaround is to mount using mount options:
+wsize=65536,rsize=65536. EG:
+
+mount hpc-cn2:/share /mnt -o rdma,vers=3,port=20049,wsize=65536,rsize=65536
+
 If you're running NFSRDMA over Chelsio's T3 RNIC and your cients are using
 a 64KB page size (like PPC64 and IA64 systems) and your server is using a
 4KB page size (like i386 and X86_64), then you need to mount the server
