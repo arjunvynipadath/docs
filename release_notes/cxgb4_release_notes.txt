@@ -1,11 +1,18 @@
             Open Fabrics Enterprise Distribution (OFED)
-                CHELSIO T4 RNIC RELEASE NOTES
-			December 2012
+                CHELSIO T4/T5 RNIC RELEASE NOTES
+			May 2014
 
 
 The iw_cxgb4 and cxgb4 modules provide RDMA and NIC support for the
-Chelsio T4 series adapters.  Make sure you choose the 'cxgb4' and
-'libcxgb4' options when generating your OFED rpms.
+Chelsio T4 and T5 series adapters.  Make sure you choose the 'cxgb4'
+and 'libcxgb4' options when generating your OFED rpms.
+
+============================================
+New for OFED-3.12
+============================================
+- Added T5 hardware support
+- Added 1.9.23.0 T4 and T5 firmware
+- Important bug fixes
 
 ============================================
 New for OFED-3.5
@@ -20,76 +27,78 @@ New for OFED-1.5.4
 
 - Added Chelsio T4 iWARP driver and library.
 
-==========================
-Supported Operating System
-==========================
+===========================
+Supported Operating Systems
+===========================
 
   o   CPU architectures:
-        - x86_64
-        - x86
+	- x86_64
+	- x86
+	- ppc64
 
   o   Linux Operating Systems:
-	- RedHat EL6.2		2.6.32-220.el6
-	- RedHat EL6.3		2.6.32-279.el6.x86_64
-	- SLES11 SP2		3.0.13-0.27-default
-	- kernel.org		3.5    *
+	- RedHat EL6.4 		2.6.32-358.el6
+	- RedHat EL6.5 		2.6.32-431.el6
+	- SLES11 SP3		3.0.76-0.9.1
+	- kernel.org		3.12    *
 
-      * Minimal QA for these versions
+      * Minimal QA for these versions.
 
 ===============
 Supported Cards
 ================
 
-- T420-CR 
-- T440-CR
-- T404-BT
-- T422-CR
+T5: T502-BT, T580-CR, T580-LP-CR, T520-LL-CR, T520-CR, T522-CR, T540-CR
+T4: T420-CR, T440-CR, T422-CR, T404-BT, T440-LP-CR, T420-LL-CR, T420-CX
+
+====================
+Errata (Open Issues)
+====================
+
+OFA Bug 2482 - NFSRDMA fails to mind the rdma device's max page
+list length.  For cxgb4 devices, this can cause a hw crash requiring
+a system reboot. The workaround is to mount using mount options:
+wsize=65536,rsize=65536. EG:
+
+mount hpc-cn2:/share /mnt -o rdma,vers=3,port=20049,wsize=65536,rsize=65536
 
 =================
 Updating Firmware
 =================
-This driver requires released firmware for T4 card. This driver has been tested
-with t4fw-1.6.2.0 and later firmware. This firmware is available at
-service.chelsio.com inside the driver package.
+This driver requires released firmware for T4 card. This driver has been
+tested with t4fw-1.9.23.0 and later firmware. This firmware is available
+at service.chelsio.com inside the driver package.
 
-If your distro/kernel cxgb4 driver supports firmware loading, you can place
-the chelsio firmware image in /lib/firmware/cxgb4, then rename it as t4fw.bin
-and unload and reload the cxgb4 module to get the new images loaded. If this
-does not work, then you can load the firmware images manually as follows:
+If your distro/kernel cxgb4 driver supports firmware loading, you can
+place the chelsio firmware image in /lib/firmware/cxgb4, then rename
+it as t4fw.bin and unload and reload the cxgb4 module to get the new
+images loaded. If this does not work, then you can load the firmware
+images manually as follows:
 
-Obtain the cxgbtool tool from service.chelsio.com. This tool is available
-inside driver package.
+1) Move the firmware file into /lib/firmware/cxgb4/ on your system.
 
-To build cxgbtool:
+2) Run: ethtool -f ethX <fw-image-filename>
 
-# cd <path-to-cxgbtool>
-# make && make install
+3) unload/reload cxgb4
 
-Then build and load the released cxgb4 driver available at service.chelsio.com.
+EG:
 
-# cd <path-to-driver-package>
-# make && make install
-# modprobe cxgb4
-
-Now note the ethernet interface name for the T4 device.  This can be
-done by typing 'ifconfig -a' and noting the interface name for the
-interface with a HW address that begins with "00:07:43".
-
-# cxgbtool <interface name> loadfw <firmware_file>
-# reboot
+# cp <path-to>/t5fw-1.11.4.0.bin /lib/firmware/cxgb4
+# ethtool -f eth2 t5fw-1.11.4.0.bin
+# rmmod iw_cxgb4; rmmod cxgb4; modprobe cxgb4; modprobe iw_cxgb4
 
 NOTE: Driver package on the service.chelsio.com is getting updated
 periodically. Along with driver package T4 firmware will also get updated.
 It is recommended to use latest available firmware at service.chelsio.com.
-This driver should work with latest available firmware. In case of any issue
-please contact Chelsio support at support@chelsio.com.
+This driver should work with latest available firmware. In case of any
+issue please contact Chelsio support at support@chelsio.com.
 
 ==============================
 Setting shell for Remote Login
 ==============================
-User needs to set up authentication on the user account on all systems in the
-cluster to allow user to remotely logon or executing commands without
-password.
+User needs to set up authentication on the user account on all systems
+in the cluster to allow user to remotely logon or executing commands
+without password.
 
 Quick steps to set up user authentication:
 - Change to user home directory
@@ -109,32 +118,23 @@ and empty password phrase.
 ======================
 Enabling MPA version 2
 ======================
-We can enable MPA version 2 by setting iw_cxgb4 module parameter as shown below
+We can enable MPA version 2 by setting iw_cxgb4 module parameter as
+shown below
+
 # modprobe iw_cxgb4 mpa_rev=2
 
-MPA v2 is an enahanced RDMA connection establishment. More details are available at
+MPA v2 is an enahanced RDMA connection establishment. More details are
+available at:
 http://tools.ietf.org/html/draft-ietf-storm-mpa-peer-connect-08 location.
 
 ============================================
 Enabling Intel and Platform MPI
 ============================================
 
-For Intel MPI and Platform MPI: you must set the iw_cxgb4
-module option peer2peer=1 on all systems.  This can be done by writing
-to the /sys/module file system during boot.  EG:
-
-# echo 1 > /sys/module/iw_cxgb4/parameters/peer2peer
-
-Or you can add the following line to /etc/modprobe.conf to set the option
-at module load time:
-
-options iw_cxgb4 peer2peer=1
-
-For Intel MPI and Platform MPI: Enable the chelsio device by adding
-an entry to /etc/dat.conf for the chelsio interface.  For instance,
-if your chelsio interface name is eth2, then the following line adds
-a DAT version 1.2 and 2.0 devices named "chelsio" and "chelsio2" for
-that interface:
+For Intel MPI and Platform MPI: Enable the chelsio device by adding an
+entry to /etc/dat.conf for the chelsio interface.  For instance, if your
+chelsio interface name is eth2, then the following line adds a DAT version
+1.2 and 2.0 devices named "chelsio" and "chelsio2" for that interface:
 
 chelsio u1.2 nonthreadsafe default libdaplcma.so.1 dapl.1.2 "eth2 0" ""
 chelsio2 u2.0 nonthreadsafe default libdaplofa.so.2 dapl.2.0 "eth2 0" ""
@@ -162,6 +162,9 @@ export DAPL_MAX_INLINE=64
 export I_MPI_DEVICE=rdssm:chelsio
 export MPIEXEC_TIMEOUT=180
 export MPI_BIT_MODE=64
+ulimit -l 999999
+ulimit -c unlimited
+ulimit -s unlimited
 
 Logout & log back in.
 
@@ -171,21 +174,53 @@ Note: The hosts in this file should be Chelsio interface IP addresses.
 NOTE: I_MPI_DEVICE=rdssm:chelsio assumes you have an entry in
 /etc/dat.conf named "chelsio".
 
-NOTE: MPIEXEC_TIMEOUT value might be required to increase if heavy traffic 
-is going across the systems.
+NOTE: MPIEXEC_TIMEOUT value might be required to increase if heavy
+traffic is going across the systems.
 
 Contact Intel for obtaining their MPI with DAPL support.
 
 To run Intel MPI applications:
 
 #mpdboot -n <num nodes> -r ssh --ncpus=<num cpus>
+#mpdtrace
 #mpiexec -ppn <process per node> -n <num nodes> <MPI Application Path>
+
+=============
+Platform MPI
+=============
+Download latest Platform MPI from the IBM website
+
+http://www.ibm.com/developerworks/downloads/im/mpi/
+
+Install Platform MPI as:
+# ./platform_mpi-09.01.02.00r.x64.bin
+
+Choose all default settings or change accordingly.
+
+Make sure loopback entry is present in /etc/hosts
+
+# cat /etc/hosts
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+
+Edit .bashrc and add these lines:
+
+export MPI_ROOT=/opt/ibm/platform_mpi/
+export PATH=$MPI_ROOT/bin:/opt/bin:$PATH
+export MANPATH=$MANPATH:$MPI_ROOT/share/man
+ulimit -l unlimited
+ulimit -s unlimited
+ulimit -c unlimited
+
+To run Platform MPI applications:
+
+#mpirun -v -netaddr <ip-designations> -hostlist <node1>,<node2>,.....<node n> <MPI Application Path>  
 
 =============
 OpenMPI:
 =============
-From OFED-3.5 package onwards OpenMPI is not a part of the OFED package. User
-has to manually download and install it.
+From OFED-3.5 package onwards OpenMPI is not a part of the OFED
+package. User has to manually download and install it.
 
 - Download latest OpenMPI released SRPM from following location.
 http://www.open-mpi.org/software/ompi
@@ -207,8 +242,8 @@ To run OpenMPI applications:
 =============
 MVAPICH2:
 =============
-From OFED-3.5 package onwards MVAPICH2 is not a part of the OFED package. User
-has to manually download and install it.
+From OFED-3.5 package onwards MVAPICH2 is not a part of the OFED
+package. User has to manually download and install it.
 
 - Download latest MVAPICH2 released SRPM from following location.
 http://mvapich.cse.ohio-state.edu/download/mvapich2/
@@ -261,18 +296,17 @@ To run MVAPICH2 application:
 Testing connectivity with ping and rping:
 ============================================
 
-Configure the ethernet interfaces for your T4 device. After you
-modprobe iw_cxgb4 you will see ethernet interfaces for the T4 device.
-Configure them with an appropriate ip address, netmask, etc.
-You can use the Linux ping command to test basic connectivity via the
-T4 interface.
+Configure the ethernet interfaces for your T4 device. After you modprobe
+iw_cxgb4 you will see ethernet interfaces for the T4 device.  Configure
+them with an appropriate ip address, netmask, etc.  You can use the
+Linux ping command to test basic connectivity via the T4 interface.
 
-To test RDMA, use the rping command that is included in the librdmacm-utils 
-rpm:
+To test RDMA, use the rping command that is included in the
+librdmacm-utils rpm:
 
 On the server machine:
 
-# rping -s -a 0.0.0.0 -p 9999
+# rping -s -p 9999
 
 On the client machine:
 
