@@ -1,6 +1,6 @@
             Open Fabrics Enterprise Distribution (OFED)
       NetEffect Ethernet Cluster Server Adapter Release Notes
-                           December 2012
+                           May 2014
 
 
 The iw_nes module and libnes user library provide RDMA and L2IF
@@ -15,14 +15,21 @@ Supported Architectures and Operating Systems
         - x86
  
 * Linux Operating Systems:
-	- RedHat EL6.2		2.6.32-220.el6
-	- RedHat EL6.3		2.6.32-279.el6
-	- SLES11 SP2		3.0.13-0.27-default
-	- kernel.org		3.5 (minimal QA for this version)
+	- RedHat EL6.4		2.6.32-358.el6
+	- RedHat EL6.5		2.6.32-431.el6
+	- SLES11 SP3		3.0.76-0.9.1
+	- kernel.org		3.12 (minimal QA for this version)
 
 ==========
 What's New
 ==========
+OFED 3.12 contains the following fixes for iw_nes driver:
+
+	- Fixes for MPA V2 implementaion with respect to the ird/ord peer negotiation
+	- Fixed an incorrect QP pointer passed to user space after Flush error
+	- NES_ABI versions have changed for nes driver and libnes (nes user space library)
+	- Released new libnes-1.1.4 package with updated NES_ABI version
+	- Added backports for Linux 2.6 and 3.0 kernels
 
 OFED 3.5 contains several important bug fixes for iw_nes driver:
 
