@@ -1,7 +1,7 @@
 	     Open Fabrics Enterprise Distribution (OFED)
-		    IPoIB in OFED 1.5.4 Release Notes
-			  
-			   December 2011
+		    IPoIB in OFED 3.12 Release Notes
+
+			   May 2014
 
 
 ===============================================================================
@@ -10,15 +10,15 @@ Table of Contents
 1. Overview
 2. Known Issues
 3. DHCP Support of IPoIB
-4. The ib-bonding driver
-5. Child interfaces
-6. Bug Fixes and Enhancements Since OFED 1.3
-7. Bug Fixes and Enhancements Since OFED 1.3.1
-8. Bug Fixes and Enhancements Since OFED 1.4
-9. Bug Fixes and Enhancements Since OFED 1.4.2
-10. Bug Fixes and Enhancements Since OFED 1.5.0
-11. Bug Fixes and Enhancements Since OFED 1.5.2
-12. Bug Fixes and Enhancements Since OFED 1.5.3
+4. Child interfaces
+5. Bug Fixes and Enhancements Since OFED 1.3
+6. Bug Fixes and Enhancements Since OFED 1.3.1
+7. Bug Fixes and Enhancements Since OFED 1.4
+8. Bug Fixes and Enhancements Since OFED 1.4.2
+9. Bug Fixes and Enhancements Since OFED 1.5.0
+10. Bug Fixes and Enhancements Since OFED 1.5.2
+11. Bug Fixes and Enhancements Since OFED 1.5.3
+12. Bug Fixes and Enhancements Since OFED 1.5.4
 13. Performance tuning
 
 ===============================================================================
@@ -34,7 +34,7 @@ Usage and configuration:
 1. To check the current mode used for outgoing connections, enter:
    cat /sys/class/net/ib0/mode
 2. To disable IPoIB CM at compile time, enter:
-   cd OFED-1.5
+   cd OFED-3.12
    export OFA_KERNEL_PARAMS="--without-ipoib-cm"
    ./install.pl
 3. To change the run-time configuration for IPoIB, enter:
@@ -92,25 +92,19 @@ Usage and configuration:
    Workaround: Change modprobe.conf to set
    OFA_KERNEL_PARAMS="--without-modprobe" before running install.pl, or remove 
    the alias lines from /etc/modprobe.d/ib_ipoib.conf.
-   
-3. On SLES 10:
-   The ib1 interface uses the configuration script of ib0.
 
-   Workaround: Invoke ifup/ifdown using both the interface name and the
-   configuration script name (example: ifup ib1 ib1).
-
-4. After a hotplug event, the IPoIB interface falls back to datagram mode, and
+3. After a hotplug event, the IPoIB interface falls back to datagram mode, and
    MTU is reduced to 2K.
    Workaround: Re-enable connected mode and increase MTU manually:
    echo connected > /sys/class/net/ib0/mode
    ifconfig ib0 mtu 65520
 
-5. Since the IPoIB configuration files (ifcfg-ib<n>) are installed under the
+4. Since the IPoIB configuration files (ifcfg-ib<n>) are installed under the
    standard networking scripts location (RedHat:/etc/sysconfig/network-scripts/
    and SuSE: /etc/sysconfig/network/), the option IPOIB_LOAD=no in openib.conf
    does not prevent the loading of IPoIB on boot.
 
-6. If IPoIB connected mode is enabled, it uses a large MTU for connected mode
+5. If IPoIB connected mode is enabled, it uses a large MTU for connected mode
    messages and a small MTU for datagram (in particular, multicast) messages,
    and relies on path MTU discovery to adjust MTU appropriately. Packets sent
    in the window before MTU discovery automatically reduces the MTU for a
@@ -121,92 +115,31 @@ Usage and configuration:
    To warn about this, a message is produced in the system log each time MTU is
    set to a value higher than 2K.
 
-7. IPoIB IPv6 support is broken for systems with kernels < 2.6.12 and
-   kernels >= 2.6.12.  The reason for that is that kernel 2.6.12 puts the link
-   layer address at an offset of two bytes with respect to older kernels. This
-   causes the other host to misinterpret the hardware address resulting in failure
-   to resolve path which are based on wrong GIDs. As an example, RH 4.x and RH
-   5.x cannot inter-operate.
-
-8. In connected mode, TCP latency for short messages is larger by approx. 1usec
+6. In connected mode, TCP latency for short messages is larger by approx. 1usec
    (~5%) than in datagram mode. As a workaround, use datagram mode.
 
-9. Single-socket TCP bandwidth for kernels < 2.6.18 is lower than with
-   newer kernels. It is recommended to use kernel 2.6.18 or up for
-   best IPoIB performance.
-
-10. Connectivity issues encountered when using IPv6 on ia64 systems.
-
-11. The IPoIB module uses a Linux implementation for Large Receive Offload
-   (LRO) in kernel 2.6.24 and later. These kernels require installing the
-   "inet_lro" module.
-
-12. ConnectX only: If you have a port configured as ETH and IPoIB is running
+7. ConnectX only: If you have a port configured as ETH and IPoIB is running
     in connected mode, and then you change the port type to IB, the IPoIB mode
     will change to datagram mode.
 
-13. When working with iSCSI, you must disable LRO (even if you are working in
-    connected mode). This is because there is a bug in older kernels which causes
-    a kernel panic.
-
-14. IPoIB datagram mode initial packet loss (bug #1287): When the datagram test
+8. IPoIB datagram mode initial packet loss (bug #1287): When the datagram test
     gets to packet size 8192 or larger, it always loses the first packet in the
     sequence. 
     Workaround: Increase the number of pending skb's before a neighbor is
     resolved (default is 3). This value can be changed with:
     sysctl net.ipv4.neigh.ib0.unres_qlen.
-    
-15. IPoIB multicast support is broken in RH4.x kernels. This is because
-    ndisc_mc_map() does not handle IPoIB hardware addresses.
 
-16. If bonding uses an IPoIB slave, then un-enslaving all slaves (or downing
+9. If bonding uses an IPoIB slave, then un-enslaving all slaves (or downing
     them with ifdown) followed by unloading the module ib_ipoib might crash the
      kernel. To avoid this leave the IPoIB interfaces enslaved when unloading
      ib_ipoib.
 
-17. On SLES 11, sysconfig scripts override the interface mode and set it to
+10. On SLES 11, sysconfig scripts override the interface mode and set it to
     datagram on each call to ifup, ifdown, etc. To avoid this, add the line
-    IPOIB_MODE=connected 
+    IPOIB_MODE=connected
     to the interface configuration file (e.g. ifcfg-ib0)
 
-18. When installing OFED on a machine that runs kernel 2.6.30 (or another 
-    kernel from kernel.org that OFED supports), the installation script blocks
-    the installation of ib-bonding since the bonding module that comes with the
-    kernel has all the functionality to support IPoIB slaves. This approach
-    however doesn't patch the sysconfig (SuSE) or initscripts (RedHat) package,
-    so the network configuration script may not work properly.
-    For example, if you install OFED on RHEL5.2 that runs kernel 2.6.30 and
-    you try to configure and run bonding, you won't be able to restart the
-    network and see bond0 up and running with IPoIB slaves.
-    A workaround to this problem would be as follows:
-        a. Compile ib-bonding source rpm (under SRPMS directory) separately on
-        a machine with RHEL5.2 and kernel 2.6.18-92.el5 (default for this OS).
-        b. Install the binary RPM while the machine runs kernel 2.6.18-92.el5.
-        This will patch the OS configuration scripts and install the bonding
-        module.
-        c. Switch to kernel 2.6.30. The module that was compiled in (a) will
-        not be loaded since it was compiled and installed for a different
-	kernel.
-        d. Configure bonding and restart the network. The bonding interface
-        should be up and running afterwards.
-
-19. On RHEL5.X, '/etc/init.d/openibd start' prints the following messages while
-    bringing up IPoIB interfaces:
-
-    Setting up InfiniBand network interfaces:
-    Bringing up interface ib0:                                 [  OK  ]
-    RTNETLINK answers: File exists
-    Error adding address 192.168.1.11 for ib1.
-    Bringing up interface ib1:                                 [  OK  ]
-    Setting up service network . . .                           [  done  ]
-
-    This does not affect IPoIB configuration and interfaces are configured as
-    expected.
-
-20. In IPoIB connected mode, packages larger than 2016 bytes are not sent.
-    https://bugs.openfabrics.org/show_bug.cgi?id=1839
-
-21. Under SLES11, if an IP configuration exists for an IPoIB interface
+11. Under SLES11, if an IP configuration exists for an IPoIB interface
     that later becomes a slave of a bonding master, a network restart
     does not erase the IP configuration from the slave and it appears to have
     an IP address even though the new configuration does not set one. This
@@ -215,8 +148,6 @@ Usage and configuration:
     configuration.
     This issue is described in
     https://bugs.openfabrics.org/show_bug.cgi?id=1975
-
-22. Currently, IPoIB LRO is not supported on ConnectX-2 devices
 
 ===============================================================================
 3. IPoIB Configuration Based on DHCP
@@ -290,49 +221,17 @@ host1# dhclient -cf dhclient.conf ib1
 
 
 ===============================================================================
-4. The ib-bonding driver
-===============================================================================
-The ib-bonding driver is a High Availability solution for IPoIB interfaces. 
-It is based on the Linux Ethernet Bonding Driver and was adapted to work with
-IPoIB. The ib-bonding driver comes with the ib-bonding package
-(run rpm -qi ib-bonding to get the package information).
-
-Using the ib-bonding driver
----------------------------
-The ib-bonding driver is loaded automatically.
-
-Automatic operation:
-Use standard OS tools (sysconfig in SuSE and initscripts in RedHat)
-to create a configuration that will come up with network restart. For details
-on this, read the documentation for the ib-bonding package.
-
-Notes:
-* Using /etc/infiniband/openib.conf to create a persistent configuration is
-  no longer supported
-* On RHEL4_U7, a slave interface cannot be set as primary.
-* ib-bonding will not be compiled and installed with OFED on an OS with kernel
-  that is >= 2.6.27 (e.g., SLES11). The bonding driver that comes with those
-  kernels already supports enslaving IPoIB interfaces. In addition, an OS
-  can come with an older kernel but with a patched bonding driver that also
-  does not require modification (e.g., RHEL5.4). OFED will not replace the
-  bonding module in such cases either.
-  However, there might still be issues with OS configuration tools (like
-  sysconfig or initscripts) that may need fixing, but such issues have not
-  been observed yet.
-
-
-===============================================================================
-5. Child interfaces
+4. Child interfaces
 ===============================================================================
 
-5.1 Subinterfaces
+4.1 Subinterfaces
 -----------------
 You can create subinterfaces for a primary IPoIB interface to provide traffic
 isolation. Each such subinterface (also called a child interface) has
 different IP and network addresses from the primary (parent) interface. The
 default Partition Key (PKey), ff:ff, applies to the primary (parent) interface.
 
-5.1.1 Creating a Subinterface
+4.1.1 Creating a Subinterface
 -----------------------------
 To create a child interface (subinterface), follow this procedure:
 Note: In the following procedure, ib0 is used as an example of an IB
@@ -366,7 +265,7 @@ Step 5. To be able to use this interface, a configuration of the Subnet Manager
 is needed so that the PKey chosen, which defines a broadcast address, can be
 recognized.
 
-5.1.2 Removing a Subinterface
+4.1.2 Removing a Subinterface
 To remove a child interface (subinterface), run:
 echo <subinterface PKey> /sys/class/net/<ib_interface>/delete_child
 Using the example of Step 2:
@@ -376,7 +275,7 @@ significant bit set (e.g., 0x8000 in the example above).
 
 
 ===============================================================================
-6. Bug Fixes and Enhancements Since OFED 1.3
+5. Bug Fixes and Enhancements Since OFED 1.3
 ===============================================================================
 - There is no default configuration for IPoIB interfaces: One should manually
   specify the full IP configuration or use the ofed_net.conf file. See
@@ -396,7 +295,7 @@ significant bit set (e.g., 0x8000 in the example above).
   documentation for details)
 
 ===============================================================================
-7. Bug Fixes and Enhancements Since OFED 1.3.1
+6. Bug Fixes and Enhancements Since OFED 1.3.1
 ===============================================================================
 - IPoIB: Refresh paths instead of flushing them on SM change events to improve 
   failover respond
@@ -406,7 +305,7 @@ significant bit set (e.g., 0x8000 in the example above).
 - Bonding: Set default number of grat. ARP after failover to three (was one)
 
 ===============================================================================
-8. Bug Fixes and Enhancements Since OFED 1.4
+7. Bug Fixes and Enhancements Since OFED 1.4
 ===============================================================================
 - Performance tuning is enabled by default for IPOIB CM.
 - Clear IPOIB_FLAG_ADMIN_UP if ipoib_open fails 
@@ -421,7 +320,7 @@ significant bit set (e.g., 0x8000 in the example above).
 
   
 ===============================================================================
-9. Bug Fixes and Enhancements Since OFED 1.4.2
+8. Bug Fixes and Enhancements Since OFED 1.4.2
 ===============================================================================
 
 - Check that the format of multicast link addresses is correct before taking
@@ -439,7 +338,7 @@ significant bit set (e.g., 0x8000 in the example above).
   The fix is to set ipoib_neigh->dgid to zero in ipoib_neigh_alloc().
 
 ===============================================================================
-10. Bug Fixes and Enhancements Since OFED 1.5.0
+9. Bug Fixes and Enhancements Since OFED 1.5.0
 ===============================================================================
 
 - Fixed lockup of the TX queue on mixed CM/UD traffic
@@ -447,20 +346,25 @@ significant bit set (e.g., 0x8000 in the example above).
   transmitter can be stopped by the CM path but not re-enabled.
 
 ===============================================================================
-11. Bug Fixes and Enhancements Since OFED 1.5.2
+10. Bug Fixes and Enhancements Since OFED 1.5.2
 ===============================================================================
 1. Fix IPoIB rx_frames and rx_usecs to conform to ethtool documentation.
 2. Fix faulty list maintenance in path and neigh list
 3. Leave stale send-only multicast groups
 
 ===============================================================================
-12. Bug Fixes and Enhancements Since OFED 1.5.3
+11. Bug Fixes and Enhancements Since OFED 1.5.3
 ===============================================================================
 1. Set pkt_type correctly for multicast packets (fix IGMP breakage)
 2. Add support to TSO status query
 3. Fix the function that performs dma unmap of memory buffers
 4. Remove TX moderation settings from ethtool support
 5. Allow disabling/enabling TSO on the fly through ethtool
+
+===============================================================================
+12. Bug Fixes and Enhancements Since OFED 1.5.4
+===============================================================================
+1. IPoIB code based on linux-3.12
 
 ===============================================================================
 13. Performance Tuning
@@ -471,16 +375,16 @@ messages.
 The driver startup scripts set the following TCP parameters as follows:
 
       net.ipv4.tcp_timestamps=0
-      net.ipv4.tcp_sack=0
+      net.ipv4.tcp_sack=1
       net.core.netdev_max_backlog=250000
-      net.core.rmem_max=16777216
-      net.core.wmem_max=16777216
-      net.core.rmem_default=16777216
-      net.core.wmem_default=16777216
-      net.core.optmem_max=16777216
-      net.ipv4.tcp_mem="16777216 16777216 16777216"
-      net.ipv4.tcp_rmem="4096 87380 16777216"
-      net.ipv4.tcp_wmem="4096 65536 16777216"
+      net.core.rmem_max=4194304
+      net.core.wmem_max=4194304
+      net.core.rmem_default=4194304
+      net.core.wmem_default=4194304
+      net.core.optmem_max=4194304
+      net.ipv4.tcp_rmem="4096 87380 4194304"
+      net.ipv4.tcp_wmem="4096 65536 4194304"
+      net.ipv4.tcp_low_latency=1
 
 This tuning is effective only for connected mode. If you run in datagram mode,
 it actually reduces performance.
