@@ -1,6 +1,6 @@
             Open Fabrics Enterprise Distribution (OFED)
-                       Version 3.5-2 README
-                          December 2013
+                       Version 3.12 README
+                          May 2014
 
 ==============================================================================
 Table of contents
@@ -22,7 +22,7 @@ Table of contents
 1. Overview
 ==============================================================================
 
-This is the OpenFabrics Enterprise Distribution (OFED) version 3.5-2
+This is the OpenFabrics Enterprise Distribution (OFED) version 3.12
 software package supporting InfiniBand, iWARP and RoCE fabrics. It is composed
 of several software modules intended for use on a computer cluster
 constructed as an InfiniBand subnet or an iWARP network.
@@ -98,29 +98,25 @@ General Notes:
 
 3) Install script usage:
 
- Usage: ./install.pl [-c <packages config_file>|--all|--hpc|--basic]
-                     [-n|--net <network config_file>]
+ Usage: ./install.pl [-c <packages config_file>|--all|--hpc|--basic] [-n|--net <network config_file>]
 
-           -c|--config <packages config_file>. Example of the config file can
-                                be found under docs (ofed.conf-example)
-           -n|--net <network config_file>      Example of the config file can be
-                                found under docs (ofed_net.conf-example)
+           -c|--config <packages config_file>. Example of the config file can be found under docs (ofed.conf-example).
+           -n|--net <network config_file>      Example of the config file can be found under docs (ofed_net.conf-example).
            -l|--prefix          Set installation prefix.
            -p|--print-available Print available packages for current platform.
                                 And create corresponding ofed.conf file.
-           -k|--kernel <kernel version>. Default on this system: $(uname -r)
-           -s|--kernel-sources  <path to the kernel sources>. Default on this
-                                system: /lib/modules/$(uname -r)/build
-           --build32            Build 32-bit libraries. Relevant for x86_64 and
-                                ppc64 platforms
+           -k|--kernel <kernel version>. Default on this system: 3.0.76-0.11-default
+           -s|--kernel-sources  <path to the kernel sources>. Default on this system: /lib/modules/3.0.76-0.11-default/build
+           --build32            Build 32-bit libraries. Relevant for x86_64 and ppc64 platforms
            --without-depcheck   Skip Distro's libraries check
-           -v|-vv|-vvv.         Set verbosity level
-           -q.                  Set quiet - no messages will be printed
+           -v|-vv|-vvv          Set verbosity level
+           -q                   Set quiet - no messages will be printed
            --force              Force uninstall RPM coming with Distribution
            --builddir           Change build directory. Default: /var/tmp/
+           --umad-dev-rw        Grant non root users read/write permission for umad devices instead of default
+           --without-<package>  Do not install package
 
-           --all|--hpc|--basic  Install all,hpc or basic packages
-                                correspondingly
+           --all|--hpc|--basic    Install all,hpc or basic packages correspondingly
 
 Notes:
 ------
