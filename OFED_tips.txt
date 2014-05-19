@@ -1,6 +1,6 @@
 		Open Fabrics Enterprise Distribution (OFED)
-		      Tips for Working with OFED 3.5-2
-		 	     December 2013
+		      Tips for Working with OFED 3.12
+		 	     May 2014
 
 ===============================================================================
 Table of Contents
@@ -8,7 +8,7 @@ Table of Contents
 1. OFED Utilities
 2. Debug HOWTOs
 3. Pinning (Locking) User Memory Pages
-4. External Module Compilation Over OFED-3.5-2
+4. External Module Compilation Over OFED-3.12
 5. Adding vendor specific actions to the installation of OFED
 6. How to compile OFED sources manually
 
@@ -17,7 +17,7 @@ Table of Contents
 ===============================================================================
 
 The OFED package includes utilities under <prefix>/bin, where <prefix> stands
-for the OFED installation path. To retrieve this path, run the script 
+for the OFED installation path. To retrieve this path, run the script
 "/etc/infiniband/info" as explained in Section 2.2 below.
 
 Notes:
@@ -181,112 +181,42 @@ c. Using sysfs file system
 2.1 OFED Components and Version Information
 -------------------------------------------
 The text file BUILD_ID provides data on all OFED components (whether installed
-or not). This file is a part of the ofed-docs RPM and installed under 
-/usr/share/doc/ofed-docs-3.5-2 on RedHat, and under 
-/usr/share/doc/packages/ofed-docs-3.5-2 on SuSE.
+or not). This file is a part of the ofed-docs RPM and installed under
+/usr/share/doc/ofed-docs-3.12 on RedHat, and under
+/usr/share/doc/packages/ofed-docs-3.12 on SuSE.
 
 The same information can be obtained by executing the 'ofed_info' command. For
 example:
 
 # ofed_info -s
-OFED-3.5-2:
+OFED-3.12:
+
+# ofed_info
+OFED-3.12-rc2:
 
 compat-rdma:
 git://git.openfabrics.org/compat-rdma/compat-rdma.git master
-commit d8f006ab216ec54eca367aacd2d658b6a740c076
+commit b03e0663469816ab598a7d2a76eee9ff34214305
 
-dapl:
-http://www.openfabrics.org/downloads/dapl/dapl-2.0.39.tar.gz
+compat-rdma:
+linux:
+git://git.openfabrics.org/compat-rdma/linux-3.12.git master
+commit f9e99187aaf53533d86c864e4abc9b6073ffa588
 
-ib-bonding:
-http://www.openfabrics.org/downloads/ib-bonding/ib-bonding-0.9.0-43.src.rpm
-
-ibacm:
-http://www.openfabrics.org/downloads/rdmacm/ibacm-1.0.8.tar.gz
-
-ibsim:
-http://www.openfabrics.org/downloads/ibsim/ibsim-0.5-0.1.g327c3d8.tar.gz
-
-ibutils:
-http://www.openfabrics.org/downloads/ibutils/ibutils-1.5.7-0.1.g05a9d1a.tar.gz
-
-infiniband-diags:
-http://www.openfabrics.org/downloads/management/infiniband-diags-1.6.2.tar.gz
-
-infinipath-psm:
-http://www.openfabrics.org/downloads/infinipath-psm/infinipath-psm-3.1-4_g60db457_open.tar.gz
-
-libcxgb3:
-http://www.openfabrics.org/downloads/cxgb3/libcxgb3-1.3.1.tar.gz
-
-libcxgb4:
-http://www.openfabrics.org/downloads/cxgb4/libcxgb4-1.3.1.tar.gz
-
-libehca:
-http://www.openfabrics.org/downloads/libehca/libehca-1.2.2-0.1.g69e1a88.tar.gz
-
-libibcm:
-http://www.openfabrics.org/downloads/rdmacm/libibcm-1.0.5.tar.gz
-
-libibmad:
-http://www.openfabrics.org/downloads/management/libibmad-1.3.10.tar.gz
-
-libibumad:
-http://www.openfabrics.org/downloads/management/libibumad-1.3.8.tar.gz
-
-libibverbs:
-http://www.openfabrics.org/downloads/verbs/libibverbs-1.1.7.tar.gz
-
-libipathverbs:
-http://www.openfabrics.org/downloads/libipathverbs/libipathverbs-1.2.tar.gz
-
-libmlx4:
-http://www.openfabrics.org/downloads/mlx4/libmlx4-1.0.5.tar.gz
-
-libmthca:
-http://www.openfabrics.org/downloads/mthca/libmthca-1.0.6.tar.gz
-
-libnes:
-http://www.openfabrics.org/downloads/nes/libnes-1.1.3.tar.gz
-
-librdmacm:
-http://www.openfabrics.org/downloads/rdmacm/librdmacm-1.0.17.1.tar.gz
-
-mstflint:
-http://www.openfabrics.org/downloads/mstflint/mstflint-3.0-0.6.g6961daa.tar.gz
-
-ofed-docs:
-git_url="git://beany.openfabrics.org/~rupertd/docs/.git"
-
-opensm:
-http://www.openfabrics.org/downloads/management/opensm-3.3.16.tar.gz
-
-perftest:
-http://www.openfabrics.org/downloads/perftest/perftest-2.0-0.63.g5bb5fe6.tar.gz
-
-qlvnictools:
-http://www.openfabrics.org/downloads/qlvnictools/qlvnictools-0.0.1-0.1.ge27eef7.tar.gz
-
-qperf:
-http://www.openfabrics.org/downloads/qperf/qperf-0.4.9.tar.gz
-
-rds-tools:
-http://www.openfabrics.org/downloads/rds-tools/rds-tools-2.0.4.tar.gz
-
-srptools:
-http://www.openfabrics.org/downloads/srptools/srptools-0.0.4-0.1.gce1f64c.tar.gz
-
-ofed-scripts:
-git://git.openfabrics.org/~vlad/ofed_scripts.git compat-rdma
+compat-rdma:
+compat:
+git://git.openfabrics.org/compat-rdma/compat.git ofed
+commit 52685623f484bb1b142974b5d1f15918dcf711c7
+...
 
 2.2 Installed OFED Components
 -------------------------------
-The script /etc/infiniband/info provides data on the specific OFED installation
+The script /etc/infiniband/info provides the list of OFED kernel modules installed
 on the machine.
 
 For example:
 
-# /etc/infiniband/info 
+# /etc/infiniband/info
 prefix=/usr
 Kernel=2.6.32_358.el6.x86_64
 
@@ -296,7 +226,7 @@ Configure options: --with-core-mod --with-user_mad-mod --with-user_access-mod --
 ----------------------------------------------------------------------
 To compile/build/install the IB modules so that they will contain debug
 information, set OPENIB_KERNEL_EXTRA_CFLAGS="-g" in your environment
-before running OFED's install.pl/build.sh .
+before running OFED's install.pl.
 
 ===============================================================================
 3. Pinning (Locking) User Memory Pages
@@ -327,11 +257,11 @@ Note: The file /etc/security/limits.conf contains further documentation.
 
 
 ===============================================================================
-4. External Module Compilation Over OFED-3.5-2
+4. External Module Compilation Over OFED-3.12
 ===============================================================================
 
 To build kernel modules depending on OFED's modules, take the Modules.symvers
-file from <prefix>/src/ofa_kernel/Module.symvers (part of the kernel-ib-devel RPM)
+file from <prefix>/src/ofa_kernel/Module.symvers (part of the compat-rdma-devel RPM)
 and copy it to the modules subdir and then compile your module.
 
 If <prefix>/src/ofa_kernel/Module.symvers does not exist or it is empty, use the
@@ -341,7 +271,58 @@ Example:
 MODULES_DIR=/lib/modules/`uname -r`/updates ./create_Module.symvers.sh
 
 See "Module versioning & Module.symvers" in the modules.txt from kernel
-documentation (e.g. linux-2.6.30/Documentation/kbuild/modules.txt).
+documentation (e.g. linux-3.12/Documentation/kbuild/modules.txt).
+
+Example of the Makefile:
+obj-m += rdma_krping.o
+12  2 rdma_krping-y›  ›   ›   := getopt.o krping.o
+
+KVERSION = $(shell uname -r)
+KSRC = /lib/modules/$(KVERSION)/source
+KOBJ = /lib/modules/$(KVERSION)/build
+
+OFA ?= /usr/src/openib
+
+include $(OFA)/config.mk
+
+EXTRAVERSION = $(shell echo -n ${KVERSION} | sed
+'s/^[0-9]\+\.[0-9]\+\.[0-9]\+//')
+
+EXTRA_CFLAGS += -DLINUX -D__KERNEL__ -DMODULE -O2 -pipe -Wall
+EXTRA_CFLAGS += -I$(OFA)/include -I$(KOBJ)/include -I$(KOBJ)/include2
+-I$(KSRC)/include -I.
+EXTRA_CFLAGS += $(BACKPORT_INCLUDES)
+EXTRA_CFLAGS += $(shell [ -f $(KSRC)/include/linux/modversions.h ] && \
+            echo "-DMODVERSIONS -DEXPORT_SYMTAB \
+                              -include $(KSRC)/include/linux/modversions.h")
+
+default:
+        make -C $(KOBJ) SUBDIRS=$(shell pwd) \
+        KERNELRELEASE=$(KVERSION) \
+        EXTRAVERSION=$(EXTRAVERSION) \
+        NOSTDINC_FLAGS="-I$(shell pwd)/include \
+        -nostdinc -isystem $(shell $(CC) -print-file-name=include)" \
+        LINUXINCLUDE=' \
+                -include include/linux/autoconf.h \
+                -include $(OFA)/include/linux/autoconf.h \
+                -I$(OFA)/include \
+                -I$(OFA)/include/rdma \
+                -I. \
+                -Iinclude \
+                $(BACKPORT_INCLUDES) \
+                $$(if $$(KBUILD_SRC),-Iinclude2 -I$$(srctree)/include) \
+                -I$$(srctree)/arch/$$(SUBARCH)/include' \
+                modules
+install:
+        make -C $(KSRC) O=$(KOBJ) SUBDIRS=$(shell pwd) LINUXINCLUDE=' -I$(OFA)/include -Iinclude -include include/linux/autoconf.h -include $(OFA)/include/linux/autoconf.h' modules_install
+        depmod -a
+
+clean:
+        rm -f *.o
+        rm -f *.ko
+        rm -f rdma_krping.mod.c
+
+Note: If backports required need to add "-I$(OFA)/include/linux/compat-2.6.h" to LINUXINCLUDE
 
 ===============================================================================
 5. Adding vendor specific actions to the installation of OFED
@@ -391,7 +372,7 @@ install scripts environment. See the example below for a typical usage.
 eval $*
 
 # The following env. parameters are set at this point
-# 
+#
 # CONFIG: full path filename of the OFED configuration file
 # RPMS: directory of binary RPMs
 # SRPMS: directory of source RPMS
@@ -423,37 +404,37 @@ exit 0
 6. How to compile OFED sources manually
 ===============================================================================
 
-These are the instructions how to compile and install kernel and user parts "manually" 
+These are the instructions how to compile and install kernel and user parts "manually"
 meaning without building the RPMs and without using the install.pl script.
 
 6.1 Compiling the kernel modules
 --------------------------------
-1. tar xzf OFED-3.5-2.tgz
-2. rpm -ihv OFED-3.5-2/SRPMS/compat-rdma-3.5-OFED.3.5.src.rpm
+1. tar xzf OFED-3.12.tgz
+2. rpm -ihv OFED-3.12/SRPMS/compat-rdma-3.12-OFED.3.12.src.rpm
 3. cd /usr/src/redhat/SOURCES
-4. tar xzvf compat-rdma-3.5-2.tgz
-5. cd compat-rdma-3.5-2
-6. configure: 
+4. tar xzvf compat-rdma-3.12.tgz
+5. cd compat-rdma-3.12
+6. configure:
    run ./configure --help for a list of options.
    basic invocation is:
    ./configure --with-core-mod --with-user_mad-mod --with-user_access-mod --with-addr_trans-mod --with-mlx4-mod --with-mlx4_en-mod --with-cxgb3-mod --with-cxgb4-mod --with-nes-mod --with-qib-mod --with-ipoib-mod --with-srp-mod
 7. make
    make install
-     
-NOTES: 
+
+NOTES:
   1. The modules select for install are written to configure.mk.kernel
-  2. INSTALL_MOD_DIR = "extra/ofa_kernel" for RedHat base Distros 
-     INSTALL_MOD_DIR = "updates" for other Distros 
+  2. INSTALL_MOD_DIR = "extra/ofa_kernel" for RedHat base Distros
+     INSTALL_MOD_DIR = "updates" for other Distros
 
 6.2 Compiling the user space libraries
 --------------------------------------
-To install user space library from the source RPM provided by OFED-3.5-2 manually,
+To install user space library from the source RPM provided by OFED-3.12 manually,
 do the following:
 
 Example for libibverbs:
  
-1. tar xzf OFED-3.5-2.tgz
-2. rpm -ihv SRPMS/libibverbs-1.1.7.src.rpm
+1. tar xzf OFED-3.12.tgz
+2. rpm -ihv SRPMS/libibverbs-1.1.7-1.src.rpm
 3. cd /usr/src/redhat/SOURCES (for RedHat)
    or
    cd /usr/src/packages/SOURCES (for SuSE)
