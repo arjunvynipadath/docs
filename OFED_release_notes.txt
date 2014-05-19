@@ -1,12 +1,12 @@
 	    Open Fabrics Enterprise Distribution (OFED)
-	          Version 3.12-rc2 Release Notes
+	          Version 3.12-rc3 Release Notes
 	               	   May 2014
 
 ===============================================================================
 Table of Contents
 ===============================================================================
 1. Overview, which includes:
-	- OFED Distribution Rev 3.12-rc2 Contents
+	- OFED Distribution Rev 3.12-rc3 Contents
 	- Supported Platforms and Operating Systems
 	- Supported HCA and RNIC Adapter Cards and Firmware Versions
 	- Tested Switch Platforms
@@ -27,7 +27,7 @@ Note: If you plan to upgrade the OFED package on your cluster, please upgrade
 all of its nodes to this new version.
 
 
-1.1 OFED 3.12-rc2 Contents
+1.1 OFED 3.12-rc3 Contents
 -----------------------
 The OFED package contains the following components:
  - OpenFabrics core and ULPs:
@@ -138,8 +138,9 @@ RoCE Switches
 1.5 Third Party Packages
 ------------------------
 The following third party packages have been tested with OFED 3.12-rc2:
-- Open MPI - 1.6.5
-- Intel MPI 4.1
+- OpenMPI-1.8.1
+- mvapich2-1.9
+- IntelMPI-4.1.1.036
 
 1.6 OFED Sources
 ----------------
@@ -183,6 +184,11 @@ http://www.openfabrics.org/downloads/MAINTAINERS
 ===============================================================================
 2. Change log
 ===============================================================================
+OFED-3.12-rc3 Main Changes from OFED 3.12-rc2
+-------------------------------------------------------------------------------
+1. Updated packages:
+   - perftest-2.2-0.17.g5eba807
+
 OFED-3.12-rc2 Main Changes from OFED 3.12-rc1
 -------------------------------------------------------------------------------
 1. Updated packages:
