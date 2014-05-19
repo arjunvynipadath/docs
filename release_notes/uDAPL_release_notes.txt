@@ -1,16 +1,33 @@
 			   Release Notes for 
-			OFED 1.5.3 DAPL Release
-			    March 2011
+	  	  OFED 3.12 DAPL Release 2.0.42-1
+			    May 2014
 
-	This release of the uDAPL reference implementation package for both
-	DAT 1.2 and 2.0 specification is timed to coincide with OFED release
-	of the Open Fabrics (www.openfabrics.org) software stack.
+	User space libraries/utilities for Direct Access Transport (DAT) v2.0. DAT is 
+	a transport-independent, platform-independent Application Programming 
+	Interface that supports RDMA (remote direct memory access) devices. 
+	Note: v1.2 is no longer supported and will not be included with OFED releases
 
-        uDAPL v1 (1.2.19-1) and v2 (2.0.32-1)
+	For latest documentation and packages: //www.openfabrics.org/downloads/dapl/ 
 
-	----------------
+	uDAPL v2 (dapl-2.0.42-1)
 
-	* Provider descriptions and PROS/CONS (cma, scm, ucm)
+	Build Notes:
+	------------
+
+	# NON_DEBUG build/install example for x86_64, OFED targets
+	./configure --prefix /usr --sysconf=/etc --libdir /usr/lib64 LDFLAGS=-L/usr/lib64 CPPFLAGS="-I/usr/include"
+	make install
+
+	# DEBUG build/install example for x86_64, using OFED targets
+	./configure --enable-debug --prefix /usr --sysconf=/etc --libdir /usr/lib64 LDFLAGS=-L/usr/lib64 CPPFLAGS="-I/usr/include"
+	make install
+
+	# COUNTERS build/install example for x86_64, using OFED targets
+	./configure --prefix /usr --sysconf=/etc --libdir /usr/lib64 LDFLAGS=-L/usr/lib64 CPPFLAGS="-I/usr/include -DDAPL_COUNTERS"
+	make install
+
+	Provider descriptions and PROS/CONS (cma, scm, ucm)
+	---------------------------------------------------
 
 	1. CMA - uses OFA rdma_cm to setup QP's. IPoIB, ARP, and SA queries required.
        
@@ -70,11 +87,9 @@
 	setenv DAPL_ACK_RETRY 7         /* IB RC Ack retry count */
 	setenv DAPL_ACK_TIMER 20        /* IB RC Ack retry timer */
 
-	----------------
-
-	* CM Performance: CPS profile for cma, scm, and ucm v2 uDAPL providers:
-
-	Intel SR1600 Urbanna Servers with Xeon(R) CPU X5570  @ 2.93GHz
+	CM Performance: CPS profile for cma, scm, and ucm v2 uDAPL providers:
+	-----------------------------------------------------------------------
+	Intel SR1600 Servers with Xeon(R) CPU X5570  @ 2.93GHz
 	Urbanna Platform  - 2 node, 8 cores per node, Mellanox MLX4 IB QDR, no switch.
 
 	dtestcm (server/client):
@@ -106,11 +121,154 @@
 	16 Connect times (1120): Total 0.0799 per 0.0001 CPS=14017.68
 	32 Connect times (4800): Total 0.3337 per 0.0001 CPS=14385.21
 
-	----------------
 
-	* Bug Fixes
+	BKM for build and running new DAPL library on your cluster without any impact on existing OFED install:
+	-------------------------------------------------------------------------------------------------------
 
-	V2.0 Package
+	Note: example for user /home/user1, (assumes /home/user1 is exported) and MLX4 adapter, port 1
+
+	Download latest 2.x package: http://www.openfabrics.org/downloads/dapl/dapl-2.0.42.tar.gz
+
+	untar in /home/user1 
+	cd /home/user1/dapl-2.0.42
+	./configure LDFLAGS=-L/usr/lib64 CPPFLAGS="-I/usr/include" 
+	make 
+
+	Create /home/user1/dat.conf with following 3 lines. (entries with path to new libraries):
+
+	  ofa-v2-mlx4_0-1u u2.0 nonthreadsafe default /home/user1/dapl-2.0.42/dapl/udapl/.libs/libdaploucm.so.2 dapl.2.0 "mlx4_0 1" ""
+	  ofa-v2-mlx4_0-1 u2.0 nonthreadsafe default /home/user1/dapl-2.0.42/dapl/udapl/.libs/libdaploscm.so.2 dapl.2.0 "mlx4_0 1" ""
+	  ofa-v2-ib0 u2.0 nonthreadsafe default /home/user1/dapl-2.0.42/dapl/udapl/.libs/libdaplcma.so.1 dapl.2.0 "ib0 0" ""
+
+	Run uDAPL application or Intel MPI that uses uDAPL, with (assuming mlx4_0 adapters) following:
+
+	  setenv DAT_OVERRIDE=/home/user1/dat.conf
+	  setenv LD_LIBRARY_PATH=/home/user1/dapl-2.0.32/dapl/udapl/.libs:$LD_LIBRARY_PATH
+
+	If running Intel MPI and uDAPL socket cm, set the following:
+
+  	  setenv I_MPI_DAPL_PROVIDER=ofa-v2-mlx4_0-1
+
+	or if running Intel MPI and uDAPL IB UD cm, set the following (recommended):
+
+  	  setenv I_MPI_DAPL_PROVIDER=ofa-v2-mlx4_0-1u
+
+	or if running Intel MPI and uDAPL rdma_cm, set the following:
+
+	  setenv I_MPI_DAPL_PROVIDER=ofa-v2-ib0
+
+
+	Summary of Fixes/Changes:
+	-------------------------
+
+	Release 2.0.42 fixes (OFED 3.12 GA)
+	dapltest: increase DTO evd size to prevent CQ overflow on limit_rpost test
+	dapltest: RSP limit test fails. Creation of reserved SP moves EP state to DAT_EP_STATE_RESERVED in error cases.
+	dapl: fix string bug in dapls_dto_op_str
+
+	Release 2.0.41 fixes (OFED 3.12 RC1)
+	dapltest: change server port, from 45278 to 62000, out of registered IANA range
+	dat: lower log level on load errors of provider library
+	dat: dat_ia_open should close provider after failure
+	dapltest: set default limit max to 1000
+	openib: add new provider specific attributes
+	dapltest: update scripts for regression testing purposes
+	dapltest: Add final send/recv "sync" for transaction tests.
+
+	Release 2.0.40 fixes (OFED 3.12)
+	dist: ib collective extension include files missing
+	dapltest: the quit command is missing changes for -n option
+	dat.conf: remove v1, add Mellanox Connect-IB and Intel Xeon Phi MIC
+	NULL undefined on Fedora, incorrectly using kernel stddef.h
+
+	Release 2.0.39 fixes (OFED 3.5-2 GA)
+	dapltest: fix endian swap issue with performance test
+	scm: getifaddrs modfications for better out of the box experience
+	ucm, scm: UD mode triggers list_head assert with large scale alltoall test
+
+	Release 2.0.38
+	dapltest: add -n parameter to override default server port number (45278)
+	ucm,scm: UD mode creates many CR objects per EP that needs cleaned up
+	cma: add DAPL_CM_TOS environment variable to enable passing a TOS to the RDMA CM
+
+	Release 2.0.37
+	common: add support for ia name during dat_ia_query
+	common: dapl_os_atomic_inc/dec() not working as expected on ppc64 machines.
+	dapltest: ppc64 endian issue with exchanged mem handle and address
+
+	Release 2.0.36
+	scm: increase ACK timeout to 20 for a default value to match other providers.
+	common: allow qp modify in init state
+	common: check for valid states during ep posting
+	dat.conf: keep list of providers in order for backward compatibility
+	ucm: record and silently drop a duplicate reject CM message
+	windows: new version of getlocalipaddr not portable
+	dapltest: DFLT_QLEN is defined in multiple tests
+
+	Release 2.0.35
+	config/build: remove post/postun hacking used to modify dat.conf
+	config: clean up help option displays with ext-type options
+	windows: Provide auto-detect between RoCE and Infiniband for Windows.
+	ucm: update UD cm provider to support new CM stat and error counters
+	scm: update socket cm provider to support new CM stat and error counters
+	commom: add cm, link, and diag event counters in IB extended builds
+	scm: use ioctl SIOCIFCONF to get complete list of configured netdev interfaces
+	ucm: UD send failures at scale, ucm_send ERR: get_smsg(hd=149,tl=150)
+	scm: fix retry count on connection pending timeout
+	ucm: cleanup debug message, ntohl on p_size is incorrect
+	cma, scm, ucm: allow EP (QP) creation without EVD (CQ)
+	common: add DAPL_DBG_TYPE_CM_STATS (0x40000) to debug log options
+	common: dapls_ep_flush_cq will segfault when no CQ is attached to EP
+	common: ep_create should allow max_request_iov attribute setting of zero
+	common: add check for NULL handle on ext calls, SRQ free, and helper functions
+	common: add missing sub-types to dat_strerror()
+	common: extended CR event processing missing rejects on errors
+	ucm: incorrectly sends user reject during CR callback errors
+	common: change dbg level on CR callback if not listening on SP
+	scm: incorrectly sends user reject during CR callback errors
+	dat: add check for NULL handle on IA calls
+	cma,scm,ucm: extra reference on EP, with RSP, causes dat_ep_free() to hang
+	common: RSP service points incorrectly freed during CR callback
+	common: clean up dat_rsp_create log message
+	common: cleanup debug message on EVD overflows
+	scm: return correct event error code when remote host refuses requests
+	dapltest: server CR EVD is too small for multi-client configurations.
+	Common: CR EVD overflow causes segfault.
+
+	Release 2.0.34
+	scm: change debug message level for listen/bind errors
+	common: increase default IB ack timer from 16 to 20
+	common: remote ia address null pointer creates seg fault
+	common: posting events on full queue returns wrong error code
+	common: dat_ep_modify seg faults with null ep_param ptr
+	common: dat_evd_free seg faults with resized software EVD
+	common: remove assert for incorrect events during cm_request
+	dat: dat_cno_query with NULL cno_handle causes segmentation fault
+	scm: dat_psp_create returns wrong error code on bind/listen failure
+	scm: socket connect request count is reset improperly on retry
+	scm: when hostname has loopback addr assigned, default to eth0 instead of failing
+	scm: add port number to error log during hca_open failures
+	common: query calls return incorrect IA handle to consumer
+	common: srq create asserts with !dapl_llist_is_empty(head) failed
+
+	Release 2.0.33
+	scm,ucm: fix compatibility issues and set minimum protocol support
+	build: link librdmacm dependency to ib_acm usage for ucm and scm providers
+	build: add selective enable/disable-xxx build switch for each provider
+	build: add extended header files to EXTRA_DIST and fix missing backslash
+	build: set IB extended coll-type to none by default
+	common: change errno mapping of EINVAL to DAT_INVALID_PARAMETER
+	build: add IB collective and FCA provider to dapl build package as an option
+	common: add new dapls_evd_post_event_ext call for extended events
+	ucm: add support for IB collective providers
+	scm: add support for IB collective providers
+	cma: add support for IB collective providers
+	common: add supported collective types in named attributes for query
+	common: add collective call mappings via standard dapli_post_ext()
+	common: new debug bitmask definition for extension logging
+	common: new IB collective provider for Mellanox Fabric Collective Agent
+	dat: add definitions for MPI offloaded collectives in IB transport extensions
+	common: cleanup debug messages when building with ibacm feature
 
 	Release 2.0.32 fixes (OFED 1.5.3 GA): 
 
@@ -172,41 +330,6 @@
 	cma, scm: new provider entries for Mellanox RDMA over Ethernet device for uDAPL v1.2 
 	cma: memory leak of verbs CQ and completion channels created during dat_ia_open 
 	cma: memory leak of FD's (pipe) created during dat_evd_create 
-
-	----------------
-
-	* BKM for running new DAPL library on your cluster without any impact on existing OFED installation:
-
-	Note: example for user /home/ardavis, (assumes /home/ardavis is exported) and MLX4 adapter, port 1
-
-	Download latest 2.x package: http://www.openfabrics.org/downloads/dapl/dapl-2.0.32.tar.gz
-
-	untar in /home/ardavis 
-	cd /home/ardavis/dapl-2.0.25
-	./configure && make (build on node with OFED 1.3 or higher installed, dependency on verb/rdma_cm libraries)
-
-	create /home/ardavis/dat.conf with following 3 lines. (entries with path to new libraries):
-
-	  ofa-v2-ib0 u2.0 nonthreadsafe default /home/ardavis/dapl-2.0.32/dapl/udapl/.libs/libdaplcma.so.1 dapl.2.0 "ib0 0" ""
-	  ofa-v2-mlx4_0-1 u2.0 nonthreadsafe default /home/ardavis/dapl-2.0.32/dapl/udapl/.libs/libdaploscm.so.2 dapl.2.0 "mlx4_0 1" ""
-	  ofa-v2-mlx4_0-1u u2.0 nonthreadsafe default /home/ardavis/dapl-2.0.32/dapl/udapl/.libs/libdaploucm.so.2 dapl.2.0 "mlx4_0 1" ""
-
-	Run uDAPL application or an MPI that uses uDAPL, with (assuming MLX4 connectx adapters) following:
-
-	  setenv DAT_OVERRIDE=/home/ardavis/dat.conf
-	  setenv LD_LIBRARY_PATH=/home/ardavis/dapl-2.0.32/dapl/udapl/.libs:$LD_LIBRARY_PATH
-
-	If running Intel MPI and uDAPL socket cm, set the following:
-
-  	  setenv I_MPI_DEVICE=rdssm:ofa-v2-mlx4_0-1
-
-	or if running Intel MPI and uDAPL IB UD cm, set the following:
-
-  	  setenv I_MPI_DEVICE=rdssm:ofa-v2-mlx4_0-1u
-
-	or if running Intel MPI and uDAPL rdma_cm, set the following:
-
-	  setenv I_MPI_DEVICE=rdssm:ofa-v2-ib0
 
 
 --- HISTORY -----------
@@ -367,41 +490,25 @@
 
 	----------------
 
-	* Build Notes:
-
-	# NON_DEBUG build/install example for x86_64, OFED targets
-	./configure --prefix /usr --sysconf=/etc --libdir /usr/lib64 LDFLAGS=-L/usr/lib64 CPPFLAGS="-I/usr/include"
-	make install
-
-	# DEBUG build/install example for x86_64, using OFED targets
-	./configure --enable-debug --prefix /usr --sysconf=/etc --libdir /usr/lib64 LDFLAGS=-L/usr/lib64 CPPFLAGS="-I/usr/include"
-	make install
-
-	# COUNTERS build/install example for x86_64, using OFED targets
-	./configure --prefix /usr --sysconf=/etc --libdir /usr/lib64 LDFLAGS=-L/usr/lib64 CPPFLAGS="-I/usr/include -DDAPL_COUNTERS"
-	make install
-
-	----------------
-
 	* BKM for running new DAPL library on your cluster without any impact on existing OFED installation:
 
-	Note: example for user /home/ardavis, (assumes /home/ardavis is exported) and MLX4 adapter, port 1
+	Note: example for user /home/user1, (assumes /home/user1 is exported) and MLX4 adapter, port 1
 
 	Download latest 2.x package: http://www.openfabrics.org/downloads/dapl/dapl-2.0.25.tar.gz
 
-	untar in /home/ardavis 
-	cd /home/ardavis/dapl-2.0.25
+	untar in /home/user1 
+	cd /home/user1/dapl-2.0.25
 	./configure && make (build on node with OFED 1.3 or higher installed, dependency on verb/rdma_cm libraries)
 
-	create /home/ardavis/dat.conf with following 3 lines. (entries with path to new libraries):
+	create /home/user1/dat.conf with following 3 lines. (entries with path to new libraries):
 
-	  ofa-v2-ib0 u2.0 nonthreadsafe default /home/ardavis/dapl-2.0.19/dapl/udapl/.libs/libdaplcma.so.1 dapl.2.0 "ib0 0" ""
-	  ofa-v2-mlx4_0-1 u2.0 nonthreadsafe default /home/ardavis/dapl-2.0.19/dapl/udapl/.libs/libdaploscm.so.2 dapl.2.0 "mlx4_0 1" ""
-	  ofa-v2-mlx4_0-1u u2.0 nonthreadsafe default /home/ardavis/dapl-2.0.19/dapl/udapl/.libs/libdaploucm.so.2 dapl.2.0 "mlx4_0 1" ""
+	  ofa-v2-ib0 u2.0 nonthreadsafe default /home/user1/dapl-2.0.19/dapl/udapl/.libs/libdaplcma.so.1 dapl.2.0 "ib0 0" ""
+	  ofa-v2-mlx4_0-1 u2.0 nonthreadsafe default /home/user1/dapl-2.0.19/dapl/udapl/.libs/libdaploscm.so.2 dapl.2.0 "mlx4_0 1" ""
+	  ofa-v2-mlx4_0-1u u2.0 nonthreadsafe default /home/user1/dapl-2.0.19/dapl/udapl/.libs/libdaploucm.so.2 dapl.2.0 "mlx4_0 1" ""
 
 	Run uDAPL application or an MPI that uses uDAPL, with (assuming MLX4 connectx adapters) following:
 
-	  setenv DAT_OVERRIDE=/home/ardavis/dat.conf
+	  setenv DAT_OVERRIDE=/home/user1/dat.conf
 
 	If running Intel MPI and uDAPL socket cm, set the following:
 
@@ -460,22 +567,22 @@
 
 	* BKM for running new DAPL library on your cluster without any impact on existing OFED installation:
 
-	Note: example for user /home/ardavis, (assumes /home/ardavis is exported) and MLX4 adapter, port 1
+	Note: example for user /home/user1, (assumes /home/user1 is exported) and MLX4 adapter, port 1
 
 	Download latest 2.x package: http://www.openfabrics.org/downloads/dapl/dapl-2.0.19.tar.gz
 
-	untar in /home/ardavis 
-	cd /home/ardavis/dapl-2.0.19
+	untar in /home/user1 
+	cd /home/user1/dapl-2.0.19
 	./configure && make (build on node with OFED 1.3 or higher installed, dependency on verb/rdma_cm libraries)
 
-	create /home/ardavis/dat.conf with following 2 lines. (entries with path to new libraries):
+	create /home/user1/dat.conf with following 2 lines. (entries with path to new libraries):
 
-	  ofa-v2-ib0 u2.0 nonthreadsafe default /home/ardavis/dapl-2.0.19/dapl/udapl/.libs/libdaplcma.so.1 dapl.2.0 "ib0 0" ""
-	  ofa-v2-mlx4_0-1 u2.0 nonthreadsafe default /home/ardavis/dapl-2.0.19/dapl/udapl/.libs/libdaploscm.so.2 dapl.2.0 "mlx4_0 1" ""
+	  ofa-v2-ib0 u2.0 nonthreadsafe default /home/user1/dapl-2.0.19/dapl/udapl/.libs/libdaplcma.so.1 dapl.2.0 "ib0 0" ""
+	  ofa-v2-mlx4_0-1 u2.0 nonthreadsafe default /home/user1/dapl-2.0.19/dapl/udapl/.libs/libdaploscm.so.2 dapl.2.0 "mlx4_0 1" ""
 
 	Run uDAPL application or an MPI that uses uDAPL, with (assuming MLX4 connectx adapters) following:
 
-	  setenv DAT_OVERRIDE=/home/ardavis/dat.conf
+	  setenv DAT_OVERRIDE=/home/user1/dat.conf
 
 	If running Intel MPI and uDAPL socket cm, set the following:
 
