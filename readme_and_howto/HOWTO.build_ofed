@@ -1,7 +1,7 @@
              Open Fabrics Enterprise Distribution (OFED)
-                      How To Build OFED 3.5
+                      How To Build OFED 3.12
 
-                          February 2013
+                          May 2014
 
 
 ==============================================================================
@@ -17,13 +17,13 @@ Table of contents
 The script "build.pl" is used to build the OFED package based on the
 OpenFabrics project. The package is built under /tmp directory.
 
-See OFED_release_notes.txt for more details. 
+See OFED_release_notes.txt for more details.
 
 ==============================================================================
 2. Usage
 ==============================================================================
 
-The build script for the OFED package can be downloaded from: 
+The build script for the OFED package can be downloaded from:
   git://git.openfabrics.org/~vlad/build.git
   branch: master
 
@@ -39,9 +39,9 @@ Usage: ./build.pl --version <version> [-r|--release]|[--daily] [-d|--distributio
 
 Example:
 
-    ./build.pl --version 3.5-rc1 -p packages-ofed
+    ./build.pl --version 3.12 -p packages-ofed
 
-    This command will create a package (i.e., subtree) called OFED-3.5-rc1
+    This command will create a package (i.e., subtree) called OFED-3.12
     under /tmp/$USER/
 
 ==============================================================================
