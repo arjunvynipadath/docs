@@ -1,7 +1,7 @@
 	      Open Fabrics Enterprise Distribution (OFED)
-		    qib in OFED 3.5 Release Notes
+		    qib in OFED 3.12 Release Notes
 
-			  December 2012
+			  May 2014
 
 ======================================================================
 1. Overview
@@ -20,7 +20,7 @@ Fabric HCAs, also known as QLogic TrueScale PCI-Express HCAs, including,
     - QLE7280 (x16 PCIe Gen1) 
     
 
-The qib driver has been updated for OFED 3.5.
+The qib driver has been updated for OFED 3.12.
 
 The qib kernel driver obsoletes the ipath kernel driver but is
 compatible with libipathverbs so no new user level components are needed.

@@ -1,6 +1,7 @@
-Distribution
-    Open Fabrics Enterprise Distribution (OFED) 1.5, December 2009
+	      Open Fabrics Enterprise Distribution (OFED)
+		    qperf in OFED 3.12 Release Notes
 
+			  May 2014
 Summary
     qperf - Measure RDMA and IP performance
 
