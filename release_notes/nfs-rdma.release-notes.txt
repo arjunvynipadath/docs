@@ -9,13 +9,12 @@
  Adapted for OFED 1.5.1 (from linux-2.6.30/Documentation/filesystems/nfs-rdma.txt)
  by Jon Mason
 
- Further adapted for OFED 1.5.4 by Jeff Becker
+ Further adapted for OFED 3.12 by Jeff Becker
 
 Table of Contents
 ~~~~~~~~~~~~~~~~~
  - Overview
- - OFED 1.5.3 limitations
- - OFED 1.5.1 limitations
+ - OFED 3.12 limitations
  - Getting Help
  - Installation
  - Check RDMA and NFS Setup
@@ -35,41 +34,12 @@ Overview
   the full Connectathon test suite and operates over both Infiniband and iWARP
   RDMA adapters.
 
-OFED 1.5.4 limitations:
+OFED 3.12 limitations:
 ~~~~~~~~~~~~~~~~~~~~~
   NFS/RDMA has been ported and tested on the following kernels:
-  - Redhat Enterprise Linux (RHEL) version 6.1
-  - SUSE Linux Enterprise Server (SLES) version 11 service pack 1
-  - kernel.org 2.6.30-2.6.38
-
-OFED 1.5.3 limitations:
-~~~~~~~~~~~~~~~~~~~~~
-  NFSoRDMA was removed from the list of packages in the install script to
-  prevent it's installation by default.
-  To force NFSoRDMA installation one need to add the following lines to the
-  ofed.conf:
-  nfsrdma=y
-  rnfs-utils=y
-  To get ofed.conf, run 
-  # ./install.pl -p
-  After adding the lines above to ofed.conf, to install OFED run 
-  # ./install.pl -c ofed.conf
-
-OFED 1.5.1 limitations:
-~~~~~~~~~~~~~~~~~~~~~
-  NFS-RDMA is supported for the following releases:
-  - Redhat Enterprise Linux (RHEL) version 5.2
-  - Redhat Enterprise Linux (RHEL) version 5.3
-  - Redhat Enterprise Linux (RHEL) version 5.4
-  - SUSE Linux Enterprise Server (SLES) version 11
-
-  And the following kernel.org kernels:
-  - 2.6.22
-  - 2.6.25
-  - 2.6.30
-
-  All other Linux Distrubutions and kernel versions are NOT supported on OFED
-  1.5.1
+  - Redhat Enterprise Linux (RHEL) version 6.5
+  - SUSE Linux Enterprise Server (SLES) version 11 service pack 3
+  - kernel.org 3.12
 
 Getting Help
 ~~~~~~~~~~~~
@@ -91,15 +61,10 @@ Installation
     Testing has been performed using several Mellanox-based IB cards and 
     the Chelsio cxgb3 iWARP adapter.
 
-  - Install OFED 1.5.4
+  - Install OFED 3.12
 
     NFS-RDMA will be installed by default if you simply select "install all",
     and can be specifically included by a "custom" install.
-
-    In addition, the install script will install a version of the nfs-utils that
-    is required for NFS/RDMA.  The binary installed will be named "mount.rnfs".
-    This version is not necessary for Linux Distributions with nfs-utils 1.1 or
-    later.
 
     Upon successful installation, the nfs kernel modules will be placed in the
     directory /lib/modules/'uname -a'/updates. It is recommended that you reboot
@@ -201,14 +166,6 @@ NFS/RDMA Setup
     Instruct the server to listen on the RDMA transport:
 
     $ echo rdma 20049 > /proc/fs/nfsd/portlist
-
-    NOTE for SLES10 servers: The nfs start scripts on most distro's start
-    rpc.statd by default.  However, the in-kernel lockd that was in SLES10 has
-    been removed in the new kernels.  Since OFED is back-porting the new code to
-    the older distro's, there is no in-kernel lockd in SLES10 and the SLES10
-    nfsserver scripts do not know the need to start it.  Therefore, the
-    nfsserver scripts will be modified when the rnfs-utils rpm is installed to
-    start/stop rpc.statd.
 
   - On the client system
 
