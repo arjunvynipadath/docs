@@ -1,12 +1,12 @@
 	    Open Fabrics Enterprise Distribution (OFED)
-	          Version 3.12 Release Notes
-	               	   May 2014
+	          Version 3.12-1 Release Notes
+	               	   August 2014
 
 ===============================================================================
 Table of Contents
 ===============================================================================
 1. Overview, which includes:
-	- OFED Distribution Rev 3.12 Contents
+	- OFED Distribution Rev 3.12-1 Contents
 	- Supported Platforms and Operating Systems
 	- Supported HCA and RNIC Adapter Cards and Firmware Versions
 	- Tested Switch Platforms
@@ -19,7 +19,7 @@ Table of Contents
 1. Overview
 ===============================================================================
 These are the release notes of OpenFabrics Enterprise Distribution (OFED)
-release 3.12. The OFED software package is composed of several software modules,
+release 3.12-1. The OFED software package is composed of several software modules,
 and is intended for use on a computer cluster constructed as an InfiniBand
 Fabric, an iWARP Network or a RoCE Fabric.
 
@@ -27,7 +27,7 @@ Note: If you plan to upgrade the OFED package on your cluster, please upgrade
 all of its nodes to this new version.
 
 
-1.1 OFED 3.12 Contents
+1.1 OFED 3.12-1 Contents
 -----------------------
 The OFED package contains the following components:
  - OpenFabrics core and ULPs:
@@ -59,6 +59,7 @@ The OFED package contains the following components:
   o   Linux Operating Systems:
 	- RedHat EL6.4 		2.6.32-358.el6
 	- RedHat EL6.5 		2.6.32-431.el6
+	- RedHat EL7.0 		3.10.0-123.4.4
 	- SLES11 SP3		3.0.76-0.9.1
 	- kernel.org		3.12    *
 
@@ -146,7 +147,7 @@ RoCE Switches
 
 1.5 Third Party Packages
 ------------------------
-The following third party packages have been tested with OFED 3.12:
+The following third party packages have been tested with OFED 3.12-1:
 - Open MPI - 1.8
 - Intel MPI 4.1.3
 - MVAPICH2 
@@ -157,11 +158,11 @@ All sources are located under git://git.openfabrics.org/
 
 Linux:
 ------
-URL: git://git.openfabrics.org/compat-rdma/linux-3.12.git
+URL: git://git.openfabrics.org/compat-rdma/linux-3.12-1.git
 Branch: master
 
 - Linux kernel sub-tree that includes files relevant for the OFED project only.
-  Based on v3.12. Used to shorten git clone time.
+  Based on v3.12-1. Used to shorten git clone time.
   Note: the regular Linux git tree can be used as well.
 
 compat:
@@ -193,56 +194,32 @@ http://www.openfabrics.org/downloads/MAINTAINERS
 ===============================================================================
 2. Change log
 ===============================================================================
-OFED-3.12-rc3 Main Changes from OFED 3.12-rc2
--------------------------------------------------------------------------------
-1. Updated packages:
-   - perftest-2.2-0.17
-2. Bugs solved
-
-OFED-3.12-rc2 Main Changes from OFED 3.12-rc1
--------------------------------------------------------------------------------
-1. Updated packages:
-   - dapl-2.0.42
-   - ibutils-1.5.7-0.2.gbd7e502.tar.gz
-   - libcxgb4-1.3.3
-   - mstflint-3.6.0-1.8
-   - perftest-2.2-0.16.g8406133.tar.gz
-
-OFED-3.12-rc1 Main Changes from OFED 3.5-2
+OFED-3.12-1-rc1 Main Changes from OFED 3.12 GA
 -------------------------------------------------------------------------------
 1. Add support for the OSes
-   - RedHat EL6.5
-2. New drivers available
-   - ocrdma
-   - libocrdma-1.0.2
-   - mlx5
-   - libmlx5-1.0.1
-3. Updated packages:
-   - dapl-2.0.40
-   - ibsim-0.6
-   - infiniband-diags-1.6.4
-   - infinipath-psm-3.2-2_ga8c3e3e_open
-   - libcxgb4-1.3.2
-   - libibmad-1.3.11
-   - libibumad-1.3.9
-   - libipathverbs-1.2.1
-   - libnes-1.1.4
-   - librdmacm-1.0.18
-   - mstflint-3.5.0
-   - opensm-3.3.17
-   - perftest-2.0-0.80.g54c73c6
-   - srptools-1.0.2
+   - RedHat EL7.0
+2. Updated packages:
+   - dapl-2.1.1
+   - ibacm-1.0.9
+   - libcxgb4-1.3.5
+   - libibverbs-1.1.8
+   - libmlx4-1.0.6
+   - libocrdma-1.0.3
+   - librdmacm-1.0.19.1
+   - mstflint-3.7.0-1.17
+   - opensm-3.3.18
+   - perftest-2.3-0.12
 
 ===============================================================================
 3. Known Issues
 ===============================================================================
 The following is a list of general limitations and known issues of the various
-components of the OFED 3.12-rc2 release.
+components of the OFED 3.12-1 release.
 
 01. When upgrading from an earlier OFED version, the installation script does
     not stop the earlier OFED version prior to uninstalling it.
     Workaround: Stop the old OFED stack (/etc/init.d/openibd stop) before
-    upgrading to OFED 3.12 or reboot the server after OFED installation.
+    upgrading to OFED 3.12-1 or reboot the server after OFED installation.
 02. Memory registration by the user is limited according to administrator
     setting. See "Pinning (Locking) User Memory Pages" in OFED_tips.txt for
     system configuration.
@@ -261,13 +238,7 @@ components of the OFED 3.12-rc2 release.
     /etc/modprobe.d/unsupported-modules. Without this the modules will not
     load.
 08. RDS is supported only on kernel.org 3.5 and not on any distro OS.
-09. There is an issue with NFSoRDMA when running on Power PC. This will be
-    resolved in OFED 3.12-1 - see Bug 2449
-10. There are known issues with iWARP using Chelsio adapters which will be
-    resolved in OFED 3.12-1 See Bugs 2482, 2485 and 2487
-11. There are some issues with NFSoRDMA and there are some pending patches on kernel.org. These will be
-    resolved in OFED 3.12-1 - see Bugw 2489 and 2490
-12. Newer SLES or RHEL patch kernels that are updates to the original kernel that is included in the
+09. Newer SLES or RHEL patch kernels that are updates to the original kernel that is included in the
     original SLES or RHEL distibutions may not work with OFED-3.12. The list of kernels that are supported are listed in
     section 1.2.
 
