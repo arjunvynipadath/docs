@@ -35,7 +35,7 @@ The OFED package contains the following components:
 	- iWARP RNIC driver (cxgb3, cxgb4, nes)
 	- RoCE drivers (mlx4, ocrdma)
 - ib core
-	- Upper Layer Protocols: IPoIB, SRP Initiator and target, RDS, 
+	- Upper Layer Protocols: IPoIB, SRP Initiator and target, RDS,
 	  uDAPL, qlgc_vnic and NFS-RDMA*.
  - OpenFabrics utilities:
 	- OpenSM (OSM): InfiniBand Subnet Manager
@@ -44,6 +44,13 @@ The OFED package contains the following components:
  - Extra packages:
 	- infinipath-psm: Performance-Scaled Messaging API, an accelerated
 	  interface to Intel(R) HCAs
+	- Packages for Intel(R) Xeon Phi(TM) coprocessor systems
+          (libibscif, ibpd)
+        - IBSCIF Driver (ibscif)
+ - CCL-Direct host-side drivers for Intel(R) Xeon Phi(TM) coprocessor systems:
+        - HCA proxy (ibp_server)
+        - Connection Manager proxy (ibp_cm_server)
+        - Subnet Administrator proxy (ibp_sa_server)
  - Sources of all software modules (under conditions mentioned in the modules'
    LICENSE files)
  - Documentation
@@ -209,6 +216,10 @@ OFED-3.12-1-rc1 Main Changes from OFED 3.12 GA
    - mstflint-3.7.0-1.17
    - opensm-3.3.18
    - perftest-2.3-0.12
+3. Technology Preview of Xeon-Phi support: only included with
+   install parameter --with-xeon-phi
+   - libibscif and ibscif kernel module
+   - ibpd (daemon) and ibp_server kernel modules
 
 ===============================================================================
 3. Known Issues

@@ -114,6 +114,7 @@ General Notes:
            --force              Force uninstall RPM coming with Distribution
            --builddir           Change build directory. Default: /var/tmp/
            --umad-dev-rw        Grant non root users read/write permission for umad devices instead of default
+           --with-xeon-phi      Install XEON PHI support
            --without-<package>  Do not install package
 
            --all|--hpc|--basic    Install all,hpc or basic packages correspondingly
@@ -124,6 +125,15 @@ Notes:
    Thus it is possible to change user choices (observing the original format).
    See examples of ofed.conf and ofed_net.conf under OFED-X.X.X/docs.
    Run './install.pl -p' to get ofed.conf with all available packages included.
+
+   To enable selection of the technology preview for XEON PHI support, the
+   parameter --with-xeon-phi must be provided.  Both kernel packages ibp_server
+   and ibscif needs to be selected as well as the user-mode packages ibpd and
+   libibscif.  The interactive installation and --all will include these,
+   neither --hpc nor --basic will.  This requires the linux version of
+   Intel(R) Manycore Platform Software Stack (Intel(R) MPSS) version 3.3 or
+   later to be installed and can be downloaded from
+   http://software.intel.com/mic-developer.
 
 Install Process Results:
 ------------------------
