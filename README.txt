@@ -131,7 +131,7 @@ Notes:
    and ibscif needs to be selected as well as the user-mode packages ibpd and
    libibscif.  The interactive installation and --all will include these,
    neither --hpc nor --basic will.  This requires the linux version of
-   Intel(R) Manycore Platform Software Stack (Intel(R) MPSS) version 3.3 or
+   Intel(R) Manycore Platform Software Stack (Intel(R) MPSS) version 3.4 or
    later to be installed and can be downloaded from
    http://software.intel.com/mic-developer.
 
