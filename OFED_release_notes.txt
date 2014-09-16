@@ -1,6 +1,6 @@
 	    Open Fabrics Enterprise Distribution (OFED)
 	          Version 3.12-1 Release Notes
-	               	   August 2014
+	               	   September 2014
 
 ===============================================================================
 Table of Contents
@@ -201,6 +201,22 @@ http://www.openfabrics.org/downloads/MAINTAINERS
 ===============================================================================
 2. Change log
 ===============================================================================
+OFED-3.12-1-rc2 Main Changes from OFED 3.12-1-rc1
+-------------------------------------------------------------------------------
+1. Updated packages:
+    - dapl-2.1.2
+    - mstflint-3.7.0-1.18.gcdb9f80
+    - compat-rdma:
+        xeon-phi: updates to ofed-mic script
+        xeon-phi: correct configure file for correct -with-ibp-debug flag
+        xeon-phi: remove bogus comment in compat-rdma.spec
+        xeon-phi: updates to ibp_server
+        xeon-phi: updated technology preview for ibscif
+        RDMA/ocrdma: Add a fix for mmaping kernel mem to user
+        cxgb4: GRO busted in sles/rhel backports.
+        cxgb4: Fix vlan support in sles and rhel backport.
+        add missing docs directory
+
 OFED-3.12-1-rc1 Main Changes from OFED 3.12 GA
 -------------------------------------------------------------------------------
 1. Add support for the OSes
