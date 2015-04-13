@@ -1,6 +1,6 @@
 	    Open Fabrics Enterprise Distribution (OFED)
-	          Version 3.18-rc1 Release Notes
-	               	   March 2015
+	          Version 3.18-rc2 Release Notes
+	               	   April 2015
 
 ===============================================================================
 Table of Contents
@@ -202,6 +202,27 @@ http://www.openfabrics.org/downloads/MAINTAINERS
 ===============================================================================
 2. Change log
 ===============================================================================
+OFED-3.18-rc2 Main Changes from OFED 3.18-rc1
+-------------------------------------------------------------------------------
+1. Updated packages:
+ - dapl-2.1.4
+ - libfabric-1.0.0rc4
+ - librdmacm-1.0.20
+
+2. Added RHEL7.1 support
+
+3. compat-rdma changes
+ - IB/uverbs: Prevent integer overflow in ib_umem_get address arithmetic
+ - NFSoRDMA: backport for RHEL 6.5 and 6.6
+ - Fixed mlx4 backport
+ - Added RHEL7.1 backport patches
+ - RDMA/ocrdma: rebasing the upstream sync up patch
+ - be2net-ocrdma: Fixing the RH 6.5/6 backport patch
+ - be2net-ocrdma: move backport patches to the correct folder
+ - Updated XEON-Phi patches
+ - Updated compat-rdma.spec for XEON-Phi
+ - NFS/RDMA: SLES11SP3 backport
+
 OFED-3.18-rc1 Main Changes from OFED 3.12-1 GA
 -------------------------------------------------------------------------------
 1. Updated packages:
