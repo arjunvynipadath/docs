@@ -1,6 +1,6 @@
             Open Fabrics Enterprise Distribution (OFED)
       NetEffect Ethernet Cluster Server Adapter Release Notes
-                           May 2014
+                           June 2015
 
 
 The iw_nes module and libnes user library provide RDMA and L2IF
@@ -15,14 +15,25 @@ Supported Architectures and Operating Systems
         - x86
  
 * Linux Operating Systems:
-	- RedHat EL6.4		2.6.32-358.el6
-	- RedHat EL6.5		2.6.32-431.el6
+	- RedHat EL6.5 		2.6.32-431.el6
+	- RedHat EL6.6 		2.6.32-504.el6
+	- RedHat EL7.0 		3.10.0-123.el7
+	- RedHat EL7.1 		3.10.0-229.el7
 	- SLES11 SP3		3.0.76-0.9.1
-	- kernel.org		3.12 (minimal QA for this version)
+	- SLES12        	3.12.28-4-default
+	- kernel.org		3.18 (minimal QA for this version)
 
 ==========
 What's New
 ==========
+
+OFED 3.18 contains the following new feature for iw_nes driver:
+
+	- iWARP Port Mapper: The iWARP drivers use the port mapper API to request
+	  mappings of tcp ports. The port mapper consists of kernel space functionaliy, 
+	  which is part of core/iw_cm and a user space service, which comes
+          with the libiwpm-1.0.1 package, included in OFED-3.18
+ 
 OFED 3.12 contains the following fixes for iw_nes driver:
 
 	- Fixes for MPA V2 implementaion with respect to the ird/ord peer negotiation
