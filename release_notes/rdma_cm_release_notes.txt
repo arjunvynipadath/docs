@@ -1,7 +1,7 @@
 	     Open Fabrics Enterprise Distribution (OFED)
-		    RDMA CM in OFED 3.12 Release Notes
+		    RDMA CM in OFED 3.18 Release Notes
 			  
-			   May 2014
+			   June 2015
 
 
 ===============================================================================
@@ -21,9 +21,9 @@ based on sockets, but adapted for queue pair (QP) based semantics:
 communication must be over a specific RDMA device, and data transfers
 are message based.
 
-The RDMA CM can control both the QP and communication management (connection setup /
-teardown) portions of an RDMA API, or only the communication management
-piece.  It works in conjunction with the verbs
+The RDMA CM can control both the QP and communication management
+(connection setup / teardown) portions of an RDMA API, or only
+the communication management piece.  It works in conjunction with the verbs
 API defined by the libibverbs library.  The libibverbs library provides the
 underlying interfaces needed to send and receive data.
 
@@ -40,24 +40,20 @@ unmodified over rsockets.
 ===============================================================================
 2. New Features
 ===============================================================================
-for OFED 3.12
+for OFED 3.18
 
-Enhancements to the librdmacm release 1.0.18, versus the 1.0.17 release,
-mostly centered around improvements to the rsocket protocol and implementation.
-Specific enhancements to rsockets included:
+Enhancements to the librdmacm release 1.0.21, versus the 1.0.18 release,
+mostly centered around bug fixes.  Notable feature enhancements include
+the following.
 
-* Now supports iWarp devices.
+* There were several updates and bug fixes to the rsockets code based
+  on more extensive testing and use cases.  Rsockets now supports the
+  use of native InfiniBand addressing.
 
-* Support native IB addressing with SOCK_STREAM.
+* The RDMA CM was updated to support XRC QPs.
 
-* Provide the ability for an application to manually set Infiniband path
-  record data.  This allows applications using rsockets to take advantage
-  of ibacm, a package which tries to address IB subnet scalability issues.
-
-* Add keepalive support for SOCK_STREAM.
-
-In addition to the rsocket enhancements, several bug fixes were incorporated,
-along with a new test program, cmtime, to measure connection establishment times.
+* The rsocket preload library allows for fine grained interception of
+  socket calls.
 
 ===============================================================================
 3. Known Issues
