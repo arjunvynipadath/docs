@@ -1,15 +1,49 @@
-			   Release Notes for 
-	  	  OFED 3.12 DAPL Release 2.0.42-1
-			    May 2014
+			   Release Notes for
+	  	  OFED 3.18 DAPL Release 2.1.5
+			    June 2015
 
 	User space libraries/utilities for Direct Access Transport (DAT) v2.0. DAT is 
 	a transport-independent, platform-independent Application Programming 
 	Interface that supports RDMA (remote direct memory access) devices. 
 	Note: v1.2 is no longer supported and will not be included with OFED releases
+	
+	MIC support has been added in dapl-2.1.0, see README.mcm for build and install details.
+
+        MIC support is provided with the new MCM provider and MPXYD service. 
+        MCM requires the Intel(R) MPSS 3.x (YOCTO) release for Linux to be installed on your system. 
+        MPSS 3.x for Linux can be downloaded from: http://software.intel.com/mic-developer
 
 	For latest documentation and packages: //www.openfabrics.org/downloads/dapl/ 
 
-	uDAPL v2 (dapl-2.0.42-1)
+	dapl-2.1.5 changes include improvements for large scale UD communication management:
+
+	- AH caching, reduced memory footprint (grows as needed)
+	- Port space increased to 24 bits
+	- Hash table for port space, CM object management
+	- Optimized CM wire protocol for fast index lookup 
+	
+	Tested on 1200n 28ppn cluster, AlltoAll Intel MPI, UD mode.
+	Both static and dynamic modes, over 500m UD QP connections.
+
+	dapl-2.1.5 ChangeLog  
+	---------------
+	dat.conf: update comments regarding versions
+	dtest: add logging of provider private data size with -v
+	scm: remove use of msg.resv field for process id logging
+	cma: report correct CM req private data size on query
+	mpxyd: memset ib_wr structure before post_send on WC and WR requests
+	mcm: add HST side provider support for device without inline data capability
+	ucm: CM changes for UD extended port space and indexer
+	ucm: add device support for new port space hash table
+	ucm: allocate/free AH hash table for UD endpoint types
+	ucm: check for AH caching when destroying via UD extension
+	ucm: optimizations for large scale UD communication management
+	mpxyd: use wr opcode instead of wc opcode to support logging on error cases
+	mcm: HST->MXS mode, using RDMA_WRITE_WITH_IMM, fails with dtest -w
+	dapl: aarch64 support for linux
+	dapltest: add scripts to dist, set default device to IPoIB
+	mpxyd: add wc_flags to proxy work completions
+	
 
 	Build Notes:
 	------------
@@ -89,38 +123,37 @@
 
 	CM Performance: CPS profile for cma, scm, and ucm v2 uDAPL providers:
 	-----------------------------------------------------------------------
-	Intel SR1600 Servers with Xeon(R) CPU X5570  @ 2.93GHz
-	Urbanna Platform  - 2 node, 8 cores per node, Mellanox MLX4 IB QDR, no switch.
+ 	Intel(R) Xeon(R) CPU E5-2690 v2 @ 3.00GHz (IVT)
+	Mellanox MLX4 IB FDR, no switch.
 
 	dtestcm (server/client):
 
-	cma: Connections: 183.21 usec, CPS 5458.31 Total 0.18 secs, poll_cnt=3403, Num=1000
-	scm: Connections: 178.80 usec, CPS 5592.93 Total 0.18 secs, poll_cnt=2344, Num=1000
-	ucm: Connections: 122.43 usec, CPS 8167.93 Total 0.12 secs, poll_cnt=2609, Num=1000
+        cma: Connections: 313.10 usec, CPS  3193.83 Total 0.31 secs, poll_cnt=6300, Num=1000
+        scm: Connections: 167.65 usec, CPS  5964.92 Total 0.17 secs, poll_cnt=2394, Num=1000
+        ucm: Connections:  71.85 usec, CPS 13918.06 Total 0.07 secs, poll_cnt=2360, Num=1000
 
-	dapl_cm_bw: MPI uDAPL/CM profiling application (all-to-all connections, all ranks)
+        dapl_cm_bw: MPI uDAPL/CM profiling application (all-to-all connections, all ranks)
 
-	CMA
-	2  Connect times (10):   Total 0.0020 per 0.0002 CPS=4997.98
-	4  Connect times (40):   Total 0.0077 per 0.0002 CPS=5224.59
-	8  Connect times (240):  Total 0.0276 per 0.0001 CPS=8710.76
-	16 Connect times (1120): Total 0.1194 per 0.0001 CPS=9379.37
-	32 Connect times (4800): Total 6.1949 per 0.0013 CPS=774.83
+        CMA
+        2  Connect times (10):   Total 0.0049 per 0.0005 CPS=2051.38
+        4  Connect times (40):   Total 0.0151 per 0.0004 CPS=2650.16
+        8  Connect times (240):  Total 0.0548 per 0.0002 CPS=4380.59
+        16 Connect times (1120): Total 4.0356 per 0.0036 CPS=277.53
+        32 Connect times (4800): Total 4.4704 per 0.0009 CPS=1073.72
 
-	SCM
-	2  Connect times (10):   Total 0.0024 per 0.0002 CPS=4103.61
-	4  Connect times (40):   Total 0.0060 per 0.0002 CPS=6622.41
-	8  Connect times (240):  Total 0.0206 per 0.0001 CPS=11634.15
-	16 Connect times (1120): Total 9.0118 per 0.0080 CPS=124.28
-	32 Connect times (4800): Total 21.0198 per 0.0044 CPS=228.36
+        SCM
+        2  Connect times (10):   Total 0.0029 per 0.0003 CPS=3441.31
+        4  Connect times (40):   Total 0.0060 per 0.0002 CPS=6635.97
+        8  Connect times (240):  Total 0.0194 per 0.0001 CPS=12383.47
+        16 Connect times (1120): Total 0.0649 per 0.0001 CPS=17246.93
+        32 Connect times (4800): Total 1.0193 per 0.0002 CPS=4708.95
 
-	UCM
-	2  Connect times (10):   Total 0.0014 per 0.0001 CPS=7353.27
-	4  Connect times (40):   Total 0.0045 per 0.0001 CPS=8816.19
-	8  Connect times (240):  Total 0.0191 per 0.0001 CPS=12582.44
-	16 Connect times (1120): Total 0.0799 per 0.0001 CPS=14017.68
-	32 Connect times (4800): Total 0.3337 per 0.0001 CPS=14385.21
-
+        UCM
+        2  Connect times (10):   Total 0.0014 per 0.0001 CPS=6993.91
+        4  Connect times (40):   Total 0.0045 per 0.0001 CPS=8837.87
+        8  Connect times (240):  Total 0.0155 per 0.0001 CPS=15477.13
+        16 Connect times (1120): Total 0.0630 per 0.0001 CPS=17765.12
+        32 Connect times (4800): Total 0.2632 per 0.0001 CPS=18236.54
 
 	BKM for build and running new DAPL library on your cluster without any impact on existing OFED install:
 	-------------------------------------------------------------------------------------------------------
@@ -143,7 +176,7 @@
 	Run uDAPL application or Intel MPI that uses uDAPL, with (assuming mlx4_0 adapters) following:
 
 	  setenv DAT_OVERRIDE=/home/user1/dat.conf
-	  setenv LD_LIBRARY_PATH=/home/user1/dapl-2.0.32/dapl/udapl/.libs:$LD_LIBRARY_PATH
+	  setenv LD_LIBRARY_PATH=/home/user1/dapl-2.0.42/dapl/udapl/.libs:$LD_LIBRARY_PATH
 
 	If running Intel MPI and uDAPL socket cm, set the following:
 
@@ -158,8 +191,234 @@
 	  setenv I_MPI_DAPL_PROVIDER=ofa-v2-ib0
 
 
+	uDAPL MCM Provider and MPXYD Daemon (CCL-proxy) 
+	=================================================
+
+	MCM is a new uDAPL provider that is an extension to standard DAT 2.0 libraries. The purpose of this service
+	is to proxy RDMA writes from the MIC to the HOST to improve large IO performance. The provider will support
+	MIC to MIC, HOST to HOST, and MIC to HOST environments. The mcm client will NOT use MPXYD when running on the host.
+	It requires a new MPXYD daemon service when clients are running on a MIC KNC adapter. This package installs all the
+	host side libraries and daemon service. The MIC libraries must be built and moved over to MIC adapter. This verion
+	is currently included with MPSS and all libraries and services will be installed by default.
+
+	Current release package: dapl-2.1.5.tar.gz 
+
+	* Sample host build from source package (ofed must installed)
+
+ 	 ./autogen.sh
+  	./configure \
+		--enable-mcm \
+		--prefix=/usr \
+		--libdir=/usr/lib64 \
+		--sysconfdir=/etc
+  	make
+  	sudo make install
+
+	* Sample /home/user1 MIC build from source package for MPSS 3.x (MPSS must be installed)
+
+  	source /opt/mpss/3.x/environment-setup-k1om-mpss-linux 
+   	./autogen.sh
+  	./configure \
+		--enable-mcm 
+		--host=x86_64-k1om-linux \
+		--prefix=/home/user1/dapl-mic-install \
+ 		CC=/usr/linux-k1om-4.7/bin/x86_64-k1om-linux-gcc \
+ 		CFLAGS="-I/opt/mpss/3.x/sysroots/k1om-mpss-linux/usr/include 
+ 		LDFLAGS="-L/opt/mpss/3.x/sysroots/k1om-mpss-linux/usr/lib64"
+  	make
+  	sudo make install
+  
+	* Sample /home/user1 MIC build from source package for MPSS 2.x (MPSS must be installed)
+    
+  	export PATH=$PATH:/usr/linux-k1om-4.7/bin
+  	./autogen.sh
+  	./configure \
+		--enable-mcm \
+		--prefix=/home/user1/dapl-mic-install \
+		--libdir=/opt/intel/mic/ofed/card/usr/lib64 \
+		--sysconfdir=/opt/intel/mic/ofed/card/etc \
+		--host=x86_64-k1om-linux \
+		CFLAGS="-I/opt/intel/mic/ofed/card/usr/include" \
+		LDFLAGS="-L/opt/intel/mic/ofed/card/usr/lib64"
+  	make
+  	sudo make install
+ 
+	* Cluster deployment
+
+  	(1) Build once on the head or on one of the nodes as described in the above steps.
+
+  	(2) Replicate these files on all the nodes:
+
+		/etc/dat.conf
+		/etc/mpxyd.conf
+		/usr/sbin/mpxyd
+		/usr/lib64/libdaplomcm.so.2
+		/opt/intel/mic/ofed/card/etc/dat.conf
+		/opt/intel/mic/ofed/card/usr/lib64/libdaplomcm.so.2
+		/opt/intel/mic/ofed/card/ofed.filelist
+
+  	(3) Unload and then restart MPSS on all the nodes.
+
+	* Start the proxy daemon on all the nodes (host only)
+
+	sudo /usr/sbin/mpxyd
+
+	* Use the MCM provider with Intel MPI 4.1.3 or greater for best out of box experiences.
+
+  	(1) Recommended settings:
+
+		export I_MPI_MIC=1
+		export I_MPI_DEBUG=2
+		export I_MPI_FALLBACK=0
+		export I_MPI_MIC_DAPL_DIRECT_COPY_THRESHOLD=8192,262144
+
+      	With these settings on MIC, messages less than 8192 bytes will be sent via pre-registered buffers; messages 
+      	between 8192 and 262144 bytes will be sent via the Rendezvous protocol throught the first provider; and 
+      	larger messages will be sent via the Rendezvous protocol through the second provider. Fine tune these
+      	two sizes for the best performance.
+  
+	* Setup for non-root CCL Proxy testing, MPXYD running as process with different service port from your /home directory:
+
+   	Using build instructions above, change prefix as follow and "make install":
+
+   	Build MIC:
+		--prefix=/home/username/ccl-proxy-mic
+
+   	Build host:
+		--prefix=/home/username/ccl-proxy-host
+	
+	edit /home/username/ccl-proxy-host/etc/mpxyd.conf and change the following entries:
+	
+	log_file /var/log/mpxyd.log  	to log_file /tmp/username/mpxyd.log
+	lock_file /var/log/mpxyd.pid 	to lock_file /tmp/username/mpxyd.log
+	scif_port_id 68 		to scif_port_id 1068
+	
+	start the mpxyd process on each node
+	
+	ssh node1-hostname /home/username/ccl-proxy-host/sbin/mpxyd -P -O /home/username/ccl-proxy-host/etc/mpxyd.conf&
+	
+	Note: override default port id using following environment variable:
+	
+	export DAPL_MCM_PORT_ID=1068
+   
+	* Notes
+
+  	(1) Modify "/etc/mpxyd.conf" to change the settings for the proxy. Especially, try different values
+      	of "buffer_segment_size" for performance tuning. Use a smaller value for "buffer_pool_mb"   
+      	to reduce the memory foorprint of mpxyd. Use a larger value for "scif_listen_qlen" to run 
+      	more MPI ranks per card. Also modify mcm_affinity_base to the desired CPU_id to insure
+      	socket to adapter affinity. Best performance when HCA, MIC, and CPU are on same socket.
+      	Default settings are on CPU socket 0.
+
+  	(2) By default, only writes originated from MIC is proxied. However, it is also possible to proxy 
+      	host-originated writes (e.g. for debugging purpose). To do this, set the environment variable
+      	"DAPL_MCM_ALWAYS_PROXY=1". This variable applies to the provider, not the proxy.
+
+	====================================================================================================	
+
 	Summary of Fixes/Changes:
 	-------------------------
+	
+	Release 2.1.5 (OFED 3.18 RC3)
+	update release notes, readme
+	dat.conf: update comments regarding versions
+	dtest: add logging of provider private data size with -v
+	scm: remove use of msg.resv field for process id logging
+	cma: report correct CM req private data size on query
+	mpxyd: memset ib_wr structure before post_send on WC and WR requests
+	mcm: add HST side provider support for device without inline data capability
+	ucm: CM changes for UD extended port space and indexer
+	ucm: add device support for new port space hash table
+	ucm: allocate/free AH hash table for UD endpoint types
+	ucm: check for AH caching when destroying via UD extension
+	ucm: optimizations for large scale UD communication management
+	mpxyd: use wr opcode instead of wc opcode to support logging on error cases
+	mcm: HST->MXS mode, using RDMA_WRITE_WITH_IMM, fails with dtest -w
+	dapl: aarch64 support for linux
+	dapltest: add scripts to dist, set default device to IPoIB
+	mpxyd: add wc_flags to proxy work completions
+	
+	Release 2.1.4 (OFED 3.18 RC1)
+	mpxyd: fix typo in configuration file
+	cma: RR attributes moved to common ib_cm struct
+	mpxyd: tx thread incorrectly sleeps with negative pi_rw_cnt value
+	dat.conf: add entries for True Scale qib device
+	mpxyd: add support for devices without inline data support
+	ucm: long disconnect times with many-to-one applications
+	openib: add inline data support check during device open
+	cleanup ib/cm attribute management across openib providers
+	dapltest: fix -Werror=format-security issue with printf
+	Release 2.1.3 (targeting OFED 3.18)
+	dapl: mpxyd service changes to support multi-thread single-core option
+	dapl: add rdma_write_imm and write only option to dtest
+	ucm: add time wait override capability for CM services
+	common: dapl_ep_free must serialize CM object destroy
+	dtestx: allow scale up to 1000 EP's
+	ucm: RTU not retransmitted in TIMEWAIT state
+	mpxyd: increase max open files for service
+	mpxyd: DTO completion ERR: status 12, op RDMA_WRITE running MPI alltoall test
+	mcm: HST->MXS mode incorrectly signals multiple fragments per WR
+	mcm: add segmentation to HST->MXS mode for improved performance
+	mpxyd: set global seg_sz to 128KB for proxy data service
+	openib: add port_num to provider named attributes
+	mcm: provide CPU family/model attribute on both host and mic sides
+	dtestx: update IB extension example test with new v2.0.9 features
+	dtest: add dtestsrq for SRQ example and provider testing
+	common: add srq support for openib verbs providers
+	openib: add IB UD cm_free/ah_free extension support in UCM provider
+	openib: add new TIMEWAIT state for CM
+	extension: add IB UD extensions to reduce provider CM and AH memory footprint
+	mpxyd/mcm: add provider specific attribute DAT_IB_PROXY_VERSION
+	mpxyd: log warning if running in COMPAT mode
+	add provider and proxy support for GUID across platform
+	common: return appropriate handles with affiliated EP and EVD async events
+	
+	Release 2.1.2 (OFED 3.12-1)
+	mpxyd: add global routing support for proxy connections
+	mcm: only call mix_get_attr if running on MIC
+	openib: modify check for link_layer to handle unspecified
+	dapl: add support for the s390x platform
+	dtest server exchange connection info with client
+	mpxyd: 2 MICs in same numa_node will overlap CPU affinity, don't reset base
+	mcm: implement proxy mix_prov_attr function, add fields CPU model and family
+	mpxyd: tx thread may not be signaled on small segment writes
+	
+	Release 2.1.1 (OFED 3.12-1 RC1)
+	common: add provider name to log messages
+	mpxyd: log warning message if numa_node invalid include debuginfo with build
+	build: include debuginfo with build
+	mpxyd: tx thread doesn't sleep during no pending IO state
+	mpxyd: change MIC cpu_mask to per numa node instead of adapter
+	mpxyd: set to MXS mode if device numa_node is invalid (-1)
+	mpxyd: MXS based alltoall benchmark hangs or returns post_send timeout
+	mpxyd: add IO profile capabilities to help debug alltoall stall cases
+	mpxyd: retry stalled inline post_send, init m_idx only when signaled
+	
+	Release 2.1.0 (OFED 3.12-1, MIC support added)
+	build: add missing NEWS file
+	update autogen.sh
+	add MCM provider and MPXYD service to build
+	mpxyd: service startup script and configuration file
+	add readme for MCM provider and MPXYD service
+	update Copyright dates
+	add new MIC RDMA proxy service daemon (MPXYD)
+	add new dapl MIC provider (MCM) to support MIC RDMA proxy services
+	MCM: new MIC provider and proxy service definitions
+	cleanup build warnings
+	common: add CQ,QP,MR abstractions for new MIC provider and data proxy service
+	openib: cleanup, use inet_ntop for GIDs, remove some logs, destroy pipes on release
+	common: new dapls_evd_cqe_to_event call, cqe to event
+	common: init ring_buffer, assign hd/tl pos in range
+	allow log level changes during device open
+	ucm: fix cm rbuf setup, include grh pad on initialization
+	ucm: remove duplicate async_event code, use common async event call
+	new lightweight open_query/close_query IB extension for fast attribute query
+	dtestcm: add more detailed debug during disconnect phase
+	cma: long delays when opening cma provider with no IPoIB configured
+	common: new debug levels for low system memory, IA stats, and package info
+	build: remove library check for mverbs with --enable-fca
+	IB extension: segfault in create collective group with non-vector type IA handle"
+	build: change configure help to correctly state collective default=none
 
 	Release 2.0.42 fixes (OFED 3.12 GA)
 	dapltest: increase DTO evd size to prevent CQ overflow on limit_rpost test

@@ -1,6 +1,6 @@
 	    Open Fabrics Enterprise Distribution (OFED)
-	          Version 3.18-rc2 Release Notes
-	               	   April 2015
+	          Version 3.18-rc3 Release Notes
+	               	   June 2015
 
 ===============================================================================
 Table of Contents
@@ -44,16 +44,16 @@ The OFED package contains the following components:
  - Extra packages:
 	- infinipath-psm: Performance-Scaled Messaging API, an accelerated
 	  interface to Intel(R) HCAs
-	- Packages for Intel(R) Xeon Phi(TM) coprocessor systems
-          (libibscif, ibpd)
-        - IBSCIF Driver (ibscif)
- - CCL-Direct host-side drivers for Intel(R) Xeon Phi(TM) coprocessor systems:
+	- Packages for Intel(R) Xeon Phi(TM) coprocessor systems (libibscif, ibpd)
+	- IBSCIF Driver (ibscif)
+	- libfbric - library that exports interfaces for fabric services to applications
+	- CCL-Direct host-side drivers for Intel(R) Xeon Phi(TM) coprocessor systems:
         - HCA proxy (ibp_server)
         - Connection Manager proxy (ibp_cm_server)
         - Subnet Administrator proxy (ibp_sa_server)
- - Sources of all software modules (under conditions mentioned in the modules'
-   LICENSE files)
- - Documentation
+	- Sources of all software modules (under conditions mentioned in the modules'
+		LICENSE files)
+	- Documentation
 
 
 1.2 Supported Platforms and Operating Systems
@@ -69,7 +69,7 @@ The OFED package contains the following components:
 	- RedHat EL7.0 		3.10.0-123.el7
 	- RedHat EL7.1 		3.10.0-229.el7
 	- SLES11 SP3		3.0.76-0.9.1
-	- SLES12        	3.12.28-4-default
+	- SLES12        	3.12.28-4
 	- kernel.org		3.18    *
 
       * Minimal QA for these versions.
@@ -203,6 +203,27 @@ http://www.openfabrics.org/downloads/MAINTAINERS
 ===============================================================================
 2. Change log
 ===============================================================================
+OFED-3.18-rc3 Main Changes from OFED 3.18-rc2
+-------------------------------------------------------------------------------
+1. Updated packages:
+ - dapl-2.1.4
+ - libfabric-1.0.0rc4
+ - librdmacm-1.0.20
+
+2. Added RHEL7.1 support
+
+3. compat-rdma changes
+ - IB/uverbs: Prevent integer overflow in ib_umem_get address arithmetic
+ - NFSoRDMA: backport for RHEL 6.5 and 6.6
+ - Fixed mlx4 backport
+ - Added RHEL7.1 backport patches
+ - RDMA/ocrdma: rebasing the upstream sync up patch
+ - be2net-ocrdma: Fixing the RH 6.5/6 backport patch
+ - be2net-ocrdma: move backport patches to the correct folder
+ - Updated XEON-Phi patches
+ - Updated compat-rdma.spec for XEON-Phi
+ - NFS/RDMA: SLES11SP3 backport
+
 OFED-3.18-rc2 Main Changes from OFED 3.18-rc1
 -------------------------------------------------------------------------------
 1. Updated packages:
@@ -264,7 +285,24 @@ components of the OFED 3.18 release.
     is that these utilities support devices of type Ethernet only.
 06. In case uninstall is failing, check the error log and remove
     the remaining RPMs manually using 'rpm -e <rpms list>'.
-07. RDS is not supported.
+07. On SLES11.x, set allow_unsupported_modules parameter to 1 in file:
+    /etc/modprobe.d/unsupported-modules. Without this the modules will not
+    load.
+08. There are a few known issues with NFSoRDMA that are documented in bugs 2489 
+    and 2507. We believe the issues have been resolved in kernel 3.18 but the 
+    backports have not been applied to OFED 3.12-1.
+09. Bug 2515: when an Intel HCA is attached directly to a Mellanox ConnectX3
+    and the OpenSM is started on the Inetl HCA, the link will not go to active.
+    The workaround is to start the OpenSM on the Mellanox HCA.
+10. RDS is not supported.
+11. Bug 2544: Libfabric depends on infinipath-psm. When OFED is compiled --with-xeon-phi,
+    it will fail to compile/install because infinipath-psm is renamed when intel-mic-psm RPMs
+    are now built/installed. This will be resolved in OFED 3.18-1
+12. Bug 2545: ipath will not compile on SLES11 SP4 and RHEL6.7  because these releases 
+    are not supported in OFED 3.18. They will be added in 3.18-1
+13. Bug 2551: OFED 3.18 will not compile on ppc64 with libfabric and fabtests enabled.
+    A worked around is to install OFED 3.18 with the following flags:
+    ./install.pl --all --without-libfabric --without-fabtests --without-libiwpm
 
 Note: See the release notes of each component for additional issues.
 
