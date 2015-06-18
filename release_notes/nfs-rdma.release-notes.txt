@@ -9,12 +9,12 @@
  Adapted for OFED 1.5.1 (from linux-2.6.30/Documentation/filesystems/nfs-rdma.txt)
  by Jon Mason
 
- Further adapted for OFED 3.12 by Jeff Becker
+ Further adapted for OFED 3.18 by Jeff Becker
 
 Table of Contents
 ~~~~~~~~~~~~~~~~~
  - Overview
- - OFED 3.12 limitations
+ - OFED 3.18 Supported Systems
  - Getting Help
  - Installation
  - Check RDMA and NFS Setup
@@ -34,12 +34,19 @@ Overview
   the full Connectathon test suite and operates over both Infiniband and iWARP
   RDMA adapters.
 
-OFED 3.12 limitations:
+OFED 3.18 Supported Systems:
 ~~~~~~~~~~~~~~~~~~~~~
-  NFS/RDMA has been ported and tested on the following kernels:
-  - Redhat Enterprise Linux (RHEL) version 6.5
-  - SUSE Linux Enterprise Server (SLES) version 11 service pack 3
-  - kernel.org 3.12
+  NFS/RDMA has been ported and tested on the following 
+  kernels:
+  - Redhat Enterprise Linux (RHEL) version 6.5, 6.6, 7.0, 7.1
+  - SUSE Linux Enterprise Server (SLES) version 11 service pack 3 and version 12
+  - kernel.org 3.18
+  hardware:
+  - x86_64
+  - ppc64
+  - IB cards from Intel and Mellanox
+  - iWARP cards from Chelsio
+  - ROCE cards from Emulex, IBM and Mellanox
 
 Getting Help
 ~~~~~~~~~~~~
@@ -61,7 +68,7 @@ Installation
     Testing has been performed using several Mellanox-based IB cards and 
     the Chelsio cxgb3 iWARP adapter.
 
-  - Install OFED 3.12
+  - Install OFED 3.18
 
     NFS-RDMA will be installed by default if you simply select "install all",
     and can be specifically included by a "custom" install.
@@ -182,29 +189,3 @@ NFS/RDMA Setup
 
   Congratulations! You're using NFS/RDMA!
 
-Known Issues
-~~~~~~~~~~~~~~~~~~~~~~~~
-
-OFA Bug 2482 - NFSRDMA fails to mind the rdma device's max page
-list length.  For cxgb4 devices, this can cause a hw crash requiring
-a system reboot. The workaround is to mount using mount options:
-wsize=65536,rsize=65536. EG:
-
-mount hpc-cn2:/share /mnt -o rdma,vers=3,port=20049,wsize=65536,rsize=65536
-
-If you're running NFSRDMA over Chelsio's T3 RNIC and your cients are using
-a 64KB page size (like PPC64 and IA64 systems) and your server is using a
-4KB page size (like i386 and X86_64), then you need to mount the server
-using rsize=32768,wsize=32768 to avoid overrunning the Chelsio RNIC fast
-register limits.  This is a known firmware limitation in the Chelsio RNIC.
-
-Running NFSRDMA over Mellanox's ConnectX HCA requires that the adapter firmware
-be 2.7.0 or greater on all NFS clients and servers.  Firmware 2.6.0 has known
-issues that prevent the RDMA connection from being established.  Firmware 2.7.0
-has resolved these issues.
-
-IPv6 support requires portmap that supports version 4. Portmap included in RHEL5
-and SLES10 only supports version 2.  Without version 4 support, the following
-error will be logged:
-       svc: failed to register lockdv1 (errno 97).
-This error will not affect IPv4 support.
