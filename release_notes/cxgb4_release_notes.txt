@@ -1,11 +1,17 @@
             Open Fabrics Enterprise Distribution (OFED)
                 CHELSIO T4/T5 RNIC RELEASE NOTES
-			May 2014
+			June 2015
 
 
 The iw_cxgb4 and cxgb4 modules provide RDMA and NIC support for the
 Chelsio T4 and T5 series adapters.  Make sure you choose the 'cxgb4'
 and 'libcxgb4' options when generating your OFED rpms.
+
+============================================
+New for OFED-3.18
+============================================
+- Added 1.13.32.0 T4 and T5 firmware
+- Important bug fixes
 
 ============================================
 New for OFED-3.12
@@ -14,36 +20,6 @@ New for OFED-3.12
 - Added 1.9.23.0 T4 and T5 firmware
 - Important bug fixes
 
-============================================
-New for OFED-3.5
-============================================
-- Added T4 firmware configuration file support
-- Added new T4 firmware 1.6.2.0 support.
-- Important bug fixes
-
-============================================
-New for OFED-1.5.4
-============================================
-
-- Added Chelsio T4 iWARP driver and library.
-
-===========================
-Supported Operating Systems
-===========================
-
-  o   CPU architectures:
-	- x86_64
-	- x86
-	- ppc64
-
-  o   Linux Operating Systems:
-	- RedHat EL6.4 		2.6.32-358.el6
-	- RedHat EL6.5 		2.6.32-431.el6
-	- SLES11 SP3		3.0.76-0.9.1
-	- kernel.org		3.12    *
-
-      * Minimal QA for these versions.
-
 ===============
 Supported Cards
 ================
@@ -51,53 +27,45 @@ Supported Cards
 T5: T502-BT, T580-CR, T580-LP-CR, T520-LL-CR, T520-CR, T522-CR, T540-CR
 T4: T420-CR, T440-CR, T422-CR, T404-BT, T440-LP-CR, T420-LL-CR, T420-CX
 
-====================
-Errata (Open Issues)
-====================
-
-OFA Bug 2482 - NFSRDMA fails to mind the rdma device's max page
-list length.  For cxgb4 devices, this can cause a hw crash requiring
-a system reboot. The workaround is to mount using mount options:
-wsize=65536,rsize=65536. EG:
-
-mount hpc-cn2:/share /mnt -o rdma,vers=3,port=20049,wsize=65536,rsize=65536
-
 =================
 Updating Firmware
 =================
-This driver requires released firmware for T4 card. This driver has been
-tested with t4fw-1.9.23.0 and later firmware. This firmware is available
-at service.chelsio.com inside the driver package.
+
+The OFED-3.18 driver has been tested with 1.13.32.0 and later
+firmware. Version 1.13.32.0 of the firmware will automatically installed
+when you load the cxgb4 driver.  The latest released firmware is always
+available at service.chelsio.com inside the Unified Wire package.
 
 If your distro/kernel cxgb4 driver supports firmware loading, you can
-place the chelsio firmware image in /lib/firmware/cxgb4, then rename
-it as t4fw.bin and unload and reload the cxgb4 module to get the new
-images loaded. If this does not work, then you can load the firmware
-images manually as follows:
+place the chelsio firmware image in /lib/firmware/cxgb4, then rename it
+as t4fw.bin or t5fw.bin and unload and reload the cxgb4 module to get
+the new images loaded.  If this does not work, then you can load the
+firmware manually as follows:
 
 1) Move the firmware file into /lib/firmware/cxgb4/ on your system.
 
-2) Run: ethtool -f ethX <fw-image-filename>
+2) Run: ethtool -f ethX cxgb4/<fw-image-filename>
 
 3) unload/reload cxgb4
 
 EG:
 
-# cp <path-to>/t5fw-1.11.4.0.bin /lib/firmware/cxgb4
-# ethtool -f eth2 t5fw-1.11.4.0.bin
+# cp <path-to>/t5fw-1.13.32.0.bin /lib/firmware/cxgb4
+# ethtool -f eth2 cxgb4/t5fw-1.13.32.0.bin
 # rmmod iw_cxgb4; rmmod cxgb4; modprobe cxgb4; modprobe iw_cxgb4
 
-NOTE: Driver package on the service.chelsio.com is getting updated
-periodically. Along with driver package T4 firmware will also get updated.
-It is recommended to use latest available firmware at service.chelsio.com.
-This driver should work with latest available firmware. In case of any
-issue please contact Chelsio support at support@chelsio.com.
+NOTE: The driver package on service.chelsio.com is getting updated
+periodically, including the T4/T5 device firmare.  It is recommended
+to use latest available firmware at service.chelsio.com.  This driver
+should work with latest available firmware. In case of any issue please
+contact Chelsio support at support@chelsio.com.
 
 ==============================
 Setting shell for Remote Login
 ==============================
-User needs to set up authentication on the user account on all systems
-in the cluster to allow user to remotely logon or executing commands
+
+Users may need to set up authentication on the user account on all systems
+in an MPI cluster to allow user to remotely logon or executing commands
 without password.
 
 Quick steps to set up user authentication:
@@ -118,14 +86,16 @@ and empty password phrase.
 ======================
 Enabling MPA version 2
 ======================
-We can enable MPA version 2 by setting iw_cxgb4 module parameter as
+
+Users can enable MPA version 2 by setting iw_cxgb4 module parameter as
 shown below
 
 # modprobe iw_cxgb4 mpa_rev=2
 
 MPA v2 is an enahanced RDMA connection establishment. More details are
 available at:
-http://tools.ietf.org/html/draft-ietf-storm-mpa-peer-connect-08 location.
+
+https://tools.ietf.org/html/rfc6581
 
 ============================================
 Enabling Intel and Platform MPI
@@ -142,6 +112,7 @@ chelsio2 u2.0 nonthreadsafe default libdaplofa.so.2 dapl.2.0 "eth2 0" ""
 =============
 Intel MPI:
 =============
+
 Download latest Intel MPI from the Intel website
 
 Copy COM_L___CF8J-98P6MBWL.lic into l_mpi_p_x.y.z directory
@@ -188,6 +159,7 @@ To run Intel MPI applications:
 =============
 Platform MPI
 =============
+
 Download latest Platform MPI from the IBM website
 
 http://www.ibm.com/developerworks/downloads/im/mpi/
@@ -219,6 +191,7 @@ To run Platform MPI applications:
 =============
 OpenMPI:
 =============
+
 From OFED-3.5 package onwards OpenMPI is not a part of the OFED
 package. User has to manually download and install it.
 
@@ -242,6 +215,7 @@ To run OpenMPI applications:
 =============
 MVAPICH2:
 =============
+
 From OFED-3.5 package onwards MVAPICH2 is not a part of the OFED
 package. User has to manually download and install it.
 
