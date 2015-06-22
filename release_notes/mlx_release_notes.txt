@@ -1,7 +1,7 @@
 	    Open Fabrics Enterprise Distribution (OFED)
-	  ConnectX driver (mlx4) in OFED 3.12 Release Notes
+	  ConnectX driver (mlx4) in OFED 3.18 Release Notes
 
-  			May 2014
+  			June 2018
 
 
 ===============================================================================
@@ -57,8 +57,8 @@ only. The driver is split into two modules:
 ===============================================================================
 2. Supported firmware versions
 ===============================================================================
-- This release was tested with Connect-IB FW 10.10.3000 or Connext-X3
-  FW 2.31.5050
+- This release was tested with Connect-IB FW 10.100.6440 or Connext-X3
+  FW 2.34.5000
 - The minimal Connect-X version to use is 2.3.000.
 - To use both IB and Ethernet (VPI) use Connect-X FW version 2.6.000 or higher
 
