@@ -1,0 +1,345 @@
+            Open Fabrics Enterprise Distribution (OFED)
+
+                Emulex OCe14000 Adapter RELEASE NOTES
+
+			     June 2015
+
+
+
+
+
+The ocrdma and be2net modules provide RDMA and NIC support for the
+
+Emulex OCe14000 family of adapters. Make sure you choose the 'ocrdma'
+
+and 'libocrdma' options while building OFED rpms.
+
+
+
+============================================
+
+New for OFED-3.18
+
+============================================
+
+- Bug Fixes in ocrdma and libocrdma packages
+
+===========================
+
+Supported Operating Systems
+
+===========================
+
+  o   CPU architectures:
+
+	- x86_64
+
+	- x86
+
+  o   Linux Operating Systems:
+
+
+	- RedHat EL6.5 		2.6.32-431.el6
+
+	- RedHat EL 6.6		2.6.32-504.el6
+	
+	- RedHat EL 7.0		3.10.0-229.el7
+
+	- SLES11 SP3		3.0.76-0.9.1
+
+	- SLES12		3.12.28-4-default
+
+	- kernel.org		3.18 *
+
+
+
+      * Minimal QA for these versions.
+
+================
+
+Supported Cards
+
+================
+
+The OCe14000 family of adapters are supported.
+
+=========================================
+
+Priority Flow Control recommendations
+
+=========================================
+
+- If the HCA port is connected to a PFC enabled switch, the OCe14000 adapter
+  is programmed to use priority 5. Configure the priority-groups
+  and switch ports accordingly.
+
+- If the HCA port is connected to a PFC enabled switch, it is
+  highly recommended that you use a VLAN interface for traffic. On a non-VLAN 
+  interface driver would insert VID 0 for all outgoing packets.
+
+- In back-to-back configurations of OCe14000 series, PFC is enabled by default.
+
+
+
+====================
+
+Errata (Open Issues)
+
+====================
+
+
+- For a 40Gb adapter, ibv_devinfo -v will display:
+
+  active_width:           4X (2)
+
+  active_speed:           10.0 Gbps (4)
+
+
+  4x * 10 = 40G
+
+  link-width is not applicable to RoCE. ibv_devinfo needs a fix.
+
+
+=================
+
+Updating Firmware
+
+=================
+
+
+Firmware version 10.2.x or greater  includes new features that required new
+
+flash regions to support them. Firmware versions earlier than 10.0.803.37
+
+did not have the ability to configure the flash regions to support these 
+
+new features.
+
+
+
+Note 1: Do not use any inbox Linux drivers to update from any version of 
+
+	10.0.x firmware to any version of 10.2.x  or greater firmware.
+
+
+Note 2: If you are using out-of-box Linux drivers and you are updating 
+
+	from a firmware version earlier than 10.0.803.37, you must first 
+
+	update the out-of-box Linux driver to version 10.2.x, and then 
+
+	perform the firmware update procedure twice.
+
+
+Note 3: If you are using out-of-box Linux drivers and you are updating 
+
+	from firmware version 10.0.803.37 or later, you must first update 
+
+	the out-of-box Linux driver to version 10.2.x. It is not necessary 
+
+	to perform the firmware update procedure twice.
+
+
+
+Note 4: After you have updated the firmware, you must not downgrade it to 
+
+	a version earlier than 10.0.803.37.
+
+
+
+- Get oc14-10.2.XX.X.ufi or later firmware from www.emulex.com.
+
+- Copy the firmware file into /lib/firmware
+
+- Run: ethtool -f ethX <fw-image-filename>
+
+- Reboot the machine.
+
+
+
+The driver in this distribution has been tested with versions 10.6.88.0 and
+10.6.103.8
+
+eg:
+
+# cp <path-to>/oc14-10.6.88.0.ufi /lib/firmware/
+
+# ethtool -f eth2 oc14-10.6.88.0.ufi
+
+# reboot
+
+
+=============
+
+OpenMPI:
+
+=============
+
+From the OFED-3.5 package onwards, OpenMPI is not a part of the OFED
+
+package. You must manually download and install it.
+
+
+
+- Download the latest OpenMPI released SRPM from the following location.
+
+  http://www.open-mpi.org/software/ompi
+
+
+
+- Build OpenMPI using the following steps:
+
+  ./configure --with-openib
+
+  make
+
+  make install
+
+
+
+- Use the following parameters while running an MPI application:
+
+  --mca btl openib,self,sm --mca pml ob1 --mca btl_openib_flags 306 --mca
+
+  btl_openib_receive_queues P,65536,120,64,32 --mca btl_openib_cpc_include
+
+  rdmacm
+
+
+
+  eg:
+
+  mpirun -np 8 -hostfile <path to hostfile> --mca btl openib,self,sm --mca pml ob1 \
+
+	--mca btl_openib_flags 306 --mca btl_openib_receive_queues P,65536,120,64,32 \
+
+	--mca btl_openib_cpc_include rdmacm <path to MPI application>
+
+
+
+- For further details refer to the OpenMPI documentation.
+
+
+
+=============
+
+MVAPICH2:
+
+=============
+
+From the OFED-3.5 package onwards, MVAPICH2 is not a part of the OFED
+
+package. You must manually download and install it.
+
+
+
+- Download the latest MVAPICH2 released SRPM from the following location:
+
+  http://mvapich.cse.ohio-state.edu/download/mvapich2/
+
+
+
+- Build MVAPICH2 with the following configure options
+
+  ./configure --prefix=/usr --with-device=ch3:mrail --with-rdma=gen2 --sysconfdir=/etc --libdir=/usr/lib64
+
+  make
+
+  make install
+
+- Use the following -env options to run the MPI job in the mpirun command:
+
+  "-env MV2_USE_RDMAOE 1 -env MV2_USE_RDMA_CM 1 -env MV2_USE_SHARED_MEM 1 
+
+  -env MV2_USE_BLOCKING 0 -env MV2_IBA_HCA ocrdma0"
+
+  eg:
+
+  mpirun -np 8 -f <Path to hostfile> -env MV2_USE_RDMAOE 1 -env MV2_USE_RDMA_CM 1 \
+
+	-env MV2_DEFAULT_MAX_CQ_SIZE 128 -env MV2_USE_SRQ 0 -env MV2_MX_SEND_WR 64 \
+
+	-env MV2_MAX_RECV_WR 64 -env MV2_USE_SHARED_MEM 1 -env MV2_USE_BLOCKING 0 \
+
+	-env MV2_IBA_HCA ocrdma0 <path to MPI application>
+
+
+
+- For further details refer to the MVAPICH2 documentation.
+
+
+
+============================================
+
+Testing connectivity with ping and rping:
+
+============================================
+
+
+
+- modprobe be2net
+
+- Configure the Ethernet interfaces for the Emulex device.
+
+- Configure the IP address to the interfaces.
+
+- modprobe ocrdma
+
+- ibv_devinfo should display the ocrdma device in an active state.
+
+- ping <IP of peer Emulex device> should succeed.
+
+
+
+Test RDMA connectivity, using the rping command. It is included in the
+
+librdmacm-utils rpm:
+
+
+
+On the server machine:
+
+
+
+# rping -s -p 9999
+
+
+
+On the client machine:
+
+
+
+# rping -c -VvC10 -a server_ip_addr -p 9999
+
+
+
+You should see ping data like this on the client:
+
+
+
+ping data: rdma-ping-0: ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqr
+
+ping data: rdma-ping-1: BCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrs
+
+ping data: rdma-ping-2: CDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrst
+
+ping data: rdma-ping-3: DEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstu
+
+ping data: rdma-ping-4: EFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuv
+
+ping data: rdma-ping-5: FGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvw
+
+ping data: rdma-ping-6: GHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwx
+
+ping data: rdma-ping-7: HIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxy
+
+ping data: rdma-ping-8: IJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz
+
+ping data: rdma-ping-9: JKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyzA
+
+client DISCONNECT EVENT...
+
+
+
+
+
