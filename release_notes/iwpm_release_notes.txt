@@ -1,0 +1,62 @@
+		Release Notes for libiwpm-1.0.2
+		Distributed with OFED-3.18
+			July 2015
+
+DESCRIPTION
+
+libiwpm provides a user space service (iwpmd) for the iWarp drivers
+to claim tcp ports through the standard socket interface.
+The drivers currently using the service are Intel nes and Chelsio cxgb4.
+
+PREREQUISITES
+
+libiwpm requires libnl-1 or higher version and the corresponding libnl-devel
+to be installed.
+
+The kernel space support for the port mapper is part of the iw_cm module.
+The ib_core module includes netlink support, which is used by the port mapper 
+clients to exchange messages with iwpmd. Both modules iw_cm and ib_core need to 
+be loaded in order for the libiwpm service to start successfully.
+
+If the libiwpm is installed, but the required modules aren't loaded, you need to
+load the modules and then restart the libiwpm service.
+
+OFED-3.18 is the first OFED package to include libiwpm.
+
+STARTING THE SERVICE
+
+After installing an OFED package which includes libiwpm, the service should start 
+automatically after reboot.
+
+To check if the service is running:
+ps aux | grep iwpmd
+
+To start/stop the libiwpm service use:
+service iwpmd start
+service iwpmd stop
+
+With systemd, to start/stop the libiwpm service use:
+systemctl start iwpmd
+systemctl stop iwpmd
+
+BUILDING NOTES 
+
+cd libiwpm-1.0.x
+./configure --prefix /usr
+make
+make install 
+
+To start the service manually:
+
+/usr/bin/iwpmd
+
+CHANGES:
+
+- Allow registration of multiple devices per netlink client
+- Fixes to enable the iwpmd install and start when systemd is available
+- Adding "ulimit -n 102400" to the start up scripts to allow testing with
+  high number of connections
+- Adding functionality to enable libiwpm to provide the remote connecting
+  peer address information to its clients
+- Adding SIGUSR1 handler to print all port mapper mappings which are in use
+- Adding support for handling wild card IP addresses
