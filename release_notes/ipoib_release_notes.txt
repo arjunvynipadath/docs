@@ -1,7 +1,7 @@
 	     Open Fabrics Enterprise Distribution (OFED)
-		    IPoIB in OFED 3.12 Release Notes
+		    IPoIB in OFED 3.18 Release Notes
 
-			   May 2014
+			   July 2015
 
 
 ===============================================================================
@@ -19,7 +19,8 @@ Table of Contents
 10. Bug Fixes and Enhancements Since OFED 1.5.2
 11. Bug Fixes and Enhancements Since OFED 1.5.3
 12. Bug Fixes and Enhancements Since OFED 1.5.4
-13. Performance tuning
+13. Bug Fixes and Enhancements Since OFED 3.12
+14. Performance tuning
 
 ===============================================================================
 1. Overview
@@ -367,7 +368,28 @@ significant bit set (e.g., 0x8000 in the example above).
 1. IPoIB code based on linux-3.12
 
 ===============================================================================
-13. Performance Tuning
+13. Bug Fixes and Enhancements Since OFED 3.12
+===============================================================================
+ - Validate struct ipoib_cb size
+ - Remove unnecessary port query
+ - Remove unnecessary test for NULL before debugfs_remove()
+ - Avoid multicast join attempts with invalid P_key
+ - Avoid flushing the workqueue from worker context
+ - Use P_Key change event instead of P_Key polling mechanism
+ - Get rid of SET_ETHTOOL_OPS
+ - Report operstate consistently when brought up without a link
+ - Add flow steering support for IPoIB UD traffic
+ - Lower NAPI weight
+ - Start multicast join process only on active ports
+ - Add path query flushing in ipoib_ib_dev_cleanup
+ - Fix usage of uninitialized multicast objects
+ - Avoid flushing the driver workqueue on dev_down
+ - Fix deadlock between dev_change_flags() and __ipoib_dev_flush()
+ - Change CM skb memory allocation to be non-atomic during init
+ - Fix crash in dev_open error flow
+
+===============================================================================
+14. Performance Tuning
 ===============================================================================
 When IPoIB is configured to run in connected mode, tcp parameter tuning is
 performed at driver startup to improve the throughput of medium and large
