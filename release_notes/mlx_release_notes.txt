@@ -1,7 +1,8 @@
 	    Open Fabrics Enterprise Distribution (OFED)
-	  ConnectX driver (mlx4) in OFED 3.18 Release Notes
+	  ConnectX, ConnectX-2, ConnectX-3 (mlx4) and Connect-IB (mlx5) drivers in
+	    OFED 3.18 Release Notes
 
-  			June 2018
+  			July 2015
 
 
 ===============================================================================
@@ -20,8 +21,9 @@ Table of Contents
 11. New features and bug fixes since OFED 1.5.2
 12. New features and bug fixes since OFED 1.5.3
 13. New features and bug fixes since OFED 1.5.4
-14. Known Issues
-15. mlx4 available parameters
+14. New features and bug fixes since OFED 3.12
+15. Known Issues
+16. mlx4 available parameters
 
 ===============================================================================
 1. Overview
@@ -342,7 +344,338 @@ Bug Fixes
 27. NCSI support (using oprequest)
 
 ===============================================================================
-14. Known Issues
+14. New features and bug fixes since OFED 3.12
+===============================================================================
+MLX4:
+ - net/mlx4_core: Limit count field to 24 bits in qp_alloc_res
+ - net/mlx4_en: Add VXLAN ndo calls to the PF net device ops too
+ - net/mlx4_en: Implement ndo_gso_check()
+ - net/mlx4_en: Advertize encapsulation offloads features only when VXLAN tunnel is set
+ - mlx4: Avoid leaking steering rules on flow creation error flow
+ - net/mlx4_en: Don't attempt to TX offload the outer UDP checksum for VXLAN
+ - net/mlx4_core: Call synchronize_irq() before freeing EQ buffer
+ - mlx4: fix race accessing page->_count
+ - net: add netdev_txq_bql_{enqueue, complete}_prefetchw() helpers
+ - net/mlx4_en: remove NETDEV_TX_BUSY
+ - net/mlx4_en: Use the new tx_copybreak to set inline threshold
+ - net/mlx4_en: Enable the compiler to make is_inline() inlined
+ - net/mlx4_en: tx_info->ts_requested was not cleared
+ - net/mlx4_en: Use local var for skb_headlen(skb)
+ - net/mlx4_en: Use local var in tx flow for skb_shinfo(skb)
+ - net/mlx4_en: mlx4_en_xmit() reads ring->cons once, and ahead of time to avoid stalls
+ - net/mlx4_en: Avoid false sharing in mlx4_en_en_process_tx_cq()
+ - net/mlx4_en: Use prefetch in tx path
+ - net/mlx4_en: Avoid a cache line miss in TX completion for single frag skb's
+ - net/mlx4_en: tx_info allocated with kmalloc() instead of vmalloc()
+ - net/mlx4_en: Avoid calling bswap in tx fast path
+ - net/mlx4_en: Align tx path structures to cache lines
+ - net/mlx4_en: Code cleanups in tx path
+ - mlx4: add a new xmit_more counter
+ - net/mlx4_core: Deprecate error message at ConnectX-2 cards startup to debug
+ - net/mlx4_core: Protect QUERY_PORT wrapper from untrusted guests
+ - net/mlx4_core: New init and exit flow for mlx4_core
+ - net/mlx4_core: Don't disable SRIOV if there are active VFs
+ - mlx4: exploit skb->xmit_more to conditionally send doorbell
+ - net/mlx4_core: Allow not to specify probe_vf in SRIOV IB mode
+ - mellanox: Change en_print to return void
+ - IB/mlx4: Fix VF mac handling in RoCE
+ - IB/mlx4: Do not allow APM under RoCE
+ - IB/mlx4: Don't update QP1 in native mode
+ - IB/mlx4: Avoid accessing netdevice when building RoCE qp1 header
+ - mlx4: Fix mlx4 reg/unreg mac to work properly with 0-mac addresses
+ - IB/mlx4: Avoid executing gid task when device is being removed
+ - IB/mlx4: Fix lockdep splat for the iboe lock
+ - IB/mlx4: Get upper dev addresses as RoCE GIDs when port comes up
+ - IB/mlx4: Reorder steps in RoCE GID table initialization
+ - IB/mlx4: Don't duplicate the default RoCE GID
+ - IB/mlx4: Avoid null pointer dereference in mlx4_ib_scan_netdevs()
+ - mlx4: Correct error flows in rereg_mr
+ - net/mlx4_en: Add mlx4_en_get_cqe helper
+ - net/mlx4_core: Cache line EQE size support
+ - net/mlx4_core: Enable CQE/EQE stride support
+ - IB/mlx4: Disable TSO for Connect-X rev. A0 HCAs
+ - mlx4: Fix wrong endianess access with QP context flags
+ - net/mlx4: Set vlan stripping policy by the right command
+ - net/mlx4: Avoid dealing with MAC index in UPDATE_QP wrapper if not needed
+ - net/mlx4: Use the correct VSD mask in UPDATE_QP
+ - net/mlx4: Correctly configure single ported VFs from the host
+ - net/mlx4_en: do not ignore autoneg in mlx4_en_set_pauseparam()
+ - mlx4: only pull headers into skb head
+ - mlx4_en: Convert the normal skb free path to dev_consume_skb_any()
+ - treewide: fix errors in printk
+ - mlx4: Set skb->csum_level for encapsulated checksum
+ - mlx4: Set user-space raw Ethernet QPs to properly handle VXLAN traffic
+ - net/mlx4: Move the tunnel steering helper function to mlx4_core
+ - net/mlx4: Use is_kdump_kernel() to detect kdump kernel
+ - IB/mlx4: Use ARRAY_SIZE instead of sizeof/sizeof[0]
+ - PCI: Remove DEFINE_PCI_DEVICE_TABLE macro use
+ - IB/mad: add new ioctl to ABI to support new registration options
+ - mlx4_core: Add support for secure-host and SMP firewall
+ - IB/mlx4_ib: Add support for user MR re-registration
+ - mlx4_core: Add helper functions to support MR re-registration
+ - net/mlx4_en: mlx4_en_[gs]et_priv_flags() can be static
+ - net/mlx4_en: Reduce memory consumption on kdump kernel
+ - net/mlx4_core: Use low memory profile on kdump kernel
+ - net/mlx4_en: Disable blueflame using ethtool private flags
+ - net/mlx4_en: current_mac isn't updated in port up
+ - net/mlx4_en: cq->irq_desc wasn't set in legacy EQ's
+ - net/mlx4_core: Remove MCG in case it is attached to promiscuous QPs only
+ - net/mlx4_core: In SR-IOV mode host should add promisc QP to default entry only
+ - net/mlx4_core: Make sure the max number of QPs per MCG isn't exceeded
+ - net/mlx4_core: Make sure that negative array index isn't used
+ - net/mlx4_core: Fix leakage of SW multicast entries
+ - mlx4: mark napi id for gro_skb
+ - net/mlx4_en: Ignore budget on TX napi polling
+ - net/mlx4_en: Fix mac_hash database inconsistency
+ - net/mlx4_en: Do not count LLC/SNAP in MTU calculation
+ - net/mlx4_en: Do not disable vlan filter during promiscuous mode
+ - net/mlx4: Verify port number in __mlx4_unregister_mac
+ - net/mlx4_en: Run loopback test only when port is up
+ - net/mlx4_en: Fix set port ratelimit for 40GE
+ - net/mlx4_en: Don't configure the HW vxlan parser when vxlan offloading isn't set
+ - net/mlx4_en: IRQ affinity hint is not cleared on port down
+ - net/mlx4_en: Don't use irq_affinity_notifier to track changes in IRQ affinity map
+ - net/mlx4_core: Fix the error flow when probing with invalid VF configuration
+ - net/mlx4_en: Use affinity hint
+ - net/mlx4_core: Keep only one driver entry release mlx4_priv
+ - net/mlx4_core: Fix SRIOV free-pool management when enforcing resource quotas
+ - IB/mlx4: Fix gfp passing in create_qp_common()
+ - net: use SPEED_UNKNOWN and DUPLEX_UNKNOWN when appropriate
+ - mlx4_core: Fix GFP flags parameters to be gfp_t
+ - ethtool: Replace ethtool_ops::{get,set}_rxfh_indir() with {get,set}_rxfh()
+ - IB/mlx4: Implement IB_QP_CREATE_USE_GFP_NOIO
+ - net/mlx4_core: Reset RoCE VF gids when guest driver goes down
+ - mlx4_core: Move handling of MLX4_QP_ST_MLX to proper switch statement
+ - IB/mlx4: Add interface for selecting VFs to enable QP0 via MLX proxy QPs
+ - mlx4: Add infrastructure for selecting VFs to enable QP0 via MLX proxy QPs
+ - IB/mlx4: Preparation for VFs to issue/receive SMI (QP0) requests/responses
+ - IB/mlx4: SET_PORT called by mlx4_ib_modify_port should be wrapped
+ - mlx4_core: Fix incorrect FLAGS1 bitmap test in mlx4_QUERY_FUNC_CAP
+ - mlx4_core: Fix memory leaks in SR-IOV error paths
+ - IB/mlx4: fix unitialised variable is_mcast
+ - net-next:v4: Add support to configure SR-IOV VF minimum and maximum Tx rate through ip tool.
+ - net/mlx4_core: Replace pr_warning() with pr_warn()
+ - net/mlx4_core: Deprecate use_prio module parameter
+ - net/mlx4_en: Fix uninitialized use of 'port_up' in mlx4_en_set_channels()
+ - IB/mlx4: Invoke UPDATE_QP for proxy QP1 on MAC changes
+ - net/mlx4_core: Add UPDATE_QP SRIOV wrapper support
+ - net/mlx4_core: Fix inaccurate return value of mlx4_flow_attach()
+ - net/mlx4_en: Using positive error value for unsigned
+ - net/mlx4_en: Protect MAC address modification with the state_lock mutex
+ - net/mlx4_core: Removed unnecessary bit operation condition
+ - net/mlx4_core: Fix smatch error - possible access to a null variable
+ - net/mlx4_en: Fix errors in MAC address changing when port is down
+ - net/mlx4_en: User prio mapping gets corrupted when changing number of channels
+ - net/mlx4_core: Enforce irq affinity changes immediatly
+ - net: get rid of SET_ETHTOOL_OPS
+ - mellanox: Logging message cleanups
+ - net/mlx4_core: Don't issue PCIe speed/width checks for VFs
+ - net/mlx4_core: Load the Eth driver first
+ - net/mlx4_core: Fix slave id computation for single port VF
+ - net/mlx4_core: Adjust port number in qp_attach wrapper when detaching
+ - mlx4_en: don't use napi_synchronize inside mlx4_en_netpoll
+ - net/mlx4_core: Defer VF initialization till PF is fully initialized
+ - net/mlx4_core: Preserve pci_dev_data after __mlx4_remove_one()
+ - net/mlx4: Set proper build dependancy with vxlan
+ - mlx4_core: Make buffer larger to avoid overflow warning
+ - mlx4_core: Fix some indenting in mlx4_ib_add()
+ - net/mlx4: Implement vxlan ndo calls
+ - mlx4: Add support for CONFIG_DEV command
+ - net/mlx4: USe one wrapper that returns -EPERM
+ - net/mlx4_core: pass pci_device_id.driver_data to __mlx4_init_one during reset
+ - mlx4: Use actual number of PCI functions (PF + VFs) for alias GUID logic
+ - ptp: drivers: set the number of programmable pins.
+ - net/mlx4: Adapt num_vfs/probed_vf params for single port VF
+ - net/mlx4: Adapt code for N-Port VF
+ - net/mlx4: Add utils for N-Port VFs
+ - net/mlx4: Add data structures to support N-Ports per VF
+ - IB/mlx4_ib: Adapt code to use caps.num_ports instead of a constant
+ - IB/mlx4: Fix a sparse endianness warning
+ - mlx4: Don't receive packets when the napi budget == 0
+ - net/mlx4_en: Deregister multicast vxlan steering rules when going down
+ - mlx4: Call dev_kfree_skby_any instead of dev_kfree_skb.
+ - net/mlx4_core: Load the IB driver when the device supports IBoE
+ - net/mlx4_en: Handle vxlan steering rules for mac address changes
+ - net/mlx4_core: Fix wrong dump of the vxlan offloads device capability
+ - mlx4: Activate RoCE/SRIOV
+ - mlx4_ib: Fix SIDR support of for UD QPs under SRIOV/RoCE
+ - mlx4: Implement IP based gids support for RoCE/SRIOV
+ - mlx4: Add ref counting to port MAC table for RoCE
+ - mlx4: In RoCE allow guests to have multiple GIDS
+ - mlx4_core: For RoCE, allow slaves to set the GID entry at that slave's index
+ - mlx4: Adjust QP1 multiplexing for RoCE/SRIOV
+ - net/mlx4_core: mlx4_init_slave() shouldn't access comm channel before PF is ready
+ - net/mlx4_core: Fix memory access error in mlx4_QUERY_DEV_CAP_wrapper()
+ - net/mlx4_en: mlx4_en_verify_params() can be static
+ - net/mlx4: Support shutdown() interface
+ - IB: Refactor umem to use linear SG table
+ - net/mlx4_en: Change Connect-X description in kconfig
+ - net/mlx4_en: Use union for BlueFlame WQE
+ - net/mlx4_core: Fix sparse warning
+ - net/mlx4_en: Fix selftest failing on non 10G link speed
+ - net/mlx4: Replace mlx4_en_mac_to_u64() with mlx4_mac_to_u64()
+ - net/mlx4_en: Move queue stopped/waked counters to be per ring
+ - net/mlx4_en: Pad ethernet packets smaller than 17 bytes
+ - net/mlx4_en: Verify mlx4_en module parameters
+ - net/mlx4_en: Fix UP limit in ieee_ets->prio_tc
+ - net/mlx4_en: Fix bad use of dev_id
+ - net/mlx4_en: Expose port number through sysfs
+ - net,IB/mlx: Bump all Mellanox driver versions
+ - net/mlx4: Fix limiting number of IRQ's instead of RSS queues
+ - net/mlx4: Set number of RX rings in a utility function
+ - mlx4: Use pci_enable_msix_range() instead of pci_enable_msix()
+ - netdevice: add queue selection fallback handler for ndo_select_queue
+ - IB: Report using RoCE IP based gids in port caps
+ - IB/mlx4: Build the port IBoE GID table properly under bonding
+ - IB/mlx4: Do IBoE GID table resets per-port
+ - IB/mlx4: Do IBoE locking earlier when initializing the GID table
+ - IB/mlx4: Make sure GID index 0 is always occupied
+ - IB/mlx4: Don't allocate range of steerable UD QPs for Ethernet-only device
+ - net/mlx4_core: Remove unnecessary validation for port number
+ - IB/mlx4: Use IS_ENABLED(CONFIG_IPV6)
+ - IB/mlx4: Add dependency INET
+ - IB/mlx4: Handle Ethernet L2 parameters for IP based GID addressing
+ - IB/mlx4: Use IBoE (RoCE) IP based GIDs in the port GID table
+ - IB/core: Ethernet L2 attributes in verbs/cm structures
+ - IB/mlx4: Add support for steerable IB UD QPs
+ - IB/mlx4: Add mechanism to support flow steering over IB links
+ - IB/mlx4: Enable device-managed steering support for IB ports too
+ - mlx4_core: Add support for steerable IB UD QPs
+ - net/mlx4_en: call gro handler for encapsulated frames
+ - net: core: explicitly select a txq before doing l2 forwarding
+ - mlx4_en: Select PTP_1588_CLOCK
+ - net/mlx4_en: fix error return code in mlx4_en_get_qp()
+ - net/mlx4_core: Warn if device doesn't have enough PCI bandwidth
+ - mlx4_en: Only cycle port if HW timestamp config changes
+ - mlx4_en: Add PTP hardware clock
+ - net: mlx4: slight optimization of addr compare
+ - net/mlx4_en: Add netdev support for TCP/IP offloads of vxlan tunneling
+ - net/mlx4_core: Add basic support for TCP/IP offloads under tunneling
+ - net/mlx4_core: Check port number for validity before accessing data
+ - net/mlx4_en: Add NAPI support for transmit side
+ - net/mlx4_en: Ignore irrelevant hypervisor events
+ - net/mlx4_core: Set CQE/EQE size to 64B by default
+ - net/mlx4_en: Configure the XPS queue mapping on driver load
+ - net/mlx4_en: Implement ndo_get_phys_port_id
+ - net/mlx4_core: Expose physical port id as PF/VF capability
+ - net/mlx4_core: Introduce nic_info new flag in QUERY_FUNC_CAP
+ - net/mlx4_core: Rename QUERY_FUNC_CAP fields
+ - net/mlx4_core: Remove zeroed out of explicit QUERY_FUNC_CAP fields
+ - net: mlx4 calls skb_set_hash
+ - mlx4_core: Roll back round robin bitmap allocation commit for CQs, SRQs, and MPTs
+ - net/mlx4_core: destroy workqueue when driver fails to register
+ - net/mlx4_en: Remove selftest TX queues empty condition
+ - mlx4_en: Implement the SIOCGHWTSTAMP ioctl
+ - IB/core: Re-enable create_flow/destroy_flow uverbs
+ - IB/core: extended command: an improved infrastructure for uverbs commands
+ - IB/mlx4: Fix device max capabilities check
+ - IB/mlx4: Fix endless loop in resize CQ
+ - net/mlx4_en: Datapath structures are allocated per NUMA node
+ - net/mlx4_core: ICM pages are allocated on device NUMA node
+ - net/mlx4_en: Datapath resources allocated dynamically
+ - net/mlx4_core: Add immediate activate for VGT->VST->VGT
+ - net/mlx4_core: Initialize all mailbox buffers to zero before use
+ - net/mlx4_en: Add RFS support in UDP
+ - net/mlx4_en: Fixed crash when port type is changed
+ - net/mlx4_core: Implement resource quota enforcement
+ - net/mlx4_core: Fix quota handling in the QUERY_FUNC_CAP wrapper
+ - net/mlx4_core: Fix checking order in MR table init
+ - net/mlx4_core: Don't fail reg/unreg vlan for older guests
+ - net/mlx4_core: Resource tracker for reg/unreg vlans
+ - net/mlx4_en: Use vlan id instead of vlan index for unregistration
+ - net/mlx4_core: Fix reg/unreg vlan/mac to conform to the firmware spec
+ - net/mlx4_core: Fix register/unreg vlan flow
+ - net/mlx4_core: Load higher level modules according to ports type
+
+MLX5:
+ - net/mlx5_core: Fix race in create EQ
+ - net/mlx5_core: Call synchronize_irq() before freeing EQ buffer
+ - IB/mlx5, iser, isert: Add Signature API additions
+ - IB/mlx5: Use extended internal signature layout
+ - IB/mlx5: Use enumerations for PI copy mask
+ - IB/mlx5: Modify to work with arbitrary page size
+ - IB/mlx5: Remove duplicate code from mlx5_set_path
+ - IB/mlx5: Fix possible array overflow
+ - IB/mlx5: Improve debug prints in mlx5_ib_reg_user_mr
+ - IB/mlx5: Clear umr resources after ib_unregister_device
+ - net/mlx5_core: Add ConnectX-4 to list of supported devices
+ - net/mlx5_core: Identify resources by their type
+ - net/mlx5_core: use set/get macros in device caps
+ - net/mlx5_core: Use hardware registers description header file
+ - net/mlx5_core: Update device capabilities handling
+ - IB/mlx5: Use ARRAY_SIZE instead of sizeof/sizeof[0]
+ - mlx5: Adjust events to use unsigned long param instead of void *
+ - mlx5: minor fixes (mainly avoidance of hidden casts)
+ - mlx5: Move pci device handling from mlx5_ib to mlx5_core
+ - net: mlx5: Use ktime_get_ns()
+ - IB/mlx5: Enable "block multicast loopback" for kernel consumers
+ - mlx5_core: Fix possible race between mr tree insert/delete
+ - IB/mlx5: Fix warning about cast of wr_id back to pointer on 32 bits
+ - IB/mlx5: add missing padding at end of struct mlx5_ib_create_srq
+ - IB/mlx5: add missing padding at end of struct mlx5_ib_create_cq
+ - IB/mlx5: Refactor UMR to have its own context struct
+ - IB/mlx5: Set QP offsets and parameters for user QPs and not just for kernel QPs
+ - mlx5_core: Store MR attributes in mlx5_mr_core during creation and after UMR
+ - IB/mlx5: Add MR to radix tree in reg_mr_callback
+ - IB/mlx5: Fix error handling in reg_umr
+ - mlx5_core: Copy DIF fields only when input and output space values match
+ - mlx5_core: Simplify signature handover wqe for interleaved buffers
+ - mlx5_core: Fix signature handover operation for interleaved buffers
+ - mellanox: Logging message cleanups
+ - IB/mlx5: Add block multicast loopback support
+ - IB/mlx5_core: remove unreachable function call in module init
+ - IB/mlx5: Expose support for signature MR feature
+ - IB/mlx5: Collect signature error completion
+ - IB/mlx5: Support IB_WR_REG_SIG_MR
+ - IB/mlx5: Keep mlx5 MRs in a radix tree under device
+ - IB/mlx5: Remove MTT access mode from umr flags helper function
+ - IB/mlx5: Break up wqe handling into begin & finish routines
+ - IB/mlx5: Initialize mlx5_ib_qp signature-related members
+ - mlx5: Implement create_mr and destroy_mr
+ - IB: Refactor umem to use linear SG table
+ - net,IB/mlx: Bump all Mellanox driver versions
+ - mlx5: Use pci_enable_msix_range() instead of pci_enable_msix()
+ - IB/mlx5: Remove dependency on X86
+ - mlx5: Add include of <linux/slab.h> because of kzalloc()/kfree() use
+ - IB/mlx5: Don't set "block multicast loopback" capability
+ - IB/mlx5: Fix binary compatibility with libmlx5
+ - IB/mlx5: Fix RC transport send queue overhead computation
+ - IB/mlx5: Verify reserved fields are cleared
+ - IB/mlx5: Remove old field for create mkey mailbox
+ - IB/mlx5: Abort driver cleanup if teardown hca fails
+ - IB/mlx5: Allow creation of QPs with zero-length work queues
+ - mlx5_core: Fix PowerPC support
+ - mlx5_core: Improve debugfs readability
+ - IB/mlx5: Add support for resize CQ
+ - IB/mlx5: Implement modify CQ
+ - IB/mlx5: Make sure doorbell record is visible before doorbell
+ - mlx5_core: Use mlx5 core style warning
+ - IB/mlx5: Clear out struct before create QP command
+ - mlx5_core: Fix out arg size in access_register command
+ - drivers/net: delete non-required instances of include <linux/init.h>
+ - IB/core: Ethernet L2 attributes in verbs/cm structures
+ - IB/mlx5: Fix micro UAR allocator
+ - mlx5_core: Remove dead code
+ - IB/mlx5: Remove unused code in mr.c
+ - IB/mlx5: Fix page shift in create CQ for userspace
+ - IB/mlx5: Fix list_del of empty list
+ - IB/mlx5: Remove dead code
+ - mlx5: Use enum to indicate adapter page size
+ - IB/mlx5: Update opt param mask for RTS2RTS
+ - IB/mlx5: Remove "Always false" comparison
+ - IB/mlx5: Remove dead code in mr.c
+ - mlx5_core: Change optimal_reclaimed_pages for better performance
+ - mlx5: Clear reserved area in set_hca_cap()
+ - mlx5: Support communicating arbitrary host page size to firmware
+ - mlx5: Fix cleanup flow when DMA mapping fails
+ - IB/mlx5: Fix srq free in destroy qp
+ - IB/mlx5: Simplify mlx5_ib_destroy_srq
+ - IB/mlx5: Fix overflow check in IB_WR_FAST_REG_MR
+ - IB/mlx5: Multithreaded create MR
+ - IB/mlx5: Fix check of number of entries in create CQ
+
+===============================================================================
+15. Known Issues
 ===============================================================================
 - The SQD feature is not supported
 - To load the driver on machines with a 64KB default page size, the UAR bar
@@ -357,7 +690,7 @@ Bug Fixes
 
      
 ================================================================================
-15. mlx4 available parameters
+16. mlx4 available parameters
 ================================================================================
 In order to set mlx4 parameters, add the following line(s) to /etc/modpobe.conf:
    options mlx4_core parameter=<value>
@@ -367,42 +700,25 @@ In order to set mlx4 parameters, add the following line(s) to /etc/modpobe.conf:
    options mlx4_en   parameter=<value>
 
 mlx4_core parameters:
- set_4k_mtu:		try to set 4K MTU to all ConnectX ports (int)
- debug_level:		enable debug tracing if > 0 (int)
- block_loopback:	block multicast loopback packets if > 0 (int)
- msi_x:			attempt to use MSI-X if nonzero (int)
- log_num_mac:		log2 max number of MACs per ETH port (1-7, int)
- use_prio:		enable steering by VLAN priority on ETH ports
-			(0/1, default 0) (bool)
- log_num_qp:		log maximum number of QPs per HCA (int)
- log_num_srq:		log maximum number of SRQs per HCA (int)
- log_rdmarc_per_qp:	log number of RDMARC buffers per QP (int)
- log_num_cq:		log maximum number of CQs per HCA (int)
- log_num_mcg:		log maximum number of multicast groups per HCA
-			(int)
- log_num_mpt:		log maximum number of memory protection table
-			entries per HCA	(int)
- log_num_mtt:		log maximum number of memory translation table
- 			segments per HCA (int)
- log_mtts_per_seg:	log2 number of MTT entries per segment (1-5)
-			(int)
- enable_qos:		enable Quality of Service support in the HCA
-			(default: off) (bool)
- enable_pre_t11_mode:	set FCoXX to pre-T11 mode if non-zero
-			(default 0) (int)
- internal_err_reset:	reset device on internal errors if non-zero
- 			(default 1) (int)
+ internal_err_reset:	Reset device on internal errors if non-zero (default 1)
+ enable_qos:		Enable Enhanced QoS support (default: on)
+ debug_level:		Enable debug tracing if > 0
+ msi_x:			attempt to use MSI-X if nonzero
+ num_vfs:		enable #num_vfs functions if num_vfs > 0 num_vfs=port1,port2,port1+2
+ probe_vf:		number of vfs to probe by pf driver (num_vfs > 0) probe_vf=port1,port2,port1+2
+ log_num_mgm_entry_size:	log mgm size, that defines the num of qp per mcg, for example: 10 gives 248.range: 7 <= log_num_mgm_entry_size <= 12.
+ enable_64b_cqe_eqe:	Enable 64 byte CQEs/EQEs when the FW supports this (default: True)
+ log_num_mac:		Log2 max number of MACs per ETH port (1-7)
+ log_num_vlan:		Log2 max number of VLANs per ETH port (0-7)
+ use_prio:		Enable steering by VLAN priority on ETH ports (deprecated)
+ log_mtts_per_seg:	Log2 number of MTT entries per segment (1-7)
+ port_type_array:	Array of port types: HW_DEFAULT (0) is default 1 for IB, 2 for Ethernet
 
 mlx4_ib parameters:
- debug_level: 		enable debug tracing if > 0 (default 0)
+ sm_guid_assign:	Enable SM alias_GUID assignment if sm_guid_assign > 0 (Default: 0)
 
 mlx4_en parameters:
  udp_rss:        	enable RSS for incoming UDP traffic or disabled (0)
- tcp_rss:		enable RSS for incoming TCP traffic or disabled (0)
- num_lro:		number of LRO sessions per ring or disabled (0)
-			(default is 32)
- ip_reasm:		allow reassembly of fragmented IP packets (default
-			is enabled)
  pfctx:			priority based Flow Control policy on TX[7:0]
 			per priority bit mask (default is 0)
  pfcrx:			priority based Flow Control policy on RX[7:0]
@@ -412,5 +728,6 @@ mlx4_en parameters:
 ================================================================================
 15. mlx5 available parameters
 ================================================================================
-debug_mask:		debug mask: 1 = dump cmd data, 2 = dump cmd exec time, 3 = both. Default=0
-
+mlx5_core parameters:
+ debug_mask:		debug mask: 1 = dump cmd data, 2 = dump cmd exec time, 3 = both. Default=0
+ prof_sel:		profile selector. Valid range 0 - 2

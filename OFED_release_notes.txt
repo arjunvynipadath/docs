@@ -94,11 +94,11 @@ InfiniBand Adapters
 	- ConnectX®-2 (Rev 2.9.1200 and above)
 
   o   Mellanox Technologies HCAs (FDR and FDR10 Modes are Supported):
-	- ConnectX®-3 (Rev 2.31.5050 and above)
-	- ConnectX®-3 Pro (Rev 2.31.5050 and above)
+	- ConnectX®-3 (Rev 2.33.5100 and above)
+	- ConnectX®-3 Pro (Rev 2.33.5100 and above)
 
   o   Mellanox Technologies HCAs (FDR and FDR10 Modes are Supported):
-	- Connect-IB® (Rev 10.10.5020 and above)
+	- Connect-IB® (Rev 10.10.5054 and above)
 
 	For official firmware versions please see:
 	http://www.mellanox.com/content/pages.php?pg=firmware_download
