@@ -1,7 +1,6 @@
 ===============================================================================
-                      OFED 3.12 for Linux
             Mellanox Firmware Burning and Diagnostic Utilities
-                        May 2014
+                      OFED 3.18 July 2015
 ===============================================================================
 
 ===============================================================================
@@ -46,29 +45,14 @@ Package Contents:
 ===============================================================================
 2. New Features
 ===============================================================================
-* Mstconfig tool based on MFT-3.6.0/mlxconfig for changing non
-   volatile configuration on device.
-   See MFT documentation on Mellanox web site for details.
+
+* Support for configuring SRIOV parameters in ConnextIB and ConnectX-4 by mstconfig
 
 ===============================================================================
 3. Bugs Fixed
 ===============================================================================
 
-* Mstflint wbne command causes endiannes swap.
-
-* Connect-IB® burning: mstflint supports VSD of up to 128
-   chars.
-
-* CTRL+C does not clear semaphores.
-
-* Unexpected behavior when running swreset on mstflint
-
-* Mstflint Connect-IB® burning using the --vsd flag is not functional.
-
-* mstflint Connect-IB® burn corrupts the flash when burning a
-   verbatim full flash dump as the firmware image.
-
-* First mstflint run may fail after Ctrl+C.
+* NA
 
 ===============================================================================
 4. Known Issues
