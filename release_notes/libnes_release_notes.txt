@@ -1,0 +1,35 @@
+			Release Notes for libnes
+			Distributed with OFED-3.18
+				July 2015
+
+DESCRIPTION
+
+libnes is a user space library, distributed with OFED which provides support
+for the Intel RDMA driver nes, using the libibverbs interface.
+
+CHANGES
+
+	- libnes packages version 1.1.4 and higher come with updated NES_ABI version,
+	  which supports the nes drivers based on kernel linux-3.12 and higher.
+	  (Older/lower libnes versions support earlier released nes drivers)
+
+	- The summary of libnes changes could be seen at:
+	  http://git.openfabrics.org/?p=~tnikolova/libnes/.git;a=summary
+	  
+INSTALL
+
+After installing an OFED package which includes libnes,
+the library (libnes-rdmav2.so) will be installed at /usr/lib64.
+
+BUILDING NOTES 
+
+To build libnes manually:
+
+cd libnes-x.x.x
+./configure --prefix /usr
+make
+make install 
+
+ADDITIONAL INFORMATION
+
+See nes_release_notes.txt
