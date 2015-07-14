@@ -105,20 +105,6 @@ o Port type management:
   Note: This utility also has a non interactive mode:
   "/sbin/connectx_port_config [[-d|--device <PCI device ID>] -c|--conf <port1,port2>]".
 
-- The following configurations are supported by VPI:
-	Port1 = eth   Port2 = eth
-	Port1 = ib    Port2 = ib
-	Port1 = auto  Port2 = auto
-	Port1 = ib    Port2 = eth
-	Port1 = ib    Port2 = auto
-	Port1 = auto  Port2 = eth
-
-  Note: the following options are not supported:
-	Port1 = eth   Port2 = ib
-	Port1 = eth   Port2 = auto
-	Port1 = auto  Port2 = ib
-  
-	
 ===============================================================================
 4. InfiniBand new features and bug fixes since OFED 1.3.1
 ===============================================================================
