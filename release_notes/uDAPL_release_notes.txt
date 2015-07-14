@@ -1,4 +1,4 @@
-			   Release Notes for
+			   Release Notes for 
 	  	  OFED 3.18 DAPL Release 2.1.5
 			    June 2015
 
@@ -160,23 +160,23 @@
 
 	Note: example for user /home/user1, (assumes /home/user1 is exported) and MLX4 adapter, port 1
 
-	Download latest 2.x package: http://www.openfabrics.org/downloads/dapl/dapl-2.0.42.tar.gz
+	Download latest 2.1.x package: http://www.openfabrics.org/downloads/dapl/dapl-2.1.5.tar.gz
 
 	untar in /home/user1 
-	cd /home/user1/dapl-2.0.42
+	cd /home/user1/dapl-2.1.5
 	./configure LDFLAGS=-L/usr/lib64 CPPFLAGS="-I/usr/include" 
 	make 
 
 	Create /home/user1/dat.conf with following 3 lines. (entries with path to new libraries):
 
-	  ofa-v2-mlx4_0-1u u2.0 nonthreadsafe default /home/user1/dapl-2.0.42/dapl/udapl/.libs/libdaploucm.so.2 dapl.2.0 "mlx4_0 1" ""
-	  ofa-v2-mlx4_0-1 u2.0 nonthreadsafe default /home/user1/dapl-2.0.42/dapl/udapl/.libs/libdaploscm.so.2 dapl.2.0 "mlx4_0 1" ""
-	  ofa-v2-ib0 u2.0 nonthreadsafe default /home/user1/dapl-2.0.42/dapl/udapl/.libs/libdaplcma.so.1 dapl.2.0 "ib0 0" ""
+	  ofa-v2-mlx4_0-1u u2.0 nonthreadsafe default /home/user1/dapl-2.1.5/dapl/udapl/.libs/libdaploucm.so.2 dapl.2.0 "mlx4_0 1" ""
+	  ofa-v2-mlx4_0-1 u2.0 nonthreadsafe default /home/user1/dapl-2.1.5/dapl/udapl/.libs/libdaploscm.so.2 dapl.2.0 "mlx4_0 1" ""
+	  ofa-v2-ib0 u2.0 nonthreadsafe default /home/user1/dapl-2.1.5/dapl/udapl/.libs/libdaplcma.so.1 dapl.2.0 "ib0 0" ""
 
 	Run uDAPL application or Intel MPI that uses uDAPL, with (assuming mlx4_0 adapters) following:
 
 	  setenv DAT_OVERRIDE=/home/user1/dat.conf
-	  setenv LD_LIBRARY_PATH=/home/user1/dapl-2.0.42/dapl/udapl/.libs:$LD_LIBRARY_PATH
+	  setenv LD_LIBRARY_PATH=/home/user1/dapl-2.1.5/dapl/udapl/.libs:$LD_LIBRARY_PATH
 
 	If running Intel MPI and uDAPL socket cm, set the following:
 
@@ -203,67 +203,71 @@
 
 	Current release package: dapl-2.1.5.tar.gz 
 
-	* Sample host build from source package (ofed must installed)
+	* Sample host build from source package (ofed must be installed)
 
- 	 ./autogen.sh
-  	./configure \
-		--enable-mcm \
-		--prefix=/usr \
-		--libdir=/usr/lib64 \
-		--sysconfdir=/etc
+  	./configure --enable-mcm --prefix=/usr --libdir=/usr/lib64 --sysconfdir=/etc
   	make
-  	sudo make install
+  	make install
 
-	* Sample /home/user1 MIC build from source package for MPSS 3.x (MPSS must be installed)
+	* Sample host rpmbuild/update from release tarball, /root:
+
+	rpmbuild -ta dapl-2.1.5.tar.gz
+	rpm -U /root/rpmbuild/RPMS/x86_64/dapl*
+
+	* Sample MIC build from source package for MPSS 3.x (MPSS must be installed)
+	* Assume /opt is nfs mounted across cluster
 
   	source /opt/mpss/3.x/environment-setup-k1om-mpss-linux 
-   	./autogen.sh
-  	./configure \
-		--enable-mcm 
-		--host=x86_64-k1om-linux \
-		--prefix=/home/user1/dapl-mic-install \
- 		CC=/usr/linux-k1om-4.7/bin/x86_64-k1om-linux-gcc \
- 		CFLAGS="-I/opt/mpss/3.x/sysroots/k1om-mpss-linux/usr/include 
- 		LDFLAGS="-L/opt/mpss/3.x/sysroots/k1om-mpss-linux/usr/lib64"
-  	make
-  	sudo make install
+	./configure --enable-mcm --prefix /opt/dapl/mic --host=x86_64-k1om-linux
+	make
+	make install
+
+	copy /opt/dapl/mic/* files out to all MIC cards
   
-	* Sample /home/user1 MIC build from source package for MPSS 2.x (MPSS must be installed)
-    
-  	export PATH=$PATH:/usr/linux-k1om-4.7/bin
-  	./autogen.sh
-  	./configure \
-		--enable-mcm \
-		--prefix=/home/user1/dapl-mic-install \
-		--libdir=/opt/intel/mic/ofed/card/usr/lib64 \
-		--sysconfdir=/opt/intel/mic/ofed/card/etc \
-		--host=x86_64-k1om-linux \
-		CFLAGS="-I/opt/intel/mic/ofed/card/usr/include" \
-		LDFLAGS="-L/opt/intel/mic/ofed/card/usr/lib64"
-  	make
-  	sudo make install
  
 	* Cluster deployment
 
-  	(1) Build once on the head or on one of the nodes as described in the above steps.
+  	(1) Build once on the head or on one of the nodes (with MPSS) as described in the above steps.
 
-  	(2) Replicate these files on all the nodes:
+  	(2) HOST: Install dapl libraries and mpxyd service, "rpm -U" all dapl RPM files on host nodes:
 
-		/etc/dat.conf
-		/etc/mpxyd.conf
-		/usr/sbin/mpxyd
-		/usr/lib64/libdaplomcm.so.2
-		/opt/intel/mic/ofed/card/etc/dat.conf
-		/opt/intel/mic/ofed/card/usr/lib64/libdaplomcm.so.2
-		/opt/intel/mic/ofed/card/ofed.filelist
+  	(3) MIC: Setup dapl overlay for new package (/opt/intel/dapl):
+	
+		Create /etc/mpss/conf.d/dapl.conf with following entry:
 
-  	(3) Unload and then restart MPSS on all the nodes.
+			Overlay Filelist /opt/dapl /opt/dapl/dapl.filelist on
+		
+		Create /opt/dapl/dapl.filelist with following entries: 
 
-	* Start the proxy daemon on all the nodes (host only)
+			file /etc/dat.conf mic/etc/dat.conf 755 0 0
+			file /usr/bin/dtest mic/bin/dtest 755 0 0
+			file /usr/bin/dtestx mic/bin/dtestx 755 0 0
+			file /usr/bin/dtestcm mic/bin/dtestcm 755 0 0
+			file /usr/bin/dapltest mic/bin/dapltest 755 0 0
+			file /usr/lib64/libdat.so.2.0.0 mic/lib/libdat.so.2.0.0 755 0 0
+			file /usr/lib64/libdaplofa.so.2.0.0 mic/lib/libdaplofa.so.2.0.0 755 0 0
+			file /usr/lib64/libdaplomcm.so.2.0.0 mic/lib/libdaplomcm.so.2.0.0 755 0 0
+			file /usr/lib64/libdaploscm.so.2.0.0 mic/lib/libdaploscm.so.2.0.0 755 0 0
+			file /usr/lib64/libdaploucm.so.2.0.0 mic/lib/libdaploucm.so.2.0.0 755 0 0
 
-	sudo /usr/sbin/mpxyd
+			slink /usr/lib64/libdat.so libdat.so.2.0.0 777 0 0
+			slink /usr/lib64/libdat.so.2 libdat.so.2.0.0 777 0 0
+			slink /usr/lib64/libdaplofa.so libdaplofa.so.2.0.0 777 0 0
+			slink /usr/lib64/libdaplofa.so.2 libdaplofa.so.2.0.0 777 0 0
+			slink /usr/lib64/libdaplomcm.so libdaplomcm.so.2.0.0 777 0 0
+			slink /usr/lib64/libdaplomcm.so.2 libdaplomcm.so.2.0.0 777 0 0
+			slink /usr/lib64/libdaploscm.so libdaploscm.so.2.0.0 777 0 0
+			slink /usr/lib64/libdaploscm.so.2 libdaploscm.so.2.0.0 777 0 0
+			slink /usr/lib64/libdaploucm.so libdaploucm.so.2.0.0 777 0 0
+			slink /usr/lib64/libdaploucm.so.2 libdaploucm.so.2.0.0 777 0 0
+	
+		Reboot or restart MPSS and ofed-mic services
 
-	* Use the MCM provider with Intel MPI 4.1.3 or greater for best out of box experiences.
+		Check for dapl overlay
+			micctrl --config  
+
+
+	* Use the MCM provider with Intel MPI 5.0 greater for best out of box experiences.
 
   	(1) Recommended settings:
 
