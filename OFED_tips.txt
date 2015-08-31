@@ -1,5 +1,5 @@
 		Open Fabrics Enterprise Distribution (OFED)
-		      Tips for Working with OFED 3.12
+		      Tips for Working with OFED 3.18
 		 	     May 2014
 
 ===============================================================================
@@ -8,7 +8,7 @@ Table of Contents
 1. OFED Utilities
 2. Debug HOWTOs
 3. Pinning (Locking) User Memory Pages
-4. External Module Compilation Over OFED-3.12
+4. External Module Compilation Over OFED-3.18
 5. Adding vendor specific actions to the installation of OFED
 6. How to compile OFED sources manually
 
@@ -182,31 +182,31 @@ c. Using sysfs file system
 -------------------------------------------
 The text file BUILD_ID provides data on all OFED components (whether installed
 or not). This file is a part of the ofed-docs RPM and installed under
-/usr/share/doc/ofed-docs-3.12 on RedHat, and under
-/usr/share/doc/packages/ofed-docs-3.12 on SuSE.
+/usr/share/doc/ofed-docs-3.18 on RedHat, and under
+/usr/share/doc/packages/ofed-docs-3.18 on SuSE.
 
 The same information can be obtained by executing the 'ofed_info' command. For
 example:
 
 # ofed_info -s
-OFED-3.12:
+OFED-3.18:
 
 # ofed_info
-OFED-3.12-rc2:
+OFED-3.18:
 
 compat-rdma:
 git://git.openfabrics.org/compat-rdma/compat-rdma.git master
-commit b03e0663469816ab598a7d2a76eee9ff34214305
+commit 71b57cc1149bcb2bd90659e31405b6935b604569
 
 compat-rdma:
 linux:
-git://git.openfabrics.org/compat-rdma/linux-3.12.git master
-commit f9e99187aaf53533d86c864e4abc9b6073ffa588
+git://git.openfabrics.org/compat-rdma/linux-3.18.git master
+commit 4b9e97b1c859c8fe54a596b554215f39d22bc761
 
 compat-rdma:
 compat:
 git://git.openfabrics.org/compat-rdma/compat.git ofed
-commit 52685623f484bb1b142974b5d1f15918dcf711c7
+commit 49022bb44e907cae19ad2dfc0b3978043cb73b1b
 ...
 
 2.2 Installed OFED Components
@@ -257,7 +257,7 @@ Note: The file /etc/security/limits.conf contains further documentation.
 
 
 ===============================================================================
-4. External Module Compilation Over OFED-3.12
+4. External Module Compilation Over OFED-3.18
 ===============================================================================
 
 To build kernel modules depending on OFED's modules, take the Modules.symvers
@@ -271,58 +271,90 @@ Example:
 MODULES_DIR=/lib/modules/`uname -r`/updates ./create_Module.symvers.sh
 
 See "Module versioning & Module.symvers" in the modules.txt from kernel
-documentation (e.g. linux-3.12/Documentation/kbuild/modules.txt).
+documentation (e.g. linux-3.18/Documentation/kbuild/modules.txt).
 
 Example of the Makefile:
-obj-m += rdma_krping.o
-12  2 rdma_krping-y›  ›   ›   := getopt.o krping.o
 
 KVERSION = $(shell uname -r)
 KSRC = /lib/modules/$(KVERSION)/source
 KOBJ = /lib/modules/$(KVERSION)/build
 
+#
+# Use this if you're building on a OFED system.  Make sure you
+# configure the ofa_kernel-1.3 tree with the options from 
+# /etc/infiniband/info
+#
 OFA ?= /usr/src/openib
-
+ifneq ($(shell test -d $(OFA) && echo YES || echo ""),)
+	include $(OFA)/configure.mk.kernel
+	INCLUDE_COMPAT = -include $(OFA)/include/linux/compat-2.6.h
+endif
+#
+# Use this if you're building against a kernel.org kernel with
+# rdma support enabled.
+# 
+#OFA=$(KSRC)
+#OFA=$(KOBJ)
 include $(OFA)/config.mk
 
-EXTRAVERSION = $(shell echo -n ${KVERSION} | sed
-'s/^[0-9]\+\.[0-9]\+\.[0-9]\+//')
+EXTRAVERSION = $(shell echo -n ${KVERSION} | sed 's/^[0-9]\+\.[0-9]\+\.[0-9]\+//')
 
 EXTRA_CFLAGS += -DLINUX -D__KERNEL__ -DMODULE -O2 -pipe -Wall
-EXTRA_CFLAGS += -I$(OFA)/include -I$(KOBJ)/include -I$(KOBJ)/include2
--I$(KSRC)/include -I.
+EXTRA_CFLAGS += -I$(OFA)/include -I$(KOBJ)/include -I$(KOBJ)/include2 -I$(KSRC)/include -I.
 EXTRA_CFLAGS += $(BACKPORT_INCLUDES)
 EXTRA_CFLAGS += $(shell [ -f $(KSRC)/include/linux/modversions.h ] && \
             echo "-DMODVERSIONS -DEXPORT_SYMTAB \
-                              -include $(KSRC)/include/linux/modversions.h")
+                  -include $(KSRC)/include/linux/modversions.h")
+autoconf_h=$(shell /bin/ls -1 $(KSRC)/include/*/autoconf.h 2> /dev/null | head -1)
+kconfig_h=$(shell /bin/ls -1 $(KSRC)/include/*/kconfig.h 2> /dev/null | head -1)
+
+ifneq ($(kconfig_h),)
+KCONFIG_H = -include $(kconfig_h)
+endif
+
+ofa_autoconf_h=$(shell /bin/ls -1 $(OFA)/include/*/autoconf.h 2> /dev/null | head -1)
+ifneq ($(ofa_autoconf_h),)
+OFA_AUTOCONF_H = -include $(ofa_autoconf_h)
+endif
+
+obj-m += rdma_krping.o
+rdma_krping-y			:= getopt.o krping.o
 
 default:
-        make -C $(KOBJ) SUBDIRS=$(shell pwd) \
-        KERNELRELEASE=$(KVERSION) \
-        EXTRAVERSION=$(EXTRAVERSION) \
-        NOSTDINC_FLAGS="-I$(shell pwd)/include \
-        -nostdinc -isystem $(shell $(CC) -print-file-name=include)" \
-        LINUXINCLUDE=' \
-                -include include/linux/autoconf.h \
-                -include $(OFA)/include/linux/autoconf.h \
-                -I$(OFA)/include \
-                -I$(OFA)/include/rdma \
-                -I. \
-                -Iinclude \
-                $(BACKPORT_INCLUDES) \
-                $$(if $$(KBUILD_SRC),-Iinclude2 -I$$(srctree)/include) \
-                -I$$(srctree)/arch/$$(SUBARCH)/include' \
-                modules
+	make -C $(KOBJ) SUBDIRS=$(shell pwd) \
+	KERNELRELEASE=$(KVERSION) \
+	LINUXINCLUDE=' \
+		-D__OFED_BUILD__ \
+		$(EXTRA_CFLAGS) \
+		-include $(autoconf_h) \
+		$(OFA_AUTOCONF_H) \
+		$(KCONFIG_H) \
+		-I$(OFA)/include \
+		$(INCLUDE_COMPAT) \
+		$$(if $$(CONFIG_XEN),-D__XEN_INTERFACE_VERSION__=$$(CONFIG_XEN_INTERFACE_VERSION)) \
+		$$(if $$(CONFIG_XEN),-I$$(srctree)/arch/x86/include/mach-xen) \
+		-I$$(srctree)/arch/$$(SRCARCH)/include \
+		-Iarch/$$(SRCARCH)/include/generated \
+		-Iinclude \
+		-I$$(srctree)/arch/$$(SRCARCH)/include/uapi \
+		-Iarch/$$(SRCARCH)/include/generated/uapi \
+		-I$$(srctree)/include \
+		-I$$(srctree)/include/uapi \
+		-Iinclude/generated/uapi \
+		$$(if $$(KBUILD_SRC),-Iinclude2 -I$$(srctree)/include) \
+		-I$$(srctree)/arch/$$(SRCARCH)/include \
+		-Iarch/$$(SRCARCH)/include/generated \
+		' \
+		modules
+
 install:
-        make -C $(KSRC) O=$(KOBJ) SUBDIRS=$(shell pwd) LINUXINCLUDE=' -I$(OFA)/include -Iinclude -include include/linux/autoconf.h -include $(OFA)/include/linux/autoconf.h' modules_install
-        depmod -a
+	make -C $(KSRC) O=$(KOBJ) SUBDIRS=$(shell pwd) modules_install
+	depmod -a
 
 clean:
-        rm -f *.o
-        rm -f *.ko
-        rm -f rdma_krping.mod.c
-
-Note: If backports required need to add "-I$(OFA)/include/linux/compat-2.6.h" to LINUXINCLUDE
+	rm -f *.o
+	rm -f *.ko
+	rm -f rdma_krping.mod.c
 
 ===============================================================================
 5. Adding vendor specific actions to the installation of OFED
@@ -409,11 +441,11 @@ meaning without building the RPMs and without using the install.pl script.
 
 6.1 Compiling the kernel modules
 --------------------------------
-1. tar xzf OFED-3.12.tgz
-2. rpm -ihv OFED-3.12/SRPMS/compat-rdma-3.12-OFED.3.12.src.rpm
+1. tar xzf OFED-3.18.tgz
+2. rpm -ihv OFED-3.18/SRPMS/compat-rdma-3.18-OFED.3.18.src.rpm
 3. cd /usr/src/redhat/SOURCES
-4. tar xzvf compat-rdma-3.12.tgz
-5. cd compat-rdma-3.12
+4. tar xzvf compat-rdma-3.18.tgz
+5. cd compat-rdma-3.18
 6. configure:
    run ./configure --help for a list of options.
    basic invocation is:
@@ -428,14 +460,14 @@ NOTES:
 
 6.2 Compiling the user space libraries
 --------------------------------------
-To install user space library from the source RPM provided by OFED-3.12 manually,
+To install user space library from the source RPM provided by OFED-3.18 manually,
 do the following:
 
 Example for libibverbs:
  
-1. tar xzf OFED-3.12.tgz
+1. tar xzf OFED-3.18.tgz
 2. rpm -ihv SRPMS/libibverbs-1.1.7-1.src.rpm
-3. cd /usr/src/redhat/SOURCES (for RedHat)
+3. cd ~<user>/rpmbuild/SOURCES (for RedHat)
    or
    cd /usr/src/packages/SOURCES (for SuSE)
 4. tar xzf libibverbs-1.1.7.tgz
