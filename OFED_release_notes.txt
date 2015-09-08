@@ -1,6 +1,6 @@
 	    Open Fabrics Enterprise Distribution (OFED)
-	          Version 3.18 Release Notes
-	               	   July 2015
+	          Version 3.18-1 Release Notes
+	               	   September 2015
 
 ===============================================================================
 Table of Contents
@@ -66,9 +66,11 @@ The OFED package contains the following components:
   o   Linux Operating Systems:
 	- RedHat EL6.5 		2.6.32-431.el6
 	- RedHat EL6.6 		2.6.32-504.el6
+	- RedHat EL6.7 		2.6.32-573.el6
 	- RedHat EL7.0 		3.10.0-123.el7
 	- RedHat EL7.1 		3.10.0-229.el7
 	- SLES11 SP3		3.0.76-0.9.1
+	- SLES11 SP4		3.0.101-63
 	- SLES12        	3.12.28-4
 	- kernel.org		3.18    *
 
@@ -203,6 +205,21 @@ http://www.openfabrics.org/downloads/MAINTAINERS
 ===============================================================================
 2. Change log
 ===============================================================================
+OFED-3.18-1-rc1 Main Changes from OFED 3.18
+-------------------------------------------------------------------------------
+1. Updated packages:
+  - infinipath-psm-3.3-6_gca75825_open
+  - dapl-2.1.6
+  - ibacm-1.1.0
+  - libfabric-1.1.0rc4
+  - libiwpm-1.0.3rc1
+  - mstflint-4.1.0-1.45.g1d75d01
+  - perftest-3.0-0.11.g9bd522a
+  - fabtests-1.1.0rc2
+
+2. compat-rdma
+  - Added RHEL7.1 support on ppc64le
+
 OFED-3.18 Main Changes from OFED 3.18-rc3
 -------------------------------------------------------------------------------
 1. Updated packages:
@@ -327,12 +344,9 @@ components of the OFED 3.18 release.
 12. Bug 2545: ipath will not compile on SLES11 SP4 and RHEL6.7  because these releases 
     are not supported in OFED 3.18. They will be added in 3.18-1
 13. Bug 2547: HCA driver seems to load, but does not seem to configure a device 
-14. Bug 2551: OFED 3.18 will not compile on ppc64 with libfabric and fabtests enabled.
-    A worked around is to install OFED 3.18 with the following flags:
-    ./install.pl --all --without-libfabric --without-fabtests --without-libiwpm
-15. Bug 2555: ib_send_bw –run_infinitely fails to terminate on the server after client 
+14. Bug 2555: ib_send_bw –run_infinitely fails to terminate on the server after client 
     disconnects 
-16. Bug 2559: unexpected CM event 8 error seen on running iwarp traffic after the 
+15. Bug 2559: unexpected CM event 8 error seen on running iwarp traffic after the 
     restart of iwpmd service
 
 Note: See the release notes of each component for additional issues.
