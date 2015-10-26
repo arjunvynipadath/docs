@@ -1,6 +1,6 @@
 	    Open Fabrics Enterprise Distribution (OFED)
 	          Version 3.18-1 Release Notes
-	               	   September 2015
+	               	   October 2015
 
 ===============================================================================
 Table of Contents
@@ -205,6 +205,20 @@ http://www.openfabrics.org/downloads/MAINTAINERS
 ===============================================================================
 2. Change log
 ===============================================================================
+OFED-3.18-1-rc2 Main Changes from OFED 3.18-1-rc1
+-------------------------------------------------------------------------------
+1. Updated packages:
+  - dapl-2.1.7
+  - infiniband-diags-1.6.6
+  - infinipath-psm-3.3-7_g05f6f14_open
+  - libiwpm-1.0.3
+  - libfabric-1.1.1
+  - fabtests-1.1.1
+
+2. compat-rdma changes
+  - xeon-phi: ibscif bug 2575: Allow xeon-phi support for Knights Landing
+  - xeon-phi: ibscif bug 2570: correction to communitate between host and card
+
 OFED-3.18-1-rc1 Main Changes from OFED 3.18
 -------------------------------------------------------------------------------
 1. Updated packages:
