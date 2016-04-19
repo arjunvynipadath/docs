@@ -1,12 +1,12 @@
 	    Open Fabrics Enterprise Distribution (OFED)
-	          Version 3.18-1 Release Notes
-	               	   November 2015
+	          Version 3.18-2 Release Notes
+	               	   April 2016
 
 ===============================================================================
 Table of Contents
 ===============================================================================
 1. Overview, which includes:
-	- OFED Distribution Rev 3.18-1 Contents
+	- OFED Distribution Rev 3.18-2 Contents
 	- Supported Platforms and Operating Systems
 	- Supported HCA and RNIC Adapter Cards and Firmware Versions
 	- Tested Switch Platforms
@@ -27,7 +27,7 @@ Note: If you plan to upgrade the OFED package on your cluster, please upgrade
 all of its nodes to this new version.
 
 
-1.1 OFED 3.18-1 Contents
+1.1 OFED 3.18-2 Contents
 -----------------------
 The OFED package contains the following components:
  - OpenFabrics core and ULPs:
@@ -95,14 +95,14 @@ InfiniBand Adapters
 
   o   Mellanox Technologies HCAs (SDR, DDR and QDR Modes are Supported):
 	- ConnectX(R) and ConnectX EN (Rev 2.9.1000)
-	- ConnectX®-2 (Rev 2.9.1200 and above)
+	- ConnectX-2 (Rev 2.9.1200 and above)
 
   o   Mellanox Technologies HCAs (FDR and FDR10 Modes are Supported):
-	- ConnectX®-3 (Rev 2.33.5100 and above)
-	- ConnectX®-3 Pro (Rev 2.33.5100 and above)
+	- ConnectX-3 (Rev 2.33.5100 and above)
+	- ConnectX-3 Pro (Rev 2.33.5100 and above)
 
   o   Mellanox Technologies HCAs (FDR and FDR10 Modes are Supported):
-	- Connect-IB® (Rev 10.10.5054 and above)
+	- Connect-IB (Rev 10.10.5054 and above)
 
 	For official firmware versions please see:
 	http://www.mellanox.com/content/pages.php?pg=firmware_download
@@ -141,10 +141,10 @@ InfiniBand Switches
   o   Intel (formerly QLogic)
 	- 12200
   o   Mellanox
-	- MLNX-OS® MSX6036/SX6025 w/w MLNX-OS® version 3.3.4304
-	- Grid Director™ 4036 w/w Grid Director™ version 3.9.2-992
-	- FabricIT™ EFM IS5035 w/w FabricIT EFM version 1.1.3000
-	- FabricIT™ BXM MBX5020 w/w FabricIT BXM version 2.1.2000
+	- MLNX-OS MSX6036/SX6025 w/w MLNX-OS version 3.3.4304
+	- Grid Director 4036 w/w Grid Director version 3.9.2-992
+	- FabricIT EFM IS5035 w/w FabricIT EFM version 1.1.3000
+	- FabricIT BXM MBX5020 w/w FabricIT BXM version 2.1.2000
 
 iWARP Switches
   o   Fujitsu
@@ -207,6 +207,34 @@ http://www.openfabrics.org/downloads/MAINTAINERS
 ===============================================================================
 2. Change log
 ===============================================================================
+OFED-3.18-2-rc1 Main Changes from OFED 3.18-1
+-------------------------------------------------------------------------------
+1. Updated packages:
+  - dapl-2.1.9
+  - fabtests-1.3.0
+  - ibacm-1.2.1
+  - infinipath-psm-3.3-19_g67c0807_open
+  - libcxgb4-1.3.6
+  - libfabric-1.3.0
+  - libocrdma-1.0.7
+  - librdmacm-1.1.0
+  - mstflint-4.3.0-1.49.g9b9af70
+  - perftest-3.0-0.16.gb2f2e82
+2. compat-rdma changes
+  - xeon-phi: allow full ibscif ud mtu
+  - xeon-phi: allow rdma_bind to mic0 device
+  - NFSRDMA: RHEL7.2 backport
+  - cxgb4: update firmware to 1.4.14.0
+  - cxgb4: RHEL7.2 backports
+  - cxgb4: fix up bonding.h include paths
+  - IB/ipoib: Do not update neigh validity if not resolved yet
+  - mlx4_en: Fixed compilation on RHEL6.6
+  - makefile: Added distclean target
+  - xeon-phi: mlx5_ib bug fix releated to large memory regions registration.
+  - RDMA/ocrdma: ocrdma sync up patch series
+  - be2net: backport fixes for RHEL 7.2
+  - mlx4: Added support for RHEL7.2
+
 OFED-3.18-1 Main Changes from OFED 3.18-1-rc2
 -------------------------------------------------------------------------------
 1. Updated packages:
