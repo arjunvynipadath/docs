@@ -1,6 +1,6 @@
 	    Open Fabrics Enterprise Distribution (OFED)
 	          Version 3.18-2 Release Notes
-	               	   April 2016
+	               	   May 2016
 
 ===============================================================================
 Table of Contents
@@ -207,6 +207,17 @@ http://www.openfabrics.org/downloads/MAINTAINERS
 ===============================================================================
 2. Change log
 ===============================================================================
+OFED-3.18-2-rc2 Main Changes from OFED 3.18-2-rc1
+-------------------------------------------------------------------------------
+1. Updated packages:
+  - ibpd-1.0.1
+  - libiwpm-1.0.5
+  - mstflint-4.3.0
+2. compat-rdma changes
+  - IB/security: Restrict use of the write() interface
+  - xeon-phi: adjust mlx5_ib bug fix releated to large memory region registration
+
+
 OFED-3.18-2-rc1 Main Changes from OFED 3.18-1
 -------------------------------------------------------------------------------
 1. Updated packages:
