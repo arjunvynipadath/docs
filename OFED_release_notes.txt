@@ -1,6 +1,6 @@
 	    Open Fabrics Enterprise Distribution (OFED)
 	          Version 3.18-2 Release Notes
-	               	   May 2016
+	               	   June 2016
 
 ===============================================================================
 Table of Contents
@@ -207,6 +207,17 @@ http://www.openfabrics.org/downloads/MAINTAINERS
 ===============================================================================
 2. Change log
 ===============================================================================
+OFED-3.18-2-rc3 Main Changes from OFED 3.18-2-rc2
+-------------------------------------------------------------------------------
+1. Updated packages:
+  - ibsim-0.7.tar.gz
+  - mstflint-4.4.0
+  - opensm-3.3.20
+  - perftest-3.0-0.21.g21dc344
+  - rds-tools-2.0.7
+2. compat-rdma changes
+  - xeon-phi: add dependency for scif.symvers for ibscif
+
 OFED-3.18-2-rc2 Main Changes from OFED 3.18-2-rc1
 -------------------------------------------------------------------------------
 1. Updated packages:
@@ -411,6 +422,12 @@ components of the OFED 3.18-1 release.
     a NFSoRDMA server running on x86 box. This will be resolved in OFED 3.18-2
 14. The ipath and eHCA drivers will be deprecated in the next OFED build that 
     uses a kernel >= 4.3 
+15. Bug 2596: Host crash related to mlx5 driver, ConnectIB HCAs, ib_srp, and
+    performing IO
+16. Bug 2598: libibverbs rpmbuild may fail if the RPM macro
+    %__arch_install_post being redefined in user's environment
+17. Bug 2600: SRPT compilation fails on kernels from kernel.org starting:
+    3.18.33
 
 Note: See the release notes of each component for additional issues.
 
