@@ -1,6 +1,6 @@
-		Release Notes for libiwpm-1.0.2
-		Distributed with OFED-3.18
-			July 2015
+		Release Notes for libiwpm-1.0.5
+		Distributed with OFED-3.18-2
+			June 2016
 
 DESCRIPTION
 
@@ -52,6 +52,11 @@ To start the service manually:
 
 CHANGES:
 
+- Fix to free a netlink msg after sending it
+- Fix to free a list of network interfaces after using it
+- Fix to start the iwpmd after the network service has started
+- Adding iwpmd.conf file to allow for changing the size of the
+  netlink socket rx buffer
 - Allow registration of multiple devices per netlink client
 - Fixes to enable the iwpmd install and start when systemd is available
 - Adding "ulimit -n 102400" to the start up scripts to allow testing with
