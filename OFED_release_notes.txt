@@ -417,17 +417,21 @@ components of the OFED 3.18-1 release.
     It also makes sure it can connect to them when the service is started.
     Scif functions cannot be called unless the mpss service is running.
     Since openibd starts the psmd service, it should be loaded after mpss
-    This will be resolved in OFED 3.18-2
 13. Bug 2580:  NFSoRDMA client on PPC64LE will crash while trying to mount to 
     a NFSoRDMA server running on x86 box. This will be resolved in OFED 3.18-2
 14. The ipath and eHCA drivers will be deprecated in the next OFED build that 
     uses a kernel >= 4.3 
-15. Bug 2596: Host crash related to mlx5 driver, ConnectIB HCAs, ib_srp, and
+15. Bug 2583: "iwpm_mapping_error_cb: Received msg seq = 381240 err code = 12
+	client = 3" seen intermittently
+16. Bug 2587: autoconf is needed by ibacm-1.1.0-1.x86_64
+17. Bug 2596: Host crash related to mlx5 driver, ConnectIB HCAs, ib_srp, and
     performing IO
-16. Bug 2598: libibverbs rpmbuild may fail if the RPM macro
+18. Bug 2598: libibverbs rpmbuild may fail if the RPM macro
     %__arch_install_post being redefined in user's environment
-17. Bug 2600: SRPT compilation fails on kernels from kernel.org starting:
+19. Bug 2600: SRPT compilation fails on kernels from kernel.org starting:
     3.18.33
+20. Bug 2602: RHEL 6.6 crashed during Switch-to-controller cable pull less than
+    failover
 
 Note: See the release notes of each component for additional issues.
 
