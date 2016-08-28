@@ -1,5 +1,5 @@
 		Open Fabrics Enterprise Distribution (OFED)
-		      Tips for Working with OFED 3.18
+		      Tips for Working with OFED 4.8
 		 	     May 2014
 
 ===============================================================================
@@ -8,7 +8,7 @@ Table of Contents
 1. OFED Utilities
 2. Debug HOWTOs
 3. Pinning (Locking) User Memory Pages
-4. External Module Compilation Over OFED-3.18
+4. External Module Compilation Over OFED-4.8
 5. Adding vendor specific actions to the installation of OFED
 6. How to compile OFED sources manually
 
@@ -182,17 +182,17 @@ c. Using sysfs file system
 -------------------------------------------
 The text file BUILD_ID provides data on all OFED components (whether installed
 or not). This file is a part of the ofed-docs RPM and installed under
-/usr/share/doc/ofed-docs-3.18 on RedHat, and under
-/usr/share/doc/packages/ofed-docs-3.18 on SuSE.
+/usr/share/doc/ofed-docs-4.8 on RedHat, and under
+/usr/share/doc/packages/ofed-docs-4.8 on SuSE.
 
 The same information can be obtained by executing the 'ofed_info' command. For
 example:
 
 # ofed_info -s
-OFED-3.18:
+OFED-4.8:
 
 # ofed_info
-OFED-3.18:
+OFED-4.8:
 
 compat-rdma:
 git://git.openfabrics.org/compat-rdma/compat-rdma.git master
@@ -200,7 +200,7 @@ commit 71b57cc1149bcb2bd90659e31405b6935b604569
 
 compat-rdma:
 linux:
-git://git.openfabrics.org/compat-rdma/linux-3.18.git master
+git://git.openfabrics.org/compat-rdma/linux-4.8.git master
 commit 4b9e97b1c859c8fe54a596b554215f39d22bc761
 
 compat-rdma:
@@ -257,7 +257,7 @@ Note: The file /etc/security/limits.conf contains further documentation.
 
 
 ===============================================================================
-4. External Module Compilation Over OFED-3.18
+4. External Module Compilation Over OFED-4.8
 ===============================================================================
 
 To build kernel modules depending on OFED's modules, take the Modules.symvers
@@ -271,7 +271,7 @@ Example:
 MODULES_DIR=/lib/modules/`uname -r`/updates ./create_Module.symvers.sh
 
 See "Module versioning & Module.symvers" in the modules.txt from kernel
-documentation (e.g. linux-3.18/Documentation/kbuild/modules.txt).
+documentation (e.g. linux-4.8/Documentation/kbuild/modules.txt).
 
 Example of the Makefile:
 
@@ -434,11 +434,11 @@ meaning without building the RPMs and without using the install.pl script.
 
 6.1 Compiling the kernel modules
 --------------------------------
-1. tar xzf OFED-3.18.tgz
-2. rpm -ihv OFED-3.18/SRPMS/compat-rdma-3.18-OFED.3.18.src.rpm
+1. tar xzf OFED-4.8.tgz
+2. rpm -ihv OFED-4.8/SRPMS/compat-rdma-4.8-OFED.4.8.src.rpm
 3. cd /usr/src/redhat/SOURCES
-4. tar xzvf compat-rdma-3.18.tgz
-5. cd compat-rdma-3.18
+4. tar xzvf compat-rdma-4.8.tgz
+5. cd compat-rdma-4.8
 6. configure:
    run ./configure --help for a list of options.
    basic invocation is:
@@ -453,12 +453,12 @@ NOTES:
 
 6.2 Compiling the user space libraries
 --------------------------------------
-To install user space library from the source RPM provided by OFED-3.18 manually,
+To install user space library from the source RPM provided by OFED-4.8 manually,
 do the following:
 
 Example for libibverbs:
  
-1. tar xzf OFED-3.18.tgz
+1. tar xzf OFED-4.8.tgz
 2. rpm -ihv SRPMS/libibverbs-1.1.7-1.src.rpm
 3. cd ~<user>/rpmbuild/SOURCES (for RedHat)
    or

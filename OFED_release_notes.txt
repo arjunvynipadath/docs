@@ -1,12 +1,12 @@
 	    Open Fabrics Enterprise Distribution (OFED)
-	          Version 3.18-2 Release Notes
-	               	   July 2016
+	          Version 4.8 Release Notes
+	               	   August 2016
 
 ===============================================================================
 Table of Contents
 ===============================================================================
 1. Overview, which includes:
-	- OFED Distribution Rev 3.18-2 Contents
+	- OFED Distribution Rev 4.8 Contents
 	- Supported Platforms and Operating Systems
 	- Supported HCA and RNIC Adapter Cards and Firmware Versions
 	- Tested Switch Platforms
@@ -19,7 +19,7 @@ Table of Contents
 1. Overview
 ===============================================================================
 These are the release notes of OpenFabrics Enterprise Distribution (OFED)
-release 3.18-1. The OFED software package is composed of several software modules,
+release 4.8. The OFED software package is composed of several software modules,
 and is intended for use on a computer cluster constructed as an InfiniBand
 Fabric, an iWARP Network or a RoCE Fabric.
 
@@ -27,7 +27,7 @@ Note: If you plan to upgrade the OFED package on your cluster, please upgrade
 all of its nodes to this new version.
 
 
-1.1 OFED 3.18-2 Contents
+1.1 OFED 4.8 Contents
 -----------------------
 The OFED package contains the following components:
  - OpenFabrics core and ULPs:
@@ -64,17 +64,10 @@ The OFED package contains the following components:
 	- ppc64
 
   o   Linux Operating Systems:
-	- RedHat EL6.5 		2.6.32-431.el6
-	- RedHat EL6.6 		2.6.32-504.el6
-	- RedHat EL6.7 		2.6.32-573.el6
-	- RedHat EL7.0 		3.10.0-123.el7
-	- RedHat EL7.1 		3.10.0-229.el7
 	- RedHat EL7.2 		3.10.0-327.el7
-	- SLES11 SP3		3.0.76-0.9.1
-	- SLES11 SP4		3.0.101-63
 	- SLES12        	3.12.28-4
 	- SLES12.1        	3.12.49-11.1
-	- kernel.org		3.18    *
+	- kernel.org		4.8    *
 
       * Minimal QA for these versions.
 
@@ -160,7 +153,7 @@ RoCE Switches
 
 1.5 Third Party Packages
 ------------------------
-The following third party packages have been tested with OFED 3.18-1:
+The following third party packages have been tested with OFED 4.8:
 - Open MPI - 1.8
 - Intel MPI 4.1.3
 - MVAPICH2 
@@ -171,11 +164,11 @@ All sources are located under git://git.openfabrics.org/
 
 Linux:
 ------
-URL: git://git.openfabrics.org/compat-rdma/linux-3.18.git
+URL: git://git.openfabrics.org/compat-rdma/linux-4.8.git
 Branch: master
 
 - Linux kernel sub-tree that includes files relevant for the OFED project only.
-  Based on v3.18. Used to shorten git clone time.
+  Based on v4.8. Used to shorten git clone time.
   Note: the regular Linux git tree can be used as well.
 
 compat:
@@ -197,7 +190,7 @@ Branch: master
 User level Sources are downloaded from http://www.openfabrics.org/downloads/
 as written in the BUILD_ID
 
-The kernel sources are based on Linux 3.18 mainline kernel. Its patches
+The kernel sources are based on Linux 4.8 mainline kernel. Its patches
 are included in the OFED sources directory.
 For details see HOWTO.build_ofed.
 
@@ -207,189 +200,21 @@ http://www.openfabrics.org/downloads/MAINTAINERS
 ===============================================================================
 2. Change log
 ===============================================================================
-OFED-3.18-2 Main Changes from OFED 3.18-2-rc3
--------------------------------------------------------------------------------
- - Updated docs
-
-OFED-3.18-2-rc3 Main Changes from OFED 3.18-2-rc2
+OFED-4.8-rc1 Main Changes from OFED 3.18-2 GA
 -------------------------------------------------------------------------------
 1. Updated packages:
-  - ibsim-0.7.tar.gz
-  - mstflint-4.4.0
-  - opensm-3.3.20
-  - perftest-3.0-0.21.g21dc344
-  - rds-tools-2.0.7
-2. compat-rdma changes
-  - xeon-phi: add dependency for scif.symvers for ibscif
+ - compat-rdma-4.8
 
-OFED-3.18-2-rc2 Main Changes from OFED 3.18-2-rc1
--------------------------------------------------------------------------------
-1. Updated packages:
-  - ibpd-1.0.1
-  - libiwpm-1.0.5
-  - mstflint-4.3.0
-2. compat-rdma changes
-  - IB/security: Restrict use of the write() interface
-  - xeon-phi: adjust mlx5_ib bug fix releated to large memory region registration
-
-
-OFED-3.18-2-rc1 Main Changes from OFED 3.18-1
--------------------------------------------------------------------------------
-1. Updated packages:
-  - dapl-2.1.9
-  - fabtests-1.3.0
-  - ibacm-1.2.1
-  - infinipath-psm-3.3-19_g67c0807_open
-  - libcxgb4-1.3.6
-  - libfabric-1.3.0
-  - libocrdma-1.0.7
-  - librdmacm-1.1.0
-  - mstflint-4.3.0-1.49.g9b9af70
-  - perftest-3.0-0.16.gb2f2e82
-2. compat-rdma changes
-  - xeon-phi: allow full ibscif ud mtu
-  - xeon-phi: allow rdma_bind to mic0 device
-  - NFSRDMA: RHEL7.2 backport
-  - cxgb4: update firmware to 1.4.14.0
-  - cxgb4: RHEL7.2 backports
-  - cxgb4: fix up bonding.h include paths
-  - IB/ipoib: Do not update neigh validity if not resolved yet
-  - mlx4_en: Fixed compilation on RHEL6.6
-  - makefile: Added distclean target
-  - xeon-phi: mlx5_ib bug fix releated to large memory regions registration.
-  - RDMA/ocrdma: ocrdma sync up patch series
-  - be2net: backport fixes for RHEL 7.2
-  - mlx4: Added support for RHEL7.2
-
-OFED-3.18-1 Main Changes from OFED 3.18-1-rc2
--------------------------------------------------------------------------------
-1. Updated packages:
-  - libocrdma-1.0.6
-  - perftest-3.0-0.12
-
-OFED-3.18-1-rc2 Main Changes from OFED 3.18-1-rc1
--------------------------------------------------------------------------------
-1. Updated packages:
-  - dapl-2.1.7
-  - infiniband-diags-1.6.6
-  - infinipath-psm-3.3-7_g05f6f14_open
-  - libiwpm-1.0.3
-  - libfabric-1.1.1
-  - fabtests-1.1.1
-
-2. compat-rdma changes
-  - xeon-phi: ibscif bug 2575: Allow xeon-phi support for Knights Landing
-  - xeon-phi: ibscif bug 2570: correction to communitate between host and card
-
-OFED-3.18-1-rc1 Main Changes from OFED 3.18
--------------------------------------------------------------------------------
-1. Updated packages:
-  - infinipath-psm-3.3-6_gca75825_open
-  - dapl-2.1.6
-  - ibacm-1.1.0
-  - libfabric-1.1.0rc4
-  - libiwpm-1.0.3rc1
-  - mstflint-4.1.0-1.45.g1d75d01
-  - perftest-3.0-0.11.g9bd522a
-  - fabtests-1.1.0rc2
-
-2. compat-rdma
-  - Added RHEL7.1 support on ppc64le
-
-OFED-3.18 Main Changes from OFED 3.18-rc3
--------------------------------------------------------------------------------
-1. Updated packages:
-  - libiwpm-1.0.2
-  - mstflint-4.0.1-1.43.g97d7275
-  - perftest-3.0-0.9.g214990b
-
-2. compat-rdma changes
-  - Adding backport to neigh resolve fix for RHEL 6.5 and RHEL 6.6
-  - ibscif: Fixed bring up of scif device on kernels >= 3.11
-  - openibd: Unload in-box drivers upon boot
-  - RDMA/nes: Fix for incorrect recording of the MAC address
-  - RDMA/nes: Fix for resolving the neigh
-  - RDMA/iwpm: Updated fixes for the client registration functionality
-
-OFED-3.18-rc3 Main Changes from OFED 3.18-rc2
--------------------------------------------------------------------------------
-1. Updated packages:
-  - dapl-2.1.5
-  - fabtests-1.0.0
-  - libfabric-1.0.0
-  - librdmacm-1.0.21
-  - mstflint-4.0.1-1.42.g0d3b372
-
-2. compat-rdma changes
-  - RDMA/ocrdma: insert Dual/BSD license.
-  - IB/ipoib: Change To max_cm_mtu when changing mode to connected
-  - RDMA/ocrdma : ocrdma upstream sync up patch.
-  - NFS/RDMA: fix for RHEL7.1
-  - be2net: Fixing the build failure for SLES11 SP4
-  - Fix XEON PHI compilation
-  - compat-rdma/linux-next-pending: Adding changes to enable the use of the tos field for iwarp providers
-  - gen-compat-config.sh: Added XPS related staff
-  - openibd: Check if iwpmd is running before unloading modules
-  - compat-rdma.spec: Updated content of compat-rdma-devel RPM
-  - compat-rdma: add backport to fix ofed-bz2539
-  - compat-rdma: add backport to fix ofed-bz2539
-  - Fixed openibd stop on OSes using systemd
-  - compat-rdma.spec: Fixed openibd header
-  - mlx4/5: Added bug fixes
-  - IB/core: Added fixes from upstream
-  - ibdev2netdev: Added dev_port support
-  - mlx4/backport: Fixed dev_id
-  - iw_cxgb4: use wildcard mapping for getting remote addr info
-  - cxgb4: update firmware to 1.3.32
-  - compat-rdma.spec: Added systemd support for all relevant OSes
-
-OFED-3.18-rc2 Main Changes from OFED 3.18-rc1
--------------------------------------------------------------------------------
-1. Updated packages:
- - dapl-2.1.4
- - libfabric-1.0.0rc4
- - librdmacm-1.0.20
-
-2. Added RHEL7.1 support
-
-3. compat-rdma changes
- - IB/uverbs: Prevent integer overflow in ib_umem_get address arithmetic
- - NFSoRDMA: backport for RHEL 6.5 and 6.6
- - Fixed mlx4 backport
- - Added RHEL7.1 backport patches
- - RDMA/ocrdma: rebasing the upstream sync up patch
- - be2net-ocrdma: Fixing the RH 6.5/6 backport patch
- - be2net-ocrdma: move backport patches to the correct folder
- - Updated XEON-Phi patches
- - Updated compat-rdma.spec for XEON-Phi
- - NFS/RDMA: SLES11SP3 backport
-
-OFED-3.18-rc1 Main Changes from OFED 3.12-1 GA
--------------------------------------------------------------------------------
-1. Updated packages:
- - compat-rdma-3.18
- - dapl-2.1.3
- - infiniband-diags-1.6.5
- - libfabric-1.0.0rc2
- - libibmad-1.3.12
- - libibumad-1.3.10.2
- - libiwpm-1.0.1
- - libmlx5-1.0.2
- - libocrdma-1.0.5
- - mstflint-3.8.0-1.27.gf3d39b6
- - opensm-3.3.19
- - perftest-2.4-0.8.gd3c2b22
- - srptools-1.0.3
 ===============================================================================
 3. Known Issues
 ===============================================================================
 The following is a list of general limitations and known issues of the various
-components of the OFED 3.18-1 release.
+components of the OFED 4.8 release.
 
 01. When upgrading from an earlier OFED version, the installation script does
     not stop the earlier OFED version prior to uninstalling it.
     Workaround: Stop the old OFED stack (/etc/init.d/openibd stop) before
-    upgrading to OFED 3.18-1 or reboot the server after OFED installation.
+    upgrading to OFED 4.8 or reboot the server after OFED installation.
 02. Memory registration by the user is limited according to administrator
     setting. See "Pinning (Locking) User Memory Pages" in OFED_tips.txt for
     system configuration.
@@ -422,7 +247,7 @@ components of the OFED 3.18-1 release.
     Scif functions cannot be called unless the mpss service is running.
     Since openibd starts the psmd service, it should be loaded after mpss
 13. Bug 2580:  NFSoRDMA client on PPC64LE will crash while trying to mount to 
-    a NFSoRDMA server running on x86 box. This will be resolved in OFED 3.18-2
+    a NFSoRDMA server running on x86 box. This will be resolved in OFED 4.8
 14. The ipath and eHCA drivers will be deprecated in the next OFED build that 
     uses a kernel >= 4.3 
 15. Bug 2583: "iwpm_mapping_error_cb: Received msg seq = 381240 err code = 12
