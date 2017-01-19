@@ -1,6 +1,6 @@
 	    Open Fabrics Enterprise Distribution (OFED)
 	          Version 4.8 Release Notes
-	               	   August 2016
+	               	   January 2017
 
 ===============================================================================
 Table of Contents
@@ -64,9 +64,13 @@ The OFED package contains the following components:
 	- ppc64
 
   o   Linux Operating Systems:
+	- RedHat EL7.0 		3.10.0-123.el7
+	- RedHat EL7.1 		3.10.0-210.el7
 	- RedHat EL7.2 		3.10.0-327.el7
+	- RedHat EL7.3 		3.10.0-514.el7
 	- SLES12        	3.12.28-4
 	- SLES12.1        	3.12.49-11.1
+	- SLES12.2        	4.4.21-69-default
 	- kernel.org		4.8    *
 
       * Minimal QA for these versions.
@@ -255,12 +259,6 @@ components of the OFED 4.8 release.
 16. Bug 2587: autoconf is needed by ibacm-1.1.0-1.x86_64
 17. Bug 2596: Host crash related to mlx5 driver, ConnectIB HCAs, ib_srp, and
     performing IO
-18. Bug 2598: libibverbs rpmbuild may fail if the RPM macro
-    %__arch_install_post being redefined in user's environment
-19. Bug 2600: SRPT compilation fails on kernels from kernel.org starting:
-    3.18.33
-20. Bug 2602: RHEL 6.6 crashed during Switch-to-controller cable pull less than
-    failover
 
 Note: See the release notes of each component for additional issues.
 
