@@ -259,6 +259,11 @@ components of the OFED 4.8 release.
 16. Bug 2587: autoconf is needed by ibacm-1.1.0-1.x86_64
 17. Bug 2596: Host crash related to mlx5 driver, ConnectIB HCAs, ib_srp, and
     performing IO
+18. cmake and ninja packages are required to build rdma-core package.
+	ninja binary RPMs can be downloaded from https://software.opensuse.org/package/ninja
+	On SLES12 cmake-3.5 or higher is required. The working cmake version can be
+	taken from SLES12 SP2 and installed on SLES12 SP0 or SP1.
+
 
 Note: See the release notes of each component for additional issues.
 
