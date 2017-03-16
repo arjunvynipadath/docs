@@ -1,6 +1,6 @@
 	    Open Fabrics Enterprise Distribution (OFED)
 	          Version 4.8 Release Notes
-	               	   January 2017
+	               	   March 2017
 
 ===============================================================================
 Table of Contents
@@ -204,10 +204,22 @@ http://www.openfabrics.org/downloads/MAINTAINERS
 ===============================================================================
 2. Change log
 ===============================================================================
-OFED-4.8-rc1 Main Changes from OFED 3.18-2 GA
+OFED-4.8-rc1 Main Changes from OFED 3.18-3 GA
 -------------------------------------------------------------------------------
-1. Updated packages:
- - compat-rdma-4.8
+1. Added support for RHEL7.3 and SLES12 SP2
+
+2. Updated packages:
+ - compat-rdma-4.8 - based on linux-4.8
+ - rdma-core-12-1
+ - dapl-2.1.10
+ - fabtests-1.4.1rc1
+ - infiniband-diags-1.6.7
+ - libfabric-1.4.1rc1
+ - libibmad-1.3.13
+ - libibscif-1.1.2
+ - libvmw_pvrdma-1.0.0
+ - mstflint-4.5.0-1.17.g8a0c39d
+ - perftest-3.4-0.9.g98a9a17
 
 ===============================================================================
 3. Known Issues
@@ -233,33 +245,30 @@ components of the OFED 4.8 release.
     is that these utilities support devices of type Ethernet only.
 06. In case uninstall is failing, check the error log and remove
     the remaining RPMs manually using 'rpm -e <rpms list>'.
-07. On SLES11.x, set allow_unsupported_modules parameter to 1 in file:
-    /etc/modprobe.d/unsupported-modules. Without this the modules will not
-    load.
-08. RDS is not supported.
-09. Bug 2515: when an Intel HCA is attached directly to a Mellanox ConnectX3
+07. RDS is not supported.
+08. Bug 2515: when an Intel HCA is attached directly to a Mellanox ConnectX3
     and the OpenSM is started on the Intel HCA, the link will not go to active.
     The workaround is to start the OpenSM on the Mellanox HCA.
-10. Bug 2553: Unable to run UD traffic using qperf on a RoCE R-NIC
-11. Bug 2561: Devices do not receive the echo reply of the first ping sequence 
+09. Bug 2553: Unable to run UD traffic using qperf on a RoCE R-NIC
+10. Bug 2561: Devices do not receive the echo reply of the first ping sequence 
     when the payload size is 65493 or higher. This is still an issues in the 
     4.3 kernel and should be resolved in a future OFED 4.x release
-12. Bug 2574: Installing OFED (with --with_xeon_phi and qib=y in ofed.conf file)
+11. Bug 2574: Installing OFED (with --with_xeon_phi and qib=y in ofed.conf file)
     makes the access to the scif char device fail.
     psmd uses scif functions to allow psm to connect to the Phi devices. 
     It also makes sure it can connect to them when the service is started.
     Scif functions cannot be called unless the mpss service is running.
     Since openibd starts the psmd service, it should be loaded after mpss
-13. Bug 2580:  NFSoRDMA client on PPC64LE will crash while trying to mount to 
+12. Bug 2580:  NFSoRDMA client on PPC64LE will crash while trying to mount to 
     a NFSoRDMA server running on x86 box. This will be resolved in OFED 4.8
-14. The ipath and eHCA drivers will be deprecated in the next OFED build that 
+13. The ipath and eHCA drivers will be deprecated in the next OFED build that 
     uses a kernel >= 4.3 
-15. Bug 2583: "iwpm_mapping_error_cb: Received msg seq = 381240 err code = 12
+14. Bug 2583: "iwpm_mapping_error_cb: Received msg seq = 381240 err code = 12
 	client = 3" seen intermittently
-16. Bug 2587: autoconf is needed by ibacm-1.1.0-1.x86_64
-17. Bug 2596: Host crash related to mlx5 driver, ConnectIB HCAs, ib_srp, and
+15. Bug 2587: autoconf is needed by ibacm-1.1.0-1.x86_64
+16. Bug 2596: Host crash related to mlx5 driver, ConnectIB HCAs, ib_srp, and
     performing IO
-18. cmake and ninja packages are required to build rdma-core package.
+17. cmake and ninja packages are required to build rdma-core package.
 	ninja binary RPMs can be downloaded from https://software.opensuse.org/package/ninja
 	On SLES12 cmake-3.5 or higher is required. The working cmake version can be
 	taken from SLES12 SP2 and installed on SLES12 SP0 or SP1.
