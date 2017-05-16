@@ -287,6 +287,9 @@ components of the OFED 4.8 release.
 	ninja binary RPMs can be downloaded from https://software.opensuse.org/package/ninja
 	On SLES12 cmake-3.5 or higher is required. The working cmake version can be
 	taken from SLES12 SP2 and installed on SLES12 SP0 or SP1.
+18. Bug 2622: ib_qib cannot be loaded after installing OFED 4.8 on RHEL 7.3 with
+	stock kernel (3.10.0-514). Modeprobe fails with "Invalid argument". It is
+	needed to pull a kernel update to 3.10.0-514.10.2 before installing OFED.
 
 
 Note: See the release notes of each component for additional issues.
