@@ -1,5 +1,5 @@
             Open Fabrics Enterprise Distribution (OFED)
-                CHELSIO T4/T5 RNIC RELEASE NOTES
+                CHELSIO T4/T5/T6 RNIC RELEASE NOTES
 			May 2017
 
 
@@ -63,7 +63,7 @@ EG:
 # rmmod iw_cxgb4; rmmod cxgb4; modprobe cxgb4; modprobe iw_cxgb4
 
 NOTE: The driver package on service.chelsio.com is getting updated
-periodically, including the T4/T5/T6 device firmare.  It is recommended
+periodically, including the T4/T5/T6 device firmware.  It is recommended
 to use latest available firmware at service.chelsio.com.  This driver
 should work with latest available firmware. In case of any issue please
 contact Chelsio support at support@chelsio.com.
@@ -101,7 +101,7 @@ versions, you should enable it manually.  Users can enable MPA version
 
 # modprobe iw_cxgb4 mpa_rev=2
 
-MPA v2 is an enahanced RDMA connection establishment. More details are
+MPA v2 provides enhanced RDMA connection establishment. More details are
 available at:
 
 https://tools.ietf.org/html/rfc6581
@@ -214,8 +214,8 @@ OpenMPI iWARP support is only available in OpenMPI version 1.3 or greater.
 
 Open MPI will work without any specific configuration via the openib btl.
 Users wishing to performance tune the configurable options may wish to
-inspect the receive queue values.  Those can be found in the "Chelsio T4"
-section of mca-btl-openib-hca-params.ini.
+inspect the receive queue values.  Those can be found in the "Chelsio"
+sections of mca-btl-openib-hca-params.ini.
 
 To run OpenMPI applications:
 
@@ -263,7 +263,7 @@ should be names/addresses that you can ssh to without passwords. (See
 Passwordless SSH Setup).
 
 On each node, create /etc/mv2.conf with a single line containing the
-IP address of the local T4 interface. This is how MVAPICH2 picks which
+IP address of the local cxgb4 interface. This is how MVAPICH2 picks which
 interface to use for RDMA traffic.
 
 On each node, edit /etc/hosts file. Comment the entry if there is an
@@ -279,10 +279,10 @@ To run MVAPICH2 application:
 Testing connectivity with ping and rping:
 ============================================
 
-Configure the ethernet interfaces for your T4 device. After you modprobe
-iw_cxgb4 you will see ethernet interfaces for the T4 device.  Configure
+Configure the ethernet interfaces for your cxgb4 device. After you modprobe
+iw_cxgb4 you will see ethernet interfaces for the cxgb4 device.  Configure
 them with an appropriate ip address, netmask, etc.  You can use the
-Linux ping command to test basic connectivity via the T4 interface.
+Linux ping command to test basic connectivity via the cxgb4 interface.
 
 To test RDMA, use the rping command that is included in the
 librdmacm-utils rpm:
