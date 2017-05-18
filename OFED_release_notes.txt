@@ -1,6 +1,6 @@
 	    Open Fabrics Enterprise Distribution (OFED)
 	          Version 4.8 Release Notes
-	               	   April 2017
+	               	   May 2017
 
 ===============================================================================
 Table of Contents
@@ -205,6 +205,19 @@ http://www.openfabrics.org/downloads/MAINTAINERS
 ===============================================================================
 2. Change log
 ===============================================================================
+OFED-4.8-rc3 Main Changes from OFED 4.8-rc2
+-------------------------------------------------------------------------------
+1. compat-rdma:
+- iwpmd: Enable the port mapper service for iWarp providers.
+- compat-rdma: Add i40iw to openibd
+- Interop related fixes for iWarp drivers i40iw and nes
+- configure: Fix typo
+- compat: Cleanup auto-generated defines
+
+2. Updated packages:
+- libfabric-1.4.2
+- fabtests-1.4.2
+
 OFED-4.8-rc2 Main Changes from OFED 4.8-rc1
 -------------------------------------------------------------------------------
 1. compat-rdma:
