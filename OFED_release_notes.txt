@@ -54,6 +54,7 @@ The OFED package contains the following components:
 	- Sources of all software modules (under conditions mentioned in the modules'
 		LICENSE files)
 	- Documentation
+	- VMware Paravirtual RDMA Driver (vmw_pvrdma) as Tech Preview.
 
 
 1.2 Supported Platforms and Operating Systems
