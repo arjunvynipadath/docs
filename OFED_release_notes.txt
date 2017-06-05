@@ -1,6 +1,6 @@
 	    Open Fabrics Enterprise Distribution (OFED)
 	          Version 4.8 Release Notes
-	               	   May 2017
+	               	   June 2017
 
 ===============================================================================
 Table of Contents
@@ -206,6 +206,19 @@ http://www.openfabrics.org/downloads/MAINTAINERS
 ===============================================================================
 2. Change log
 ===============================================================================
+OFED-4.8-rc4 Main Changes from OFED 4.8-rc3
+-------------------------------------------------------------------------------
+1. compat-rdma:
+- Revert "iwpmd: Enable the port mapper service for iWarp providers."
+
+2. Updated packages:
+- infiniband-diags-2.0.0
+- Removed libibmad (deprecated)
+
+3. install.pl
+- disable QIB driver on kernel 4.8
+- Disable inband support for mstflint
+
 OFED-4.8-rc3 Main Changes from OFED 4.8-rc2
 -------------------------------------------------------------------------------
 1. compat-rdma:
