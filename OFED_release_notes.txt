@@ -318,6 +318,11 @@ components of the OFED 4.8 release.
 18. Bug 2622: ib_qib cannot be loaded after installing OFED 4.8 on RHEL 7.3 with
 	stock kernel (3.10.0-514). Modeprobe fails with "Invalid argument". It is
 	needed to pull a kernel update to 3.10.0-514.10.2 before installing OFED.
+19. Bug 2619:  IPoIB interface fails on RHEL 7.2 using FW release 12.18.2000 with mlx5 MT_2180110032 adapter
+	Issue: Trying to bring ib0 interface fails with mlx5_0:mlx5_ib_post_send:
+	ib0: multicast join failed for ff12:401b:ffff:0000:0000:0000:ffff:ffff, status -22
+	Workaround: revert MT_2180110032 firmware from 12.18.2000 to 12.12.1100.
+20. NFSoRDMA is not supported
 
 
 Note: See the release notes of each component for additional issues.
