@@ -1,0 +1,154 @@
+            Open Fabrics Enterprise Distribution (OFED)
+	      Intel(R) Ethernet Controller X722 Release Notes
+                           June 2017
+
+
+========
+Overview
+========
+
+OFED 4.8 is the first OFED release to include support for RDMA
+feature in Intel(R) Ethernet Controller X722.  It includes the
+following software:
+
+Kernel module i40e provides L2 interface to X722.
+Kernel module i40iw enables RDMA feature in X722.
+User provider i40iw, in rdma-core, enables user application
+access to RDMA feature in X722.
+
+=============================================
+Supported Architectures and Operating Systems
+=============================================
+
+* CPU architectures:
+        - x86_64
+
+* Linux Operating Systems:
+	- kernel.org		4.8
+
+Linux kernel 4.8 is the only supported configuration in OFED 4.8
+for Intel(R) Ethernet Controller X722.
+
+To enable RDMA feature for Intel(R) Ethernet Controller X722 on other
+OFED 4.8 supported Linux distribution, please visit
+http://downloadcenter.intel.com to download the latest software release.
+
+=======================
+Loadable Module Options
+=======================
+
+The following options can be used when loading the i40iw module by modifying
+/etc/modprobe.conf.local file in the SLES hosts and /etc/modprobe.d/rnic.conf file in the RHEL hosts.
+
+resource_profile: Resource Profile: 0=no VF RDMA support (default), 1=Weighted VF, 2=Even Distribution
+
+max_rdma_vfs: Maximum VF count: 0-32, 32=default
+
+mpa_version: MPA version to be used in MPA Req/Resp 1 or 2, 2=default
+
+push_mode: Low latency mode: 0=disabled (default), 1=enabled
+NOTE: push_mode is not enabled in current drivers.
+
+debug: debug flags: 0=disabled (default), 0x7fffffff=all
+NOTE: Some useful debug settings include 0x1=print errors,
+      0x8=debug connection setup, 0x10=debug verbs for kernel apps
+
+===============
+Runtime Options
+===============
+The following options can be used:
+NOTE: Assuming Intel(R) Ethernet Controller X722 is assigned eth2.
+
+    ethtool -A eth2 rx on tx on - enables flow control 
+
+===================
+uDAPL Configuration
+===================
+The following uDAPL settings in /etc/dat.conf are required:
+
+    ofa-v2-iwarp u2.0 nonthreadsafe default libdaplofa.so.2 dapl.2.0 "eth2 0" ""
+
+========================
+Chelsio Interoperability
+========================
+The following load time Chelsio parameters must be set as bellow:
+
+    peer2peer=1
+    dack_mode=0
+
+============
+Known Issues
+============
+
+There may be incompatible i40e driver in the initramfs image and it can
+cause i40iw to not load properly.  Update the initramfs image with
+"dracut --force" or "update-initramfs -u".
+
+SELinux and firewall should be configured to allow traffic for
+UDP port 3935 which is used by the port mapper service (iwpmd).
+
+===========================
+100% CPU Utilization remark
+===========================
+
+Most of the RDMA applications use CQ Polling mode to decrease latency.
+This operational mode can cause 100% CPU utilization.
+
+To switch to Event Driven mode and lower CPU utilization please refer to
+README or Release Notes for specific application.
+
+==============
+mpd.hosts file
+==============
+mpd.hosts is a text file with a list of nodes, one per line, in the MPI ring.  
+Use either fully qualified hostname or IP address.
+
+===========================================
+Recommended Settings for Intel MPI 2017.0.x
+===========================================
+Add the following to mpiexec command:
+
+    -genv I_MPI_FALLBACK_DEVICE 0
+    -genv I_MPI_DEVICE rdma:ofa-v2-iwarp
+
+Example mpiexec command line for uDAPL-2.0:
+
+    mpiexec -genv I_MPI_FALLBACK_DEVICE 0
+            -genv I_MPI_DEVICE rdma:ofa-v2-iwarp
+            -ppn 1 -n 2
+            /opt/intelmpi_benchmark/2017.0.098/IMB-MPI1
+
+========================================
+Recommended Settings for Open MPI 2.1.x
+========================================
+From OFED-3.5 package OpenMPI is not a part of the OFED.
+
+Download openmpi-2.1.x package from following location:
+
+https://www.open-mpi.org/software/ompi/v2.1/
+
+There is more than one way to specify MCA parameters in
+OpenMPI.  Please visit this link and use the best method
+for your environment:
+
+http://www.open-mpi.org/faq/?category=tuning#setting-mca-params
+
+Example mpirun command line:
+
+    mpirun -np 2 -hostfile /opt/mpd.hosts
+           --map-by node --allow-run-as-root --display-map -v -tag-output
+           -mca_btl_openib_receive_queues P,128,256,192,128:P,65536,256,192,128
+           -mca btl openib,self,sm
+           -mca btl_mpi_leave_pinned 0
+           -mca oob ^ud
+           /opt/openmpi_benchmark/2.1.0/IMB-MPI1
+
+OpenMPI use CQ Polling mode as a default.
+No command parameter available to switch to Event Driven mode.
+
+=======
+Support
+=======
+
+For support information, go to http://www.intel.com/support
+or https://communities.intel.com/community/wired 
