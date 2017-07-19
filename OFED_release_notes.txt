@@ -307,5 +307,14 @@ components of the OFED 4.8 release.
 20. NFSoRDMA is not supported
 21. Bug 2628: rstream timeouts on 4k_lat test, qib driver
 22. SRP issues on RHEL7.2. Bugs: 2631, 2632 and 2634
+	Workaround with the SRP issue:
+		It is possible to install the ib_srp-backport driver on top of OFED as follow:
+		1. Install the OS (RHEL, SLES, ...).
+		2. Install OFED.
+		3. Install the ib_srp-backport driver, e.g. as follows (assuming $USER !=root):
+		git clone https://github.com/bvanassche/ib_srp-backport
+		cd ib_srp-backport
+		make rpm
+		sudo rpm -U $PWD/rpmbuilddir/RPMS/*/*.rpm
 
 Note: See the release notes of each component for additional issues.
