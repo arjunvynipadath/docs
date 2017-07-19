@@ -161,7 +161,7 @@ RoCE Switches
 ------------------------
 The following third party packages have been tested with OFED 4.8:
 - Open MPI - 1.8
-- Intel MPI 4.1.3
+- Intel MPI Library 2017
 - MVAPICH2 
 
 1.6 OFED Sources
