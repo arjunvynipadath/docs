@@ -101,6 +101,7 @@ InfiniBand Adapters
 
   o   Mellanox Technologies HCAs (FDR and FDR10 Modes are Supported):
 	- Connect-IB (Rev 10.10.5054 and above)
+	- ConnectX-4 (Rev 12.12.1100 and above)
 
 	For official firmware versions please see:
 	http://www.mellanox.com/content/pages.php?pg=firmware_download
