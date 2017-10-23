@@ -337,5 +337,10 @@ components of the OFED 4.8-1 release.
 	ib0: multicast join failed for ff12:401b:ffff:0000:0000:0000:ffff:ffff, status -22
 	Workaround: revert MT_2180110032 firmware from 12.18.2000 to 12.12.1100.
 19. Bug 2628: rstream timeouts on 4k_lat test, qib driver
+20. Bug 2644 – qedr: Changing Ethernet MTU prevents future RoCE traffic.
+	Changing the MTU size of the Ethernet interface will stop and prevent RoCE traffic on that interface.
+	To overcome this reload the qedr driver:
+	$ rmmod qedr
+	$ modprobe qedr
 
 Note: See the release notes of each component for additional issues.
