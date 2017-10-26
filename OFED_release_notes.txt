@@ -1,6 +1,6 @@
 	    Open Fabrics Enterprise Distribution (OFED)
 	          Version 4.8-1 Release Notes
-	               	   September 2017
+	               	   October 2017
 
 ===============================================================================
 Table of Contents
@@ -33,9 +33,9 @@ The OFED package contains the following components:
  - OpenFabrics core and ULPs:
 	- IB HCA drivers (mthca, mlx4, mlx5, qib, ehca)
 	- iWARP RNIC driver (cxgb3, cxgb4, nes)
-	- RoCE drivers (mlx4, mlx5, ocrdma)
+	- RoCE drivers (mlx4, mlx5, ocrdma, qedr)
  - IB core
- - Upper Layer Protocols: IPoIB, SRP Initiator and target,
+ - Upper Layer Protocols: IPoIB, SRP Initiator, iSER,
    uDAPL, qlgc_vnic and NFS-RDMA.
  - OpenFabrics utilities:
 	- OpenSM (OSM): InfiniBand Subnet Manager
@@ -207,6 +207,18 @@ http://www.openfabrics.org/downloads/MAINTAINERS
 ===============================================================================
 2. Change log
 ===============================================================================
+OFED-4.8-1-rc2 Main Changes from OFED-4.8-1-rc1
+-------------------------------------------------------------------------------
+1. compat-rdma
+- Fixes for i40iw which have been included in kernels 4.12 and 4.13
+- qedr: fix BZ 2642 - parse VLAN ID and priority correctly
+- bnxt_en: Bug 2645 - Set default completion ring for async events
+- bnxt_re: bz 2646 - 0012-bnxt_re-Make-room-for-mapping-beyond-32-entries.patch
+
+2. Updated packages
+- libfabric-1.5.1
+- fabtests-1.5.1
+
 OFED-4.8-1-rc1 Main Changes from OFED 4.8 GA
 -------------------------------------------------------------------------------
 1. compat-rdma
@@ -342,5 +354,17 @@ components of the OFED 4.8-1 release.
 	To overcome this reload the qedr driver:
 	$ rmmod qedr
 	$ modprobe qedr
+21. Bug 2639 - ib_isert/ib_srpt report "Unknown symbol" after OFED-4.8-1 installation:
+	ib_srpt and ib_isert kernel modules are not included in OFED-4.8-x. So, after OFED
+	installation the in-box ib_core being replaced by one coming with OFED and,
+	therefore, in-box ib_srpt and ib_isert kernel modules fail to be loaded over
+	OFED's ib_core. If one need to use iSER or SRP target then need to recompile
+	iSERT/SRPT over the OFED.
+22. Bug 2640 - openibd fail to start when system is coming up:
+	The inbox kernel modules being loaded from initrd
+	So, need to rebuild the initrd by:
+	# dracut -f -v
+23. Bug 2641 - IPoIB: Missing first ping after clearing ARP cache:
+	This is a known issue by IPoIB design
 
 Note: See the release notes of each component for additional issues.
