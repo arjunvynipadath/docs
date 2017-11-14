@@ -1,6 +1,6 @@
 	    Open Fabrics Enterprise Distribution (OFED)
 	          Version 4.8-1 Release Notes
-	               	   October 2017
+	               	   November 2017
 
 ===============================================================================
 Table of Contents
@@ -207,6 +207,21 @@ http://www.openfabrics.org/downloads/MAINTAINERS
 ===============================================================================
 2. Change log
 ===============================================================================
+OFED-4.8-1-rc3 Main Changes from OFED-4.8-1-rc2
+-------------------------------------------------------------------------------
+1. compat-rdma
+- bnxt_en/bnxt_re: Support ulp_shutdown hook
+- bnxt_re: BZ 2655 Fix nfs client hang with a call trace on stress traffic
+- bnxt_re: BZ 2654 Fix traffic failure after changing ip address
+- bnxt_re: BZ 2656 fix a crash in qp error event processing
+- bnxt_en: BZ 2649 Enabling DCB parameter for bnxt_en
+
+2. Updated packages
+- rdma-core stable-v15
+- libfabric-1.5.2
+- fabtests-1.5.2
+- mstflint-4.8.0
+
 OFED-4.8-1-rc2 Main Changes from OFED-4.8-1-rc1
 -------------------------------------------------------------------------------
 1. compat-rdma
