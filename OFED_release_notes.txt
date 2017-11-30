@@ -211,36 +211,19 @@ http://www.openfabrics.org/downloads/MAINTAINERS
 ===============================================================================
 2. Change log
 ===============================================================================
-OFED-4.8-1-rc3 Main Changes from OFED-4.8-1-rc2
+OFED-4.8-1 Main Changes from OFED-4.8
 -------------------------------------------------------------------------------
 1. compat-rdma
+- openibd: rpcrdma added to the list of modules to unload
 - bnxt_en/bnxt_re: Support ulp_shutdown hook
 - bnxt_re: BZ 2655 Fix nfs client hang with a call trace on stress traffic
 - bnxt_re: BZ 2654 Fix traffic failure after changing ip address
 - bnxt_re: BZ 2656 fix a crash in qp error event processing
 - bnxt_en: BZ 2649 Enabling DCB parameter for bnxt_en
-
-2. Updated packages
-- rdma-core stable-v15
-- libfabric-1.5.2
-- fabtests-1.5.2
-- mstflint-4.8.0
-
-OFED-4.8-1-rc2 Main Changes from OFED-4.8-1-rc1
--------------------------------------------------------------------------------
-1. compat-rdma
 - Fixes for i40iw which have been included in kernels 4.12 and 4.13
 - qedr: fix BZ 2642 - parse VLAN ID and priority correctly
 - bnxt_en: Bug 2645 - Set default completion ring for async events
 - bnxt_re: bz 2646 - 0012-bnxt_re-Make-room-for-mapping-beyond-32-entries.patch
-
-2. Updated packages
-- libfabric-1.5.1
-- fabtests-1.5.1
-
-OFED-4.8-1-rc1 Main Changes from OFED 4.8 GA
--------------------------------------------------------------------------------
-1. compat-rdma
 - ib_srp: Fixed backport - issue 2635
 - bnxt_en: Misc bug fixes
 - bnxt_re: Fix bnxt_en installation in the latest daily builds
@@ -260,7 +243,10 @@ OFED-4.8-1-rc1 Main Changes from OFED 4.8 GA
 - Add qedr
 
 2. Updated packages
-- rdma-core-v15
+- rdma-core stable-v15
+- libfabric-1.5.2
+- fabtests-1.5.2
+- mstflint-4.8.0
 
 3. ofed_scripts
 - Added support for rdma-core new packaging format
