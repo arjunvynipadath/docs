@@ -124,7 +124,7 @@ RoCE Adapters
 	- ConnectX-3 EN (Rev 2.31.5050 and above)
 
   o   Cavium
-	- QL4xxx series of converged network adapters (RoCEv2)
+	- QL4xxxx series of converged network adapters (RoCEv2)
 
   o   Broadcom
 	- NetXtreme Ethernet Network Adapters (RoCEv2)
