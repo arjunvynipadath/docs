@@ -1,0 +1,160 @@
+		  Open Fabrics Enterprise Distribution (OFED)
+       QLogic Everest Driver for RDMA protocols (RoCE, and soon iWARP too)
+			       QLogic Corporation
+		   Copyright (c) 2014-2017 QLogic Corporation
+
+
+			   OFED 4.18-2 Release Notes
+
+				 December 2018
+
+
+Table of Contents
+=================
+  Introduction
+  Link speed
+  Device configuration
+  Supported kernels / distros / OFED
+  Supported software
+  RoCE v2 support
+  CPU affinity
+  Optimizing the doorbell BAR usage
+  Working with large or many resources
+  Limitations
+  Troubleshooting
+
+
+Introduction
+============
+This file describes the QEDR (QLogic Everest Driver for RDMA) driver for QL4xxx
+series of converged network interface cards. The RDMA driver is designed to work
+in OFED environment in conjunction with the QED core module and the QEDE
+Ethernet module. In addition, userspace applications require that the libqedr
+user library be installed on the server.
+
+
+Link speed
+==========
+The devices driven by this driver support the following link speeds:
+- 2x10G
+- 4x10G
+- 2x25G
+- 4x25G
+- 2x40G
+- 2x50G
+- 1x100G
+
+
+Device configuration
+====================
+RoCE support is enabled by default in NVRAM. Flow control and priority can
+also be enabled and configured in NVRAM including legacy and DCBx
+IEEE/CEE/Auto. Configuration of the NVRAM can be performed via the FastLinQ
+4xxxx Diagnostic Tool for Linux, a.k.a. Qlediag, via the preboot
+configuration tools and via the userspace configuration application.
+
+
+Supported kernels / distros
+===========================
+     RHEL 7.0, 7.1, 7.2
+     CentOS 7.0, 7.1, 7.2
+     SLES12 SP1, SP2, SP3
+
+
+Supported software
+==================
+Below is the list of benchmark and test applications tested with this driver:
+- ibv_rc_pingpong, ibv_srq_pingpong (RoCE only)
+- ibv_devinfo
+- ib_send_bw/lat, ib_write_bw/lat, ib_read_bw/lat, ib_atomic_bw/lat
+- rdma_server / rdma_client
+- rping
+- qperf
+- fio
+- cmtime
+- riostream
+- ucmtose
+
+Below is the list of ULPs tested with this driver:
+- iser
+- NFSoRDMA
+- NVMf
+
+Below is the list of applications tested with this driver:
+- MVAPICH2
+- Open MPI
+- Intel MPI
+
+note: it is recommend not to unload qedr (or any other RDMA driver for that
+      matter) while a RoCE application or ULP is running.
+
+
+RoCE v2 support
+===============
+
+Overview
+--------
+RoCE v2, a.k.a. Routable RoCE allows routing RoCE packets via IPv4 or IPv6.
+Destination port number 0x4791 is used to indicate a RoCE v2 packet while the
+source port can vary. Packets with the same UDP source port and the same
+destination address must not be reordered. Packets with different UDP source
+port numbers and the same destination address may be sent over different links
+to that destination address. Devices driven by qedr fully support RoCE v2
+in both Ipv4 and IPv6 modes. In order to operate in RoCE v2 both the driver
+and OFED version must also support RoCE v2.
+
+Operation
+---------
+Some apps/benchmarks can be configured to use RoCE v2 by using a specific GID.
+GIDs can be of types RoCEv1, RoCEv2-IPv6 or RoCEv2-IPv4. By choosing the
+appropriate GID, usually via the GID index, the RDMA traffic type will be set
+accordingly. In order to run ULPs and RDMA CM applications the RDMA CM must be
+configured to RoCE v2 mode. Note that RDMA CM may only be in either RoCEv1 or
+RoCEv2 mode.
+
+
+CPU affinity
+============
+The affinity of a device's completion vectors to CPUs can be easily set so that
+each vector will interrupt a different CPU. This is relevant to applications and
+ULPs that use interrupt mode.
+
+
+Optimizing the doorbell BAR usage
+=================================
+Everest 4 BigBear and Arrowhead use a PCI bar to issue doorbells to the NIC. The
+size of this BAR is configured in the NVRAM and takes effect when the server
+boots.
+The more Queue Pairs required by the RoCE driver, the more applications run
+simultaneously and the more CPUs, the larger the BAR size should be.
+However, having a bigger BAR increases the risk of the kernel failing to
+provision all of the PFs with their BAR requirements, resulting with PFs which
+fail to probe.
+
+
+Working with large or many resources
+====================================
+When working with large resources such as CQ, SQ or RQ, fine tuning the server
+may be required. In order to accommodate the mapping of large memory regions
+and/or the mapping of many small pages, the following may require tuning:
+1) In RHEL the maximum size of allocated memory region is configured in per user
+    in: /etc/security/limits.conf. It is given in the number of kbytes or simply
+    set to "unlimited". For example:
+      *  soft  memlock  <number>
+      *  hard  memlock  <number>
+   where number stands for kbytes or may be simply the word "unlimited" and "*"
+   stands for the all user in this example.
+2) In RHEL the maximum number of mappings per process may be read by:
+     > cat /proc/sys/vm/max_map_count
+   and configure by:
+     > echo <number> > /proc/sys/vm/max_map_count
+   where number stands for the number of mappings per process.
+
+
+Limitations
+===========
+- qedr was tested on 64 bit systems only.
+- qedr has only little endian support.
+- qedr will not work over virtual function in SRIOV environment.
+- qedr running over a PF with SRIOV capability was not tested.
+
