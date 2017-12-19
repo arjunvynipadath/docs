@@ -14,6 +14,7 @@ Table of Contents
 	- OFED sources
 2. Change log
 3. Known Issues
+4. Generic Notes
 
 ===============================================================================
 1. Overview
@@ -380,3 +381,12 @@ components of the OFED 4.8-1 release.
 	Connection refused (stale connection )
 
 Note: See the release notes of each component for additional issues.
+
+===============================================================================
+4. Generic Notes
+===============================================================================
+1. install.pl - '--without-depcheck' parameter should be used in case where the
+   required dependencies sutisfied using 'make install' command and not in RPM
+   form, so, they cannot be verified by the install.pl script.
+   Using '--without-depcheck' when the dependency is actually not present may
+   lead to undesired behaviour both in compilation and run time.
