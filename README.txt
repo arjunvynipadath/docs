@@ -135,10 +135,6 @@ Notes:
    later to be installed and can be downloaded from
    http://software.intel.com/mic-developer.
 
-   To build and install the technology preview of VMware Paravirtual RDMA
-   driver, please add 'vmw_pvrdma=y' to the OFED configuration file. The user
-   library is already installed as part of rdma-core.
-
 Install Process Results:
 ------------------------
 
