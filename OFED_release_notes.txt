@@ -1,6 +1,6 @@
 	    Open Fabrics Enterprise Distribution (OFED)
-	          Version 4.8-1 Release Notes
-	               	   November 2017
+	          Version 4.8-2 Release Notes
+	               	   February 2018
 
 ===============================================================================
 Table of Contents
@@ -20,7 +20,7 @@ Table of Contents
 1. Overview
 ===============================================================================
 These are the release notes of OpenFabrics Enterprise Distribution (OFED)
-release 4.8-1. The OFED software package is composed of several software modules,
+release 4.8-2. The OFED software package is composed of several software modules,
 and is intended for use on a computer cluster constructed as an InfiniBand
 Fabric, an iWARP Network or a RoCE Fabric.
 
@@ -28,7 +28,7 @@ Note: If you plan to upgrade the OFED package on your cluster, please upgrade
 all of its nodes to this new version.
 
 
-1.1 OFED 4.8-1 Contents
+1.1 OFED 4.8-2 Contents
 -----------------------
 The OFED package contains the following components:
  - OpenFabrics core and ULPs:
@@ -65,9 +65,11 @@ The OFED package contains the following components:
 	- RedHat EL7.1 		3.10.0-210.el7
 	- RedHat EL7.2 		3.10.0-327.el7
 	- RedHat EL7.3 		3.10.0-514.el7
+	- RedHat EL7.4 		3.10.0-693.el7
 	- SLES12        	3.12.28-4
 	- SLES12.1        	3.12.49-11.1
 	- SLES12.2        	4.4.21-69-default
+	- SLES12.3        	4.4.73-5-default
 	- kernel.org		4.8    *
 
       * Minimal QA for these versions.
@@ -212,6 +214,48 @@ http://www.openfabrics.org/downloads/MAINTAINERS
 ===============================================================================
 2. Change log
 ===============================================================================
+OFED-4.8-2-rc1 Main Changes from OFED-4.8-1
+-------------------------------------------------------------------------------
+1. compat-rdma
+- bnxt_en: Fix Max MTU setting on SLES 12 SP3
+- qede: SLE12SP3 Backport fix use core min max MTU check
+- cxgb: SLE12SP3 Backport fix: use net core MTU range checking
+- Remove vmw_pvrdma tech preview patches
+- Fixed mlx4 backport
+- qedr cherry pick: lower message verbosity
+- Update qib backport for SLES 12.3
+- bnxt_en: backport for RH 7.0 and 7.1
+- compat-rdma.spec: Added compat-rdma-firmware subpackage
+- bnxt_en: Backporting for RHEL 7.4 and SLES12SP3
+- qedr: Add backports for RHEL 7.4 and SLES 12 SP3
+- configure: Add parameters for RXE and RDMAVT
+- ib_iser: Added support for SLES12 SP3
+- mlx5: Added support for SLES12 SP3
+- mlx4: Added support for SLES12 SP3
+- ib_core: Added support for SLES12 SP3
+- mlx5: Added RHEL7.4 support
+- mlx4: Added RHEL7.4 support
+- configure/makefile: Rename CONFIG_INFINIBAND_RXE -> CONFIG_RDMA_RXE to match upstream
+
+2. Updated packages
+- rdma-core-v16.2
+- fabtests-1.5.3
+- libfabric-1.5.3
+- perftest-4.1-0.2.g770623f
+
+3. ofed_scripts
+- add --with-rdmavt-mod for qib
+- Add VMware Paravirtual RDMA Driver as an installable driver
+- Remove vmw_pvrdma tech preview install option
+- install.pl: Added rdma-core-devel dependency for the perftest build
+- Revert "install.pl: Enable bnxt_re on supported OSes only"
+- install.pl: Added compat-rdma-firmware package
+- install.pl: Enable bnxt_re on supported OSes only
+- install.pl: Updated rdma-core dependencies
+- install.pl: Remove requirement on the specific cmake version
+- install.pl: Added support for SLES12 SP3
+- install.pl: Added RHEL7.4 support
+
 OFED-4.8-1 Main Changes from OFED-4.8
 -------------------------------------------------------------------------------
 1. compat-rdma
@@ -389,3 +433,8 @@ Note: See the release notes of each component for additional issues.
    form, so, they cannot be verified by the install.pl script.
    Using '--without-depcheck' when the dependency is actually not present may
    lead to undesired behaviour both in compilation and run time.
+
+2. ULP and Driver restrictions:
+- NVMe-oF (kernel 4.8 only)
+- NFS-RDMA (SLES12.2 RH7.3 only).
+- i40iw 10GbE iWARP Adapter (kernel 4.8 only)
