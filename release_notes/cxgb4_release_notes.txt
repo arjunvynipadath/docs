@@ -1,6 +1,6 @@
             Open Fabrics Enterprise Distribution (OFED)
                 CHELSIO T4/T5/T6 RNIC RELEASE NOTES
-			May 2017
+			Feb 2018
 
 
 The iw_cxgb4 and cxgb4 modules provide RDMA and NIC support for the
@@ -31,7 +31,9 @@ New for OFED-3.12
 Supported Cards
 ================
 
-T6: T62100-CR, T62100-LP-CR, T6225-CR
+T6: T6225-CR, T6225-SO-CR, T6425-CR, T6425-SO-CR, T6225-OCP-SO,
+    T62100-OCP-SO, T62100-LP-CR, T62100-SO-CR, T6210-BT, T62100-CR,
+    T6225-LL-CR, T61100-OCP-SO, T6201-BT
 T5: T502-BT, T580-CR, T580-LP-CR, T520-LL-CR, T520-CR, T522-CR, T540-CR
 T4: T420-CR, T440-CR, T422-CR, T404-BT, T440-LP-CR, T420-LL-CR, T420-CX
 
