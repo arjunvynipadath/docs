@@ -420,13 +420,13 @@ components of the OFED 4.8-1 release.
 	# dracut -f -v
 23. Bug 2641 - IPoIB: Missing first ping after clearing ARP cache:
 	This is a known issue by IPoIB design
-
 24. Bug 2661 - rstream intermittent error: Connection refused (stale connection)
 	1. Two Q-Logic/Cavium NICs back to back
 	2. Command: rstream -S all -T a
 
 	on the second connect in the test:
 	Connection refused (stale connection )
+25: Bug #2666 - bnxt_re: hwrm req_type 0x51 seq id 0x140 error 0x2 failure observed upon starting lldpad service
 
 Note: See the release notes of each component for additional issues.
 
