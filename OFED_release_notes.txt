@@ -27,6 +27,13 @@ Fabric, an iWARP Network or a RoCE Fabric.
 Note: If you plan to upgrade the OFED package on your cluster, please upgrade
 all of its nodes to this new version.
 
+Note: If you are installing the OFED package on a system that contains the
+providers drivers in the initrd / initramfs you should update the initramfs
+to indicate the new driver locations either manually or  using the command:
+dracut -f -v --force for a full rewrite (May differ per distro)
+Failing to do so may lead to failing to probe vendor specific infiniband drivers
+with a mismatch message, or running with inbox drivers instead of the drivers
+that are part of OFED.
 
 1.1 OFED 4.8-2 Contents
 -----------------------
