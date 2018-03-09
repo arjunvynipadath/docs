@@ -1,6 +1,6 @@
 	    Open Fabrics Enterprise Distribution (OFED)
 	          Version 4.8-2 Release Notes
-	               	   February 2018
+	               	   March 2018
 
 ===============================================================================
 Table of Contents
@@ -221,6 +221,23 @@ http://www.openfabrics.org/downloads/MAINTAINERS
 ===============================================================================
 2. Change log
 ===============================================================================
+OFED-4.8-2-rc3 Main Changes from OFED-4.8-2-rc2
+-------------------------------------------------------------------------------
+1. compat-rdma
+bnxt_re: Avoid Hard lockup during error CQE processing
+BACKPORT qed: Enable RoCE parser searching on fp init
+BACKPORT qed: fix dump of context data
+qed: Backport Free RoCE ILT Memory on rmmod qedr
+bnxt_re: Fix incorrect DB offset calculation
+bnxt_re: Unconditionly fence non wire memory operations
+bnxt_re: Fix race conditions during load/unload testing
+bnxt_re: Fix memory leak if QP create fails
+bnxt_re: Disable atomics support
+
+2. Updated packages
+- ofed-scripts:
+  install.pl: Ignore firmware in compat-rdma-content. bug: 2677
+
 OFED-4.8-2-rc2 Main Changes from OFED-4.8-2-rc1
 -------------------------------------------------------------------------------
 1. Updated packages
