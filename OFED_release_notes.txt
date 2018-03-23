@@ -221,31 +221,21 @@ http://www.openfabrics.org/downloads/MAINTAINERS
 ===============================================================================
 2. Change log
 ===============================================================================
-OFED-4.8-2-rc3 Main Changes from OFED-4.8-2-rc2
+OFED-4.8-2 Main Changes from OFED-4.8-1
 -------------------------------------------------------------------------------
 1. compat-rdma
-bnxt_re: Avoid Hard lockup during error CQE processing
-BACKPORT qed: Enable RoCE parser searching on fp init
-BACKPORT qed: fix dump of context data
-qed: Backport Free RoCE ILT Memory on rmmod qedr
-bnxt_re: Fix incorrect DB offset calculation
-bnxt_re: Unconditionly fence non wire memory operations
-bnxt_re: Fix race conditions during load/unload testing
-bnxt_re: Fix memory leak if QP create fails
-bnxt_re: Disable atomics support
-
-2. Updated packages
-- ofed-scripts:
-  install.pl: Ignore firmware in compat-rdma-content. bug: 2677
-
-OFED-4.8-2-rc2 Main Changes from OFED-4.8-2-rc1
--------------------------------------------------------------------------------
-1. Updated packages
-- rdma-core-v16.3
-
-OFED-4.8-2-rc1 Main Changes from OFED-4.8-1
--------------------------------------------------------------------------------
-1. compat-rdma
+- bnxt_re: Add speed defines for 50G and 100G adapters
+- IB/core: Adding IB_SPEED_HDR definition
+- bnxt_en: Adding device ids for BCM5880x devices
+- bnxt_re: Avoid Hard lockup during error CQE processing
+- BACKPORT qed: Enable RoCE parser searching on fp init
+- BACKPORT qed: fix dump of context data
+- qed: Backport Free RoCE ILT Memory on rmmod qedr
+- bnxt_re: Fix incorrect DB offset calculation
+- bnxt_re: Unconditionly fence non wire memory operations
+- bnxt_re: Fix race conditions during load/unload testing
+- bnxt_re: Fix memory leak if QP create fails
+- bnxt_re: Disable atomics support
 - bnxt_en: Fix Max MTU setting on SLES 12 SP3
 - qede: SLE12SP3 Backport fix use core min max MTU check
 - cxgb: SLE12SP3 Backport fix: use net core MTU range checking
@@ -267,23 +257,23 @@ OFED-4.8-2-rc1 Main Changes from OFED-4.8-1
 - configure/makefile: Rename CONFIG_INFINIBAND_RXE -> CONFIG_RDMA_RXE to match upstream
 
 2. Updated packages
-- rdma-core-v16.2
+- ofed-scripts:
+  install.pl: Ignore firmware in compat-rdma-content. bug: 2677
+  add --with-rdmavt-mod for qib
+  Add VMware Paravirtual RDMA Driver as an installable driver
+  Remove vmw_pvrdma tech preview install option
+  install.pl: Added rdma-core-devel dependency for the perftest build
+  Revert "install.pl: Enable bnxt_re on supported OSes only"
+  install.pl: Added compat-rdma-firmware package
+  install.pl: Enable bnxt_re on supported OSes only
+  install.pl: Updated rdma-core dependencies
+  install.pl: Remove requirement on the specific cmake version
+  install.pl: Added support for SLES12 SP3
+  install.pl: Added RHEL7.4 support
+- rdma-core-v16.3
 - fabtests-1.5.3
 - libfabric-1.5.3
 - perftest-4.1-0.2.g770623f
-
-3. ofed_scripts
-- add --with-rdmavt-mod for qib
-- Add VMware Paravirtual RDMA Driver as an installable driver
-- Remove vmw_pvrdma tech preview install option
-- install.pl: Added rdma-core-devel dependency for the perftest build
-- Revert "install.pl: Enable bnxt_re on supported OSes only"
-- install.pl: Added compat-rdma-firmware package
-- install.pl: Enable bnxt_re on supported OSes only
-- install.pl: Updated rdma-core dependencies
-- install.pl: Remove requirement on the specific cmake version
-- install.pl: Added support for SLES12 SP3
-- install.pl: Added RHEL7.4 support
 
 OFED-4.8-1 Main Changes from OFED-4.8
 -------------------------------------------------------------------------------
