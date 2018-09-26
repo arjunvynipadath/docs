@@ -1,21 +1,18 @@
-                  README/Release Notes
-           OFED 3.18-2 DAPL Release 2.1.9-2
-		              April 2016
+                 README/Release Notes
+           OFED 4.17 DAPL Release 2.1.10-1
+		   November 2018
 
 	User space libraries/utilities for Direct Access Transport (DAT) v2.0. DAT is 
 	a transport-independent, platform-independent Application Programming 
 	Interface that supports RDMA (remote direct memory access) devices. 
 	Note: v1.2 is no longer supported and will not be included with OFED releases
 
-	MIC support is provided with the new MCM provider and MPXYD service, since dapl-2.1.0. 
-        MCM requires the Intel(R) MPSS 3.x (YOCTO) release for Linux to be installed on your system. 
-        MPSS 3.x for Linux can be downloaded from: http://software.intel.com/mic-developer
-
 	For latest documentation and packages: //www.openfabrics.org/downloads/dapl/ 
 
 	=================
 	1.0 Release Notes
 	=================
+	dapl-2.1.10-1 CCL Proxy optimization for post_send, dtest/dtest_suite improvements, bug fixes, UCM log for timers
 	dapl-2.1.9-2 changes include bug fixes, MFO fixes, GID query attributes
 	dapl-2.1.9-1 changes include dtestcm improvement, bug fixes for MIC, Fix SCM interop issue with MTU	
 

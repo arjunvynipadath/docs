@@ -1,6 +1,6 @@
             Open Fabrics Enterprise Distribution (OFED)
-                       Version 3.12 README
-                          May 2014
+                       Version 4.17 README
+                          May 2018
 
 ==============================================================================
 Table of contents
@@ -22,7 +22,7 @@ Table of contents
 1. Overview
 ==============================================================================
 
-This is the OpenFabrics Enterprise Distribution (OFED) version 3.12
+This is the OpenFabrics Enterprise Distribution (OFED) version 4.17
 software package supporting InfiniBand, iWARP and RoCE fabrics. It is composed
 of several software modules intended for use on a computer cluster
 constructed as an InfiniBand subnet or an iWARP network.
@@ -126,14 +126,6 @@ Notes:
    See examples of ofed.conf and ofed_net.conf under OFED-X.X.X/docs.
    Run './install.pl -p' to get ofed.conf with all available packages included.
 
-   To enable selection of the technology preview for XEON PHI support, the
-   parameter --with-xeon-phi must be provided.  Both kernel packages ibp_server
-   and ibscif needs to be selected as well as the user-mode packages ibpd and
-   libibscif.  The interactive installation and --all will include these,
-   neither --hpc nor --basic will.  This requires the linux version of
-   Intel(R) Manycore Platform Software Stack (Intel(R) MPSS) version 3.4 or
-   later to be installed and can be downloaded from
-   http://software.intel.com/mic-developer.
 
 Install Process Results:
 ------------------------

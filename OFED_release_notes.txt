@@ -1,12 +1,12 @@
 	    Open Fabrics Enterprise Distribution (OFED)
-	          Version 4.8-2 Release Notes
-	               	   March 2018
+	          Version 4.17 RC1 Release Notes
+	               September 2018
 
 ===============================================================================
 Table of Contents
 ===============================================================================
 1. Overview, which includes:
-	- OFED Distribution Rev 4.8-1 Contents
+	- OFED Distribution Rev 4.17 Contents
 	- Supported Platforms and Operating Systems
 	- Supported HCA and RNIC Adapter Cards and Firmware Versions
 	- Tested Switch Platforms
@@ -20,7 +20,7 @@ Table of Contents
 1. Overview
 ===============================================================================
 These are the release notes of OpenFabrics Enterprise Distribution (OFED)
-release 4.8-2. The OFED software package is composed of several software modules,
+release 4.17. The OFED software package is composed of several software modules,
 and is intended for use on a computer cluster constructed as an InfiniBand
 Fabric, an iWARP Network or a RoCE Fabric.
 
@@ -35,28 +35,24 @@ Failing to do so may lead to failing to probe vendor specific infiniband drivers
 with a mismatch message, or running with inbox drivers instead of the drivers
 that are part of OFED.
 
-1.1 OFED 4.8-2 Contents
+1.1 OFED 4.17 Contents
 -----------------------
 The OFED package contains the following components:
  - OpenFabrics core and ULPs:
 	- IB HCA drivers (mthca, mlx4, mlx5, qib, ehca)
-	- iWARP RNIC driver (cxgb3, cxgb4, nes, i40iw, qedr)
-	- RoCE drivers (mlx4, mlx5, ocrdma, qedr, bnxt_re)
+	- iWARP RNIC driver (cxgb3, cxgb4, i40iw, qedr)
+	- RoCE drivers (mlx4, mlx5, qedr, bnxt_re)
  - IB core
  - Upper Layer Protocols:
-	- IPoIB, SRP Initiator, iSER, uDAPL, qlgc_vnic
-	- NVMe-oF (kernel 4.8 only)
-	- NFS-RDMA (SLES12.2 RH7.3 only).
+	- IPoIB, SRP Initiator, iSER, uDAPL 
+	- NVMe-oF 
  - OpenFabrics utilities:
 	- OpenSM (OSM): InfiniBand Subnet Manager
 	- Diagnostic tools
 	- Performance tests
  - Extra packages:
-	- infinipath-psm: Performance-Scaled Messaging API, an accelerated
-	  interface to Intel(R) HCAs
 	- libfabric - library that exports interfaces for fabric services to applications
-	- Sources of all software modules (under conditions mentioned in the modules'
-		LICENSE files)
+	- Sources of all software modules (under conditions mentioned in the modules LICENSE files)
 	- Documentation
 
 
@@ -68,22 +64,17 @@ The OFED package contains the following components:
 	- ppc64
 
   o   Linux Operating Systems:
-	- RedHat EL7.0 		3.10.0-123.el7
-	- RedHat EL7.1 		3.10.0-210.el7
-	- RedHat EL7.2 		3.10.0-327.el7
-	- RedHat EL7.3 		3.10.0-514.el7
 	- RedHat EL7.4 		3.10.0-693.el7
-	- SLES12        	3.12.28-4
-	- SLES12.1        	3.12.49-11.1
-	- SLES12.2        	4.4.21-69-default
+	- RedHat EL7.5 		3.10.0-862.el7
 	- SLES12.3        	4.4.73-5-default
-	- kernel.org		4.8    *
+	- SLES15        	4.12.14-23.1-default
+	- kernel.org		4.17    *
 
       * Minimal QA for these versions.
 
 1.3 HCAs and RNICs Supported
 ----------------------------
-This release supports IB HCAs by IBM, Intel and Mellanox Technologies, iWARP RNICs by Chelsio Communications and Intel and RoCE adapters by Emulex, IBM, Mellanox, Cavium, and Broadcom.
+This release supports IB HCAs by IBM, Intel and Mellanox Technologies, iWARP RNICs by Chelsio Communications and Intel and RoCE adapters by IBM, Mellanox, Cavium, and Broadcom.
 
 InfiniBand Adapters
   o   IBM HCAs:
@@ -103,6 +94,10 @@ InfiniBand Adapters
 
   o   Mellanox Technologies HCAs (EDR, FDR, FDR10 Modes are Supported):
 	- ConnectX-4 (Rev 12.12.x and above)
+	- ConnectX-5 (Rev xx.xx.x and above)
+	
+  o   Mellanox Technologies HCAs (HDR, EDR, FDR, FDR10 Modes are Supported):
+	- ConnectX-6 (Rev xx.xx.x and above)
 
 	For official firmware versions please see:
 	http://www.mellanox.com/content/pages.php?pg=firmware_download
@@ -116,14 +111,12 @@ iWARP Adapters
 	- T6: T62100-CR, T62100-LP-CR, T6225-CR
 
   o   Intel RNICs:
-	- NE020 10Gb iWARP Adapter
-	- i40iw 10Gb iWARP Adapter (kernel 4.8 only)
+	- i40iw 10Gb iWARP Adapter (kernel 4.17 only)
+
+  o   Cavium
+	- QL4xxxx series of converged network adapters (iWARP)
 
 RoCE Adapters
- o   Emulex - using ocrdma
-	- Emulex OCe14102 2-port 10 GbE RoCE
-	- Emulex OCe14401 1-port 40 GbE RoCE
-
  o   IBM
 	- IBM Flex System EN4132 2-port 10 GbE RoCE
 	- IBM EL27 PCIe LP 2-Port 10GbE RoCE SFP+ adapter
@@ -132,6 +125,9 @@ RoCE Adapters
   o   Mellanox
 	- ConnectX-2 EN (Rev 2.9.1200 and above)
 	- ConnectX-3 EN (Rev 2.31.5050 and above)
+	- ConnectX-4 EN (Rev x.xx.xxxx and above)
+	- ConnectX-5 EN (Rev x.xx.xxxx and above)
+	- ConnectX-6 EN (Rev x.xx.xxxx and above)
 
   o   Cavium
 	- QL4xxxx series of converged network adapters (RoCEv2)
@@ -142,13 +138,13 @@ RoCE Adapters
 Other Drivers
 	- VMware Paravirtual RDMA Driver (vmw_pvrdma)
 	- Software RDMA over Ethernet (RoCEv2)
-	- NVMe-oF Host and Target (kernel 4.8 only)
+	- NVMe-oF Host and Target 
 
 
 1.4 Switches Supported
 ----------------------
-This release was tested with switches and gateways provided by the following
-companies:
+This release was tested with switches and gateways as follow:
+
 InfiniBand Switches
   o   Flextronics
 	- F-X430044
@@ -174,10 +170,9 @@ RoCE Switches
 
 1.5 Third Party Packages
 ------------------------
-The following third party packages have been tested with OFED 4.8-1:
-- Open MPI - 1.8
-- Intel MPI Library 2017
-- MVAPICH2
+The following third party packages have been tested with OFED 4.17:
+- Open MPI - 3.x
+- Intel MPI Library 2018
 
 1.6 OFED Sources
 ----------------
@@ -185,11 +180,11 @@ All sources are located under git://git.openfabrics.org/
 
 Linux:
 ------
-URL: git://git.openfabrics.org/compat-rdma/linux-4.8.git
+URL: git://git.openfabrics.org/compat-rdma/linux-4.17.git
 Branch: master
 
 - Linux kernel sub-tree that includes files relevant for the OFED project only.
-  Based on v4.8. Used to shorten git clone time.
+  Based on v4.17. Used to shorten git clone time.
   Note: the regular Linux git tree can be used as well.
 
 compat:
@@ -221,6 +216,20 @@ http://www.openfabrics.org/downloads/MAINTAINERS
 ===============================================================================
 2. Change log
 ===============================================================================
+
+-------------------------------------------------------------------------------
+OFED-4.17 Main Changes from OFED-4.8-2
+-------------------------------------------------------------------------------
+1. Add support for RHEL7.5 and SLES15 
+2. Remove support for RHEL7.0,7.1,7.2,7.3, and SLES12.0,12.1,12.2  
+
+3. compat-rdma
+
+4. Updated packages
+
+5. ofed_scripts
+
+-------------------------------------------------------------------------------
 OFED-4.8-2 Main Changes from OFED-4.8-1
 -------------------------------------------------------------------------------
 1. compat-rdma
