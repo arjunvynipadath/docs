@@ -1,12 +1,11 @@
 		  Open Fabrics Enterprise Distribution (OFED)
-       QLogic Everest Driver for RDMA protocols (RoCE, and soon iWARP too)
+       QLogic Everest Driver for RDMA protocols (RoCE, iWARP)
 			       QLogic Corporation
-		   Copyright (c) 2014-2017 QLogic Corporation
+		   Copyright (c) 2014-2018 QLogic Corporation
 
+			   OFED 4.17 Release Notes
 
-			   OFED 4.18-2 Release Notes
-
-				 December 2018
+				 September 2018
 
 
 Table of Contents
@@ -14,7 +13,6 @@ Table of Contents
   Introduction
   Link speed
   Device configuration
-  Supported kernels / distros / OFED
   Supported software
   RoCE v2 support
   CPU affinity
@@ -30,8 +28,17 @@ This file describes the QEDR (QLogic Everest Driver for RDMA) driver for QL4xxx
 series of converged network interface cards. The RDMA driver is designed to work
 in OFED environment in conjunction with the QED core module and the QEDE
 Ethernet module. In addition, userspace applications require that the libqedr
-user library be installed on the server.
+user library be installed on the server as part of the rdma-core package.
+The RDMA driver supports both RoCE and iWARP, which protocol will run is determined
+in NVRAM.
+Make sure you choose the 'qedr' and 'libqedr' options when generating your OFED rpms.
 
+============================================
+New for OFED-4.17
+============================================
+Add iWARP support. Which protocol will run is determined in NVRAM.
+Many bug fixes. Both RoCE and iWARP are much more stable.
+Advanced FW version to 8.37.2.0
 
 Link speed
 ==========
@@ -52,13 +59,6 @@ also be enabled and configured in NVRAM including legacy and DCBx
 IEEE/CEE/Auto. Configuration of the NVRAM can be performed via the FastLinQ
 4xxxx Diagnostic Tool for Linux, a.k.a. Qlediag, via the preboot
 configuration tools and via the userspace configuration application.
-
-
-Supported kernels / distros
-===========================
-     RHEL 7.0, 7.1, 7.2
-     CentOS 7.0, 7.1, 7.2
-     SLES12 SP1, SP2, SP3
 
 
 Supported software
@@ -87,7 +87,6 @@ Below is the list of applications tested with this driver:
 
 note: it is recommend not to unload qedr (or any other RDMA driver for that
       matter) while a RoCE application or ULP is running.
-
 
 RoCE v2 support
 ===============
