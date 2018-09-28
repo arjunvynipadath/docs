@@ -88,13 +88,14 @@ InfiniBand Adapters
 	- Intel(R) True Scale QDR PCIe x8 Gen2 HCAs
 
   o   Mellanox Technologies HCAs (FDR and FDR10 Modes are Supported):
-	- ConnectX-3 (Rev 2.33.5100 and above)
-	- ConnectX-3 Pro (Rev 2.33.5100 and above)
-	- Connect-IB (Rev 10.10.5054 and above)
+	- ConnectX-3 (Rev 2.40.7000 and above)
+	- ConnectX-3 Pro (Rev 2.34.5000 and above)
+	- Connect-IB (Rev 10.16.1020 and above)
 
   o   Mellanox Technologies HCAs (EDR, FDR, FDR10 Modes are Supported):
-	- ConnectX-4 (Rev 12.12.x and above)
-	- ConnectX-5 (Rev xx.xx.x and above)
+	- ConnectX-4 (Rev 12.22.1002 and above)
+	- ConnectX-4 Lx (Rev 14.22.1002 and above)
+	- ConnectX-5 (Rev 16.22.1002 and above)
 	
   o   Mellanox Technologies HCAs (HDR, EDR, FDR, FDR10 Modes are Supported):
 	- ConnectX-6 (Rev xx.xx.x and above)
@@ -124,9 +125,9 @@ RoCE Adapters
 
   o   Mellanox
 	- ConnectX-2 EN (Rev 2.9.1200 and above)
-	- ConnectX-3 EN (Rev 2.31.5050 and above)
-	- ConnectX-4 EN (Rev x.xx.xxxx and above)
-	- ConnectX-5 EN (Rev x.xx.xxxx and above)
+	- ConnectX-3 EN (Rev 2.34.5000 and above)
+	- ConnectX-4 EN (Rev 14.22.1002 and above)
+	- ConnectX-5 EN (Rev 16.22.1002 and above)
 	- ConnectX-6 EN (Rev x.xx.xxxx and above)
 
   o   Cavium
@@ -226,8 +227,14 @@ OFED-4.17 Main Changes from OFED-4.8-2
 3. compat-rdma
 
 4. Updated packages
-
-5. ofed_scripts
+- rdma-core v17.2
+- opensm 3.3.21
+- infiniband-diags-2.1.0
+- perftest-4.4-0.3.g7a8e409
+- mstflint-4.10.0
+- ofed_scripts
+- fabtests-1.6.1
+- libfabric-1.6.1
 
 -------------------------------------------------------------------------------
 OFED-4.8-2 Main Changes from OFED-4.8-1
