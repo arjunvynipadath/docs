@@ -1,6 +1,6 @@
 	    Open Fabrics Enterprise Distribution (OFED)
 	          Version 4.17 RC1 Release Notes
-	               September 2018
+	               November 2018
 
 ===============================================================================
 Table of Contents
@@ -11,7 +11,7 @@ Table of Contents
 	- Supported HCA and RNIC Adapter Cards and Firmware Versions
 	- Tested Switch Platforms
 	- Third party Test Packages
-	- OFED sources
+	- OFED sources, build process
 2. Change log
 3. Known Issues
 4. Generic Notes
@@ -39,7 +39,7 @@ that are part of OFED.
 -----------------------
 The OFED package contains the following components:
  - OpenFabrics core and ULPs:
-	- IB HCA drivers (mthca, mlx4, mlx5, qib, ehca)
+	- IB HCA drivers (mthca, mlx4, mlx5, qib)
 	- iWARP RNIC driver (cxgb3, cxgb4, i40iw, qedr)
 	- RoCE drivers (mlx4, mlx5, qedr, bnxt_re)
  - IB core
@@ -74,14 +74,9 @@ The OFED package contains the following components:
 
 1.3 HCAs and RNICs Supported
 ----------------------------
-This release supports IB HCAs by IBM, Intel and Mellanox Technologies, iWARP RNICs by Chelsio Communications and Intel and RoCE adapters by IBM, Mellanox, Cavium, and Broadcom.
+This release supports IB HCAs by Intel and Mellanox Technologies, iWARP RNICs by Chelsio Communications and Intel and RoCE adapters by IBM, Mellanox, Cavium, and Broadcom.
 
 InfiniBand Adapters
-  o   IBM HCAs:
-	- GX Dual-port SDR 4x IB HCA
-	- GX Dual-port SDR 12x IB HCA
-	- GX Dual-port DDR 4x IB HCA
-	- GX Dual-port DDR 12x IB HCA
 
   o   Intel (formerly QLogic) HCAs:
 	- Intel(R) True Scale DDR PCIe x8 and x16 HCAs
@@ -104,6 +99,7 @@ InfiniBand Adapters
 	http://www.mellanox.com/content/pages.php?pg=firmware_download
 
 iWARP Adapters
+
   o   Chelsio RNICs:
 	- S310/S320 10GbE Storage Accelerators
 	- R310/R320 10GbE iWARP Adapters
@@ -118,10 +114,6 @@ iWARP Adapters
 	- QL4xxxx series of converged network adapters (iWARP)
 
 RoCE Adapters
- o   IBM
-	- IBM Flex System EN4132 2-port 10 GbE RoCE
-	- IBM EL27 PCIe LP 2-Port 10GbE RoCE SFP+ adapter
-	- IBM EC28 PCIe 2-Port 10GbE RoCE SFP+ adapter
 
   o   Mellanox
 	- ConnectX-2 EN (Rev 2.9.1200 and above)
@@ -137,9 +129,10 @@ RoCE Adapters
 	- NetXtreme Ethernet Network Adapters (RoCEv2)
 
 Other Drivers
+
 	- VMware Paravirtual RDMA Driver (vmw_pvrdma)
-	- Software RDMA over Ethernet (RoCEv2)
-	- NVMe-oF Host and Target 
+	- Software RDMA over Ethernet (rdma_rxe)
+	- NVMe-oF Host and Target (nvme, nvmet, nvme-rdma)
 
 
 1.4 Switches Supported
@@ -150,7 +143,7 @@ InfiniBand Switches
   o   Flextronics
 	- F-X430044
   o   Intel (formerly QLogic)
-	- 12200
+	- QL12200
   o   Mellanox
 	- MLNX-OS MSX6036/SX6025 w/w MLNX-OS version 3.3.4304
 	- Grid Director 4036 w/w Grid Director version 3.9.2-992
@@ -158,6 +151,7 @@ InfiniBand Switches
 	- FabricIT BXM MBX5020 w/w FabricIT BXM version 2.1.2000
 
 iWARP Switches
+  o   Arista
   o   Fujitsu
 	- XG2000C 10Gb Ethernet Switch
 
@@ -173,7 +167,7 @@ RoCE Switches
 ------------------------
 The following third party packages have been tested with OFED 4.17:
 - Open MPI - 3.x
-- Intel MPI Library 2018
+- Intel MPI Library 2018/2019
 
 1.6 OFED Sources
 ----------------
@@ -207,9 +201,22 @@ Branch: master
 User level Sources are downloaded from http://www.openfabrics.org/downloads/
 as written in the BUILD_ID
 
-The kernel sources are based on Linux 4.8 mainline kernel. Its patches
+build process:
+--------------
+The kernel sources are based on Linux 4.17 mainline kernel. Its patches
 are included in the OFED sources directory.
-For details see HOWTO.build_ofed.
+
+OFED's rdma_core is based on 4.17. The distro's rdma_core will not be newer 
+since we use the latest upstream kernel/rdma_core as a base and add support 
+to the existing distros. OFED brings newer functionality to the existing 
+distros by removing the in-box" user-space packages and installing newer 
+rdma core (user and kernel) and other OFED packages. compat-rdma brings the 
+new kernel drivers installed under /lib/modules/`uname -r`/kernel/updates 
+directory which precede in the search path the in-box drivers so that OFED 
+drivers can be loaded by the openibd service. 
+
+Latest build process is available under:
+https://downloads.openfabrics.org/WorkGroups/ewg/Build%20Process/
 
 The list of maintainers is available under:
 http://www.openfabrics.org/downloads/MAINTAINERS
@@ -385,7 +392,7 @@ components of the OFED 4.8-1 release.
 01. When upgrading from an earlier OFED version, the installation script does
     not stop the earlier OFED version prior to uninstalling it.
     Workaround: Stop the old OFED stack (/etc/init.d/openibd stop) before
-    upgrading to OFED 4.8-1 or reboot the server after OFED installation.
+    upgrading or reboot the server after OFED installation.
 02. Memory registration by the user is limited according to administrator
     setting. See "Pinning (Locking) User Memory Pages" in OFED_tips.txt for
     system configuration.
@@ -395,68 +402,33 @@ components of the OFED 4.8-1 release.
     The former can be achieved by calling wait(childpid), and the latter can be
     achieved by application specific means.  The Posix system() call is
     supported.
-04. The qib driver is supported only on 64-bit platforms.
-05. IPoIB: brctl utilities do not work on IPoIB interfaces. The reason for that
+04. IPoIB: brctl utilities do not work on IPoIB interfaces. The reason for that
     is that these utilities support devices of type Ethernet only.
-06. In case uninstall is failing, check the error log and remove
+05. In case uninstall is failing, check the error log and remove
     the remaining RPMs manually using 'rpm -e <rpms list>'.
 07. RDS is not supported.
-08. Bug 2515: when an Intel HCA is attached directly to a Mellanox ConnectX3
-    and the OpenSM is started on the Intel HCA, the link will not go to active.
-    The workaround is to start the OpenSM on the Mellanox HCA.
-09. Bug 2553: Unable to run UD traffic using qperf on a RoCE R-NIC
-10. Bug 2561: Devices do not receive the echo reply of the first ping sequence
-    when the payload size is 65493 or higher. This is still an issues in the
-    4.3 kernel and should be resolved in a future OFED 4.x release
-11. Bug 2574: Installing OFED (with --with_xeon_phi and qib=y in ofed.conf file)
-    makes the access to the scif char device fail.
-    psmd uses scif functions to allow psm to connect to the Phi devices.
-    It also makes sure it can connect to them when the service is started.
-    Scif functions cannot be called unless the mpss service is running.
-    Since openibd starts the psmd service, it should be loaded after mpss
-12. The ipath and eHCA drivers will be deprecated in the next OFED build that
-    uses a kernel >= 4.3
-13. Bug 2583: "iwpm_mapping_error_cb: Received msg seq = 381240 err code = 12
-	client = 3" seen intermittently
-14. Bug 2587: autoconf is needed by ibacm-1.1.0-1.x86_64
-15. Bug 2596: Host crash related to mlx5 driver, ConnectIB HCAs, ib_srp, and
-    performing IO
-16. cmake and ninja packages are required to build rdma-core package.
-	ninja binary RPMs can be downloaded from https://software.opensuse.org/package/ninja
-	On SLES12 cmake-3.5 or higher is required. The working cmake version can be
-	taken from SLES12 SP2 and installed on SLES12 SP0 or SP1.
-17. Bug 2622: ib_qib cannot be loaded after installing OFED 4.8 on RHEL 7.3 with
-	stock kernel (3.10.0-514). Modeprobe fails with "Invalid argument". It is
-	needed to pull a kernel update to 3.10.0-514.10.2 before installing OFED.
-18. Bug 2619:  IPoIB interface fails on RHEL 7.2 using FW release 12.18.2000 with mlx5 MT_2180110032 adapter
-	Issue: Trying to bring ib0 interface fails with mlx5_0:mlx5_ib_post_send:
-	ib0: multicast join failed for ff12:401b:ffff:0000:0000:0000:ffff:ffff, status -22
-	Workaround: revert MT_2180110032 firmware from 12.18.2000 to 12.12.1100.
-19. Bug 2628: rstream timeouts on 4k_lat test, qib driver
-20. Bug 2644 – qedr: Changing Ethernet MTU prevents future RoCE traffic.
+08. Bug 2644 – qedr: Changing Ethernet MTU prevents future RoCE traffic.
 	Changing the MTU size of the Ethernet interface will stop and prevent RoCE traffic on that interface.
 	To overcome this reload the qedr driver:
 	$ rmmod qedr
 	$ modprobe qedr
-21. Bug 2639 - ib_isert/ib_srpt report "Unknown symbol" after OFED-4.8-1 installation:
+09. Bug 2639 - ib_isert/ib_srpt report "Unknown symbol" after OFED-4.8-1 installation:
 	ib_srpt and ib_isert kernel modules are not included in OFED-4.8-x. So, after OFED
 	installation the in-box ib_core being replaced by one coming with OFED and,
 	therefore, in-box ib_srpt and ib_isert kernel modules fail to be loaded over
 	OFED's ib_core. If one need to use iSER or SRP target then need to recompile
 	iSERT/SRPT over the OFED.
-22. Bug 2640 - openibd fail to start when system is coming up:
+10. Bug 2640 - openibd fail to start when system is coming up:
 	The inbox kernel modules being loaded from initrd
 	So, need to rebuild the initrd by:
 	# dracut -f -v
-23. Bug 2641 - IPoIB: Missing first ping after clearing ARP cache:
+11. Bug 2641 - IPoIB: Missing first ping after clearing ARP cache:
 	This is a known issue by IPoIB design
-24. Bug 2661 - rstream intermittent error: Connection refused (stale connection)
+12. Bug 2661 - rstream intermittent error: Connection refused (stale connection)
 	1. Two Q-Logic/Cavium NICs back to back
 	2. Command: rstream -S all -T a
-
 	on the second connect in the test:
 	Connection refused (stale connection )
-25: Bug #2666 - bnxt_re: hwrm req_type 0x51 seq id 0x140 error 0x2 failure observed upon starting lldpad service
 
 Note: See the release notes of each component for additional issues.
 
@@ -470,6 +442,7 @@ Note: See the release notes of each component for additional issues.
    lead to undesired behaviour both in compilation and run time.
 
 2. ULP and Driver restrictions:
-- NVMe-oF (kernel 4.8 only)
-- NFS-RDMA (SLES12.2 RH7.3 only).
-- i40iw 10GbE iWARP Adapter (kernel 4.8 only)
+- NVMe-oF (kernel 4.17 and SLES15 only)
+- Intel i40iw 10GbE iWARP Adapter (kernel 4.17 only)
+- Intel qib 40Gb IB Adapter (kernel 4.17 only)
+
