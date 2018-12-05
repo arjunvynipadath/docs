@@ -1,11 +1,22 @@
             Open Fabrics Enterprise Distribution (OFED)
                 CHELSIO T4/T5/T6 RNIC RELEASE NOTES
-			Feb 2018
+			Dec 2018
 
 
 The iw_cxgb4 and cxgb4 modules provide RDMA and NIC support for the
 Chelsio T4, T5 and T6 series adapters.  Make sure you choose the 'cxgb4'
 and 'libcxgb4' options when generating your OFED rpms.
+
+============================================
+New for OFED-4.17
+============================================
+- Added SLES12SP3, RHEL7.4 and RHEL7.5 support.
+- Updated to FW 1.21.5.0 for Chelsio T4/T5/T6 adapters.
+- iw_cxgb4: only allow 1 flush on user qps
+- iw_cxgb4: correctly enforce the max reg_mr depth
+- iw_cxgb4: remove duplicate memcpy() in c4iw_create_listen()
+- cxgb4: Use pci_set_vpd_size() for kernels < 4.16
+- Added HMA support.
 
 ============================================
 New for OFED-4.8
@@ -27,28 +38,26 @@ New for OFED-3.12
 - Added 1.9.23.0 T4 and T5 firmware
 - Important bug fixes
 
-===============
+================
 Supported Cards
 ================
 
-T6: T6225-CR, T6225-SO-CR, T6425-CR, T6425-SO-CR, T6225-OCP-SO,
-    T62100-OCP-SO, T62100-LP-CR, T62100-SO-CR, T6210-BT, T62100-CR,
-    T6225-LL-CR, T61100-OCP-SO, T6201-BT
-T5: T502-BT, T580-CR, T580-LP-CR, T520-LL-CR, T520-CR, T522-CR, T540-CR
-T4: T420-CR, T440-CR, T422-CR, T404-BT, T440-LP-CR, T420-LL-CR, T420-CX
+T6: T6225-CR, T6225-LL-CR, T6225-SO-CR, T6425-CR, T6225-OCP-SO,
+    T62100-LP-CR, T62100-SO-CR, T62100-CR, T61100-OCP-SO
+T5: T580-LP-CR, T540-LP-CR, T540-BT, T520-BT, T520-CR
 
 =================
 Updating Firmware
 =================
 
-The OFED-4.8 driver has been tested with 1.16.29.0 and later
-firmware. Version 1.16.29.0 of the firmware will automatically installed
+The OFED-4.17 driver has been tested with 1.21.5.0 and later
+firmware. Version 1.21.5.0 of the firmware will be automatically installed
 when you load the cxgb4 driver.  The latest released firmware is always
 available at service.chelsio.com inside the Unified Wire package.
 
 If your distro/kernel cxgb4 driver supports firmware loading, you can
 place the chelsio firmware image in /lib/firmware/cxgb4, then rename
-it as t4fw.bin, t5fw.bin, or t6fw.bin, and unload and reload the cxgb4
+it as t4fw.bin, t5fw.bin, or t6fw.bin, and unload and load the cxgb4
 module to get the new images loaded.  If this does not work, then you
 can load the firmware manually as follows:
 
@@ -56,18 +65,18 @@ can load the firmware manually as follows:
 
 2) Run: ethtool -f ethX cxgb4/<fw-image-filename>
 
-3) unload/reload cxgb4
+3) unload/load cxgb4
 
 EG:
 
-# cp <path-to>/t6fw-1.16.29.0.bin /lib/firmware/cxgb4
-# ethtool -f eth2 cxgb4/t6fw-1.16.29.0.bin
+# cp <path-to>/t6fw-1.21.5.0.bin /lib/firmware/cxgb4
+# ethtool -f eth2 cxgb4/t6fw-1.21.5.0.bin
 # rmmod iw_cxgb4; rmmod cxgb4; modprobe cxgb4; modprobe iw_cxgb4
 
 NOTE: The driver package on service.chelsio.com is getting updated
 periodically, including the T4/T5/T6 device firmware.  It is recommended
 to use latest available firmware at service.chelsio.com.  This driver
-should work with latest available firmware. In case of any issue please
+should work with latest available firmware. In case of any issues, please
 contact Chelsio support at support@chelsio.com.
 
 ==============================
@@ -97,7 +106,7 @@ and empty password phrase.
 Enabling MPA version 2
 ======================
 
-The iw_cxgb4 driver in OFED-4.8 enables MPAv2 by default.  For older
+From OFED-4.8, the iw_cxgb4 driver enables MPAv2 by default.  For older
 versions, you should enable it manually.  Users can enable MPA version
 2 by setting iw_cxgb4 module parameter as shown below
 
@@ -121,7 +130,7 @@ chelsio u1.2 nonthreadsafe default libdaplcma.so.1 dapl.1.2 "eth2 0" ""
 chelsio2 u2.0 nonthreadsafe default libdaplofa.so.2 dapl.2.0 "eth2 0" ""
 
 =============
-Intel MPI:
+Intel MPI
 =============
 
 Download latest Intel MPI from the Intel website
@@ -200,17 +209,17 @@ To run Platform MPI applications:
 #mpirun -v -netaddr <ip-designations> -hostlist <node1>,<node2>,.....<node n> <MPI Application Path>  
 
 =============
-OpenMPI:
+OpenMPI
 =============
 
 From OFED-3.5 package onwards OpenMPI is not a part of the OFED
 package. User has to manually download and install it.
 
 - Download latest OpenMPI released SRPM from following location.
-http://www.open-mpi.org/software/ompi
+https://www.open-mpi.org/software/ompi/
 
 - To install OpenMPI on your setup refer to the following guidelines
-http://www.open-mpi.org/software/ompi/v1.6/srpm.php
+https://www.open-mpi.org/software/ompi/v4.0/srpm.php
 
 OpenMPI iWARP support is only available in OpenMPI version 1.3 or greater.
 
@@ -221,17 +230,20 @@ sections of mca-btl-openib-hca-params.ini.
 
 To run OpenMPI applications:
 
- mpirun --host <node1>,<node2> -mca btl openib,sm,self <OpenMPI Application Path>
+ mpirun --host <node1>,<node2> -mca btl openib,vader,self <OpenMPI Application Path>
+
+NOTE: If you are using older OpenMPI versions, use sm instead of vader.
+
 
 =============
-MVAPICH2:
+MVAPICH2
 =============
 
 From OFED-3.5 package onwards MVAPICH2 is not a part of the OFED
 package. User has to manually download and install it.
 
 - Download latest MVAPICH2 released SRPM from following location.
-http://mvapich.cse.ohio-state.edu/download/mvapich2/
+http://mvapich.cse.ohio-state.edu/downloads/#mv2
 
 - To install MVAPICH2 on your setup do the following
 ./configure --prefix=/usr --sysconfdir=/etc --libdir=/usr/lib64 && make &&
@@ -278,7 +290,7 @@ To run MVAPICH2 application:
  mpirun_rsh -ssh -np 8 -hostfile mpd.hosts <MVAPICH2 Application Path>
 
 ============================================
-Testing connectivity with ping and rping:
+Testing connectivity with ping and rping
 ============================================
 
 Configure the ethernet interfaces for your cxgb4 device. After you modprobe
